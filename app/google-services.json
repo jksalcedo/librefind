@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "186948403868",
+    "project_id": "fossia",
+    "storage_bucket": "fossia.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:186948403868:android:e3e8cfeee6e4e808782359",
+        "android_client_info": {
+          "package_name": "com.jksalcedo.fossia"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChcJLLnPM0bkf4KB2GSYqv2J28WLf79NY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
