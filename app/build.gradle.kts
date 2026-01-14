@@ -8,11 +8,11 @@ plugins {
 
 
 android {
-    namespace = "com.jksalcedo.fossia"
+    namespace = "com.jksalcedo.librefind"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.jksalcedo.fossia"
+        applicationId = "com.jksalcedo.librefind"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
@@ -23,7 +23,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -49,7 +50,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
-    
+
     // Compose
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
@@ -58,36 +59,36 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material3.adaptive.navigation.suite)
     implementation(libs.androidx.compose.material.icons.extended)
-    
+
     // Koin (Dependency Injection)
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
-    
+
     // Room (Local Database)
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     implementation(libs.androidx.compose.foundation)
     ksp(libs.room.compiler)
-    
+
     // Retrofit & OkHttp (Networking)
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging.interceptor)
     implementation(libs.gson)
-    
+
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.auth)
-    
+
     // Navigation
     implementation(libs.navigation.compose)
-    
+
     // Coroutines
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.coroutines.play.services)
-    
+
     // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

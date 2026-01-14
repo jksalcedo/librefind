@@ -28,5 +28,5 @@ gradle.beforeProject {
     }
 }
 
-rootProject.name = "Fossia"
+rootProject.name = "LibreFind"
 include(":app")
