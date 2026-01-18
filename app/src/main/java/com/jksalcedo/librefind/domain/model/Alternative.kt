@@ -1,5 +1,7 @@
 package com.jksalcedo.librefind.domain.model
 
+import java.util.Locale
+
 data class Alternative(
     val id: String,
     val name: String,
@@ -18,5 +20,5 @@ data class Alternative(
     val cons: List<String> = emptyList()
 ) {
     val displayRating: String
-        get() = if (ratingCount > 0) String.format("%.1f", ratingAvg) else "—"
+        get() = if (ratingCount > 0) String.format(Locale.getDefault(), "%.1f", ratingAvg) else "—"
 }

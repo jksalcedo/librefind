@@ -19,3 +19,10 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+#Local
+-keep class com.jksalcedo.librefind.domain.model.** { *; }
+# Firebase
+-keep class com.jksalcedo.librefind.data.remote.firebase.dto.** { *; }
+-keepattributes Signature
+-keepattributes *Annotation*
