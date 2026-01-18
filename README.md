@@ -1,4 +1,17 @@
+<div align="center">
+    <h1>LibreFind</h1>
+</div>
+
+<h4 align=center>
+<img alt="GitHub Release" src="https://img.shields.io/github/v/release/jksalcedo/librefind?include_prereleases&logo=github">
+<img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/jksalcedo/librefind/total">
+    <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/jksalcedo/librefind">
+
+</h4>
+
+
 ## What is LibreFind?
+
 
 LibreFind is an Android app that scans your device, identifies proprietary software, and recommends
 Free and Open Source Software (FOSS) alternatives. It uses **Firebase Firestore** data as its
