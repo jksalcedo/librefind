@@ -4,6 +4,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
 import com.google.gson.GsonBuilder
+import com.google.gson.Strictness
 import com.jksalcedo.librefind.data.local.InventorySource
 import com.jksalcedo.librefind.data.local.SafeSignatureDb
 import com.jksalcedo.librefind.data.remote.firebase.AuthService
@@ -18,12 +19,13 @@ import com.jksalcedo.librefind.ui.auth.AuthViewModel
 import com.jksalcedo.librefind.ui.dashboard.DashboardViewModel
 import com.jksalcedo.librefind.ui.details.AlternativeDetailViewModel
 import com.jksalcedo.librefind.ui.details.DetailsViewModel
+import com.jksalcedo.librefind.ui.mysubmissions.MySubmissionsViewModel
 import com.jksalcedo.librefind.ui.submit.SubmitViewModel
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import java.util.concurrent.TimeUnit
 
@@ -39,7 +41,7 @@ val appModule = module {
 val networkModule = module {
     single {
         GsonBuilder()
-            .setLenient()
+            .setStrictness(Strictness.LENIENT)
             .create()
     }
 
@@ -78,6 +80,7 @@ val viewModelModule = module {
     viewModel { DashboardViewModel(get()) }
     viewModel { AuthViewModel(get(), get()) }
     viewModel { SubmitViewModel(get(), get()) }
+    viewModel { MySubmissionsViewModel(get(), get()) }
 }
 
 
