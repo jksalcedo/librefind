@@ -35,7 +35,7 @@ data class SubmissionDto(
     fun toDomain(id: String) = Submission(
         id = id,
         type = SubmissionType.valueOf(type),
-        proprietaryPackage = proprietaryPackage,
+        proprietaryPackages = proprietaryPackage,
         submitterUid = submitterUid,
         submitterUsername = submitterUsername,
         submittedAt = submittedAt,
@@ -53,7 +53,7 @@ data class SubmissionDto(
     companion object {
         fun fromDomain(submission: Submission) = SubmissionDto(
             type = submission.type.name,
-            proprietaryPackage = submission.proprietaryPackage,
+            proprietaryPackage = submission.proprietaryPackages,
             submitterUid = submission.submitterUid,
             submitterUsername = submission.submitterUsername,
             submittedAt = submission.submittedAt,

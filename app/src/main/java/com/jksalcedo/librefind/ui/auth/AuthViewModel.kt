@@ -15,7 +15,8 @@ data class AuthUiState(
     val error: String? = null,
     val isSignedIn: Boolean = false,
     val needsProfileSetup: Boolean = false,
-    val profileComplete: Boolean = false
+    val profileComplete: Boolean = false,
+    val userProfile: UserProfile? = null
 )
 
 class AuthViewModel(
@@ -38,13 +39,15 @@ class AuthViewModel(
                     _uiState.value = _uiState.value.copy(
                         isSignedIn = true,
                         needsProfileSetup = profile == null,
-                        profileComplete = profile != null
+                        profileComplete = profile != null,
+                        userProfile = profile
                     )
                 } else {
                     _uiState.value = _uiState.value.copy(
                         isSignedIn = false,
                         needsProfileSetup = false,
-                        profileComplete = false
+                        profileComplete = false,
+                        userProfile = null
                     )
                 }
             }
@@ -81,7 +84,8 @@ class AuthViewModel(
                         isLoading = false,
                         isSignedIn = true,
                         needsProfileSetup = profile == null,
-                        profileComplete = profile != null
+                        profileComplete = profile != null,
+                        userProfile = profile
                     )
                 }
                 .onFailure { e ->
@@ -116,7 +120,8 @@ class AuthViewModel(
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
                     needsProfileSetup = false,
-                    profileComplete = true
+                    profileComplete = true,
+                    userProfile = profile
                 )
             } else {
                 _uiState.value = _uiState.value.copy(

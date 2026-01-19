@@ -46,7 +46,7 @@ class SubmitViewModel(
         repoUrl: String = "",
         fdroidId: String = "",
         license: String = "",
-        proprietaryPackage: String = ""
+        proprietaryPackages: String = ""
     ) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)
@@ -59,13 +59,14 @@ class SubmitViewModel(
 
             val profile = firestoreService.getProfile(user.uid)
             if (profile == null) {
-                _uiState.value = _uiState.value.copy(isLoading = false, error = "Profile not set up")
+                _uiState.value =
+                    _uiState.value.copy(isLoading = false, error = "Profile not set up")
                 return@launch
             }
 
             val submission = Submission(
                 type = type,
-                proprietaryPackage = proprietaryPackage,
+                proprietaryPackages = proprietaryPackages,
                 submitterUid = user.uid,
                 submitterUsername = profile.username,
                 submittedApp = SubmittedApp(

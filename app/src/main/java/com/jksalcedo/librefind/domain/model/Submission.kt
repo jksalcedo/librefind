@@ -3,7 +3,7 @@ package com.jksalcedo.librefind.domain.model
 data class Submission(
     val id: String = "",
     val type: SubmissionType,
-    val proprietaryPackage: String,
+    val proprietaryPackages: String,
     val submittedApp: SubmittedApp,
     val submitterUid: String,
     val submitterUsername: String,
