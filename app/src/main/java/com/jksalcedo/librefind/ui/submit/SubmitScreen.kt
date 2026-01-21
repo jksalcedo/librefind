@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -74,7 +75,6 @@ fun SubmitScreen(
     var fdroidId by remember { mutableStateOf("") }
     var license by remember { mutableStateOf("") }
     var selectedProprietaryPackages by remember { mutableStateOf(setOf<String>()) }
-    var dropdownExpanded by remember { mutableStateOf(false) }
 
     LaunchedEffect(uiState.success) {
         if (uiState.success && uiState.submittedAppName == null) {
@@ -206,21 +206,22 @@ fun SubmitScreen(
 
                 var showDialog by remember { mutableStateOf(false) }
 
-                OutlinedTextField(
-                    value = if (selectedProprietaryPackages.isEmpty()) "" else "${selectedProprietaryPackages.size} selected",
-                    onValueChange = {},
-                    readOnly = true,
-                    label = { Text("Target Proprietary Apps") },
-                    placeholder = { Text("Search to add...") },
-                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = dropdownExpanded) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable(
-                            interactionSource = null,
-                            indication = null,
-                            onClick = { showDialog = true }
-                        )
-                )
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    OutlinedTextField(
+                        value = if (selectedProprietaryPackages.isEmpty()) "" else "${selectedProprietaryPackages.size} selected",
+                        onValueChange = {},
+                        readOnly = true,
+                        label = { Text("Target Proprietary Apps") },
+                        placeholder = { Text("Search to add...") },
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = showDialog) },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Box(
+                        modifier = Modifier
+                            .matchParentSize()
+                            .clickable { showDialog = true }
+                    )
+                }
 
                 if (selectedProprietaryPackages.isNotEmpty()) {
                     FlowRow(
