@@ -2,9 +2,8 @@ package com.jksalcedo.librefind.ui.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jksalcedo.librefind.data.remote.firebase.AuthService
-import com.jksalcedo.librefind.data.remote.firebase.FirestoreService
 import com.jksalcedo.librefind.domain.model.UserProfile
+import com.jksalcedo.librefind.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,8 +19,7 @@ data class AuthUiState(
 )
 
 class AuthViewModel(
-    private val authService: AuthService,
-    private val firestoreService: FirestoreService
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(AuthUiState())
@@ -33,14 +31,13 @@ class AuthViewModel(
 
     private fun checkAuthState() {
         viewModelScope.launch {
-            authService.currentUser.collect { user ->
+            authRepository.currentUser.collect { user ->
                 if (user != null) {
-                    val profile = firestoreService.getProfile(user.uid)
                     _uiState.value = _uiState.value.copy(
                         isSignedIn = true,
-                        needsProfileSetup = profile == null || profile.username.isBlank(),
-                        profileComplete = profile != null && profile.username.isNotBlank(),
-                        userProfile = profile
+                        needsProfileSetup = user.username.isBlank(),
+                        profileComplete = user.username.isNotBlank(),
+                        userProfile = user
                     )
                 } else {
                     _uiState.value = _uiState.value.copy(
@@ -57,7 +54,7 @@ class AuthViewModel(
     fun signUp(email: String, password: String) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)
-            authService.signUp(email, password)
+            authRepository.signUp(email, password)
                 .onSuccess {
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,
@@ -71,22 +68,17 @@ class AuthViewModel(
                         error = e.message ?: "Sign up failed"
                     )
                 }
+            
         }
     }
 
     fun signIn(email: String, password: String) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)
-            authService.signIn(email, password)
-                .onSuccess { user ->
-                    val profile = firestoreService.getProfile(user.uid)
-                    _uiState.value = _uiState.value.copy(
-                        isLoading = false,
-                        isSignedIn = true,
-                        needsProfileSetup = profile == null || profile.username.isBlank(),
-                        profileComplete = profile != null && profile.username.isNotBlank(),
-                        userProfile = profile
-                    )
+            authRepository.signIn(email, password)
+                .onSuccess {
+                    // Current user flow will update state
+                    _uiState.value = _uiState.value.copy(isLoading = false)
                 }
                 .onFailure { e ->
                     _uiState.value = _uiState.value.copy(
@@ -100,39 +92,35 @@ class AuthViewModel(
     fun saveProfile(username: String) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)
-            val user = authService.getCurrentUser() ?: return@launch
 
-            if (firestoreService.isUsernameTaken(username)) {
-                _uiState.value = _uiState.value.copy(
-                    isLoading = false,
-                    error = "Username is already taken"
-                )
-                return@launch
-            }
-
-            val profile = UserProfile(
-                uid = user.uid,
-                username = username,
-                email = user.email ?: ""
-            )
-
-            if (firestoreService.createOrUpdateProfile(profile)) {
-                _uiState.value = _uiState.value.copy(
-                    isLoading = false,
-                    needsProfileSetup = false,
-                    profileComplete = true,
-                    userProfile = profile
-                )
-            } else {
-                _uiState.value = _uiState.value.copy(
-                    isLoading = false,
-                    error = "Failed to save profile"
-                )
-            }
+            authRepository.updateProfile(username)
+                .onSuccess {
+                    // Fetch updated profile or rely on flow
+                    val updatedUser = authRepository.getCurrentUser()
+                    _uiState.value = _uiState.value.copy(
+                        isLoading = false,
+                        needsProfileSetup = false,
+                        profileComplete = true,
+                        userProfile = updatedUser
+                    )
+                }
+                .onFailure { e ->
+                    _uiState.value = _uiState.value.copy(
+                        isLoading = false,
+                        error = e.message ?: "Failed to save profile"
+                    )
+                }
         }
     }
 
     fun clearError() {
         _uiState.value = _uiState.value.copy(error = null)
+    }
+
+    fun signOut() {
+        viewModelScope.launch {
+            authRepository.signOut()
+            // State update is handled by the flow collector in init block
+        }
     }
 }

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.BugReport
@@ -260,6 +261,23 @@ fun DashboardScreen(
                                     Icon(Icons.Default.Group, contentDescription = null)
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Text("Join Community")
+                                }
+
+                                Spacer(modifier = Modifier.height(16.dp))
+
+                                OutlinedButton(
+                                    onClick = {
+                                        showProfileDialog = false
+                                        authViewModel.signOut()
+                                    },
+                                    modifier = Modifier.fillMaxWidth(),
+                                    colors = androidx.compose.material3.ButtonDefaults.outlinedButtonColors(
+                                        contentColor = MaterialTheme.colorScheme.error
+                                    )
+                                ) {
+                                    Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = null)
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text("Sign Out")
                                 }
                             }
                         },
