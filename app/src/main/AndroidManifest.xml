@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Required to scan all installed packages -->
-    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
-        tools:ignore="QueryAllPackagesPermission" />
-    
-    <!-- Required for Firebase and Wikidata API -->
+    <uses-permission
+        android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="PackageVisibilityPolicy,QueryAllPackagesPermission" />
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -28,6 +28,17 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="librefind"
+                    android:host="login-callback" />
             </intent-filter>
         </activity>
     </application>
