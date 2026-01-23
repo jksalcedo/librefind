@@ -21,14 +21,6 @@ base for proprietary app detection and FOSS alternative recommendations.
 
 Help users replace proprietary apps with FOSS alternatives.
 
-## Permission Requirements
-
-### Required Permissions
-
-- `QUERY_ALL_PACKAGES` - To scan installed apps
-    - **Note**: This is a restricted permission.
-- `INTERNET` - To query Firebase
-
 ### Community
 
 - Users can propose new FOSS alternatives
@@ -36,7 +28,24 @@ Help users replace proprietary apps with FOSS alternatives.
 - Admin/Reviewers verify submissions
 - Community voting system
 
-Please join telegram channel for further discussions.
+## Help Build the LibreFind
+The applications database grows entirely through **your contributions**.
+
+### Why contribute?
+- **Replace your daily apps** with better FOSS options
+- **Your votes shape rankings** for everyone  
+- **Submit missing alternatives** others need too
+- **Every submission makes LibreFind more useful**
+
+  
+---
+### Required Permissions
+
+- `QUERY_ALL_PACKAGES` - To scan installed apps
+    - **Note**: This is a restricted permission.
+- `INTERNET` - To query Firebase
+
+Please join the Telegram channel for further discussions.
 [Telegram](https://t.me/librefind)
 
 ## License
