@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <inset xmlns:android="http://schemas.android.com/apk/res/android"
     android:drawable="@drawable/ic_foreground"
-    android:insetLeft="25%"
-    android:insetTop="25%"
-    android:insetRight="25%"
-    android:insetBottom="25%"/>
+    android:insetLeft="30%"
+    android:insetTop="30%"
+    android:insetRight="30%"
+    android:insetBottom="30%"/>
