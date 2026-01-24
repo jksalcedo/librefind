@@ -1,0 +1,11 @@
+Initial beta release of LibreFind
+
+Features:
+• App scanning and detection
+• FOSS alternative recommendations
+• Sovereignty gauge
+• Community submission system
+• Rating system
+• Pros/cons feedback
+
+This is an early beta version. Please report issues on GitHub or Telegram.

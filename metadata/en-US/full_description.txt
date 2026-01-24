@@ -1,0 +1,31 @@
+LibreFind is a free and lightweight Android app that scans your device, identifies proprietary software, and recommends Free and Open Source Software (FOSS) alternatives.
+
+<b>Core Features</b>
+
+• Scan installed apps to detect proprietary software
+• Get personalized FOSS alternative recommendations
+• View sovereignty scores showing FOSS vs proprietary ratio
+• Rate and review FOSS alternatives
+• Community-driven database
+
+<b>Community Contributions</b>
+
+• Propose new FOSS alternatives for review
+• Submit pros and cons for existing alternatives
+• Vote on app recommendations
+• Help build a comprehensive alternative database
+
+<b>Privacy First</b>
+
+All app scanning happens locally on your device. The app only queries the database for FOSS alternatives when proprietary apps are detected.
+
+<b>Open Source</b>
+
+LibreFind is fully open source under the MIT License. Contribute at: https://github.com/jksalcedo/librefind
+
+<b>Required Permissions</b>
+
+• QUERY_ALL_PACKAGES - To scan installed apps on your device
+• INTERNET - To fetch FOSS alternative recommendations from the database
+
+Join our community: https://t.me/librefind
