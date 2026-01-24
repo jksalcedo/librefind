@@ -15,8 +15,8 @@ android {
         applicationId = "com.jksalcedo.librefind"
         minSdk = 24
         targetSdk = 36
-        versionCode = 4
-        versionName = "1.0-beta4"
+        versionCode = 5
+        versionName = "1.0-beta5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -111,7 +111,6 @@ dependencies {
 
     // Coroutines
     implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.kotlinx.coroutines.play.services)
 
     // Testing
     testImplementation(libs.junit)
