@@ -8,7 +8,8 @@ data class Submission(
     val submitterUid: String,
     val submitterUsername: String,
     val submittedAt: Long = System.currentTimeMillis(),
-    val status: SubmissionStatus = SubmissionStatus.PENDING
+    val status: SubmissionStatus = SubmissionStatus.PENDING,
+    val rejectionReason: String? = null
 )
 
 enum class SubmissionType { NEW_ALTERNATIVE, NEW_PROPRIETARY }

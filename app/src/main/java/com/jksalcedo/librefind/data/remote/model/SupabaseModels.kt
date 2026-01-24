@@ -42,7 +42,8 @@ data class UserSubmissionDto(
     val license: String? = null,
     val status: String = "PENDING",
     @SerialName("submitter_id") val submitterId: String,
-    @SerialName("created_at") val createdAt: String? = null
+    @SerialName("created_at") val createdAt: String? = null,
+    @SerialName("rejection_reason") val rejectionReason: String? = null
 )
 
 @Serializable

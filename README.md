@@ -1,6 +1,12 @@
-<div align="center">
-    <h1>LibreFind</h1>
-</div>
+<h1 align="center">
+  <br>
+    <img src="./metadata/en-US/images/icon.png" alt="PassVault icon" width="150" />
+  <br>
+  LibreFind
+  <br>
+</h1>
+
+<h4 align="center">Discover and replace proprietary apps with FOSS alternatives.</h4>
 
 <h4 align=center>
 <img alt="GitHub Release" src="https://img.shields.io/github/v/release/jksalcedo/librefind?include_prereleases&logo=github">
@@ -23,10 +29,10 @@ Help users replace proprietary apps with FOSS alternatives.
 
 ## Screenshots
 
-| Dashboard | Alternative List | Submission | Profile |
-|-----------|------------------|------------|---------|
+| Dashboard                                                          | Alternative List                                                             | Submission                                                           | Profile                                                        |
+|--------------------------------------------------------------------|------------------------------------------------------------------------------|----------------------------------------------------------------------|----------------------------------------------------------------|
 | ![Dashboard](metadata/en-US/images/phoneScreenshots/dashboard.jpg) | ![Alternatives](metadata/en-US/images/phoneScreenshots/alternative_list.jpg) | ![Submission](metadata/en-US/images/phoneScreenshots/submission.jpg) | ![Profile](metadata/en-US/images/phoneScreenshots/profile.jpg) |
-| Scan your apps and view sovereignty score | Browse FOSS alternatives | Contribute new alternatives | Track your submissions |
+| Scan your apps and view sovereignty score                          | Browse FOSS alternatives                                                     | Contribute new alternatives                                          | Track your submissions                                         |
 
 ### Community
 
