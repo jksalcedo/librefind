@@ -49,6 +49,8 @@ fun DetailsScreen(
     packageName: String,
     onBackClick: () -> Unit,
     onAlternativeClick: (String) -> Unit,
+    onSuggestAsFoss: (appName: String, packageName: String) -> Unit = { _, _ -> },
+    onSuggestAsProprietary: (appName: String, packageName: String) -> Unit = { _, _ -> },
     viewModel: DetailsViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsState()
@@ -60,7 +62,7 @@ fun DetailsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(appName + " alternatives") },
+                title = { Text("$appName alternatives") },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
@@ -137,6 +139,31 @@ fun DetailsScreen(
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
+                        if (state.isUnknown) {
+                            Spacer(modifier = Modifier.height(24.dp))
+                            Text(
+                                text = "Help us categorize this app:",
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                            ) {
+                                Button(
+                                    onClick = { onSuggestAsFoss(appName, packageName) },
+                                    modifier = Modifier.width(160.dp)
+                                ) {
+                                    Text("Suggest as FOSS")
+                                }
+                                Button(
+                                    onClick = { onSuggestAsProprietary(appName, packageName) },
+                                    modifier = Modifier.width(160.dp)
+                                ) {
+                                    Text("Suggest as Proprietary")
+                                }
+                            }
+                        }
                     }
                 }
 

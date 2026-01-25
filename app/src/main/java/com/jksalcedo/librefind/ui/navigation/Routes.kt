@@ -10,7 +10,17 @@ sealed class Route(val route: String) {
     }
     data object Auth : Route("auth")
     data object ProfileSetup : Route("profile_setup")
-    data object Submit : Route("submit")
+    data object Submit : Route("submit?appName={appName}&packageName={packageName}&type={type}") {
+        fun createRoute(appName: String? = null, packageName: String? = null, type: String? = null): String {
+            return when {
+                appName != null && packageName != null && type != null ->
+                    "submit?appName=$appName&packageName=$packageName&type=$type"
+                appName != null && packageName != null ->
+                    "submit?appName=$appName&packageName=$packageName"
+                else -> "submit"
+            }
+        }
+    }
     data object MySubmissions : Route("my_submissions")
     data object IgnoredApps : Route("ignored_apps")
 }

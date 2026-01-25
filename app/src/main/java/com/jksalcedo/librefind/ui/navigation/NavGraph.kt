@@ -55,6 +55,12 @@ fun NavGraph(
                 onBackClick = { navController.navigateUp() },
                 onAlternativeClick = { altId ->
                     navController.navigate(Route.AlternativeDetail.createRoute(altId))
+                },
+                onSuggestAsFoss = { name, pkg ->
+                    navController.navigate(Route.Submit.createRoute(name, pkg, "foss"))
+                },
+                onSuggestAsProprietary = { name, pkg ->
+                    navController.navigate(Route.Submit.createRoute(name, pkg, "proprietary"))
                 }
             )
         }
@@ -96,14 +102,45 @@ fun NavGraph(
             )
         }
 
-        composable(Route.Submit.route) {
+        composable(
+            route = Route.Submit.route,
+            arguments = listOf(
+                navArgument("appName") { 
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                },
+                navArgument("packageName") { 
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                },
+                navArgument("type") { 
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                }
+            )
+        ) { backStackEntry ->
+            val prefilledAppName = backStackEntry.arguments?.getString("appName")
+            val prefilledPackageName = backStackEntry.arguments?.getString("packageName")
+            val prefilledType = backStackEntry.arguments?.getString("type")
+            
             SubmitScreen(
                 onBackClick = { navController.navigateUp() },
                 onSuccess = {
                     navController.navigate(Route.Dashboard.route) {
                         popUpTo(Route.Dashboard.route) { inclusive = true }
                     }
-                }
+                },
+                onNavigateToTargetSubmission = { appName, packageName ->
+                    navController.navigate(Route.Submit.createRoute(appName, packageName)) {
+                        popUpTo(Route.Submit.route) { inclusive = true }
+                    }
+                },
+                prefilledAppName = prefilledAppName,
+                prefilledPackageName = prefilledPackageName,
+                prefilledType = prefilledType
             )
         }
 

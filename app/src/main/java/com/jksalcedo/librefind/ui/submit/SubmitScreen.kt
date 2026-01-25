@@ -63,13 +63,24 @@ import org.koin.androidx.compose.koinViewModel
 fun SubmitScreen(
     onBackClick: () -> Unit,
     onSuccess: () -> Unit,
-    viewModel: SubmitViewModel = koinViewModel()
+    onNavigateToTargetSubmission: (appName: String, packageName: String) -> Unit = { _, _ -> },
+    viewModel: SubmitViewModel = koinViewModel(),
+    prefilledAppName: String? = null,
+    prefilledPackageName: String? = null,
+    prefilledType: String? = null
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    var type by remember { mutableStateOf(SubmissionType.NEW_ALTERNATIVE) }
-    var appName by remember { mutableStateOf("") }
-    var packageName by remember { mutableStateOf("") }
+    val isPrefilled = prefilledAppName != null && prefilledPackageName != null
+    val defaultType = when {
+        prefilledType == "foss" -> SubmissionType.NEW_ALTERNATIVE
+        prefilledType == "proprietary" -> SubmissionType.NEW_PROPRIETARY
+        isPrefilled -> SubmissionType.NEW_PROPRIETARY
+        else -> SubmissionType.NEW_ALTERNATIVE
+    }
+    var type by remember { mutableStateOf(defaultType) }
+    var appName by remember { mutableStateOf(prefilledAppName ?: "") }
+    var packageName by remember { mutableStateOf(prefilledPackageName ?: "") }
     var description by remember { mutableStateOf("") }
     var repoUrl by remember { mutableStateOf("") }
     var fdroidId by remember { mutableStateOf("") }
@@ -252,11 +263,16 @@ fun SubmitScreen(
                 if (showDialog) {
                     MultiSelectDialog(
                         allPackages = uiState.proprietaryTargets,
+                        unknownApps = uiState.unknownApps,
                         initialSelection = selectedProprietaryPackages,
                         onDismiss = { showDialog = false },
                         onConfirm = { newSelection ->
                             selectedProprietaryPackages = newSelection
                             showDialog = false
+                        },
+                        onSuggestAsTarget = { packageName, label ->
+                            showDialog = false
+                            onNavigateToTargetSubmission(label, packageName)
                         }
                     )
                 }
@@ -346,9 +362,11 @@ fun SubmitScreen(
 @Composable
 fun MultiSelectDialog(
     allPackages: List<String>,
+    unknownApps: Map<String, String>,
     initialSelection: Set<String>,
     onDismiss: () -> Unit,
-    onConfirm: (Set<String>) -> Unit
+    onConfirm: (Set<String>) -> Unit,
+    onSuggestAsTarget: (packageName: String, label: String) -> Unit
 ) {
     var tempSelection by remember { mutableStateOf(initialSelection) }
     var searchText by remember { mutableStateOf("") }
@@ -397,24 +415,70 @@ fun MultiSelectDialog(
                         it.contains(searchText, ignoreCase = true)
                     }
 
-                    if (filteredList.isEmpty()) {
+                    val filteredUnknown = if (searchText.isNotBlank()) {
+                        unknownApps.filter { (pkg, label) ->
+                            label.contains(searchText, ignoreCase = true) ||
+                            pkg.contains(searchText, ignoreCase = true)
+                        }
+                    } else {
+                        emptyMap()
+                    }
+
+                    if (filteredList.isEmpty() && searchText.isNotBlank() && filteredUnknown.isNotEmpty()) {
+                        item {
+                            Text(
+                                "No targets found in database.",
+                                modifier = Modifier.padding(16.dp),
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                "Unknown apps from your device:",
+                                modifier = Modifier.padding(horizontal = 16.dp),
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
+                        
+                        items(filteredUnknown.toList()) { (packageName, label) ->
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        onSuggestAsTarget(packageName, label)
+                                    }
+                                    .padding(vertical = 12.dp, horizontal = 16.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(
+                                        text = label,
+                                        style = MaterialTheme.typography.bodyLarge
+                                    )
+                                    Text(
+                                        text = packageName,
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                                Text(
+                                    text = "Suggest as target",
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                            }
+                            HorizontalDivider(modifier = Modifier.alpha(0.5f))
+                        }
+                    } else if (filteredList.isEmpty()) {
                         item {
                             Text(
                                 "No results found.",
                                 modifier = Modifier.padding(16.dp),
                                 style = MaterialTheme.typography.bodyMedium
                             )
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Button(
-                                onClick = {},
-                            ) {
-                                Text(
-                                    "Suggest '$searchText' as a new target?",
-                                    modifier = Modifier.padding(16.dp),
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                            }
                         }
+                    } else {
                     }
 
                     items(filteredList) { pkg ->

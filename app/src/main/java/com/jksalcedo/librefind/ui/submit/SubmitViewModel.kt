@@ -5,9 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.jksalcedo.librefind.domain.model.SubmissionType
 import com.jksalcedo.librefind.domain.repository.AppRepository
 import com.jksalcedo.librefind.domain.repository.AuthRepository
+import com.jksalcedo.librefind.domain.usecase.ScanInventoryUseCase
+import com.jksalcedo.librefind.domain.usecase.SubmitProposalUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 data class SubmitUiState(
@@ -15,6 +18,7 @@ data class SubmitUiState(
     val error: String? = null,
     val success: Boolean = false,
     val proprietaryTargets: List<String> = emptyList(),
+    val unknownApps: Map<String, String> = emptyMap(),
     val duplicateWarning: String? = null,
     val packageNameError: String? = null,
     val repoUrlError: String? = null,
@@ -24,7 +28,8 @@ data class SubmitUiState(
 class SubmitViewModel(
     private val authRepository: AuthRepository,
     private val appRepository: AppRepository,
-    private val submitProposalUseCase: com.jksalcedo.librefind.domain.usecase.SubmitProposalUseCase
+    private val submitProposalUseCase: SubmitProposalUseCase,
+    private val scanInventoryUseCase: ScanInventoryUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SubmitUiState())
@@ -32,12 +37,23 @@ class SubmitViewModel(
 
     init {
         loadProprietaryTargets()
+        loadUnknownApps()
     }
 
     private fun loadProprietaryTargets() {
         viewModelScope.launch {
             val targets = appRepository.getProprietaryTargets()
             _uiState.value = _uiState.value.copy(proprietaryTargets = targets)
+        }
+    }
+
+    private fun loadUnknownApps() {
+        viewModelScope.launch {
+            val apps = scanInventoryUseCase()
+                .first()
+                .filter { it.status == com.jksalcedo.librefind.domain.model.AppStatus.UNKN }
+                .associate { it.packageName to it.label }
+            _uiState.value = _uiState.value.copy(unknownApps = apps)
         }
     }
 
@@ -99,7 +115,10 @@ class SubmitViewModel(
     }
 
     fun resetState() {
-        _uiState.value = SubmitUiState(proprietaryTargets = _uiState.value.proprietaryTargets)
+        _uiState.value = SubmitUiState(
+            proprietaryTargets = _uiState.value.proprietaryTargets,
+            unknownApps = _uiState.value.unknownApps
+        )
     }
 
     private var checkDuplicateJob: kotlinx.coroutines.Job? = null

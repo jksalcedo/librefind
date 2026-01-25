@@ -16,8 +16,8 @@ import com.jksalcedo.librefind.ui.dashboard.DashboardViewModel
 import com.jksalcedo.librefind.ui.details.AlternativeDetailViewModel
 import com.jksalcedo.librefind.ui.details.DetailsViewModel
 import com.jksalcedo.librefind.ui.mysubmissions.MySubmissionsViewModel
-import com.jksalcedo.librefind.ui.submit.SubmitViewModel
 import com.jksalcedo.librefind.ui.settings.IgnoredAppsViewModel
+import com.jksalcedo.librefind.ui.submit.SubmitViewModel
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -70,11 +70,11 @@ val useCaseModule = module {
 }
 
 val viewModelModule = module {
-    viewModel { DetailsViewModel(get(), get(), get()) }
+    viewModel { DetailsViewModel(get(), get(), get(), get()) }
     viewModel { AlternativeDetailViewModel(get(), get()) }
     viewModel { DashboardViewModel(get(), get()) }
     viewModel { AuthViewModel(get()) }
-    viewModel { SubmitViewModel(get(), get(), get()) }
+    viewModel { SubmitViewModel(get(), get(), get(), get()) }
     viewModel { MySubmissionsViewModel(get(), get()) }
     viewModel { IgnoredAppsViewModel(get()) }
 }
