@@ -75,7 +75,7 @@ class AuthViewModel(
                 .onFailure { e ->
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,
-                        error = e.message ?: "Sign up failed"
+                        error = sanitizeAuthError(e.message)
                     )
                 }
 
@@ -93,7 +93,7 @@ class AuthViewModel(
                 .onFailure { e ->
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,
-                        error = e.message ?: "Sign in failed"
+                        error = sanitizeAuthError(e.message)
                     )
                 }
         }
@@ -117,7 +117,7 @@ class AuthViewModel(
                 .onFailure { e ->
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,
-                        error = e.message ?: "Failed to save profile"
+                        error = sanitizeAuthError(e.message)
                     )
                 }
         }
@@ -135,6 +135,30 @@ class AuthViewModel(
         viewModelScope.launch {
             authRepository.signOut()
             // State update is handled by the flow collector in init block
+        }
+    }
+
+    private fun sanitizeAuthError(rawMessage: String?): String {
+        return when {
+            rawMessage == null -> "An error occurred"
+            rawMessage.contains("Invalid login credentials", ignoreCase = true) ->
+                "Invalid email or password"
+            rawMessage.contains("Email not confirmed", ignoreCase = true) ->
+                "Please verify your email before signing in"
+            rawMessage.contains("User already registered", ignoreCase = true) ->
+                "An account with this email already exists"
+            rawMessage.contains("Password should be at least", ignoreCase = true) ->
+                "Password must be at least 6 characters"
+            rawMessage.contains("Invalid email", ignoreCase = true) ->
+                "Please enter a valid email address"
+            rawMessage.contains("duplicate key", ignoreCase = true) ->
+                "Username already taken"
+            rawMessage.contains("network", ignoreCase = true) ||
+                    rawMessage.contains("connection", ignoreCase = true) ->
+                "Network error. Please check your connection"
+            rawMessage.contains("timeout", ignoreCase = true) ->
+                "Request timed out. Please try again"
+            else -> "Authentication failed. Please try again"
         }
     }
 }
