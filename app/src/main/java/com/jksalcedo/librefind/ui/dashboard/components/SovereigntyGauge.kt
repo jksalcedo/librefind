@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
+import com.jksalcedo.librefind.domain.model.AppStatus
 import com.jksalcedo.librefind.domain.model.SovereigntyLevel
 import com.jksalcedo.librefind.domain.model.SovereigntyScore
 import com.jksalcedo.librefind.ui.theme.CapturedOrange
@@ -27,8 +27,8 @@ import com.jksalcedo.librefind.ui.theme.TransitionBlue
 @Composable
 fun SovereigntyGauge(
     score: SovereigntyScore,
-    currentFilter: com.jksalcedo.librefind.domain.model.AppStatus?,
-    onFilterClick: (com.jksalcedo.librefind.domain.model.AppStatus?) -> Unit,
+    currentFilter: AppStatus?,
+    onFilterClick: (AppStatus?) -> Unit,
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
@@ -87,11 +87,11 @@ fun SovereigntyGauge(
                 label = "FOSS",
                 count = score.fossCount,
                 color = FossGreen,
-                isActive = currentFilter == com.jksalcedo.librefind.domain.model.AppStatus.FOSS,
+                isActive = currentFilter == AppStatus.FOSS,
                 onClick = {
                     onFilterClick(
-                        if (currentFilter == com.jksalcedo.librefind.domain.model.AppStatus.FOSS) null
-                        else com.jksalcedo.librefind.domain.model.AppStatus.FOSS
+                        if (currentFilter == AppStatus.FOSS) null
+                        else AppStatus.FOSS
                     )
                 }
             )
@@ -99,11 +99,11 @@ fun SovereigntyGauge(
                 label = "PROPRIETARY",
                 count = score.proprietaryCount,
                 color = CapturedOrange,
-                isActive = currentFilter == com.jksalcedo.librefind.domain.model.AppStatus.PROP,
+                isActive = currentFilter == AppStatus.PROP,
                 onClick = {
                     onFilterClick(
-                        if (currentFilter == com.jksalcedo.librefind.domain.model.AppStatus.PROP) null
-                        else com.jksalcedo.librefind.domain.model.AppStatus.PROP
+                        if (currentFilter == AppStatus.PROP) null
+                        else AppStatus.PROP
                     )
                 }
             )
@@ -111,11 +111,23 @@ fun SovereigntyGauge(
                 label = "Unknown",
                 count = score.unknownCount,
                 color = MaterialTheme.colorScheme.outline,
-                isActive = currentFilter == com.jksalcedo.librefind.domain.model.AppStatus.UNKN,
+                isActive = currentFilter == AppStatus.UNKN,
                 onClick = {
                     onFilterClick(
-                        if (currentFilter == com.jksalcedo.librefind.domain.model.AppStatus.UNKN) null
-                        else com.jksalcedo.librefind.domain.model.AppStatus.UNKN
+                        if (currentFilter == AppStatus.UNKN) null
+                        else AppStatus.UNKN
+                    )
+                }
+            )
+            StatItem(
+                label = "Ignored",
+                count = score.ignoredCount,
+                color = MaterialTheme.colorScheme.error,
+                isActive = currentFilter == AppStatus.IGNORED,
+                onClick = {
+                    onFilterClick(
+                        if (currentFilter == AppStatus.IGNORED) null
+                        else AppStatus.IGNORED
                     )
                 }
             )
@@ -176,8 +188,9 @@ fun PreviewSovereigntyGauge() {
     val mockScore = SovereigntyScore(
         totalApps = 100,
         fossCount = 45,
-        proprietaryCount = 45,
-        unknownCount = 10
+        proprietaryCount = 40,
+        unknownCount = 10,
+        ignoredCount = 5
     )
 
     MaterialTheme {

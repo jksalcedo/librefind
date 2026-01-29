@@ -2,6 +2,8 @@ package com.jksalcedo.librefind.ui.dashboard.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -47,23 +50,23 @@ fun GaugeDetailsDialog(
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                
+
                 Text(
                     text = "Breakdown (tap to filter):",
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                
+
                 ClickableStatRow(
                     label = "FOSS Apps",
                     value = "${score.fossCount}",
                     color = FossGreen,
-                    isActive = currentFilter == com.jksalcedo.librefind.domain.model.AppStatus.FOSS,
+                    isActive = currentFilter == AppStatus.FOSS,
                     onClick = {
                         onFilterClick(
-                            if (currentFilter == com.jksalcedo.librefind.domain.model.AppStatus.FOSS) null
-                            else com.jksalcedo.librefind.domain.model.AppStatus.FOSS
+                            if (currentFilter == AppStatus.FOSS) null
+                            else AppStatus.FOSS
                         )
                         onDismissRequest()
                     }
@@ -72,11 +75,11 @@ fun GaugeDetailsDialog(
                     label = "Proprietary Apps",
                     value = "${score.proprietaryCount}",
                     color = CapturedOrange,
-                    isActive = currentFilter == com.jksalcedo.librefind.domain.model.AppStatus.PROP,
+                    isActive = currentFilter == AppStatus.PROP,
                     onClick = {
                         onFilterClick(
-                            if (currentFilter == com.jksalcedo.librefind.domain.model.AppStatus.PROP) null
-                            else com.jksalcedo.librefind.domain.model.AppStatus.PROP
+                            if (currentFilter == AppStatus.PROP) null
+                            else AppStatus.PROP
                         )
                         onDismissRequest()
                     }
@@ -85,25 +88,25 @@ fun GaugeDetailsDialog(
                     label = "Unknown Apps",
                     value = "${score.unknownCount}",
                     color = MaterialTheme.colorScheme.outline,
-                    isActive = currentFilter == com.jksalcedo.librefind.domain.model.AppStatus.UNKN,
+                    isActive = currentFilter == AppStatus.UNKN,
                     onClick = {
                         onFilterClick(
-                            if (currentFilter == com.jksalcedo.librefind.domain.model.AppStatus.UNKN) null
-                            else com.jksalcedo.librefind.domain.model.AppStatus.UNKN
+                            if (currentFilter == AppStatus.UNKN) null
+                            else AppStatus.UNKN
                         )
                         onDismissRequest()
                     }
                 )
-                
+
                 Spacer(modifier = Modifier.height(16.dp))
-                
+
                 Text(
                     text = "Levels:",
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                
+
                 LevelRow(label = "Sovereign (80%+)", color = SovereignGold)
                 LevelRow(label = "Transitioning (40-79%)", color = TransitionBlue)
                 LevelRow(label = "Captured (<40%)", color = CapturedOrange)
@@ -118,7 +121,13 @@ fun GaugeDetailsDialog(
 }
 
 @Composable
-private fun ClickableStatRow(label: String, value: String, color: Color, isActive: Boolean, onClick: () -> Unit) {
+private fun ClickableStatRow(
+    label: String,
+    value: String,
+    color: Color,
+    isActive: Boolean,
+    onClick: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -128,8 +137,8 @@ private fun ClickableStatRow(label: String, value: String, color: Color, isActiv
             )
             .padding(vertical = 4.dp, horizontal = 8.dp)
             .clickable(onClick = onClick),
-        horizontalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween,
-        verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = label,
@@ -148,17 +157,19 @@ private fun ClickableStatRow(label: String, value: String, color: Color, isActiv
 @Composable
 private fun LevelRow(label: String, color: Color) {
     Row(
-       modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
-       verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
-   ) {
-       androidx.compose.foundation.layout.Box(
-           modifier = Modifier
-               .size(12.dp)
-               .background(color, CircleShape)
-       )
-       Spacer(modifier = Modifier.width(8.dp))
-       Text(text = label, style = MaterialTheme.typography.bodySmall)
-   }
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 2.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .size(12.dp)
+                .background(color, CircleShape)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(text = label, style = MaterialTheme.typography.bodySmall)
+    }
 }
 
 @Preview
@@ -166,7 +177,10 @@ private fun LevelRow(label: String, color: Color) {
 fun PreviewGaugeDetailsDialog() {
     MaterialTheme {
         GaugeDetailsDialog(
-            score = SovereigntyScore(100, 45, 45, 10),
+            score = SovereigntyScore(
+                100, 45, 40, 10,
+                ignoredCount = 5
+            ),
             currentFilter = null,
             onFilterClick = {},
             onDismissRequest = {}

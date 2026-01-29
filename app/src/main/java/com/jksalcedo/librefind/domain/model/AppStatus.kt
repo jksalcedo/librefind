@@ -10,7 +10,9 @@ package com.jksalcedo.librefind.domain.model
 enum class AppStatus {
     FOSS,   // Verified Free/Open Source
     PROP,   // Verified Proprietary
-    UNKN;   // Analysis Failed / Not in DB
+    UNKN   // Analysis Failed / Not in DB
+    ,
+    IGNORED;
 
     /**
      * Helper for sorting priority
@@ -21,5 +23,6 @@ enum class AppStatus {
             PROP -> 1  // Highest priority - needs replacement
             UNKN -> 2  // Medium priority - needs investigation
             FOSS -> 3  // Lowest priority - already sovereign
+            IGNORED -> 4
         }
 }

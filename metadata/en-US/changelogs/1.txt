@@ -1,0 +1,8 @@
+Initial alpha release of LibreFind
+
+Features:
+• Basic app scanning functionality
+• Simple alternative suggestions
+• Minimal UI
+
+This is a proof-of-concept release for early testing.

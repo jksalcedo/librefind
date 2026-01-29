@@ -7,13 +7,16 @@ import com.jksalcedo.librefind.domain.model.AppItem
 import com.jksalcedo.librefind.domain.model.AppStatus
 import com.jksalcedo.librefind.domain.repository.AppRepository
 import com.jksalcedo.librefind.domain.repository.DeviceInventoryRepo
+import com.jksalcedo.librefind.domain.repository.IgnoredAppsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 
 /**
  * Implementation of DeviceInventoryRepo
@@ -26,7 +29,8 @@ import kotlinx.coroutines.flow.flowOn
 class DeviceInventoryRepoImpl(
     private val localSource: InventorySource,
     private val signatureDb: SafeSignatureDb,
-    private val appRepository: AppRepository
+    private val appRepository: AppRepository,
+    private val ignoredAppsRepository: IgnoredAppsRepository
 ) : DeviceInventoryRepo {
 
     companion object {
@@ -36,10 +40,12 @@ class DeviceInventoryRepoImpl(
 
     override suspend fun scanAndClassify(): Flow<List<AppItem>> = flow {
         val rawApps = localSource.getRawApps()
+        val ignoredAppsList = ignoredAppsRepository.getIgnoredPackageNames().first()
 
         val classifiedApps = coroutineScope {
+
             rawApps.map { pkg ->
-                async { classifyApp(pkg) }
+                async { classifyApp(pkg, ignoredAppsList) }
             }.awaitAll()
         }
 
@@ -52,11 +58,21 @@ class DeviceInventoryRepoImpl(
     /**
      * Classifies a single app using the three-step logic
      */
-    private suspend fun classifyApp(pkg: PackageInfo): AppItem {
+    private suspend fun classifyApp(pkg: PackageInfo, ignoredApps: List<String>): AppItem {
         val packageName = pkg.packageName
         val label = localSource.getAppLabel(packageName)
         val installer = localSource.getInstaller(packageName)
         val icon = pkg.applicationInfo?.icon
+
+        if (packageName in ignoredApps) {
+            return createAppItem(
+                packageName,
+                label,
+                AppStatus.IGNORED,
+                installer,
+                icon
+            )
+        }
 
         // Fast Filter - Check installer
         if (installer == FDROID_INSTALLER) {

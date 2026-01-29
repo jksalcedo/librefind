@@ -207,6 +207,117 @@ fun SubmitScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
+            if (type == SubmissionType.NEW_PROPRIETARY) {
+                HorizontalDivider()
+
+                Text(
+                    text = "Add Alternatives (optional)",
+                    style = MaterialTheme.typography.titleMedium
+                )
+
+                var alternativeSearchQuery by remember { mutableStateOf("") }
+
+                OutlinedTextField(
+                    value = alternativeSearchQuery,
+                    onValueChange = {
+                        alternativeSearchQuery = it
+                        viewModel.searchSolutions(it)
+                    },
+                    label = { Text("Search for alternatives") },
+                    placeholder = { Text("Search by app name or package...") },
+                    leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                    trailingIcon = {
+                        if (alternativeSearchQuery.isNotEmpty()) {
+                            IconButton(onClick = {
+                                alternativeSearchQuery = ""
+                                viewModel.clearSolutionSearchResults()
+                            }) {
+                                Icon(Icons.Default.Close, contentDescription = "Clear")
+                            }
+                        }
+                    },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                if (uiState.solutionSearchResults.isNotEmpty()) {
+                    Surface(
+                        modifier = Modifier.fillMaxWidth(),
+                        tonalElevation = 2.dp,
+                        shape = MaterialTheme.shapes.small
+                    ) {
+                        Column {
+                            uiState.solutionSearchResults.take(5).forEach { solution ->
+                                val isSelected = uiState.selectedAlternatives.contains(solution.packageName)
+                                
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clickable {
+                                            if (isSelected) {
+                                                viewModel.removeAlternative(solution.packageName)
+                                            } else {
+                                                viewModel.addAlternative(solution.packageName)
+                                            }
+                                        }
+                                        .padding(12.dp),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Column(modifier = Modifier.weight(1f)) {
+                                        Text(
+                                            text = solution.name,
+                                            style = MaterialTheme.typography.bodyLarge
+                                        )
+                                        Text(
+                                            text = solution.packageName,
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                    }
+                                    Checkbox(
+                                        checked = isSelected,
+                                        onCheckedChange = null
+                                    )
+                                }
+                                if (solution != uiState.solutionSearchResults.last()) {
+                                    HorizontalDivider(modifier = Modifier.alpha(0.5f))
+                                }
+                            }
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+
+                if (uiState.selectedAlternatives.isNotEmpty()) {
+                    Text(
+                        text = "Selected Alternatives:",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        uiState.selectedAlternatives.forEach { packageName ->
+                            val solution = uiState.solutionSearchResults.find { it.packageName == packageName }
+                            InputChip(
+                                selected = true,
+                                onClick = { viewModel.removeAlternative(packageName) },
+                                label = { Text(solution?.name ?: packageName) },
+                                trailingIcon = {
+                                    Icon(
+                                        Icons.Default.Close,
+                                        contentDescription = "Remove",
+                                        modifier = Modifier.size(InputChipDefaults.AvatarSize)
+                                    )
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+
             if (type == SubmissionType.NEW_ALTERNATIVE) {
                 HorizontalDivider()
 

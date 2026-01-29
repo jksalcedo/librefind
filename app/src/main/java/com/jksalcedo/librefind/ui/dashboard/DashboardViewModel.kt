@@ -34,37 +34,39 @@ class DashboardViewModel(
     init {
         viewModelScope.launch {
             combine(
-                refreshTrigger
-                    .onStart { emit(Unit) }
-                    .flatMapLatest {
-                        _state.update { it.copy(isLoading = true, error = null) }
-                        scanInventoryUseCase()
-                    },
-                ignoredAppsRepository.getIgnoredPackageNames(),
+                combine(
+                    refreshTrigger.onStart { emit(Unit) },
+                    ignoredAppsRepository.getIgnoredPackageNames()
+                ) { _, _ -> }.flatMapLatest {
+                    _state.update { it.copy(isLoading = true, error = null) }
+                    scanInventoryUseCase()
+                },
                 _searchQuery,
                 _statusFilter
-            ) { apps, ignoredPackages, query, statusFilter ->
+            ) { apps, query, statusFilter ->
                 val filtered = apps
-                    .filter { it.packageName !in ignoredPackages }
                     .filter { app ->
                         query.isBlank() ||
-                        app.label.contains(query, ignoreCase = true) ||
-                        app.packageName.contains(query, ignoreCase = true)
+                                app.label.contains(query, ignoreCase = true) ||
+                                app.packageName.contains(query, ignoreCase = true)
                     }
                     .filter { app ->
                         statusFilter == null || app.status == statusFilter
                     }
-                Pair(filtered, apps.filter { it.packageName !in ignoredPackages })
-            }.collect { (filteredApps, allApps) ->
-                val score = calculateScore(allApps)
+
+                // Calculate score using ALL apps (including ignored ones)
+                val score = calculateScore(apps)
+
+                Triple(filtered, score, Triple(query, statusFilter, null))
+            }.collect { (filteredApps, score, params) ->
                 _state.update {
                     it.copy(
                         isLoading = false,
                         apps = filteredApps,
                         sovereigntyScore = score,
-                        searchQuery = _searchQuery.value,
-                        statusFilter = _statusFilter.value,
-                        error = null
+                        searchQuery = params.first,
+                        statusFilter = params.second,
+                        error = params.third
                     )
                 }
             }
@@ -102,12 +104,14 @@ class DashboardViewModel(
         val fossCount = apps.count { it.status == AppStatus.FOSS }
         val propCount = apps.count { it.status == AppStatus.PROP }
         val unknownCount = apps.count { it.status == AppStatus.UNKN }
+        val ignoredCount = apps.count { it.status == AppStatus.IGNORED }
 
         return SovereigntyScore(
             totalApps = totalApps,
             fossCount = fossCount,
             proprietaryCount = propCount,
-            unknownCount = unknownCount
+            unknownCount = unknownCount,
+            ignoredCount = ignoredCount
         )
     }
 }

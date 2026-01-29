@@ -7,6 +7,8 @@ import com.jksalcedo.librefind.domain.repository.AppRepository
 import com.jksalcedo.librefind.domain.repository.AuthRepository
 import com.jksalcedo.librefind.domain.usecase.ScanInventoryUseCase
 import com.jksalcedo.librefind.domain.usecase.SubmitProposalUseCase
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,7 +24,9 @@ data class SubmitUiState(
     val duplicateWarning: String? = null,
     val packageNameError: String? = null,
     val repoUrlError: String? = null,
-    val submittedAppName: String? = null
+    val submittedAppName: String? = null,
+    val solutionSearchResults: List<com.jksalcedo.librefind.domain.model.Alternative> = emptyList(),
+    val selectedAlternatives: Set<String> = emptySet()
 )
 
 class SubmitViewModel(
@@ -96,7 +100,8 @@ class SubmitViewModel(
                 repoUrl = repoUrl,
                 fdroidId = fdroidId,
                 license = license,
-                userId = user.uid
+                userId = user.uid,
+                alternatives = _uiState.value.selectedAlternatives.toList()
             )
 
             result.onSuccess {
@@ -167,5 +172,41 @@ class SubmitViewModel(
         _uiState.value = _uiState.value.copy(
             repoUrlError = if (isValid) null else "URL must start with https://"
         )
+    }
+
+    private var searchSolutionsJob: Job? = null
+
+    fun searchSolutions(query: String) {
+        searchSolutionsJob?.cancel()
+        
+        if (query.isBlank()) {
+            _uiState.value = _uiState.value.copy(solutionSearchResults = emptyList())
+            return
+        }
+        
+        searchSolutionsJob = viewModelScope.launch {
+            delay(300)
+            try {
+                val results = appRepository.searchSolutions(query, limit = 10)
+                _uiState.value = _uiState.value.copy(solutionSearchResults = results)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                _uiState.value = _uiState.value.copy(solutionSearchResults = emptyList())
+            }
+        }
+    }
+
+    fun addAlternative(packageName: String) {
+        val current = _uiState.value.selectedAlternatives
+        _uiState.value = _uiState.value.copy(selectedAlternatives = current + packageName)
+    }
+
+    fun removeAlternative(packageName: String) {
+        val current = _uiState.value.selectedAlternatives
+        _uiState.value = _uiState.value.copy(selectedAlternatives = current - packageName)
+    }
+
+    fun clearSolutionSearchResults() {
+        _uiState.value = _uiState.value.copy(solutionSearchResults = emptyList())
     }
 }

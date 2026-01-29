@@ -60,7 +60,7 @@ val networkModule = module {
 }
 
 val repositoryModule = module {
-    single<DeviceInventoryRepo> { DeviceInventoryRepoImpl(get(), get(), get()) }
+    single<DeviceInventoryRepo> { DeviceInventoryRepoImpl(get(), get(), get(), get()) }
 }
 
 val useCaseModule = module {
