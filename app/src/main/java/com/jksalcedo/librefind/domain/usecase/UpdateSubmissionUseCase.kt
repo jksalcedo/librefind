@@ -2,25 +2,17 @@ package com.jksalcedo.librefind.domain.usecase
 
 import com.jksalcedo.librefind.domain.repository.AppRepository
 
-
 /**
- * Use case: Submit a new FOSS alternative proposal
- * 
- * Part of the community governance system.
- * Users can propose new alternatives for review.
+ * Use case: Update an existing submission
+ *
+ * Allows users to edit their pending or rejected submissions.
+ * Resets status to PENDING upon update.
  */
-class SubmitProposalUseCase(
+class UpdateSubmissionUseCase(
     private val appRepository: AppRepository
 ) {
-    /**
-     * Submit an alternative proposal
-     * 
-     * @param proprietaryPackage The proprietary app to replace
-     * @param alternativeId The proposed FOSS alternative (package name)
-     * @param userId User making the submission
-     * @return True if submission successful, false otherwise
-     */
     suspend operator fun invoke(
+        id: String,
         proprietaryPackage: String,
         alternativeId: String,
         appName: String,
@@ -28,14 +20,14 @@ class SubmitProposalUseCase(
         repoUrl: String,
         fdroidId: String,
         license: String,
-        userId: String,
         alternatives: List<String> = emptyList()
     ): Result<Unit> {
-        if (alternativeId.isBlank() || userId.isBlank()) {
+        if (id.isBlank() || alternativeId.isBlank()) {
             return Result.failure(IllegalArgumentException("Missing required fields"))
         }
-        
-        return appRepository.submitAlternative(
+
+        return appRepository.updateSubmission(
+            id = id,
             proprietaryPackage = proprietaryPackage,
             alternativePackage = alternativeId,
             appName = appName,
@@ -43,7 +35,6 @@ class SubmitProposalUseCase(
             repoUrl = repoUrl,
             fdroidId = fdroidId,
             license = license,
-            userId = userId,
             alternatives = alternatives
         )
     }

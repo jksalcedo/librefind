@@ -1,16 +1,14 @@
 package com.jksalcedo.librefind.domain.repository
 
 import com.jksalcedo.librefind.domain.model.Alternative
-import com.jksalcedo.librefind.domain.model.AppItem
 import com.jksalcedo.librefind.domain.model.Submission
-import kotlinx.coroutines.flow.Flow
 
 interface AppRepository {
     suspend fun isProprietary(packageName: String): Boolean
     suspend fun getAlternatives(packageName: String): List<Alternative>
     suspend fun getAlternative(packageName: String): Alternative?
     suspend fun getProprietaryTargets(): List<String>
-    
+
     suspend fun submitAlternative(
         proprietaryPackage: String,
         alternativePackage: String,
@@ -19,7 +17,20 @@ interface AppRepository {
         repoUrl: String,
         fdroidId: String,
         license: String,
-        userId: String
+        userId: String,
+        alternatives: List<String> = emptyList()
+    ): Result<Unit>
+
+    suspend fun updateSubmission(
+        id: String,
+        proprietaryPackage: String,
+        alternativePackage: String,
+        appName: String,
+        description: String,
+        repoUrl: String,
+        fdroidId: String,
+        license: String,
+        alternatives: List<String> = emptyList()
     ): Result<Unit>
 
     suspend fun castVote(
@@ -29,7 +40,7 @@ interface AppRepository {
     ): Result<Unit>
 
     suspend fun getMySubmissions(userId: String): List<Submission>
-    
+
     suspend fun submitFeedback(
         packageName: String,
         type: String, // 'PRO' or 'CON'
@@ -40,4 +51,6 @@ interface AppRepository {
     suspend fun checkDuplicateApp(name: String, packageName: String): Boolean
 
     suspend fun getUserVote(packageName: String, userId: String): Map<String, Int?>
+
+    suspend fun searchSolutions(query: String, limit: Int = 20): List<Alternative>
 }
