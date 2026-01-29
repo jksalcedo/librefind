@@ -1,0 +1,6 @@
+Beta Update
+
+New Features:
+• Edit pending or rejected submissions
+• Enhanced dashboard
+• Better handling of apps

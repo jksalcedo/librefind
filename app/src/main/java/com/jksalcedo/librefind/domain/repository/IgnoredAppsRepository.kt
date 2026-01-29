@@ -8,4 +8,6 @@ interface IgnoredAppsRepository {
     fun getIgnoredPackageNames(): Flow<List<String>>
     suspend fun ignoreApp(packageName: String)
     suspend fun restoreApp(packageName: String)
+
+    suspend fun deleteApp(packageName: String)
 }

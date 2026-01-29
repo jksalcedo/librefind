@@ -20,4 +20,8 @@ class IgnoredAppsRepositoryImpl(
     override suspend fun restoreApp(packageName: String) {
         dao.delete(packageName)
     }
+
+    override suspend fun deleteApp(packageName: String) {
+        dao.delete(packageName)
+    }
 }
