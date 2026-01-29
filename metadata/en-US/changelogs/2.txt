@@ -1,0 +1,9 @@
+Alpha update
+
+Features:
+• Improved app detection accuracy
+• Enhanced UI design
+• Added category filtering
+• Bug fixes and stability improvements
+
+Thank you for testing! Please report any issues.

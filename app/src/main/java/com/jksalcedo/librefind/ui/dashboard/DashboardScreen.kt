@@ -18,13 +18,16 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.CloudUpload
+import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Group
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
@@ -54,6 +57,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
+import com.jksalcedo.librefind.domain.model.AppStatus
 import com.jksalcedo.librefind.ui.auth.AuthViewModel
 import com.jksalcedo.librefind.ui.dashboard.components.GaugeDetailsDialog
 import com.jksalcedo.librefind.ui.dashboard.components.ScanList
@@ -74,6 +78,7 @@ fun DashboardScreen(
     val authState by authViewModel.uiState.collectAsState()
     var showDialog by remember { mutableStateOf(false) }
     var showProfileDialog by remember { mutableStateOf(false) }
+//    var showFilter by remember { mutableStateOf(false) }
 
     var isSearchActive by remember { mutableStateOf(false) }
 
@@ -98,7 +103,7 @@ fun DashboardScreen(
                         )
                     } else {
                         Text(
-                            text = "LibreFind",
+                            text = authState.userProfile?.username ?: "LibreFind",
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -115,6 +120,24 @@ fun DashboardScreen(
                         IconButton(onClick = { isSearchActive = true }) {
                             Icon(Icons.Default.Search, contentDescription = "Search")
                         }
+//                        IconButton(onClick = { showFilter = true }) {
+//                            Icon(Icons.Default.FilterList, contentDescription = "Filter List")
+//                            DropdownMenu(
+//                                expanded = showFilter,
+//                                onDismissRequest = { showFilter = false}
+//                            ) {
+//                                DropdownMenuItem(
+//                                    text = { Text("") },
+//                                    onClick = {
+//                                        showFilter = false
+//                                        ()
+//                                    },
+//                                    leadingIcon = {
+//                                        Icon(Icons.Default.VisibilityOff, contentDescription = null)
+//                                    }
+//                                )
+//                            }
+//                        }
                         IconButton(onClick = { showProfileDialog = true }) {
                             Icon(
                                 imageVector = Icons.Default.AccountCircle,
@@ -196,7 +219,9 @@ fun DashboardScreen(
                         }
                     } else {
                         ScanList(
-                            apps = state.apps,
+                            apps = if (state.statusFilter == null) {
+                                state.apps.filter { it.status != AppStatus.IGNORED }
+                            } else state.apps,
                             onAppClick = onAppClick,
                             onIgnoreClick = { packageName -> viewModel.ignoreApp(packageName) },
                             onRefresh = { viewModel.scan() },
@@ -344,7 +369,7 @@ fun DashboardScreen(
                                         authViewModel.signOut()
                                     },
                                     modifier = Modifier.fillMaxWidth(),
-                                    colors = androidx.compose.material3.ButtonDefaults.outlinedButtonColors(
+                                    colors = ButtonDefaults.outlinedButtonColors(
                                         contentColor = MaterialTheme.colorScheme.error
                                     )
                                 ) {

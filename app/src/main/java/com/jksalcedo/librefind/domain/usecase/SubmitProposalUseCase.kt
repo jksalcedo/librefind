@@ -28,7 +28,8 @@ class SubmitProposalUseCase(
         repoUrl: String,
         fdroidId: String,
         license: String,
-        userId: String
+        userId: String,
+        alternatives: List<String> = emptyList()
     ): Result<Unit> {
         if (alternativeId.isBlank() || userId.isBlank()) {
             return Result.failure(IllegalArgumentException("Missing required fields"))
@@ -42,7 +43,8 @@ class SubmitProposalUseCase(
             repoUrl = repoUrl,
             fdroidId = fdroidId,
             license = license,
-            userId = userId
+            userId = userId,
+            alternatives = alternatives
         )
     }
 }

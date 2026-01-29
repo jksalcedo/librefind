@@ -162,7 +162,8 @@ class SupabaseAppRepository(
         repoUrl: String,
         fdroidId: String,
         license: String,
-        userId: String
+        userId: String,
+        alternatives: List<String>
     ): Result<Unit> = runCatching {
         Log.d(
             "SupabaseAppRepo",
@@ -177,6 +178,7 @@ class SupabaseAppRepository(
                 repoUrl = repoUrl.ifBlank { null },
                 fdroidId = fdroidId.ifBlank { null },
                 license = license.ifBlank { null },
+                alternatives = if (alternatives.isEmpty()) null else alternatives,
                 submitterId = userId
             )
             supabase.postgrest.from("user_submissions").insert(submission)
@@ -323,6 +325,58 @@ class SupabaseAppRepository(
             .select { count(Count.EXACT); filter { eq("package_name", packageName) } }.countOrNull()
             ?: 0
         return inSolutions > 0 || inTargets > 0
+    }
+
+    override suspend fun searchSolutions(query: String, limit: Int): List<Alternative> {
+        if (query.isBlank()) return emptyList()
+        
+        return try {
+            val solutions = supabase.postgrest.from("solutions")
+                .select {
+                    filter {
+                        or {
+                            ilike("name", "%$query%")
+                            ilike("package_name", "%$query%")
+                        }
+                    }
+                    limit(limit.toLong())
+                }.decodeList<SolutionDto>()
+
+            solutions.map { dto ->
+                val usabilityRating = dto.ratingUsability ?: 0f
+                val privacyRating = dto.ratingPrivacy ?: 0f
+                val featuresRating = dto.ratingFeatures ?: 0f
+                val ratingCount = dto.voteCount ?: 0
+
+                val ratingAvg = if (ratingCount > 0) {
+                    val sum = usabilityRating + privacyRating + featuresRating
+                    val nonZeroCount = listOf(usabilityRating, privacyRating, featuresRating).count { it > 0 }
+                    if (nonZeroCount > 0) sum / nonZeroCount else 0f
+                } else 0f
+
+                Alternative(
+                    id = dto.packageName,
+                    name = dto.name,
+                    packageName = dto.packageName,
+                    license = dto.license,
+                    repoUrl = dto.repoUrl,
+                    fdroidId = dto.fdroidId,
+                    iconUrl = dto.iconUrl,
+                    ratingAvg = ratingAvg,
+                    ratingCount = ratingCount,
+                    usabilityRating = usabilityRating,
+                    privacyRating = privacyRating,
+                    featuresRating = featuresRating,
+                    description = dto.description,
+                    features = dto.features.orEmpty(),
+                    pros = dto.pros.orEmpty(),
+                    cons = dto.cons.orEmpty()
+                )
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList()
+        }
     }
 
     @Serializable
