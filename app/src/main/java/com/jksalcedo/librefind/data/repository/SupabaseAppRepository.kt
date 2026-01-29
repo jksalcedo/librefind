@@ -40,6 +40,21 @@ class SupabaseAppRepository(
         }
     }
 
+    override suspend fun isSolution(packageName: String): Boolean {
+        return try {
+            val count = supabase.postgrest.from("solutions")
+                .select {
+                    count(Count.EXACT)
+                    filter {
+                        eq("package_name", packageName)
+                    }
+                }.countOrNull()
+            (count ?: 0) > 0
+        } catch (_: Exception) {
+            false
+        }
+    }
+
     override suspend fun getAlternatives(packageName: String): List<Alternative> {
         return try {
             //  Get the target to find alternative package names

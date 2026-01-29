@@ -4,3 +4,4 @@ New Features:
 • Edit pending or rejected submissions
 • Enhanced dashboard
 • Better handling of apps
+• Fetch apps from F-droid

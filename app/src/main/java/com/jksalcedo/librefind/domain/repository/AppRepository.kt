@@ -5,6 +5,7 @@ import com.jksalcedo.librefind.domain.model.Submission
 
 interface AppRepository {
     suspend fun isProprietary(packageName: String): Boolean
+    suspend fun isSolution(packageName: String): Boolean
     suspend fun getAlternatives(packageName: String): List<Alternative>
     suspend fun getAlternative(packageName: String): Alternative?
     suspend fun getProprietaryTargets(): List<String>

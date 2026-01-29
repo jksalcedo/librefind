@@ -84,6 +84,18 @@ class DeviceInventoryRepoImpl(
             return createAppItem(packageName, label, AppStatus.FOSS, installer, icon)
         }
 
+        // Database Query (Solutions)
+        // Check if it's a known FOSS solution in our database
+        val isKnownSolution = try {
+            appRepository.isSolution(packageName)
+        } catch (_: Exception) {
+            false
+        }
+
+        if (isKnownSolution) {
+            return createAppItem(packageName, label, AppStatus.FOSS, installer, icon)
+        }
+
         // Database Query
         val isProprietary = try {
             appRepository.isProprietary(packageName)
