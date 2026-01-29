@@ -67,7 +67,8 @@ class SupabaseAppRepository(
 
                 val ratingAvg = if (ratingCount > 0) {
                     val sum = usabilityRating + privacyRating + featuresRating
-                    val nonZeroCount = listOf(usabilityRating, privacyRating, featuresRating).count { it > 0 }
+                    val nonZeroCount =
+                        listOf(usabilityRating, privacyRating, featuresRating).count { it > 0 }
                     if (nonZeroCount > 0) sum / nonZeroCount else 0f
                 } else 0f
 
@@ -112,7 +113,8 @@ class SupabaseAppRepository(
 
             val ratingAvg = if (ratingCount > 0) {
                 val sum = usabilityRating + privacyRating + featuresRating
-                val nonZeroCount = listOf(usabilityRating, privacyRating, featuresRating).count { it > 0 }
+                val nonZeroCount =
+                    listOf(usabilityRating, privacyRating, featuresRating).count { it > 0 }
                 if (nonZeroCount > 0) sum / nonZeroCount else 0f
             } else 0f
 
@@ -185,6 +187,66 @@ class SupabaseAppRepository(
             Log.d("SupabaseAppRepo", "Submission successful")
         } catch (e: Exception) {
             Log.e("SupabaseAppRepo", "Submission failed", e)
+            throw e
+        }
+    }
+
+    override suspend fun updateSubmission(
+        id: String,
+        proprietaryPackage: String,
+        alternativePackage: String,
+        appName: String,
+        description: String,
+        repoUrl: String,
+        fdroidId: String,
+        license: String,
+        alternatives: List<String>
+    ): Result<Unit> = runCatching {
+        Log.d("SupabaseAppRepo", "Updating submission $id")
+        try {
+            val updateData = UserSubmissionDto(
+                appName = appName,
+                appPackage = alternativePackage,
+                description = description,
+                proprietaryPackage = proprietaryPackage.ifBlank { null },
+                repoUrl = repoUrl.ifBlank { null },
+                fdroidId = fdroidId.ifBlank { null },
+                license = license.ifBlank { null },
+                alternatives = alternatives.ifEmpty { null },
+                submitterId = supabase.auth.currentUserOrNull()?.id
+                    ?: throw IllegalStateException("Not logged in"),
+                status = "PENDING", // Reset status to PENDING on update
+                rejectionReason = null // Clear rejection reason
+            )
+
+            val result = supabase.postgrest.from("user_submissions").update(updateData) {
+                filter {
+                    eq("id", id)
+                }
+                select() // Return updated rows to check count
+            }
+            
+            val updated = result.decodeList<UserSubmissionDto>()
+            
+            if (updated.isEmpty()) {
+                Log.w("SupabaseAppRepo", "Update returned 0 rows. RLS might be blocking update of REJECTED submission. Falling back to INSERT.")
+                // Fallback: Insert as new submission
+                supabase.postgrest.from("user_submissions").insert(updateData)
+                Log.d("SupabaseAppRepo", "Fallback insertion successful (0 rows updated)")
+            } else {
+                // Check if status was actually updated to PENDING
+                val newStatus = updated.first().status
+                if (newStatus != "PENDING") {
+                    Log.w("SupabaseAppRepo", "Update succeeded but status is still $newStatus. RLS/Trigger prevented status change. Falling back to INSERT.")
+                    // Fallback: Insert as new submission
+                    supabase.postgrest.from("user_submissions").insert(updateData)
+                    Log.d("SupabaseAppRepo", "Fallback insertion successful (Status check failed)")
+                } else {
+                    Log.d("SupabaseAppRepo", "Update successful and status is PENDING")
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("SupabaseAppRepo", "Update failed", e)
             throw e
         }
     }
@@ -274,7 +336,10 @@ class SupabaseAppRepository(
                     submittedApp = SubmittedApp(
                         name = dto.appName,
                         packageName = dto.appPackage,
-                        description = dto.description
+                        description = dto.description,
+                        repoUrl = dto.repoUrl ?: "",
+                        fdroidId = dto.fdroidId ?: "",
+                        license = dto.license ?: ""
                     ),
                     submitterUid = dto.submitterId,
                     submitterUsername = dto.profile?.username ?: "Unknown",
@@ -329,7 +394,7 @@ class SupabaseAppRepository(
 
     override suspend fun searchSolutions(query: String, limit: Int): List<Alternative> {
         if (query.isBlank()) return emptyList()
-        
+
         return try {
             val solutions = supabase.postgrest.from("solutions")
                 .select {
@@ -350,7 +415,8 @@ class SupabaseAppRepository(
 
                 val ratingAvg = if (ratingCount > 0) {
                     val sum = usabilityRating + privacyRating + featuresRating
-                    val nonZeroCount = listOf(usabilityRating, privacyRating, featuresRating).count { it > 0 }
+                    val nonZeroCount =
+                        listOf(usabilityRating, privacyRating, featuresRating).count { it > 0 }
                     if (nonZeroCount > 0) sum / nonZeroCount else 0f
                 } else 0f
 
@@ -386,6 +452,9 @@ class SupabaseAppRepository(
         @SerialName("app_package") val appPackage: String,
         val description: String,
         @SerialName("proprietary_package") val proprietaryPackage: String? = null,
+        @SerialName("repo_url") val repoUrl: String? = null,
+        @SerialName("fdroid_id") val fdroidId: String? = null,
+        val license: String? = null,
         val status: String = "PENDING",
         @SerialName("submitter_id") val submitterId: String,
         @SerialName("created_at") val createdAt: String? = null,

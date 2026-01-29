@@ -67,6 +67,7 @@ val useCaseModule = module {
     single { GetAlternativeUseCase(get()) }
     single { ScanInventoryUseCase(get()) }
     single { com.jksalcedo.librefind.domain.usecase.SubmitProposalUseCase(get()) }
+    single { com.jksalcedo.librefind.domain.usecase.UpdateSubmissionUseCase(get()) }
 }
 
 val viewModelModule = module {
@@ -74,7 +75,7 @@ val viewModelModule = module {
     viewModel { AlternativeDetailViewModel(get(), get()) }
     viewModel { DashboardViewModel(get(), get()) }
     viewModel { AuthViewModel(get()) }
-    viewModel { SubmitViewModel(get(), get(), get(), get()) }
+    viewModel { SubmitViewModel(get(), get(), get(), get(), get()) }
     viewModel { MySubmissionsViewModel(get(), get()) }
     viewModel { IgnoredAppsViewModel(get()) }
 }

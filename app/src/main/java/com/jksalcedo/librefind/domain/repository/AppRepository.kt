@@ -21,6 +21,18 @@ interface AppRepository {
         alternatives: List<String> = emptyList()
     ): Result<Unit>
 
+    suspend fun updateSubmission(
+        id: String,
+        proprietaryPackage: String,
+        alternativePackage: String,
+        appName: String,
+        description: String,
+        repoUrl: String,
+        fdroidId: String,
+        license: String,
+        alternatives: List<String> = emptyList()
+    ): Result<Unit>
+
     suspend fun castVote(
         packageName: String,
         voteType: String, // 'privacy' or 'usability'

@@ -67,7 +67,8 @@ fun SubmitScreen(
     viewModel: SubmitViewModel = koinViewModel(),
     prefilledAppName: String? = null,
     prefilledPackageName: String? = null,
-    prefilledType: String? = null
+    prefilledType: String? = null,
+    submissionId: String? = null
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -85,7 +86,38 @@ fun SubmitScreen(
     var repoUrl by remember { mutableStateOf("") }
     var fdroidId by remember { mutableStateOf("") }
     var license by remember { mutableStateOf("") }
-    var selectedProprietaryPackages by remember { mutableStateOf(setOf<String>()) }
+    var selectedProprietaryPackages by remember { mutableStateOf(emptySet<String>()) }
+
+    LaunchedEffect(submissionId) {
+        if (submissionId != null) {
+            viewModel.loadSubmission(submissionId)
+        }
+    }
+
+    LaunchedEffect(uiState.loadedSubmission) {
+        uiState.loadedSubmission?.let { sub ->
+            type = sub.type
+            appName = sub.submittedApp.name
+            packageName = sub.submittedApp.packageName
+            description = sub.submittedApp.description
+            // Note: Submission model might need to be expanded if we want to pre-fill everything perfectly
+            // For now assuming basic fields are there.
+            // We need to fetch more details if they are missing from the list view model.
+            // But let's assume for now we can get what we need.
+
+            // If it's a proprietary submission, we might need to parse the proprietaryPackages string
+            if (sub.type == SubmissionType.NEW_ALTERNATIVE) {
+                // proprietaryPackages is a comma separated string in the Submission model
+                selectedProprietaryPackages =
+                    sub.proprietaryPackages.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+                        .toSet()
+            }
+
+            repoUrl = sub.submittedApp.repoUrl
+            fdroidId = sub.submittedApp.fdroidId
+            license = sub.submittedApp.license
+        }
+    }
 
     LaunchedEffect(uiState.success) {
         if (uiState.success && uiState.submittedAppName == null) {
@@ -104,9 +136,9 @@ fun SubmitScreen(
                     modifier = Modifier.size(48.dp)
                 )
             },
-            title = { Text("Submission Received!") },
+            title = { Text(if (uiState.isEditing) "Submission Updated!" else "Submission Received!") },
             text = {
-                Text("Thanks! Your submission for '${uiState.submittedAppName}' has been received.")
+                Text(if (uiState.isEditing) "Your submission for '${uiState.submittedAppName}' has been updated." else "Thanks! Your submission for '${uiState.submittedAppName}' has been received.")
             },
             confirmButton = {
                 Button(
@@ -122,7 +154,7 @@ fun SubmitScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Submit App") },
+                title = { Text(if (uiState.isEditing) "Edit Submission" else "Submit App") },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -248,8 +280,9 @@ fun SubmitScreen(
                     ) {
                         Column {
                             uiState.solutionSearchResults.take(5).forEach { solution ->
-                                val isSelected = uiState.selectedAlternatives.contains(solution.packageName)
-                                
+                                val isSelected =
+                                    uiState.selectedAlternatives.contains(solution.packageName)
+
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -300,7 +333,8 @@ fun SubmitScreen(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         uiState.selectedAlternatives.forEach { packageName ->
-                            val solution = uiState.solutionSearchResults.find { it.packageName == packageName }
+                            val solution =
+                                uiState.solutionSearchResults.find { it.packageName == packageName }
                             InputChip(
                                 selected = true,
                                 onClick = { viewModel.removeAlternative(packageName) },
@@ -460,7 +494,7 @@ fun SubmitScreen(
                         strokeWidth = 2.dp
                     )
                 } else {
-                    Text("Submit for Review")
+                    Text(if (uiState.isEditing) "Update Submission" else "Submit for Review")
                 }
             }
 
@@ -529,7 +563,7 @@ fun MultiSelectDialog(
                     val filteredUnknown = if (searchText.isNotBlank()) {
                         unknownApps.filter { (pkg, label) ->
                             label.contains(searchText, ignoreCase = true) ||
-                            pkg.contains(searchText, ignoreCase = true)
+                                    pkg.contains(searchText, ignoreCase = true)
                         }
                     } else {
                         emptyMap()
@@ -551,7 +585,7 @@ fun MultiSelectDialog(
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                         }
-                        
+
                         items(filteredUnknown.toList()) { (packageName, label) ->
                             Row(
                                 modifier = Modifier

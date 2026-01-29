@@ -119,12 +119,18 @@ fun NavGraph(
                     type = NavType.StringType
                     nullable = true
                     defaultValue = null
+                },
+                navArgument("submissionId") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
                 }
             )
         ) { backStackEntry ->
             val prefilledAppName = backStackEntry.arguments?.getString("appName")
             val prefilledPackageName = backStackEntry.arguments?.getString("packageName")
             val prefilledType = backStackEntry.arguments?.getString("type")
+            val submissionId = backStackEntry.arguments?.getString("submissionId")
             
             SubmitScreen(
                 onBackClick = { navController.navigateUp() },
@@ -140,13 +146,17 @@ fun NavGraph(
                 },
                 prefilledAppName = prefilledAppName,
                 prefilledPackageName = prefilledPackageName,
-                prefilledType = prefilledType
+                prefilledType = prefilledType,
+                submissionId = submissionId
             )
         }
 
         composable(Route.MySubmissions.route) {
             MySubmissionsScreen(
-                onBackClick = { navController.navigateUp() }
+                onBackClick = { navController.navigateUp() },
+                onSubmissionClick = { submissionId ->
+                    navController.navigate(Route.Submit.createRoute(submissionId = submissionId))
+                }
             )
         }
 

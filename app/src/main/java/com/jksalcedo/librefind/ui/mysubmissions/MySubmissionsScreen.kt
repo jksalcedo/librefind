@@ -1,5 +1,6 @@
 package com.jksalcedo.librefind.ui.mysubmissions
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,6 +41,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun MySubmissionsScreen(
     onBackClick: () -> Unit,
+    onSubmissionClick: (String) -> Unit,
     viewModel: MySubmissionsViewModel = koinViewModel()
 ) {
     val state by viewModel.uiState.collectAsState()
@@ -91,7 +93,10 @@ fun MySubmissionsScreen(
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         items(state.submissions) { submission ->
-                            SubmissionItem(submission)
+                            SubmissionItem(
+                                submission = submission,
+                                onClick = { onSubmissionClick(submission.id) }
+                            )
                         }
                     }
                 }
@@ -101,9 +106,19 @@ fun MySubmissionsScreen(
 }
 
 @Composable
-fun SubmissionItem(submission: Submission) {
+fun SubmissionItem(
+    submission: Submission,
+    onClick: () -> Unit
+) {
+    val isEditable =
+        submission.status == SubmissionStatus.PENDING || submission.status == SubmissionStatus.REJECTED
+
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .then(
+                if (isEditable) Modifier.clickable(onClick = onClick) else Modifier
+            ),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(

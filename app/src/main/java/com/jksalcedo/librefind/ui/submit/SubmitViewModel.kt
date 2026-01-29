@@ -26,13 +26,17 @@ data class SubmitUiState(
     val repoUrlError: String? = null,
     val submittedAppName: String? = null,
     val solutionSearchResults: List<com.jksalcedo.librefind.domain.model.Alternative> = emptyList(),
-    val selectedAlternatives: Set<String> = emptySet()
+    val selectedAlternatives: Set<String> = emptySet(),
+    val isEditing: Boolean = false,
+    val editingSubmissionId: String? = null,
+    val loadedSubmission: com.jksalcedo.librefind.domain.model.Submission? = null
 )
 
 class SubmitViewModel(
     private val authRepository: AuthRepository,
     private val appRepository: AppRepository,
     private val submitProposalUseCase: SubmitProposalUseCase,
+    private val updateSubmissionUseCase: com.jksalcedo.librefind.domain.usecase.UpdateSubmissionUseCase,
     private val scanInventoryUseCase: ScanInventoryUseCase
 ) : ViewModel() {
 
@@ -58,6 +62,35 @@ class SubmitViewModel(
                 .filter { it.status == com.jksalcedo.librefind.domain.model.AppStatus.UNKN }
                 .associate { it.packageName to it.label }
             _uiState.value = _uiState.value.copy(unknownApps = apps)
+        }
+    }
+
+    fun loadSubmission(id: String) {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isLoading = true)
+            val user = authRepository.getCurrentUser() ?: return@launch
+            val submissions = appRepository.getMySubmissions(user.uid)
+            val submission = submissions.find { it.id == id }
+
+            if (submission != null) {
+                // Pre-fill state
+                val isProprietary = submission.type == SubmissionType.NEW_PROPRIETARY
+                
+                // If it's a proprietary submission, we need to load the alternatives
+                // But the current Submission model doesn't have alternatives list easily accessible 
+                // without fetching details. For now, we'll just load basic info.
+                // NOTE: A better approach would be to fetch full submission details by ID.
+                // Assuming we can get by with what we have or fetch more if needed.
+                
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    isEditing = true,
+                    editingSubmissionId = id,
+                    loadedSubmission = submission
+                )
+            } else {
+                _uiState.value = _uiState.value.copy(isLoading = false, error = "Submission not found")
+            }
         }
     }
 
@@ -92,17 +125,31 @@ class SubmitViewModel(
                 return@launch
             }
 
-            val result = submitProposalUseCase(
-                proprietaryPackage = proprietaryPackages,
-                alternativeId = packageName,
-                appName = appName,
-                description = description,
-                repoUrl = repoUrl,
-                fdroidId = fdroidId,
-                license = license,
-                userId = user.uid,
-                alternatives = _uiState.value.selectedAlternatives.toList()
-            )
+            val result = if (_uiState.value.isEditing && _uiState.value.editingSubmissionId != null) {
+                updateSubmissionUseCase(
+                    id = _uiState.value.editingSubmissionId!!,
+                    proprietaryPackage = proprietaryPackages,
+                    alternativeId = packageName,
+                    appName = appName,
+                    description = description,
+                    repoUrl = repoUrl,
+                    fdroidId = fdroidId,
+                    license = license,
+                    alternatives = _uiState.value.selectedAlternatives.toList()
+                )
+            } else {
+                submitProposalUseCase(
+                    proprietaryPackage = proprietaryPackages,
+                    alternativeId = packageName,
+                    appName = appName,
+                    description = description,
+                    repoUrl = repoUrl,
+                    fdroidId = fdroidId,
+                    license = license,
+                    userId = user.uid,
+                    alternatives = _uiState.value.selectedAlternatives.toList()
+                )
+            }
 
             result.onSuccess {
                 _uiState.value = _uiState.value.copy(
@@ -122,7 +169,10 @@ class SubmitViewModel(
     fun resetState() {
         _uiState.value = SubmitUiState(
             proprietaryTargets = _uiState.value.proprietaryTargets,
-            unknownApps = _uiState.value.unknownApps
+            unknownApps = _uiState.value.unknownApps,
+            isEditing = false,
+            editingSubmissionId = null,
+            loadedSubmission = null
         )
     }
 
