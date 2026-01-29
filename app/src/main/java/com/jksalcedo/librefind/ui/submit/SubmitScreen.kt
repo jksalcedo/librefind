@@ -67,7 +67,8 @@ fun SubmitScreen(
     viewModel: SubmitViewModel = koinViewModel(),
     prefilledAppName: String? = null,
     prefilledPackageName: String? = null,
-    prefilledType: String? = null
+    prefilledType: String? = null,
+    submissionId: String? = null
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -85,7 +86,38 @@ fun SubmitScreen(
     var repoUrl by remember { mutableStateOf("") }
     var fdroidId by remember { mutableStateOf("") }
     var license by remember { mutableStateOf("") }
-    var selectedProprietaryPackages by remember { mutableStateOf(setOf<String>()) }
+    var selectedProprietaryPackages by remember { mutableStateOf(emptySet<String>()) }
+
+    LaunchedEffect(submissionId) {
+        if (submissionId != null) {
+            viewModel.loadSubmission(submissionId)
+        }
+    }
+
+    LaunchedEffect(uiState.loadedSubmission) {
+        uiState.loadedSubmission?.let { sub ->
+            type = sub.type
+            appName = sub.submittedApp.name
+            packageName = sub.submittedApp.packageName
+            description = sub.submittedApp.description
+            // Note: Submission model might need to be expanded if we want to pre-fill everything perfectly
+            // For now assuming basic fields are there.
+            // We need to fetch more details if they are missing from the list view model.
+            // But let's assume for now we can get what we need.
+
+            // If it's a proprietary submission, we might need to parse the proprietaryPackages string
+            if (sub.type == SubmissionType.NEW_ALTERNATIVE) {
+                // proprietaryPackages is a comma separated string in the Submission model
+                selectedProprietaryPackages =
+                    sub.proprietaryPackages.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+                        .toSet()
+            }
+
+            repoUrl = sub.submittedApp.repoUrl
+            fdroidId = sub.submittedApp.fdroidId
+            license = sub.submittedApp.license
+        }
+    }
 
     LaunchedEffect(uiState.success) {
         if (uiState.success && uiState.submittedAppName == null) {
@@ -104,9 +136,9 @@ fun SubmitScreen(
                     modifier = Modifier.size(48.dp)
                 )
             },
-            title = { Text("Submission Received!") },
+            title = { Text(if (uiState.isEditing) "Submission Updated!" else "Submission Received!") },
             text = {
-                Text("Thanks! Your submission for '${uiState.submittedAppName}' has been received.")
+                Text(if (uiState.isEditing) "Your submission for '${uiState.submittedAppName}' has been updated." else "Thanks! Your submission for '${uiState.submittedAppName}' has been received.")
             },
             confirmButton = {
                 Button(
@@ -122,7 +154,7 @@ fun SubmitScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Submit App") },
+                title = { Text(if (uiState.isEditing) "Edit Submission" else "Submit App") },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -206,6 +238,119 @@ fun SubmitScreen(
                 maxLines = 5,
                 modifier = Modifier.fillMaxWidth()
             )
+
+            if (type == SubmissionType.NEW_PROPRIETARY) {
+                HorizontalDivider()
+
+                Text(
+                    text = "Add Alternatives (optional)",
+                    style = MaterialTheme.typography.titleMedium
+                )
+
+                var alternativeSearchQuery by remember { mutableStateOf("") }
+
+                OutlinedTextField(
+                    value = alternativeSearchQuery,
+                    onValueChange = {
+                        alternativeSearchQuery = it
+                        viewModel.searchSolutions(it)
+                    },
+                    label = { Text("Search for alternatives") },
+                    placeholder = { Text("Search by app name or package...") },
+                    leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                    trailingIcon = {
+                        if (alternativeSearchQuery.isNotEmpty()) {
+                            IconButton(onClick = {
+                                alternativeSearchQuery = ""
+                                viewModel.clearSolutionSearchResults()
+                            }) {
+                                Icon(Icons.Default.Close, contentDescription = "Clear")
+                            }
+                        }
+                    },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                if (uiState.solutionSearchResults.isNotEmpty()) {
+                    Surface(
+                        modifier = Modifier.fillMaxWidth(),
+                        tonalElevation = 2.dp,
+                        shape = MaterialTheme.shapes.small
+                    ) {
+                        Column {
+                            uiState.solutionSearchResults.take(5).forEach { solution ->
+                                val isSelected =
+                                    uiState.selectedAlternatives.contains(solution.packageName)
+
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clickable {
+                                            if (isSelected) {
+                                                viewModel.removeAlternative(solution.packageName)
+                                            } else {
+                                                viewModel.addAlternative(solution.packageName)
+                                            }
+                                        }
+                                        .padding(12.dp),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Column(modifier = Modifier.weight(1f)) {
+                                        Text(
+                                            text = solution.name,
+                                            style = MaterialTheme.typography.bodyLarge
+                                        )
+                                        Text(
+                                            text = solution.packageName,
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                    }
+                                    Checkbox(
+                                        checked = isSelected,
+                                        onCheckedChange = null
+                                    )
+                                }
+                                if (solution != uiState.solutionSearchResults.last()) {
+                                    HorizontalDivider(modifier = Modifier.alpha(0.5f))
+                                }
+                            }
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+
+                if (uiState.selectedAlternatives.isNotEmpty()) {
+                    Text(
+                        text = "Selected Alternatives:",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        uiState.selectedAlternatives.forEach { packageName ->
+                            val solution =
+                                uiState.solutionSearchResults.find { it.packageName == packageName }
+                            InputChip(
+                                selected = true,
+                                onClick = { viewModel.removeAlternative(packageName) },
+                                label = { Text(solution?.name ?: packageName) },
+                                trailingIcon = {
+                                    Icon(
+                                        Icons.Default.Close,
+                                        contentDescription = "Remove",
+                                        modifier = Modifier.size(InputChipDefaults.AvatarSize)
+                                    )
+                                }
+                            )
+                        }
+                    }
+                }
+            }
 
             if (type == SubmissionType.NEW_ALTERNATIVE) {
                 HorizontalDivider()
@@ -349,7 +494,7 @@ fun SubmitScreen(
                         strokeWidth = 2.dp
                     )
                 } else {
-                    Text("Submit for Review")
+                    Text(if (uiState.isEditing) "Update Submission" else "Submit for Review")
                 }
             }
 
@@ -418,7 +563,7 @@ fun MultiSelectDialog(
                     val filteredUnknown = if (searchText.isNotBlank()) {
                         unknownApps.filter { (pkg, label) ->
                             label.contains(searchText, ignoreCase = true) ||
-                            pkg.contains(searchText, ignoreCase = true)
+                                    pkg.contains(searchText, ignoreCase = true)
                         }
                     } else {
                         emptyMap()
@@ -440,7 +585,7 @@ fun MultiSelectDialog(
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                         }
-                        
+
                         items(filteredUnknown.toList()) { (packageName, label) ->
                             Row(
                                 modifier = Modifier

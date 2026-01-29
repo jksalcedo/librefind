@@ -1,0 +1,11 @@
+Pre-beta release
+
+Features:
+• Introduced sovereignty gauge
+• Added user authentication
+• Implemented community submission system
+• Improved alternative recommendations
+• UI/UX refinements
+• Performance optimizations
+
+Getting closer to beta! Your feedback helps us improve.

@@ -64,7 +64,9 @@ fun ScanList(
                 }
             }
 
-            items(apps, key = { it.packageName }) { app ->
+            val sorted = apps.sortedBy { it.label }
+
+            items(sorted, key = { it.packageName }) { app ->
                 AppRow(
                     app = app,
                     onClick = { onAppClick(app.label, app.packageName) },

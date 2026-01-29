@@ -104,7 +104,7 @@ private fun IgnoredAppRow(
         context.packageManager.getApplicationLabel(
             context.packageManager.getApplicationInfo(app.packageName, 0)
         ).toString()
-    } catch (e: Exception) {
+    } catch (_: Exception) {
         app.packageName
     }
 
