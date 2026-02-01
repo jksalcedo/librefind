@@ -27,6 +27,7 @@ base for proprietary app detection and FOSS alternative recommendations.
 
 Help users replace proprietary apps with FOSS alternatives.
 
+
 ## Screenshots
 
 | Dashboard                                                          | Alternative List                                                             | Submission                                                           | Profile                                                        |
@@ -63,6 +64,21 @@ The applications database grows entirely through **your contributions**.
 
 Please join the Telegram channel for further discussions.
 [Telegram](https://t.me/librefind)
+
+## ☕ Support
+
+LibreFind is a free and open-source project developed by a **student**. While the app is free, the **hosting servers** cost money to keep running 24/7.
+
+If you find this tool useful for reclaiming your digital privacy, please consider buying me a coffee. Your support goes directly toward:
+* Paying monthly server bills.
+* Keeping the database online and fast.
+* Fueling late-night coding sessions
+
+<div align="center">
+  <a href="https://ko-fi.com/jksalcedo">
+    <img src="https://storage.ko-fi.com/cdn/kofi3.png?v=3" alt="Buy Me a Coffee at ko-fi.com" height="50">
+  </a>
+</div>
 
 ## Star History
 
