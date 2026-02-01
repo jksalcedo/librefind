@@ -15,8 +15,8 @@ android {
         applicationId = "com.jksalcedo.librefind"
         minSdk = 24
         targetSdk = 36
-        versionCode = 7
-        versionName = "1.0.0-beta7"
+        versionCode = 8
+        versionName = "1.0.0-beta8"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -56,6 +56,11 @@ android {
     }
     buildFeatures {
         compose = true
+    }
+    dependenciesInfo {
+        // Disables "Dependency metadata" block in the APK signing
+        includeInApk = false
+        includeInBundle = false
     }
 }
 
