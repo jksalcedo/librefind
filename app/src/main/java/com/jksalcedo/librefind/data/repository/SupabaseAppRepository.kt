@@ -195,7 +195,7 @@ class SupabaseAppRepository(
                 repoUrl = repoUrl.ifBlank { null },
                 fdroidId = fdroidId.ifBlank { null },
                 license = license.ifBlank { null },
-                alternatives = if (alternatives.isEmpty()) null else alternatives,
+                alternatives = alternatives.ifEmpty { null },
                 submitterId = userId
             )
             supabase.postgrest.from("user_submissions").insert(submission)
@@ -240,11 +240,14 @@ class SupabaseAppRepository(
                 }
                 select() // Return updated rows to check count
             }
-            
+
             val updated = result.decodeList<UserSubmissionDto>()
-            
+
             if (updated.isEmpty()) {
-                Log.w("SupabaseAppRepo", "Update returned 0 rows. RLS might be blocking update of REJECTED submission. Falling back to INSERT.")
+                Log.w(
+                    "SupabaseAppRepo",
+                    "Update returned 0 rows. RLS might be blocking update of REJECTED submission. Falling back to INSERT."
+                )
                 // Fallback: Insert as new submission
                 supabase.postgrest.from("user_submissions").insert(updateData)
                 Log.d("SupabaseAppRepo", "Fallback insertion successful (0 rows updated)")
@@ -252,7 +255,10 @@ class SupabaseAppRepository(
                 // Check if status was actually updated to PENDING
                 val newStatus = updated.first().status
                 if (newStatus != "PENDING") {
-                    Log.w("SupabaseAppRepo", "Update succeeded but status is still $newStatus. RLS/Trigger prevented status change. Falling back to INSERT.")
+                    Log.w(
+                        "SupabaseAppRepo",
+                        "Update succeeded but status is still $newStatus. RLS/Trigger prevented status change. Falling back to INSERT."
+                    )
                     // Fallback: Insert as new submission
                     supabase.postgrest.from("user_submissions").insert(updateData)
                     Log.d("SupabaseAppRepo", "Fallback insertion successful (Status check failed)")
@@ -346,7 +352,7 @@ class SupabaseAppRepository(
             submissions.map { dto ->
                 Submission(
                     id = dto.id ?: "",
-                    type = if (dto.proprietaryPackage != null) SubmissionType.NEW_ALTERNATIVE else SubmissionType.NEW_PROPRIETARY,
+                    type = if (!dto.license.isNullOrBlank() || !dto.repoUrl.isNullOrBlank()) SubmissionType.NEW_ALTERNATIVE else SubmissionType.NEW_PROPRIETARY,
                     proprietaryPackages = dto.proprietaryPackage ?: "",
                     submittedApp = SubmittedApp(
                         name = dto.appName,

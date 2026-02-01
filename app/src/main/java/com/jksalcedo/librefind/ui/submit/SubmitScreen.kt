@@ -360,6 +360,12 @@ fun SubmitScreen(
                     style = MaterialTheme.typography.titleMedium
                 )
 
+                Text(
+                    text = "License and Repository URL are required for FOSS alternatives",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
                 var showDialog by remember { mutableStateOf(false) }
 
                 Box(modifier = Modifier.fillMaxWidth()) {
@@ -428,7 +434,7 @@ fun SubmitScreen(
                         repoUrl = it
                         viewModel.validateRepoUrl(it)
                     },
-                    label = { Text("Repository URL") },
+                    label = { Text("Repository URL *") },
                     placeholder = { Text("https://github.com/...") },
                     singleLine = true,
                     isError = uiState.repoUrlError != null,
@@ -448,57 +454,119 @@ fun SubmitScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                OutlinedTextField(
-                    value = license,
-                    onValueChange = { license = it },
-                    label = { Text("License") },
-                    placeholder = { Text("GPL-3.0, Apache-2.0, MIT, etc.") },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
+                var showLicenseDropdown by remember { mutableStateOf(false) }
+                val commonLicenses = listOf(
+                    "MIT",
+                    "Apache-2.0",
+                    "GPL-3.0",
+                    "GPL-2.0",
+                    "LGPL-3.0",
+                    "LGPL-2.1",
+                    "BSD-3-Clause",
+                    "BSD-2-Clause",
+                    "MPL-2.0",
+                    "AGPL-3.0",
+                    "ISC",
+                    "Unlicense",
+                    "Unknown"
                 )
-            }
 
-            uiState.error?.let { error ->
-                Text(
-                    text = error,
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.bodySmall
-                )
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Button(
-                onClick = {
-                    viewModel.submit(
-                        type = type,
-                        appName = appName,
-                        packageName = packageName,
-                        description = description,
-                        repoUrl = repoUrl,
-                        fdroidId = fdroidId,
-                        license = license,
-                        proprietaryPackages = selectedProprietaryPackages.joinToString(", ")
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    OutlinedTextField(
+                        value = license,
+                        onValueChange = {},
+                        readOnly = true,
+                        label = { Text("License *") },
+                        placeholder = { Text("Select a license") },
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = showLicenseDropdown) },
+                        modifier = Modifier.fillMaxWidth()
                     )
-                },
-                enabled = appName.isNotBlank() &&
-                        packageName.isNotBlank() &&
-                        !uiState.isLoading &&
-                        uiState.packageNameError == null &&
-                        uiState.repoUrlError == null,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                if (uiState.isLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(20.dp),
-                        strokeWidth = 2.dp
+                    Box(
+                        modifier = Modifier
+                            .matchParentSize()
+                            .clickable { showLicenseDropdown = true }
                     )
-                } else {
-                    Text(if (uiState.isEditing) "Update Submission" else "Submit for Review")
                 }
-            }
 
-            Spacer(modifier = Modifier.height(16.dp))
+                if (showLicenseDropdown) {
+                    AlertDialog(
+                        onDismissRequest = { showLicenseDropdown = false },
+                        title = { Text("Select License") },
+                        text = {
+                            LazyColumn {
+                                items(commonLicenses) { licenseName ->
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .clickable {
+                                                license = licenseName
+                                                showLicenseDropdown = false
+                                            }
+                                            .padding(vertical = 12.dp, horizontal = 16.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Text(
+                                            text = licenseName,
+                                            style = MaterialTheme.typography.bodyLarge
+                                        )
+                                    }
+                                    if (licenseName != commonLicenses.last()) {
+                                        HorizontalDivider(modifier = Modifier.alpha(0.5f))
+                                    }
+                                }
+                            }
+                        },
+                        confirmButton = {
+                            TextButton(onClick = { showLicenseDropdown = false }) {
+                                Text("Cancel")
+                            }
+                        }
+                    )
+                }
+
+                uiState.error?.let { error ->
+                    Text(
+                        text = error,
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Button(
+                    onClick = {
+                        viewModel.submit(
+                            type = type,
+                            appName = appName,
+                            packageName = packageName,
+                            description = description,
+                            repoUrl = repoUrl,
+                            fdroidId = fdroidId,
+                            license = license,
+                            proprietaryPackages = selectedProprietaryPackages.joinToString(", ")
+                        )
+                    },
+                    enabled = appName.isNotBlank() &&
+                            packageName.isNotBlank() &&
+                            !uiState.isLoading &&
+                            uiState.packageNameError == null &&
+                            uiState.repoUrlError == null &&
+                            (type == SubmissionType.NEW_PROPRIETARY || (repoUrl.isNotBlank() && license.isNotBlank())),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    if (uiState.isLoading) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(20.dp),
+                            strokeWidth = 2.dp
+                        )
+                    } else {
+                        Text(if (uiState.isEditing) "Update Submission" else "Submit for Review")
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+            }
         }
     }
 }
