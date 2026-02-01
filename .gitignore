@@ -13,7 +13,4 @@
 .externalNativeBuild
 .cxx
 local.properties
-# admin
-app/google-services.json
 .env
-app/src/main/assets/supabase.properties
