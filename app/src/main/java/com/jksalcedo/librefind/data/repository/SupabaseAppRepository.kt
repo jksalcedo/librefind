@@ -57,9 +57,8 @@ class SupabaseAppRepository(
 
     override suspend fun getAlternatives(packageName: String): List<Alternative> {
         return try {
-            //  Get the target to find alternative package names
             val target = supabase.postgrest.from("targets")
-                .select {
+                .select(columns = Columns.list("alternatives")) {
                     filter {
                         eq("package_name", packageName)
                     }
@@ -68,7 +67,11 @@ class SupabaseAppRepository(
             if (target.alternatives.orEmpty().isEmpty()) return emptyList()
 
             val solutions = supabase.postgrest.from("solutions")
-                .select {
+                .select(columns = Columns.list(
+                    "package_name", "name", "license", "repo_url", "fdroid_id", 
+                    "icon_url", "description", "features", "pros", "cons",
+                    "rating_usability", "rating_privacy", "rating_features", "vote_count"
+                )) {
                     filter {
                         isIn("package_name", target.alternatives.orEmpty())
                     }
@@ -117,7 +120,11 @@ class SupabaseAppRepository(
     override suspend fun getAlternative(packageName: String): Alternative? {
         return try {
             val dto = supabase.postgrest.from("solutions")
-                .select {
+                .select(columns = Columns.list(
+                    "package_name", "name", "license", "repo_url", "fdroid_id", 
+                    "icon_url", "description", "features", "pros", "cons",
+                    "rating_usability", "rating_privacy", "rating_features", "vote_count"
+                )) {
                     filter {
                         eq("package_name", packageName)
                     }
@@ -385,7 +392,7 @@ class SupabaseAppRepository(
     override suspend fun getUserVote(packageName: String, userId: String): Map<String, Int?> {
         return try {
             val votes = supabase.postgrest.from("user_votes")
-                .select {
+                .select(columns = Columns.list("vote_type", "value")) {
                     filter {
                         eq("user_id", userId)
                         eq("package_name", packageName)
@@ -422,7 +429,11 @@ class SupabaseAppRepository(
 
         return try {
             val solutions = supabase.postgrest.from("solutions")
-                .select {
+                .select(columns = Columns.list(
+                    "package_name", "name", "license", "repo_url", "fdroid_id", 
+                    "icon_url", "description", "features", "pros", "cons",
+                    "rating_usability", "rating_privacy", "rating_features", "vote_count"
+                )) {
                     filter {
                         or {
                             ilike("name", "%$query%")
@@ -475,7 +486,7 @@ class SupabaseAppRepository(
     override suspend fun getAlternativesCount(packageName: String): Int {
         return try {
             val target = supabase.postgrest.from("targets")
-                .select {
+                .select(columns = Columns.list("alternatives")) {
                     filter {
                         eq("package_name", packageName)
                     }
