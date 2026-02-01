@@ -36,6 +36,9 @@ fun NavGraph(
                 },
                 onIgnoredAppsClick = {
                     navController.navigate(Route.IgnoredApps.route)
+                },
+                onSettingsClick = {
+                    navController.navigate(Route.Settings.route)
                 }
             )
         }
@@ -84,7 +87,7 @@ fun NavGraph(
                             popUpTo(Route.Auth.route) { inclusive = true }
                         }
                     } else {
-                        navController.navigate(Route.Submit.route) {
+                        navController.navigate(Route.Dashboard.route) {
                             popUpTo(Route.Auth.route) { inclusive = true }
                         }
                     }
@@ -162,6 +165,12 @@ fun NavGraph(
 
         composable(Route.IgnoredApps.route) {
             IgnoredAppsScreen(
+                onBackClick = { navController.navigateUp() }
+            )
+        }
+
+        composable(Route.Settings.route) {
+            com.jksalcedo.librefind.ui.settings.SettingsScreen(
                 onBackClick = { navController.navigateUp() }
             )
         }

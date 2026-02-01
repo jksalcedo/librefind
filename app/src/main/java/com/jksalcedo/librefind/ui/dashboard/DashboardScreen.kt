@@ -17,6 +17,8 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.NewReleases
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.CloudUpload
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Group
@@ -62,6 +64,7 @@ import com.jksalcedo.librefind.ui.auth.AuthViewModel
 import com.jksalcedo.librefind.ui.dashboard.components.GaugeDetailsDialog
 import com.jksalcedo.librefind.ui.dashboard.components.ScanList
 import com.jksalcedo.librefind.ui.dashboard.components.SovereigntyGauge
+import com.jksalcedo.librefind.ui.common.ChangelogDialog
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -71,16 +74,21 @@ fun DashboardScreen(
     onSubmitClick: () -> Unit = {},
     onMySubmissionsClick: () -> Unit = {},
     onIgnoredAppsClick: () -> Unit = {},
+    onSettingsClick: () -> Unit = {},
     viewModel: DashboardViewModel = koinViewModel(),
     authViewModel: AuthViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsState()
     val authState by authViewModel.uiState.collectAsState()
+    val context = LocalContext.current
     var showDialog by remember { mutableStateOf(false) }
     var showProfileDialog by remember { mutableStateOf(false) }
-//    var showFilter by remember { mutableStateOf(false) }
-
+    var showChangelog by remember { mutableStateOf(false) }
     var isSearchActive by remember { mutableStateOf(false) }
+    
+    val (changelogVersion, changelogText) = remember {
+        com.jksalcedo.librefind.ui.common.ChangelogReader.readChangelog(context)
+    }
 
     Scaffold(
         topBar = {
@@ -281,58 +289,6 @@ fun DashboardScreen(
                                 HorizontalDivider()
                                 Spacer(modifier = Modifier.height(16.dp))
 
-
-                                val context = LocalContext.current
-                                val packageManager = context.packageManager
-                                val packageName = context.packageName
-
-                                val packageInfo =
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                                        packageManager.getPackageInfo(
-                                            packageName,
-                                            PackageManager.PackageInfoFlags.of(0)
-                                        )
-                                    } else {
-                                        @Suppress("DEPRECATION")
-                                        packageManager.getPackageInfo(packageName, 0)
-                                    }
-
-                                val version = packageInfo.versionName ?: "Unknown"
-
-
-                                Text(
-                                    text = "LibreFind $version",
-                                    style = MaterialTheme.typography.labelMedium,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-
-                                Spacer(modifier = Modifier.height(16.dp))
-
-                                val uriHandler = LocalUriHandler.current
-
-                                OutlinedButton(
-                                    onClick = { uriHandler.openUri("https://github.com/jksalcedo/librefind/issues") },
-                                    modifier = Modifier.fillMaxWidth()
-                                ) {
-                                    Icon(Icons.Default.BugReport, contentDescription = null)
-                                    Spacer(modifier = Modifier.width(8.dp))
-                                    Text("Report a Bug")
-                                }
-
-                                Spacer(modifier = Modifier.height(8.dp))
-
-                                OutlinedButton(
-                                    onClick = { uriHandler.openUri("https://t.me/librefind") },
-                                    modifier = Modifier.fillMaxWidth(),
-                                ) {
-                                    Icon(Icons.Default.Group, contentDescription = null)
-                                    Spacer(modifier = Modifier.width(8.dp))
-                                    Text("Join Community")
-                                }
-                                Spacer(modifier = Modifier.height(8.dp))
-                                HorizontalDivider()
-                                Spacer(modifier = Modifier.height(8.dp))
-
                                 OutlinedButton(
                                     onClick = {
                                         showProfileDialog = false
@@ -359,11 +315,39 @@ fun DashboardScreen(
                                     Text("My Submissions")
                                 }
 
-                                Spacer(modifier = Modifier.height(16.dp))
-                                HorizontalDivider()
-                                Spacer(modifier = Modifier.height(16.dp))
+                                 Spacer(modifier = Modifier.height(16.dp))
+                                 HorizontalDivider()
+                                 Spacer(modifier = Modifier.height(16.dp))
 
-                                OutlinedButton(
+                                 OutlinedButton(
+                                     onClick = {
+                                         showProfileDialog = false
+                                         onSettingsClick()
+                                     },
+                                     modifier = Modifier.fillMaxWidth()
+                                 ) {
+                                     Icon(Icons.Default.Settings, contentDescription = null)
+                                     Spacer(modifier = Modifier.width(8.dp))
+                                     Text("Settings")
+                                 }
+
+                                 Spacer(modifier = Modifier.height(8.dp))
+
+                                 OutlinedButton(
+                                     onClick = {
+                                         showProfileDialog = false
+                                         showChangelog = true
+                                     },
+                                     modifier = Modifier.fillMaxWidth()
+                                 ) {
+                                     Icon(Icons.Default.NewReleases, contentDescription = null)
+                                     Spacer(modifier = Modifier.width(8.dp))
+                                     Text("What's New")
+                                 }
+
+                                 Spacer(modifier = Modifier.height(8.dp))
+
+                                 OutlinedButton(
                                     onClick = {
                                         showProfileDialog = false
                                         authViewModel.signOut()
@@ -420,6 +404,14 @@ fun DashboardScreen(
                         }
                     )
                 }
+            }
+
+            if (showChangelog) {
+                ChangelogDialog(
+                    version = changelogVersion,
+                    changelog = changelogText,
+                    onDismiss = { showChangelog = false }
+                )
             }
         }
     }

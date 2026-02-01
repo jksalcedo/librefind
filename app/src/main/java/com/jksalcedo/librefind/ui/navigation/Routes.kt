@@ -28,6 +28,7 @@ sealed class Route(val route: String) {
     }
     data object MySubmissions : Route("my_submissions")
     data object IgnoredApps : Route("ignored_apps")
+    data object Settings : Route("settings")
 }
 
 

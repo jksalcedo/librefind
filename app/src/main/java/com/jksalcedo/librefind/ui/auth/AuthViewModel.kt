@@ -87,8 +87,13 @@ class AuthViewModel(
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)
             authRepository.signIn(email, password)
                 .onSuccess {
-                    // Current user flow will update state
-                    _uiState.value = _uiState.value.copy(isLoading = false)
+                    val currentUser = authRepository.getCurrentUser()
+                    _uiState.value = _uiState.value.copy(
+                        isLoading = false,
+                        isSignedIn = true,
+                        needsProfileSetup = currentUser?.username?.isBlank() ?: false,
+                        userProfile = currentUser
+                    )
                 }
                 .onFailure { e ->
                     _uiState.value = _uiState.value.copy(

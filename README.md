@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-    <img src="./metadata/en-US/images/icon.png" alt="PassVault icon" width="150" />
+    <img src="./metadata/en-US/images/icon.png" alt="LibreFind icon" width="150" />
   <br>
   LibreFind
   <br>

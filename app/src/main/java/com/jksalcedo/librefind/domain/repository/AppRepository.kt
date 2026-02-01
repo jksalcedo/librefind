@@ -54,4 +54,6 @@ interface AppRepository {
     suspend fun getUserVote(packageName: String, userId: String): Map<String, Int?>
 
     suspend fun searchSolutions(query: String, limit: Int = 20): List<Alternative>
+
+    suspend fun getAlternativesCount(packageName: String): Int
 }

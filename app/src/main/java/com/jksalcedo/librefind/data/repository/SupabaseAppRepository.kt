@@ -57,9 +57,8 @@ class SupabaseAppRepository(
 
     override suspend fun getAlternatives(packageName: String): List<Alternative> {
         return try {
-            //  Get the target to find alternative package names
             val target = supabase.postgrest.from("targets")
-                .select {
+                .select(columns = Columns.list("alternatives")) {
                     filter {
                         eq("package_name", packageName)
                     }
@@ -68,7 +67,11 @@ class SupabaseAppRepository(
             if (target.alternatives.orEmpty().isEmpty()) return emptyList()
 
             val solutions = supabase.postgrest.from("solutions")
-                .select {
+                .select(columns = Columns.list(
+                    "package_name", "name", "license", "repo_url", "fdroid_id", 
+                    "icon_url", "description", "features", "pros", "cons",
+                    "rating_usability", "rating_privacy", "rating_features", "vote_count"
+                )) {
                     filter {
                         isIn("package_name", target.alternatives.orEmpty())
                     }
@@ -78,14 +81,16 @@ class SupabaseAppRepository(
                 val usabilityRating = dto.ratingUsability ?: 0f
                 val privacyRating = dto.ratingPrivacy ?: 0f
                 val featuresRating = dto.ratingFeatures ?: 0f
-                val ratingCount = dto.voteCount ?: 0
+                val rawRatingCount = dto.voteCount ?: 0
 
-                val ratingAvg = if (ratingCount > 0) {
+                val ratingAvg = if (rawRatingCount > 0) {
                     val sum = usabilityRating + privacyRating + featuresRating
                     val nonZeroCount =
                         listOf(usabilityRating, privacyRating, featuresRating).count { it > 0 }
                     if (nonZeroCount > 0) sum / nonZeroCount else 0f
                 } else 0f
+                
+                val ratingCount = if (ratingAvg == 0f) 0 else rawRatingCount
 
                 Alternative(
                     id = dto.packageName,
@@ -115,7 +120,11 @@ class SupabaseAppRepository(
     override suspend fun getAlternative(packageName: String): Alternative? {
         return try {
             val dto = supabase.postgrest.from("solutions")
-                .select {
+                .select(columns = Columns.list(
+                    "package_name", "name", "license", "repo_url", "fdroid_id", 
+                    "icon_url", "description", "features", "pros", "cons",
+                    "rating_usability", "rating_privacy", "rating_features", "vote_count"
+                )) {
                     filter {
                         eq("package_name", packageName)
                     }
@@ -124,14 +133,16 @@ class SupabaseAppRepository(
             val usabilityRating = dto.ratingUsability ?: 0f
             val privacyRating = dto.ratingPrivacy ?: 0f
             val featuresRating = dto.ratingFeatures ?: 0f
-            val ratingCount = dto.voteCount ?: 0
+            val rawRatingCount = dto.voteCount ?: 0
 
-            val ratingAvg = if (ratingCount > 0) {
+            val ratingAvg = if (rawRatingCount > 0) {
                 val sum = usabilityRating + privacyRating + featuresRating
                 val nonZeroCount =
                     listOf(usabilityRating, privacyRating, featuresRating).count { it > 0 }
                 if (nonZeroCount > 0) sum / nonZeroCount else 0f
             } else 0f
+            
+            val ratingCount = if (ratingAvg == 0f) 0 else rawRatingCount
 
             Alternative(
                 id = dto.packageName,
@@ -195,7 +206,7 @@ class SupabaseAppRepository(
                 repoUrl = repoUrl.ifBlank { null },
                 fdroidId = fdroidId.ifBlank { null },
                 license = license.ifBlank { null },
-                alternatives = if (alternatives.isEmpty()) null else alternatives,
+                alternatives = alternatives.ifEmpty { null },
                 submitterId = userId
             )
             supabase.postgrest.from("user_submissions").insert(submission)
@@ -240,11 +251,14 @@ class SupabaseAppRepository(
                 }
                 select() // Return updated rows to check count
             }
-            
+
             val updated = result.decodeList<UserSubmissionDto>()
-            
+
             if (updated.isEmpty()) {
-                Log.w("SupabaseAppRepo", "Update returned 0 rows. RLS might be blocking update of REJECTED submission. Falling back to INSERT.")
+                Log.w(
+                    "SupabaseAppRepo",
+                    "Update returned 0 rows. RLS might be blocking update of REJECTED submission. Falling back to INSERT."
+                )
                 // Fallback: Insert as new submission
                 supabase.postgrest.from("user_submissions").insert(updateData)
                 Log.d("SupabaseAppRepo", "Fallback insertion successful (0 rows updated)")
@@ -252,7 +266,10 @@ class SupabaseAppRepository(
                 // Check if status was actually updated to PENDING
                 val newStatus = updated.first().status
                 if (newStatus != "PENDING") {
-                    Log.w("SupabaseAppRepo", "Update succeeded but status is still $newStatus. RLS/Trigger prevented status change. Falling back to INSERT.")
+                    Log.w(
+                        "SupabaseAppRepo",
+                        "Update succeeded but status is still $newStatus. RLS/Trigger prevented status change. Falling back to INSERT."
+                    )
                     // Fallback: Insert as new submission
                     supabase.postgrest.from("user_submissions").insert(updateData)
                     Log.d("SupabaseAppRepo", "Fallback insertion successful (Status check failed)")
@@ -346,7 +363,7 @@ class SupabaseAppRepository(
             submissions.map { dto ->
                 Submission(
                     id = dto.id ?: "",
-                    type = if (dto.proprietaryPackage != null) SubmissionType.NEW_ALTERNATIVE else SubmissionType.NEW_PROPRIETARY,
+                    type = if (!dto.license.isNullOrBlank() || !dto.repoUrl.isNullOrBlank()) SubmissionType.NEW_ALTERNATIVE else SubmissionType.NEW_PROPRIETARY,
                     proprietaryPackages = dto.proprietaryPackage ?: "",
                     submittedApp = SubmittedApp(
                         name = dto.appName,
@@ -375,7 +392,7 @@ class SupabaseAppRepository(
     override suspend fun getUserVote(packageName: String, userId: String): Map<String, Int?> {
         return try {
             val votes = supabase.postgrest.from("user_votes")
-                .select {
+                .select(columns = Columns.list("vote_type", "value")) {
                     filter {
                         eq("user_id", userId)
                         eq("package_name", packageName)
@@ -412,7 +429,11 @@ class SupabaseAppRepository(
 
         return try {
             val solutions = supabase.postgrest.from("solutions")
-                .select {
+                .select(columns = Columns.list(
+                    "package_name", "name", "license", "repo_url", "fdroid_id", 
+                    "icon_url", "description", "features", "pros", "cons",
+                    "rating_usability", "rating_privacy", "rating_features", "vote_count"
+                )) {
                     filter {
                         or {
                             ilike("name", "%$query%")
@@ -426,14 +447,16 @@ class SupabaseAppRepository(
                 val usabilityRating = dto.ratingUsability ?: 0f
                 val privacyRating = dto.ratingPrivacy ?: 0f
                 val featuresRating = dto.ratingFeatures ?: 0f
-                val ratingCount = dto.voteCount ?: 0
+                val rawRatingCount = dto.voteCount ?: 0
 
-                val ratingAvg = if (ratingCount > 0) {
+                val ratingAvg = if (rawRatingCount > 0) {
                     val sum = usabilityRating + privacyRating + featuresRating
                     val nonZeroCount =
                         listOf(usabilityRating, privacyRating, featuresRating).count { it > 0 }
                     if (nonZeroCount > 0) sum / nonZeroCount else 0f
                 } else 0f
+                
+                val ratingCount = if (ratingAvg == 0f) 0 else rawRatingCount
 
                 Alternative(
                     id = dto.packageName,
@@ -457,6 +480,22 @@ class SupabaseAppRepository(
         } catch (e: Exception) {
             e.printStackTrace()
             emptyList()
+        }
+    }
+
+    override suspend fun getAlternativesCount(packageName: String): Int {
+        return try {
+            val target = supabase.postgrest.from("targets")
+                .select(columns = Columns.list("alternatives")) {
+                    filter {
+                        eq("package_name", packageName)
+                    }
+                }.decodeSingleOrNull<TargetDto>() ?: return 0
+
+            target.alternatives?.size ?: 0
+        } catch (e: Exception) {
+            e.printStackTrace()
+            0
         }
     }
 

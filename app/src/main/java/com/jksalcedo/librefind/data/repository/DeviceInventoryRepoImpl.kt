@@ -6,6 +6,7 @@ import com.jksalcedo.librefind.data.local.SafeSignatureDb
 import com.jksalcedo.librefind.domain.model.AppItem
 import com.jksalcedo.librefind.domain.model.AppStatus
 import com.jksalcedo.librefind.domain.repository.AppRepository
+import com.jksalcedo.librefind.domain.repository.CacheRepository
 import com.jksalcedo.librefind.domain.repository.DeviceInventoryRepo
 import com.jksalcedo.librefind.domain.repository.IgnoredAppsRepository
 import kotlinx.coroutines.Dispatchers
@@ -18,19 +19,12 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
-/**
- * Implementation of DeviceInventoryRepo
- *
- * Implements the three-step classification logic:
- * A. Source Check (Fast Filter)
- * B. Signature Check (Verification)
- * C. Database Query (LibreFind Cloud)
- */
 class DeviceInventoryRepoImpl(
     private val localSource: InventorySource,
     private val signatureDb: SafeSignatureDb,
     private val appRepository: AppRepository,
-    private val ignoredAppsRepository: IgnoredAppsRepository
+    private val ignoredAppsRepository: IgnoredAppsRepository,
+    private val cacheRepository: CacheRepository
 ) : DeviceInventoryRepo {
 
     companion object {
@@ -42,6 +36,14 @@ class DeviceInventoryRepoImpl(
         val rawApps = localSource.getRawApps()
         val ignoredAppsList = ignoredAppsRepository.getIgnoredPackageNames().first()
 
+        if (!cacheRepository.isCacheValid()) {
+            try {
+                cacheRepository.refreshCache()
+            } catch (e: Exception) {
+                android.util.Log.w("DeviceInventory", "Cache refresh failed, using remote fallback", e)
+            }
+        }
+
         val classifiedApps = coroutineScope {
 
             rawApps.map { pkg ->
@@ -49,15 +51,11 @@ class DeviceInventoryRepoImpl(
             }.awaitAll()
         }
 
-        // Sort by classification priority (PROP > UNKN > FOSS)
         val sorted = classifiedApps.sortedBy { it.status.sortWeight }
 
         emit(sorted)
     }.flowOn(Dispatchers.IO)
 
-    /**
-     * Classifies a single app using the three-step logic
-     */
     private suspend fun classifyApp(pkg: PackageInfo, ignoredApps: List<String>): AppItem {
         val packageName = pkg.packageName
         val label = localSource.getAppLabel(packageName)
@@ -74,20 +72,16 @@ class DeviceInventoryRepoImpl(
             )
         }
 
-        // Fast Filter - Check installer
         if (installer == FDROID_INSTALLER) {
             return createAppItem(packageName, label, AppStatus.FOSS, installer, icon)
         }
 
-        // Signature Check (for FOSS apps on Play Store)
         if (signatureDb.isKnownFossApp(packageName)) {
             return createAppItem(packageName, label, AppStatus.FOSS, installer, icon)
         }
 
-        // Database Query (Solutions)
-        // Check if it's a known FOSS solution in our database
         val isKnownSolution = try {
-            appRepository.isSolution(packageName)
+            cacheRepository.isSolutionCached(packageName) || appRepository.isSolution(packageName)
         } catch (_: Exception) {
             false
         }
@@ -96,9 +90,8 @@ class DeviceInventoryRepoImpl(
             return createAppItem(packageName, label, AppStatus.FOSS, installer, icon)
         }
 
-        // Database Query
         val isProprietary = try {
-            appRepository.isProprietary(packageName)
+            cacheRepository.isTargetCached(packageName) || appRepository.isProprietary(packageName)
         } catch (_: Exception) {
             false
         }
@@ -108,9 +101,6 @@ class DeviceInventoryRepoImpl(
         return createAppItem(packageName, label, status, installer, icon)
     }
 
-    /**
-     * Creates AppItem with alternatives count
-     */
     private suspend fun createAppItem(
         packageName: String,
         label: String,
@@ -120,7 +110,8 @@ class DeviceInventoryRepoImpl(
     ): AppItem {
         val alternativesCount = if (status == AppStatus.PROP) {
             try {
-                appRepository.getAlternatives(packageName).size
+                cacheRepository.getAlternativesCount(packageName)
+                    ?: appRepository.getAlternativesCount(packageName)
             } catch (_: Exception) {
                 0
             }

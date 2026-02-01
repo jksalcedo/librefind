@@ -4,9 +4,12 @@ import com.google.gson.GsonBuilder
 import com.google.gson.Strictness
 import com.jksalcedo.librefind.data.local.AppDatabase
 import com.jksalcedo.librefind.data.local.InventorySource
+import com.jksalcedo.librefind.data.local.PreferencesManager
 import com.jksalcedo.librefind.data.local.SafeSignatureDb
+import com.jksalcedo.librefind.data.repository.CacheRepositoryImpl
 import com.jksalcedo.librefind.data.repository.DeviceInventoryRepoImpl
 import com.jksalcedo.librefind.data.repository.IgnoredAppsRepositoryImpl
+import com.jksalcedo.librefind.domain.repository.CacheRepository
 import com.jksalcedo.librefind.domain.repository.DeviceInventoryRepo
 import com.jksalcedo.librefind.domain.repository.IgnoredAppsRepository
 import com.jksalcedo.librefind.domain.usecase.GetAlternativeUseCase
@@ -17,6 +20,7 @@ import com.jksalcedo.librefind.ui.details.AlternativeDetailViewModel
 import com.jksalcedo.librefind.ui.details.DetailsViewModel
 import com.jksalcedo.librefind.ui.mysubmissions.MySubmissionsViewModel
 import com.jksalcedo.librefind.ui.settings.IgnoredAppsViewModel
+import com.jksalcedo.librefind.ui.settings.SettingsViewModel
 import com.jksalcedo.librefind.ui.submit.SubmitViewModel
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
@@ -33,9 +37,11 @@ val appModule = module {
 
     single { InventorySource(androidContext()) }
     single { SafeSignatureDb() }
+    single { PreferencesManager(androidContext()) }
 
     single { AppDatabase.getInstance(androidContext()) }
     single { get<AppDatabase>().ignoredAppDao() }
+    single { get<AppDatabase>().appCacheDao() }
     single<IgnoredAppsRepository> { IgnoredAppsRepositoryImpl(get()) }
 }
 
@@ -60,7 +66,8 @@ val networkModule = module {
 }
 
 val repositoryModule = module {
-    single<DeviceInventoryRepo> { DeviceInventoryRepoImpl(get(), get(), get(), get()) }
+    single<CacheRepository> { CacheRepositoryImpl(get(), get()) }
+    single<DeviceInventoryRepo> { DeviceInventoryRepoImpl(get(), get(), get(), get(), get()) }
 }
 
 val useCaseModule = module {
@@ -78,6 +85,7 @@ val viewModelModule = module {
     viewModel { SubmitViewModel(get(), get(), get(), get(), get()) }
     viewModel { MySubmissionsViewModel(get(), get()) }
     viewModel { IgnoredAppsViewModel(get(), get()) }
+    viewModel { SettingsViewModel(get()) }
 }
 
 

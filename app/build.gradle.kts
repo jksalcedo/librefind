@@ -15,8 +15,8 @@ android {
         applicationId = "com.jksalcedo.librefind"
         minSdk = 24
         targetSdk = 36
-        versionCode = 6
-        versionName = "1.0.0-beta6"
+        versionCode = 7
+        versionName = "1.0.0-beta7"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -90,8 +90,6 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging.interceptor)
     implementation(libs.gson)
-
-    implementation(libs.coil.compose)
 
     // Supabase
     implementation(platform(libs.supabase.bom))

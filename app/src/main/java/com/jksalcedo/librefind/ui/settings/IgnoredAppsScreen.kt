@@ -36,8 +36,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import com.jksalcedo.librefind.data.local.IgnoredAppEntity
+import com.jksalcedo.librefind.ui.dashboard.components.AppIconAsync
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -119,9 +119,8 @@ private fun IgnoredAppRow(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            AsyncImage(
-                model = context.packageManager.getApplicationIcon(app.packageName),
-                contentDescription = "App Icon",
+            AppIconAsync(
+                packageName = app.packageName,
                 modifier = Modifier.size(40.dp)
             )
 
