@@ -27,8 +27,31 @@ class DeviceInventoryRepoImpl(
 ) : DeviceInventoryRepo {
 
     companion object {
-        private const val FDROID_INSTALLER = "org.fdroid.fdroid"
-        private const val PLAY_STORE_INSTALLER = "com.android.vending"
+        // Apps installed FROM these are FOSS
+        private val FOSS_INSTALLERS = setOf(
+            "org.fdroid.fdroid",           // F-Droid
+            "com.machiav3lli.fdroid",      // Neo Store
+            "com.looker.droidify",         // Droid-ify
+            "nya.kitsunyan.foxydroid",     // Foxy Droid
+            "in.sunilpaulmathew.izzyondroid", // IzzyOnDroid
+            "dev.zapstore.app",            // Zapstore
+            "app.accrescent.client",       // Accrescent
+            "com.samyak.repostore",        // RepoStore
+            "com.nahnah.florid",           // Florid
+            "ie.defo.ech_apps",
+            "app.flicky"
+        )
+
+        // Apps installed FROM these are proprietary
+        private val PROPRIETARY_INSTALLERS = setOf(
+            "com.android.vending",         // Google Play
+            "com.aurora.store",            // Aurora Store (proxies Play)
+            "com.apkpure.aegon",           // APKPure
+            "dev.imranr.obtainium.fdroid", // Obtainium
+            "com.tomclaw.appsend",         // Appteka
+            "com.indus.appstore",          // Indus App Store
+            "com.apkupdater"               // APKUpdater
+        )
     }
 
     override suspend fun scanAndClassify(): Flow<List<AppItem>> = flow {
@@ -80,7 +103,7 @@ class DeviceInventoryRepoImpl(
             return createAppItem(packageName, label, AppStatus.IGNORED, installer, icon)
         }
 
-        if (installer == FDROID_INSTALLER) {
+        if (installer in FOSS_INSTALLERS) {
             return createAppItem(packageName, label, AppStatus.FOSS, installer, icon)
         }
 
