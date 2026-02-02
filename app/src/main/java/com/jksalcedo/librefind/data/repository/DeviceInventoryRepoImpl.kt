@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 
 class DeviceInventoryRepoImpl(
     private val localSource: InventorySource,
@@ -40,36 +39,45 @@ class DeviceInventoryRepoImpl(
             try {
                 cacheRepository.refreshCache()
             } catch (e: Exception) {
-                android.util.Log.w("DeviceInventory", "Cache refresh failed, using remote fallback", e)
+                android.util.Log.w(
+                    "DeviceInventory",
+                    "Cache refresh failed, using remote fallback",
+                    e
+                )
             }
         }
 
-        val classifiedApps = coroutineScope {
+        // bulk proprietary lookup to avoid per-app calls
+        val packageNames = rawApps.map { it.packageName }
+        val proprietaryMap = try {
+            appRepository.areProprietary(packageNames)
+        } catch (_: Exception) {
+            emptyMap()
+        }
 
+        val classifiedApps = coroutineScope {
             rawApps.map { pkg ->
-                async { classifyApp(pkg, ignoredAppsList) }
+                async { classifyApp(pkg, ignoredAppsList, proprietaryMap) }
             }.awaitAll()
         }
 
         val sorted = classifiedApps.sortedBy { it.status.sortWeight }
-
         emit(sorted)
     }.flowOn(Dispatchers.IO)
 
-    private suspend fun classifyApp(pkg: PackageInfo, ignoredApps: List<String>): AppItem {
+    // use proprietaryMap
+    private suspend fun classifyApp(
+        pkg: PackageInfo,
+        ignoredApps: List<String>,
+        proprietaryMap: Map<String, Boolean>
+    ): AppItem {
         val packageName = pkg.packageName
         val label = localSource.getAppLabel(packageName)
         val installer = localSource.getInstaller(packageName)
         val icon = pkg.applicationInfo?.icon
 
         if (packageName in ignoredApps) {
-            return createAppItem(
-                packageName,
-                label,
-                AppStatus.IGNORED,
-                installer,
-                icon
-            )
+            return createAppItem(packageName, label, AppStatus.IGNORED, installer, icon)
         }
 
         if (installer == FDROID_INSTALLER) {
@@ -91,13 +99,12 @@ class DeviceInventoryRepoImpl(
         }
 
         val isProprietary = try {
-            cacheRepository.isTargetCached(packageName) || appRepository.isProprietary(packageName)
+            cacheRepository.isTargetCached(packageName) || (proprietaryMap[packageName] == true)
         } catch (_: Exception) {
             false
         }
 
         val status = if (isProprietary) AppStatus.PROP else AppStatus.UNKN
-
         return createAppItem(packageName, label, status, installer, icon)
     }
 

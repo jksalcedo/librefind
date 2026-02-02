@@ -25,15 +25,6 @@ data class SolutionDto(
 )
 
 @Serializable
-data class TargetDto(
-    @SerialName("package_name") val packageName: String,
-    val name: String,
-    val category: String? = null,
-    @SerialName("icon_url") val iconUrl: String,
-    val alternatives: List<String>? = emptyList() // Array of package_names
-)
-
-@Serializable
 data class UserSubmissionDto(
     val id: String? = null, // UUID, auto-generated
     @SerialName("app_name") val appName: String,

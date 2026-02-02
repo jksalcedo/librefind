@@ -4,6 +4,8 @@ import com.jksalcedo.librefind.domain.model.Alternative
 import com.jksalcedo.librefind.domain.model.Submission
 
 interface AppRepository {
+
+    suspend fun areProprietary(packageNames: List<String>): Map<String, Boolean>
     suspend fun isProprietary(packageName: String): Boolean
     suspend fun isSolution(packageName: String): Boolean
     suspend fun getAlternatives(packageName: String): List<Alternative>
