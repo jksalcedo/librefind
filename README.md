@@ -12,6 +12,9 @@
 <img alt="GitHub Release" src="https://img.shields.io/github/v/release/jksalcedo/librefind?include_prereleases&logo=github">
 <img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/jksalcedo/librefind/total">
     <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/jksalcedo/librefind">
+    <img alt="GitHub License" src="https://img.shields.io/github/license/jksalcedo/librefind?logo=MIT">
+  <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/jksalcedo/librefind">
+    <img alt="GitHub Release Date" src="https://img.shields.io/github/release-date/jksalcedo/librefind">
 
 </h4>
 
