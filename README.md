@@ -63,7 +63,7 @@ The applications database grows entirely through **your contributions**.
 
 - `QUERY_ALL_PACKAGES` - To scan installed apps
     - **Note**: This is a restricted permission.
-- `INTERNET` - To query Firebase
+- `INTERNET` - To query Supabase
 
 Please join the Telegram channel for further discussions.
 [Telegram](https://t.me/librefind)
