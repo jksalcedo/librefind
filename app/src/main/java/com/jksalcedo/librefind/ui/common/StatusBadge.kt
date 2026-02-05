@@ -12,6 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jksalcedo.librefind.domain.model.AppStatus
 import com.jksalcedo.librefind.ui.theme.FossGreen
+import com.jksalcedo.librefind.ui.theme.PendingOrange
 import com.jksalcedo.librefind.ui.theme.PropRed
 import com.jksalcedo.librefind.ui.theme.UnknownGray
 
@@ -29,6 +30,7 @@ fun StatusBadge(
         AppStatus.FOSS -> FossGreen to "FOSS"
         AppStatus.PROP -> PropRed to "PROP"
         AppStatus.UNKN -> UnknownGray to "?"
+        AppStatus.PENDING -> PendingOrange to "PENDING"
         else -> MaterialTheme.colorScheme.error to "Ignored"
     }
 

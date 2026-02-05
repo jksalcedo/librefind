@@ -15,6 +15,8 @@ val UnknownGray = Color(0xFF757575)     // Unknown status - neutral gray
 val UnknownGrayLight = Color(0xFF9E9E9E)
 val UnknownGrayDark = Color(0xFF616161)
 
+val PendingOrange = Color(0xFFFFA000)   // Pending submission status
+
 // Sovereignty Levels
 val SovereignGold = Color(0xFFFFB300)   // Sovereign level achievement
 val TransitionBlue = Color(0xFF1E88E5)   // Transitioning level

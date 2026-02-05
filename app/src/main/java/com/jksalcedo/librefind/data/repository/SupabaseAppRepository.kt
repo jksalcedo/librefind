@@ -650,5 +650,22 @@ class SupabaseAppRepository(
         @SerialName("created_at") val createdAt: String? = null,
         @SerialName("profiles") val profile: ProfileDto? = null
     )
+
+    override suspend fun getPendingSubmissionPackages(): Set<String> {
+        return try {
+            val result = supabase.postgrest.from("user_submissions")
+                .select(columns = Columns.list("app_package")) {
+                    filter { eq("status", "PENDING") }
+                }
+            result.decodeList<PackageNameOnlyDto>().map { it.appPackage }.toSet()
+        } catch (_: Exception) {
+            emptySet()
+        }
+    }
+
+    @Serializable
+    private data class PackageNameOnlyDto(
+        @SerialName("app_package") val appPackage: String
+    )
 }
 

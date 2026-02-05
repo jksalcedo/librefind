@@ -69,4 +69,6 @@ interface AppRepository {
     suspend fun searchSolutions(query: String, limit: Int = 20): List<Alternative>
 
     suspend fun getAlternativesCount(packageName: String): Int
+
+    suspend fun getPendingSubmissionPackages(): Set<String>
 }

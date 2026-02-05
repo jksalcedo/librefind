@@ -78,9 +78,16 @@ class DeviceInventoryRepoImpl(
             emptyMap()
         }
 
+        // get pending submissions
+        val pendingPackages = try {
+            appRepository.getPendingSubmissionPackages()
+        } catch (_: Exception) {
+            emptySet()
+        }
+
         val classifiedApps = coroutineScope {
             rawApps.map { pkg ->
-                async { classifyApp(pkg, ignoredAppsList, proprietaryMap) }
+                async { classifyApp(pkg, ignoredAppsList, proprietaryMap, pendingPackages) }
             }.awaitAll()
         }
 
@@ -88,11 +95,11 @@ class DeviceInventoryRepoImpl(
         emit(sorted)
     }.flowOn(Dispatchers.IO)
 
-    // use proprietaryMap
     private suspend fun classifyApp(
         pkg: PackageInfo,
         ignoredApps: List<String>,
-        proprietaryMap: Map<String, Boolean>
+        proprietaryMap: Map<String, Boolean>,
+        pendingPackages: Set<String>
     ): AppItem {
         val packageName = pkg.packageName
         val label = localSource.getAppLabel(packageName)
@@ -101,6 +108,11 @@ class DeviceInventoryRepoImpl(
 
         if (packageName in ignoredApps) {
             return createAppItem(packageName, label, AppStatus.IGNORED, installer, icon)
+        }
+
+        // Check if app has a pending submission
+        if (packageName in pendingPackages) {
+            return createAppItem(packageName, label, AppStatus.PENDING, installer, icon)
         }
 
         if (installer in FOSS_INSTALLERS) {

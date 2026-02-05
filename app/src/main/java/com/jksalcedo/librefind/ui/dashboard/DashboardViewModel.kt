@@ -18,6 +18,15 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+enum class AppFilter {
+    ALL,
+    PROP_WITH_ALTERNATIVES,
+    PROP_NO_ALTERNATIVES,
+    FOSS_ONLY,
+    UNKNOWN_ONLY,
+    PENDING_ONLY
+}
+
 @OptIn(ExperimentalCoroutinesApi::class)
 class DashboardViewModel(
     private val scanInventoryUseCase: ScanInventoryUseCase,
@@ -30,6 +39,7 @@ class DashboardViewModel(
     private val refreshTrigger = MutableSharedFlow<Unit>(replay = 1)
     private val _searchQuery = MutableStateFlow("")
     private val _statusFilter = MutableStateFlow<AppStatus?>(null)
+    private val _appFilter = MutableStateFlow(AppFilter.ALL)
 
     init {
         viewModelScope.launch {
@@ -42,8 +52,9 @@ class DashboardViewModel(
                     scanInventoryUseCase()
                 },
                 _searchQuery,
-                _statusFilter
-            ) { apps, query, statusFilter ->
+                _statusFilter,
+                _appFilter
+            ) { apps, query, statusFilter, appFilter ->
                 val filtered = apps
                     .filter { app ->
                         query.isBlank() ||
@@ -53,11 +64,19 @@ class DashboardViewModel(
                     .filter { app ->
                         statusFilter == null || app.status == statusFilter
                     }
+                    .filter { app ->
+                        when (appFilter) {
+                            AppFilter.ALL -> app.status != AppStatus.IGNORED
+                            AppFilter.PROP_WITH_ALTERNATIVES -> app.status == AppStatus.PROP && app.knownAlternatives > 0
+                            AppFilter.PROP_NO_ALTERNATIVES -> app.status == AppStatus.PROP && app.knownAlternatives == 0
+                            AppFilter.FOSS_ONLY -> app.status == AppStatus.FOSS
+                            AppFilter.UNKNOWN_ONLY -> app.status == AppStatus.UNKN
+                            AppFilter.PENDING_ONLY -> app.status == AppStatus.PENDING
+                        }
+                    }
 
-                // Calculate score using ALL apps (including ignored ones)
                 val score = calculateScore(apps)
-
-                Triple(filtered, score, Triple(query, statusFilter, null))
+                Triple(filtered, score, Triple(query, statusFilter, appFilter))
             }.collect { (filteredApps, score, params) ->
                 _state.update {
                     it.copy(
@@ -66,7 +85,8 @@ class DashboardViewModel(
                         sovereigntyScore = score,
                         searchQuery = params.first,
                         statusFilter = params.second,
-                        error = params.third
+                        appFilter = params.third,
+                        error = null
                     )
                 }
             }
@@ -85,6 +105,12 @@ class DashboardViewModel(
 
     fun setStatusFilter(status: AppStatus?) {
         _statusFilter.value = status
+        _appFilter.value = AppFilter.ALL
+    }
+
+    fun setAppFilter(filter: AppFilter) {
+        _appFilter.value = filter
+        _statusFilter.value = null
     }
 
     fun ignoreApp(packageName: String) {
@@ -122,7 +148,6 @@ data class DashboardState(
     val sovereigntyScore: SovereigntyScore? = null,
     val searchQuery: String = "",
     val statusFilter: AppStatus? = null,
+    val appFilter: AppFilter = AppFilter.ALL,
     val error: String? = null
 )
-
-

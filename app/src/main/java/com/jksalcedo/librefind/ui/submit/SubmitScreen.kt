@@ -468,12 +468,21 @@ fun SubmitScreen(
                     "AGPL-3.0",
                     "ISC",
                     "Unlicense",
-                    "Unknown"
+                    "EPL-2.0",
+                    "CC0-1.0",
+                    "CC-BY-4.0",
+                    "CC-BY-SA-4.0",
+                    "WTFPL",
+                    "Unknown",
+                    "Other"
                 )
+
+                val isCustomLicense = license.isNotBlank() && license !in commonLicenses
+                var showCustomLicenseField by remember(license) { mutableStateOf(isCustomLicense || license == "Other") }
 
                 Box(modifier = Modifier.fillMaxWidth()) {
                     OutlinedTextField(
-                        value = license,
+                        value = if (isCustomLicense) "Other" else license,
                         onValueChange = {},
                         readOnly = true,
                         label = { Text("License *") },
@@ -488,6 +497,18 @@ fun SubmitScreen(
                     )
                 }
 
+                if (showCustomLicenseField || license == "Other") {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    OutlinedTextField(
+                        value = if (license == "Other" || (license in commonLicenses && license != "Other")) "" else license,
+                        onValueChange = { license = it },
+                        label = { Text("Custom License Name *") },
+                        placeholder = { Text("e.g. My Custom License") },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+
                 if (showLicenseDropdown) {
                     AlertDialog(
                         onDismissRequest = { showLicenseDropdown = false },
@@ -499,7 +520,23 @@ fun SubmitScreen(
                                         modifier = Modifier
                                             .fillMaxWidth()
                                             .clickable {
-                                                license = licenseName
+                                                if (licenseName == "Other") {
+                                                    // If selecting "Other", we allow the user to type
+                                                    // We might want to clear the license field if it was a standard one
+                                                    // But here 'license' variable holds the actual string value.
+                                                    // So if we set it to "Other", it's just a placeholder until they type.
+                                                    // BUT my logic above uses 'license' for both display and value.
+                                                    // Let's set it to "Other" temporarily to trigger the field show, 
+                                                    // then the effect will handle it.
+                                                    // Wait, the logic: value = if (isCustomLicense) "Other" else license
+                                                    // suggests 'license' holds the custom value.
+                                                    // So if they click "Other", we should probably set it to empty string 
+                                                    // effectively, OR keep it as "Other" to signal the state?
+                                                    // Let's just set it to "Other" and handle the InputField correctly.
+                                                    license = "Other" 
+                                                } else {
+                                                    license = licenseName
+                                                }
                                                 showLicenseDropdown = false
                                             }
                                             .padding(vertical = 12.dp, horizontal = 16.dp),

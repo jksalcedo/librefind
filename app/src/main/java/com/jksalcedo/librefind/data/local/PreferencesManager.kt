@@ -27,8 +27,21 @@ class PreferencesManager(context: Context) {
         return getLastSeenVersion() < currentVersion
     }
 
+    fun hasSeenTutorial(): Boolean {
+        return prefs.getBoolean(KEY_TUTORIAL_COMPLETE, false)
+    }
+
+    fun setTutorialComplete() {
+        prefs.edit().putBoolean(KEY_TUTORIAL_COMPLETE, true).apply()
+    }
+
+    fun resetTutorial() {
+        prefs.edit().putBoolean(KEY_TUTORIAL_COMPLETE, false).apply()
+    }
+
     companion object {
         private const val KEY_ONBOARDING_COMPLETE = "onboarding_complete"
         private const val KEY_LAST_VERSION = "last_seen_version"
+        private const val KEY_TUTORIAL_COMPLETE = "tutorial_complete"
     }
 }
