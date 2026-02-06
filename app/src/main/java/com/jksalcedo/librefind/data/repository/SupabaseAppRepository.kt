@@ -105,7 +105,7 @@ class SupabaseAppRepository(
                     )
                 ) {
                     filter {
-                        isIn("package_name", target.alternatives!!)
+                        isIn("package_name", target.alternatives)
                     }
                 }.decodeList<SolutionDto>()
 
@@ -216,6 +216,57 @@ class SupabaseAppRepository(
         } catch (e: Exception) {
             e.printStackTrace()
             emptyList()
+        }
+    }
+
+    override suspend fun getProprietaryTargetsWithAlternativesCount(): Map<String, Int> {
+        return try {
+            val targets = supabase.postgrest.from("targets")
+                .select(columns = Columns.list("package_name", "alternatives"))
+                .decodeList<TargetWithAlternativesDto>()
+
+            targets.associate { it.packageName to (it.alternatives?.size ?: 0) }
+        } catch (e: Exception) {
+            Log.e("SupabaseAppRepo", "Failed to fetch targets with counts", e)
+            emptyMap()
+        }
+    }
+
+    override suspend fun getAllSolutionPackageNames(): List<String> {
+        return try {
+            supabase.postgrest.from("solutions")
+                .select(columns = Columns.list("package_name"))
+                .decodeList<PackageNameDto>()
+                .map { it.packageName }
+        } catch (e: Exception) {
+            Log.e("SupabaseAppRepo", "Failed to fetch solution package names", e)
+            emptyList()
+        }
+    }
+
+    override suspend fun areSolutions(packageNames: List<String>): Set<String> {
+        if (packageNames.isEmpty()) return emptySet()
+
+        return try {
+            val uniquePackages = packageNames.distinct()
+            val foundPackages = mutableSetOf<String>()
+            val chunkSize = 200
+
+            uniquePackages.chunked(chunkSize).forEach { chunk ->
+                val found = supabase.postgrest.from("solutions")
+                    .select(columns = Columns.list("package_name")) {
+                        filter { isIn("package_name", chunk) }
+                    }
+                    .decodeList<PackageNameDto>()
+                    .map { it.packageName }
+
+                foundPackages.addAll(found)
+            }
+
+            foundPackages
+        } catch (e: Exception) {
+            Log.e("SupabaseAppRepo", "Failed bulk solution lookup", e)
+            emptySet()
         }
     }
 
@@ -622,9 +673,21 @@ class SupabaseAppRepository(
                     id = dto.id ?: "",
                     title = dto.title,
                     description = dto.description,
-                    type = try { ReportType.valueOf(dto.reportType) } catch (_: Exception) { ReportType.OTHER },
-                    status = try { ReportStatus.valueOf(dto.status) } catch (_: Exception) { ReportStatus.OPEN },
-                    priority = try { ReportPriority.valueOf(dto.priority) } catch (_: Exception) { ReportPriority.LOW },
+                    type = try {
+                        ReportType.valueOf(dto.reportType)
+                    } catch (_: Exception) {
+                        ReportType.OTHER
+                    },
+                    status = try {
+                        ReportStatus.valueOf(dto.status)
+                    } catch (_: Exception) {
+                        ReportStatus.OPEN
+                    },
+                    priority = try {
+                        ReportPriority.valueOf(dto.priority)
+                    } catch (_: Exception) {
+                        ReportPriority.LOW
+                    },
                     submitterUid = dto.submitterId,
                     submitterUsername = dto.profile?.username ?: "Unknown",
                     adminResponse = dto.adminResponse
@@ -666,6 +729,12 @@ class SupabaseAppRepository(
     @Serializable
     private data class PackageNameOnlyDto(
         @SerialName("app_package") val appPackage: String
+    )
+
+    @Serializable
+    private data class TargetWithAlternativesDto(
+        @SerialName("package_name") val packageName: String,
+        val alternatives: List<String>? = null
     )
 }
 

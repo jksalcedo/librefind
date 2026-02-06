@@ -1,19 +1,25 @@
 package com.jksalcedo.librefind.ui.submit
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jksalcedo.librefind.data.local.InventorySource
+import com.jksalcedo.librefind.domain.model.Alternative
+import com.jksalcedo.librefind.domain.model.Submission
 import com.jksalcedo.librefind.domain.model.SubmissionType
 import com.jksalcedo.librefind.domain.repository.AppRepository
 import com.jksalcedo.librefind.domain.repository.AuthRepository
-import com.jksalcedo.librefind.domain.usecase.ScanInventoryUseCase
+import com.jksalcedo.librefind.domain.repository.CacheRepository
 import com.jksalcedo.librefind.domain.usecase.SubmitProposalUseCase
+import com.jksalcedo.librefind.domain.usecase.UpdateSubmissionUseCase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 data class SubmitUiState(
     val isLoading: Boolean = false,
@@ -25,19 +31,20 @@ data class SubmitUiState(
     val packageNameError: String? = null,
     val repoUrlError: String? = null,
     val submittedAppName: String? = null,
-    val solutionSearchResults: List<com.jksalcedo.librefind.domain.model.Alternative> = emptyList(),
+    val solutionSearchResults: List<Alternative> = emptyList(),
     val selectedAlternatives: Set<String> = emptySet(),
     val isEditing: Boolean = false,
     val editingSubmissionId: String? = null,
-    val loadedSubmission: com.jksalcedo.librefind.domain.model.Submission? = null
+    val loadedSubmission: Submission? = null
 )
 
 class SubmitViewModel(
     private val authRepository: AuthRepository,
     private val appRepository: AppRepository,
     private val submitProposalUseCase: SubmitProposalUseCase,
-    private val updateSubmissionUseCase: com.jksalcedo.librefind.domain.usecase.UpdateSubmissionUseCase,
-    private val scanInventoryUseCase: ScanInventoryUseCase
+    private val updateSubmissionUseCase: UpdateSubmissionUseCase,
+    private val cacheRepository: CacheRepository,
+    private val inventorySource: InventorySource
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SubmitUiState())
@@ -57,11 +64,41 @@ class SubmitViewModel(
 
     private fun loadUnknownApps() {
         viewModelScope.launch {
-            val apps = scanInventoryUseCase()
-                .first()
-                .filter { it.status == com.jksalcedo.librefind.domain.model.AppStatus.UNKN }
-                .associate { it.packageName to it.label }
-            _uiState.value = _uiState.value.copy(unknownApps = apps)
+            try {
+                // Use lightweight local-only check instead of full scan + network classification
+                val rawApps = withContext(Dispatchers.IO) {
+                    inventorySource.getRawApps()
+                }
+
+                val unknownApps = mutableMapOf<String, String>()
+
+                for (pkg in rawApps) {
+                    val packageName = pkg.packageName
+                    val isTarget = try {
+                        cacheRepository.isTargetCached(packageName)
+                    } catch (_: Exception) {
+                        false
+                    }
+
+                    val isSolution = try {
+                        cacheRepository.isSolutionCached(packageName)
+                    } catch (_: Exception) {
+                        false
+                    }
+
+                    if (!isTarget && !isSolution) {
+                        val label = withContext(Dispatchers.IO) {
+                            inventorySource.getAppLabel(packageName)
+                        }
+                        unknownApps[packageName] = label
+                    }
+                }
+
+                _uiState.value = _uiState.value.copy(unknownApps = unknownApps)
+            } catch (e: Exception) {
+                Log.w("SubmitVM", "Failed to load unknown apps", e)
+                _uiState.value = _uiState.value.copy(unknownApps = emptyMap())
+            }
         }
     }
 
@@ -75,13 +112,7 @@ class SubmitViewModel(
             if (submission != null) {
                 // Pre-fill state
                 val isProprietary = submission.type == SubmissionType.NEW_PROPRIETARY
-                
-                // If it's a proprietary submission, we need to load the alternatives
-                // But the current Submission model doesn't have alternatives list easily accessible 
-                // without fetching details. For now, we'll just load basic info.
-                // NOTE: A better approach would be to fetch full submission details by ID.
-                // Assuming we can get by with what we have or fetch more if needed.
-                
+
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
                     isEditing = true,
@@ -89,7 +120,8 @@ class SubmitViewModel(
                     loadedSubmission = submission
                 )
             } else {
-                _uiState.value = _uiState.value.copy(isLoading = false, error = "Submission not found")
+                _uiState.value =
+                    _uiState.value.copy(isLoading = false, error = "Submission not found")
             }
         }
     }
@@ -125,31 +157,32 @@ class SubmitViewModel(
                 return@launch
             }
 
-            val result = if (_uiState.value.isEditing && _uiState.value.editingSubmissionId != null) {
-                updateSubmissionUseCase(
-                    id = _uiState.value.editingSubmissionId!!,
-                    proprietaryPackage = proprietaryPackages,
-                    alternativeId = packageName,
-                    appName = appName,
-                    description = description,
-                    repoUrl = repoUrl,
-                    fdroidId = fdroidId,
-                    license = license,
-                    alternatives = _uiState.value.selectedAlternatives.toList()
-                )
-            } else {
-                submitProposalUseCase(
-                    proprietaryPackage = proprietaryPackages,
-                    alternativeId = packageName,
-                    appName = appName,
-                    description = description,
-                    repoUrl = repoUrl,
-                    fdroidId = fdroidId,
-                    license = license,
-                    userId = user.uid,
-                    alternatives = _uiState.value.selectedAlternatives.toList()
-                )
-            }
+            val result =
+                if (_uiState.value.isEditing && _uiState.value.editingSubmissionId != null) {
+                    updateSubmissionUseCase(
+                        id = _uiState.value.editingSubmissionId!!,
+                        proprietaryPackage = proprietaryPackages,
+                        alternativeId = packageName,
+                        appName = appName,
+                        description = description,
+                        repoUrl = repoUrl,
+                        fdroidId = fdroidId,
+                        license = license,
+                        alternatives = _uiState.value.selectedAlternatives.toList()
+                    )
+                } else {
+                    submitProposalUseCase(
+                        proprietaryPackage = proprietaryPackages,
+                        alternativeId = packageName,
+                        appName = appName,
+                        description = description,
+                        repoUrl = repoUrl,
+                        fdroidId = fdroidId,
+                        license = license,
+                        userId = user.uid,
+                        alternatives = _uiState.value.selectedAlternatives.toList()
+                    )
+                }
 
             result.onSuccess {
                 _uiState.value = _uiState.value.copy(
@@ -228,12 +261,12 @@ class SubmitViewModel(
 
     fun searchSolutions(query: String) {
         searchSolutionsJob?.cancel()
-        
+
         if (query.isBlank()) {
             _uiState.value = _uiState.value.copy(solutionSearchResults = emptyList())
             return
         }
-        
+
         searchSolutionsJob = viewModelScope.launch {
             delay(300)
             try {

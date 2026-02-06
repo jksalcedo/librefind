@@ -23,30 +23,39 @@ class CacheRepositoryImpl(
         withContext(Dispatchers.IO) {
             try {
                 Log.d(TAG, "Refreshing cache from remote...")
-                
-                val targetPackages = appRepository.getProprietaryTargets()
-                Log.d(TAG, "Fetched ${targetPackages.size} targets from remote")
-                
-                val cachedTargets = targetPackages.map { packageName ->
-                    val count = try {
-                        appRepository.getAlternativesCount(packageName)
-                    } catch (e: Exception) {
-                        Log.w(TAG, "Failed to get alternatives count for $packageName", e)
-                        0
-                    }
-                    
+
+                // Single bulk fetch
+                val targetsWithCounts = appRepository.getProprietaryTargetsWithAlternativesCount()
+                Log.d(TAG, "Fetched ${targetsWithCounts.size} targets from remote (bulk)")
+
+                val now = System.currentTimeMillis()
+                val cachedTargets = targetsWithCounts.map { (packageName, count) ->
                     CachedTarget(
                         packageName = packageName,
                         name = packageName,
                         alternativesCount = count,
-                        lastUpdated = System.currentTimeMillis()
+                        lastUpdated = now
                     )
                 }
-                
+
                 appCacheDao.clearTargets()
                 appCacheDao.upsertTargets(cachedTargets)
                 Log.d(TAG, "Cached ${cachedTargets.size} targets")
-                
+
+                // Also bulk-cache solutions
+                val solutionPackages = appRepository.getAllSolutionPackageNames()
+                val cachedSolutions = solutionPackages.map { packageName ->
+                    CachedSolution(
+                        packageName = packageName,
+                        lastUpdated = now,
+                        name = packageName
+                    )
+                }
+
+                appCacheDao.clearSolutions()
+                appCacheDao.upsertSolutions(cachedSolutions)
+                Log.d(TAG, "Cached ${cachedSolutions.size} solutions")
+
                 Log.d(TAG, "Cache refresh complete")
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to refresh cache", e)
@@ -63,17 +72,17 @@ class CacheRepositoryImpl(
         isValid
     }
 
-    override suspend fun isTargetCached(packageName: String): Boolean = 
+    override suspend fun isTargetCached(packageName: String): Boolean =
         withContext(Dispatchers.IO) {
             appCacheDao.getTarget(packageName) != null
         }
 
-    override suspend fun isSolutionCached(packageName: String): Boolean = 
+    override suspend fun isSolutionCached(packageName: String): Boolean =
         withContext(Dispatchers.IO) {
             appCacheDao.getSolution(packageName) != null
         }
 
-    override suspend fun getAlternativesCount(packageName: String): Int? = 
+    override suspend fun getAlternativesCount(packageName: String): Int? =
         withContext(Dispatchers.IO) {
             appCacheDao.getAlternativesCount(packageName)
         }

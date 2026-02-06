@@ -1,6 +1,7 @@
 package com.jksalcedo.librefind.data.repository
 
 import android.content.pm.PackageInfo
+import android.util.Log
 import com.jksalcedo.librefind.data.local.InventorySource
 import com.jksalcedo.librefind.data.local.SafeSignatureDb
 import com.jksalcedo.librefind.domain.model.AppItem
@@ -27,30 +28,32 @@ class DeviceInventoryRepoImpl(
 ) : DeviceInventoryRepo {
 
     companion object {
+        private const val TAG = "DeviceInventory"
+
         // Apps installed FROM these are FOSS
         private val FOSS_INSTALLERS = setOf(
-            "org.fdroid.fdroid",           // F-Droid
-            "com.machiav3lli.fdroid",      // Neo Store
-            "com.looker.droidify",         // Droid-ify
-            "nya.kitsunyan.foxydroid",     // Foxy Droid
-            "in.sunilpaulmathew.izzyondroid", // IzzyOnDroid
-            "dev.zapstore.app",            // Zapstore
-            "app.accrescent.client",       // Accrescent
-            "com.samyak.repostore",        // RepoStore
-            "com.nahnah.florid",           // Florid
+            "org.fdroid.fdroid",
+            "com.machiav3lli.fdroid",
+            "com.looker.droidify",
+            "nya.kitsunyan.foxydroid",
+            "in.sunilpaulmathew.izzyondroid",
+            "dev.zapstore.app",
+            "app.accrescent.client",
+            "com.samyak.repostore",
+            "com.nahnah.florid",
             "ie.defo.ech_apps",
             "app.flicky"
         )
 
         // Apps installed FROM these are proprietary
         private val PROPRIETARY_INSTALLERS = setOf(
-            "com.android.vending",         // Google Play
-            "com.aurora.store",            // Aurora Store (proxies Play)
-            "com.apkpure.aegon",           // APKPure
-            "dev.imranr.obtainium.fdroid", // Obtainium
-            "com.tomclaw.appsend",         // Appteka
-            "com.indus.appstore",          // Indus App Store
-            "com.apkupdater"               // APKUpdater
+            "com.android.vending",
+            "com.aurora.store",
+            "com.apkpure.aegon",
+            "dev.imranr.obtainium.fdroid",
+            "com.tomclaw.appsend",
+            "com.indus.appstore",
+            "com.apkupdater"
         )
     }
 
@@ -62,23 +65,25 @@ class DeviceInventoryRepoImpl(
             try {
                 cacheRepository.refreshCache()
             } catch (e: Exception) {
-                android.util.Log.w(
-                    "DeviceInventory",
-                    "Cache refresh failed, using remote fallback",
-                    e
-                )
+                Log.w(TAG, "Cache refresh failed, using remote fallback", e)
             }
         }
 
-        // bulk proprietary lookup to avoid per-app calls
         val packageNames = rawApps.map { it.packageName }
+
+        // Bulk lookups — all done upfront, no per-app network calls
         val proprietaryMap = try {
             appRepository.areProprietary(packageNames)
         } catch (_: Exception) {
             emptyMap()
         }
 
-        // get pending submissions
+        val solutionsSet = try {
+            appRepository.areSolutions(packageNames)
+        } catch (_: Exception) {
+            emptySet()
+        }
+
         val pendingPackages = try {
             appRepository.getPendingSubmissionPackages()
         } catch (_: Exception) {
@@ -87,7 +92,15 @@ class DeviceInventoryRepoImpl(
 
         val classifiedApps = coroutineScope {
             rawApps.map { pkg ->
-                async { classifyApp(pkg, ignoredAppsList, proprietaryMap, pendingPackages) }
+                async {
+                    classifyApp(
+                        pkg = pkg,
+                        ignoredApps = ignoredAppsList,
+                        proprietaryMap = proprietaryMap,
+                        solutionsSet = solutionsSet,
+                        pendingPackages = pendingPackages
+                    )
+                }
             }.awaitAll()
         }
 
@@ -99,6 +112,7 @@ class DeviceInventoryRepoImpl(
         pkg: PackageInfo,
         ignoredApps: List<String>,
         proprietaryMap: Map<String, Boolean>,
+        solutionsSet: Set<String>,
         pendingPackages: Set<String>
     ): AppItem {
         val packageName = pkg.packageName
@@ -110,7 +124,6 @@ class DeviceInventoryRepoImpl(
             return createAppItem(packageName, label, AppStatus.IGNORED, installer, icon)
         }
 
-        // Check if app has a pending submission
         if (packageName in pendingPackages) {
             return createAppItem(packageName, label, AppStatus.PENDING, installer, icon)
         }
@@ -123,8 +136,9 @@ class DeviceInventoryRepoImpl(
             return createAppItem(packageName, label, AppStatus.FOSS, installer, icon)
         }
 
+        // Use pre-fetched bulk data — no per-app network calls
         val isKnownSolution = try {
-            cacheRepository.isSolutionCached(packageName) || appRepository.isSolution(packageName)
+            cacheRepository.isSolutionCached(packageName) || packageName in solutionsSet
         } catch (_: Exception) {
             false
         }
@@ -137,6 +151,10 @@ class DeviceInventoryRepoImpl(
             cacheRepository.isTargetCached(packageName) || (proprietaryMap[packageName] == true)
         } catch (_: Exception) {
             false
+        }
+
+        if (installer in PROPRIETARY_INSTALLERS) {
+            return createAppItem(packageName, label, AppStatus.PROP, installer, icon)
         }
 
         val status = if (isProprietary) AppStatus.PROP else AppStatus.UNKN

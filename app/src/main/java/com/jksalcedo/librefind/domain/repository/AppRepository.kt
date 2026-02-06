@@ -13,6 +13,24 @@ interface AppRepository {
     suspend fun getAlternative(packageName: String): Alternative?
     suspend fun getProprietaryTargets(): List<String>
 
+
+    /**
+     * Bulk fetch: returns all targets with their alternatives count in a single query.
+     */
+    suspend fun getProprietaryTargetsWithAlternativesCount(): Map<String, Int>
+
+    /**
+     * Bulk fetch: returns all solution package names in a single query.
+     * Used during cache refresh to avoid per-app isSolution() calls.
+     */
+    suspend fun getAllSolutionPackageNames(): List<String>
+
+    /**
+     * Bulk check: returns a set of package names that are known solutions.
+     * Used during classification to avoid per-app network calls.
+     */
+    suspend fun areSolutions(packageNames: List<String>): Set<String>
+
     suspend fun submitReport(
         title: String,
         description: String,

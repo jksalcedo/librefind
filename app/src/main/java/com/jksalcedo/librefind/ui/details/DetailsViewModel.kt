@@ -3,23 +3,21 @@ package com.jksalcedo.librefind.ui.details
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jksalcedo.librefind.domain.model.Alternative
-import com.jksalcedo.librefind.domain.model.AppStatus
 import com.jksalcedo.librefind.domain.repository.AppRepository
 import com.jksalcedo.librefind.domain.repository.AuthRepository
+import com.jksalcedo.librefind.domain.repository.CacheRepository
 import com.jksalcedo.librefind.domain.usecase.GetAlternativeUseCase
-import com.jksalcedo.librefind.domain.usecase.ScanInventoryUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class DetailsViewModel(
     private val getAlternativeUseCase: GetAlternativeUseCase,
-    private val appRepository: AppRepository,
     private val authRepository: AuthRepository,
-    private val scanInventoryUseCase: ScanInventoryUseCase
+    private val appRepository: AppRepository,
+    private val cacheRepository: CacheRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(DetailsState())
@@ -29,7 +27,7 @@ class DetailsViewModel(
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true, error = null) }
 
-            // Check unknown status concurrently
+            // Check unknown status using lightweight cache lookups
             launch {
                 isAppUnknown(packageName)
             }
@@ -76,13 +74,27 @@ class DetailsViewModel(
         loadAlternatives(packageName)
     }
 
+    /**
+     * Lightweight check using cached data instead of a full device scan.
+     * An app is "unknown" if it's neither a known proprietary target nor a known FOSS solution.
+     */
     private suspend fun isAppUnknown(packageName: String) {
-        val app = scanInventoryUseCase()
-            .first()
-            .find { it.packageName == packageName }
-        
-        _state.update { 
-            it.copy(isUnknown = app?.status == AppStatus.UNKN) 
+        val isTarget = try {
+            cacheRepository.isTargetCached(packageName) || appRepository.isProprietary(packageName)
+        } catch (_: Exception) {
+            false
+        }
+
+        val isSolution = try {
+            cacheRepository.isSolutionCached(packageName) || appRepository.isSolution(packageName)
+        } catch (_: Exception) {
+            false
+        }
+
+        val isUnknown = !isTarget && !isSolution
+
+        _state.update {
+            it.copy(isUnknown = isUnknown)
         }
     }
 }
