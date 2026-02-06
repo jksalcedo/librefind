@@ -20,6 +20,7 @@ import com.jksalcedo.librefind.ui.theme.CapturedOrange
 import com.jksalcedo.librefind.ui.theme.FossGreen
 import com.jksalcedo.librefind.ui.theme.SovereignGold
 import com.jksalcedo.librefind.ui.theme.TransitionBlue
+import kotlin.math.roundToInt
 
 /**
  * Circular sovereignty gauge showing FOSS percentage
@@ -61,7 +62,7 @@ fun SovereigntyGauge(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "${score.fossPercentage.toInt()}%",
+                    text = "${score.fossPercentage.roundToInt()}%",
                     style = MaterialTheme.typography.displayMedium,
                     fontWeight = FontWeight.Bold,
                     color = getLevelColor(score.level)
