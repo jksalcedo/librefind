@@ -1,0 +1,14 @@
+Beta 11
+
+Performance:
+• Eliminated N+1 network calls in cache refresh
+• Bulk solution/target lookups replace per-app queries
+• Details & Submit screens no longer trigger full device scans
+• Fixed IgnoredAppsViewModel cleanup never executing
+• Single-pass sovereignty score calculation
+• Reduced icon cache double-check on render
+
+CI/Build:
+• Enabled Gradle parallel builds, caching & configuration cache
+• Optimized CI workflow with dependency caching
+• Faster R8 with increased JVM memory
