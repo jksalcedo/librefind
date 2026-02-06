@@ -18,6 +18,16 @@
 
 </h4>
 
+<p align="center">
+  <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/jksalcedo/librefind">
+    <img alt="Get it on Obtainium" src="https://img.shields.io/badge/Obtainium-violet?style=for-the-badge&logo=Obtainium&logoSize=80&label=Get%20it%20on&color=8B5CF6">
+  </a>
+  
+  <a href="https://github.com/jksalcedo/librefind/releases">
+  <img src="https://img.shields.io/badge/GitHub-Releases-blue?logo=github&style=for-the-badge" height="60" alt="Get it on GitHub">
+  </a>
+</p>
+
 ## What is LibreFind?
 
 LibreFind is a free and lightweight Android app that scans your device, identifies proprietary
