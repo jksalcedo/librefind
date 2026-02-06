@@ -77,10 +77,16 @@ class SupabaseAuthRepository(
                 eq("id", userId)
             }
         }
+
+    }
+
+    override suspend fun deleteAccount(): Result<Unit> = runCatching {
+        supabase.postgrest.rpc("delete_account")
+        auth.signOut()
     }
 
     @OptIn(ExperimentalTime::class)
-    private suspend fun fetchUserProfile(userId: String?): UserProfile? {
+    suspend fun fetchUserProfile(userId: String?): UserProfile? {
         if (userId == null) return null
         return try {
             val profileDto = supabase.postgrest.from("profiles")

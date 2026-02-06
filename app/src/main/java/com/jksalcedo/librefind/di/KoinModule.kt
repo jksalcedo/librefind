@@ -87,7 +87,7 @@ val viewModelModule = module {
     viewModel { SubmitViewModel(get(), get(), get(), get(), get()) }
     viewModel { MySubmissionsViewModel(get(), get()) }
     viewModel { IgnoredAppsViewModel(get(), get()) }
-    viewModel { SettingsViewModel(get()) }
+    viewModel { SettingsViewModel(get(), get()) }
     viewModel { ReportViewModel(get(), get()) }
     viewModel { MyReportsViewModel(get(), get()) }
 }
