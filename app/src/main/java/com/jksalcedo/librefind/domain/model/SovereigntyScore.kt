@@ -20,7 +20,7 @@ data class SovereigntyScore(
      * Percentage of FOSS apps (0-100)
      */
     val fossPercentage: Float
-        get() = if (totalApps > 0) (fossCount.toFloat() / totalApps) * 100 else 0f
+        get() = if (totalApps - ignoredCount > 0) (fossCount.toFloat() / (totalApps - ignoredCount)) * 100 else 0f
 
     /**
      * Sovereignty level based on percentage
