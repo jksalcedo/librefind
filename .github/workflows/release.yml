@@ -45,7 +45,16 @@ jobs:
 
       - name: Decode keystore
         run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > release-keystore.jks
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | tr -d '\n\r ' | base64 --decode > release-keystore.jks
+
+      - name: Verify keystore
+        run: |
+          keytool -list -keystore release-keystore.jks \
+            -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
+            -alias ${{ secrets.KEY_ALIAS }} || {
+            echo "❌ Keystore is corrupted or credentials are wrong"
+            exit 1
+          }
 
       - name: Sign APK
         run: |
