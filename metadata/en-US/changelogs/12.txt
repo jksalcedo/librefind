@@ -1,0 +1,5 @@
+Beta 12
+
+- Change sovereignty color from gold to green
+- Fix score calculation
+- Fix bugs in duplicate checker

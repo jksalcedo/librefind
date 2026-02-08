@@ -529,6 +529,18 @@ class SupabaseAppRepository(
 
             if (solutionsCount > 0) return true
 
+            val pendingCount = supabase.postgrest.from("user_submissions")
+                .select(columns = Columns.list("app_package")) {
+                    count(Count.EXACT)
+                    filter {
+                        eq("app_package", packageName)
+                        eq("status", "PENDING")
+                    }
+                    limit(1)
+                }.countOrNull() ?: 0
+
+            if (pendingCount > 0) return true
+
             val targetsCount = supabase.postgrest.from("targets")
                 .select(columns = Columns.list("package_name")) {
                     count(Count.EXACT)

@@ -157,6 +157,12 @@ class SubmitViewModel(
                 return@launch
             }
 
+            if (_uiState.value.duplicateWarning != null) {
+                _uiState.value =
+                    _uiState.value.copy(isLoading = false, error = "Duplicate submission")
+                return@launch
+            }
+
             val result =
                 if (_uiState.value.isEditing && _uiState.value.editingSubmissionId != null) {
                     updateSubmissionUseCase(

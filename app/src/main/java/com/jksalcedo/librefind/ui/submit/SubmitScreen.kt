@@ -521,19 +521,7 @@ fun SubmitScreen(
                                             .fillMaxWidth()
                                             .clickable {
                                                 if (licenseName == "Other") {
-                                                    // If selecting "Other", we allow the user to type
-                                                    // We might want to clear the license field if it was a standard one
-                                                    // But here 'license' variable holds the actual string value.
-                                                    // So if we set it to "Other", it's just a placeholder until they type.
-                                                    // BUT my logic above uses 'license' for both display and value.
-                                                    // Let's set it to "Other" temporarily to trigger the field show, 
-                                                    // then the effect will handle it.
-                                                    // Wait, the logic: value = if (isCustomLicense) "Other" else license
-                                                    // suggests 'license' holds the custom value.
-                                                    // So if they click "Other", we should probably set it to empty string 
-                                                    // effectively, OR keep it as "Other" to signal the state?
-                                                    // Let's just set it to "Other" and handle the InputField correctly.
-                                                    license = "Other" 
+                                                    license = "Other"
                                                 } else {
                                                     license = licenseName
                                                 }
@@ -587,6 +575,7 @@ fun SubmitScreen(
                 },
                 enabled = appName.isNotBlank() &&
                         packageName.isNotBlank() &&
+                        uiState.duplicateWarning == null &&
                         !uiState.isLoading &&
                         uiState.packageNameError == null &&
                         uiState.repoUrlError == null &&
