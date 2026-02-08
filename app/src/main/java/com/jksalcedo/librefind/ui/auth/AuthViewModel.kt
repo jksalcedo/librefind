@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jksalcedo.librefind.domain.model.UserProfile
 import com.jksalcedo.librefind.domain.repository.AuthRepository
+import com.jksalcedo.librefind.util.ErrorUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -144,26 +145,7 @@ class AuthViewModel(
     }
 
     private fun sanitizeAuthError(rawMessage: String?): String {
-        return when {
-            rawMessage == null -> "An error occurred"
-            rawMessage.contains("Invalid login credentials", ignoreCase = true) ->
-                "Invalid email or password"
-            rawMessage.contains("Email not confirmed", ignoreCase = true) ->
-                "Please verify your email before signing in"
-            rawMessage.contains("User already registered", ignoreCase = true) ->
-                "An account with this email already exists"
-            rawMessage.contains("Password should be at least", ignoreCase = true) ->
-                "Password must be at least 6 characters"
-            rawMessage.contains("Invalid email", ignoreCase = true) ->
-                "Please enter a valid email address"
-            rawMessage.contains("duplicate key", ignoreCase = true) ->
-                "Username already taken"
-            rawMessage.contains("network", ignoreCase = true) ||
-                    rawMessage.contains("connection", ignoreCase = true) ->
-                "Network error. Please check your connection"
-            rawMessage.contains("timeout", ignoreCase = true) ->
-                "Request timed out. Please try again"
-            else -> "Authentication failed. Please try again"
-        }
+        if (rawMessage == null) return "An error occurred"
+        return ErrorUtils.sanitizeAuthError(Exception(rawMessage))
     }
 }
