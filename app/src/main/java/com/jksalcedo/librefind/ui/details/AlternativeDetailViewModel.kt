@@ -1,11 +1,14 @@
 package com.jksalcedo.librefind.ui.details
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jksalcedo.librefind.domain.model.Alternative
 import com.jksalcedo.librefind.domain.model.VoteType
 import com.jksalcedo.librefind.domain.repository.AppRepository
 import com.jksalcedo.librefind.domain.repository.AuthRepository
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,6 +24,8 @@ class AlternativeDetailViewModel(
     val state: StateFlow<AlternativeDetailState> = _state.asStateFlow()
 
     private var currentAltId: String = ""
+    private var rateJob: Job? = null
+    private var lastFeedbackSubmitTime = 0L
 
     fun loadAlternative(altId: String) {
         currentAltId = altId
@@ -59,6 +64,7 @@ class AlternativeDetailViewModel(
     fun rateDimension(voteType: VoteType, stars: Int) {
         if (!_state.value.isSignedIn) return
 
+        //  UI update
         _state.update { state ->
             state.copy(
                 alternative = state.alternative?.copy(
@@ -70,15 +76,35 @@ class AlternativeDetailViewModel(
             )
         }
 
-        viewModelScope.launch {
-            appRepository.castVote(currentAltId, voteType.key, stars)
-            loadAlternative(currentAltId)
+        //  cancel previous vote call, wait 600ms before sending
+        rateJob?.cancel()
+        rateJob = viewModelScope.launch {
+            delay(600)
+            try {
+                appRepository.castVote(currentAltId, voteType.key, stars)
+                loadAlternative(currentAltId)
+            } catch (e: Exception) {
+                Log.e("AltDetailVM", "Vote failed", e)
+                // Revert optimistic update on failure
+                loadAlternative(currentAltId)
+            }
         }
     }
 
     fun submitFeedback(type: String, text: String) {
+        val now = System.currentTimeMillis()
+        //  minimum 5-second cooldown between feedback submissions
+        if (now - lastFeedbackSubmitTime < 5_000) {
+            return
+        }
+        lastFeedbackSubmitTime = now
+
         viewModelScope.launch {
-            appRepository.submitFeedback(currentAltId, type, text)
+            try {
+                appRepository.submitFeedback(currentAltId, type, text)
+            } catch (e: Exception) {
+                Log.e("AltDetailVM", "Feedback submission failed", e)
+            }
         }
     }
 }
