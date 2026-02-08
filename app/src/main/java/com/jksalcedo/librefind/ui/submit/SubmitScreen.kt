@@ -100,12 +100,7 @@ fun SubmitScreen(
             appName = sub.submittedApp.name
             packageName = sub.submittedApp.packageName
             description = sub.submittedApp.description
-            // Note: Submission model might need to be expanded if we want to pre-fill everything perfectly
-            // For now assuming basic fields are there.
-            // We need to fetch more details if they are missing from the list view model.
-            // But let's assume for now we can get what we need.
 
-            // If it's a proprietary submission, we might need to parse the proprietaryPackages string
             if (sub.type == SubmissionType.NEW_ALTERNATIVE) {
                 // proprietaryPackages is a comma separated string in the Submission model
                 selectedProprietaryPackages =
