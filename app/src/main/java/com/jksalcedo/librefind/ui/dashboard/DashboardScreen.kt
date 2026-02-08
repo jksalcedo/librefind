@@ -44,6 +44,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -90,7 +91,7 @@ fun DashboardScreen(
     var isSearchActive by remember { mutableStateOf(false) }
 
     var showTutorial by remember { mutableStateOf(!preferencesManager.hasSeenTutorial()) }
-    var tutorialStepIndex by remember { mutableStateOf(0) }
+    var tutorialStepIndex by remember { mutableIntStateOf(0) }
     val currentTutorialStep = TutorialStep.allSteps.getOrNull(tutorialStepIndex)
 
     var gaugeRect by remember { mutableStateOf(Rect.Zero) }
@@ -242,6 +243,18 @@ fun DashboardScreen(
                                         },
                                         leadingIcon = {
                                             if (state.appFilter == AppFilter.PENDING_ONLY) {
+                                                Icon(Icons.Default.Check, contentDescription = null)
+                                            }
+                                        }
+                                    )
+                                    DropdownMenuItem(
+                                        text = { Text("Ignored Only") },
+                                        onClick = {
+                                            viewModel.setAppFilter(AppFilter.IGNORED_ONLY)
+                                            showFilterMenu = false
+                                        },
+                                        leadingIcon = {
+                                            if (state.appFilter == AppFilter.IGNORED_ONLY) {
                                                 Icon(Icons.Default.Check, contentDescription = null)
                                             }
                                         }

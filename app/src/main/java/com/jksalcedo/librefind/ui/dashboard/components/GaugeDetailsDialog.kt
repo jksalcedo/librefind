@@ -97,6 +97,19 @@ fun GaugeDetailsDialog(
                         onDismissRequest()
                     }
                 )
+                ClickableStatRow(
+                    label = "Ignored Apps",
+                    value = "${score.ignoredCount}",
+                    color = MaterialTheme.colorScheme.error,
+                    isActive = currentFilter == AppStatus.IGNORED,
+                    onClick = {
+                        onFilterClick(
+                            if (currentFilter == AppStatus.IGNORED) null
+                            else AppStatus.IGNORED
+                        )
+                        onDismissRequest()
+                    }
+                )
 
                 Spacer(modifier = Modifier.height(16.dp))
 

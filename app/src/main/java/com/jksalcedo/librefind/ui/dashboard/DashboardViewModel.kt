@@ -24,7 +24,8 @@ enum class AppFilter {
     PROP_NO_ALTERNATIVES,
     FOSS_ONLY,
     UNKNOWN_ONLY,
-    PENDING_ONLY
+    PENDING_ONLY,
+    IGNORED_ONLY
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -65,13 +66,18 @@ class DashboardViewModel(
                         statusFilter == null || app.status == statusFilter
                     }
                     .filter { app ->
-                        when (appFilter) {
-                            AppFilter.ALL -> app.status != AppStatus.IGNORED
-                            AppFilter.PROP_WITH_ALTERNATIVES -> app.status == AppStatus.PROP && app.knownAlternatives > 0
-                            AppFilter.PROP_NO_ALTERNATIVES -> app.status == AppStatus.PROP && app.knownAlternatives == 0
-                            AppFilter.FOSS_ONLY -> app.status == AppStatus.FOSS
-                            AppFilter.UNKNOWN_ONLY -> app.status == AppStatus.UNKN
-                            AppFilter.PENDING_ONLY -> app.status == AppStatus.PENDING
+                        if (statusFilter == AppStatus.IGNORED) {
+                            app.status == AppStatus.IGNORED
+                        } else {
+                            when (appFilter) {
+                                AppFilter.ALL -> app.status != AppStatus.IGNORED
+                                AppFilter.PROP_WITH_ALTERNATIVES -> app.status == AppStatus.PROP && app.knownAlternatives > 0
+                                AppFilter.PROP_NO_ALTERNATIVES -> app.status == AppStatus.PROP && app.knownAlternatives == 0
+                                AppFilter.FOSS_ONLY -> app.status == AppStatus.FOSS
+                                AppFilter.UNKNOWN_ONLY -> app.status == AppStatus.UNKN
+                                AppFilter.PENDING_ONLY -> app.status == AppStatus.PENDING
+                                AppFilter.IGNORED_ONLY -> app.status == AppStatus.IGNORED
+                            }
                         }
                     }
 
