@@ -19,6 +19,9 @@
 </h4>
 
 <p align="center">
+<a href="https://apt.izzysoft.de/packages/com.jksalcedo.librefind">
+  <img alt="Get it on IzzyOnDroid" src="https://img.shields.io/badge/IzzyOnDroid-green?style=for-the-badge&logo=fdroid&logoSize=80&label=Get%20it%20on&color=4CAF50">
+</a>
   <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/jksalcedo/librefind">
     <img alt="Get it on Obtainium" src="https://img.shields.io/badge/Obtainium-violet?style=for-the-badge&logo=Obtainium&logoSize=80&label=Get%20it%20on&color=8B5CF6">
   </a>
