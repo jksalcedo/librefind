@@ -2,9 +2,11 @@ package com.jksalcedo.librefind.ui.dashboard
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jksalcedo.librefind.data.local.PreferencesManager
 import com.jksalcedo.librefind.domain.model.AppItem
 import com.jksalcedo.librefind.domain.model.AppStatus
 import com.jksalcedo.librefind.domain.model.SovereigntyScore
+import com.jksalcedo.librefind.domain.repository.AppRepository
 import com.jksalcedo.librefind.domain.repository.IgnoredAppsRepository
 import com.jksalcedo.librefind.domain.usecase.ScanInventoryUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -31,7 +33,9 @@ enum class AppFilter {
 @OptIn(ExperimentalCoroutinesApi::class)
 class DashboardViewModel(
     private val scanInventoryUseCase: ScanInventoryUseCase,
-    private val ignoredAppsRepository: IgnoredAppsRepository
+    private val ignoredAppsRepository: IgnoredAppsRepository,
+    private val appRepository: AppRepository,
+    private val preferencesManager: PreferencesManager
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(DashboardState())
@@ -41,6 +45,7 @@ class DashboardViewModel(
     private val _searchQuery = MutableStateFlow("")
     private val _statusFilter = MutableStateFlow<AppStatus?>(null)
     private val _appFilter = MutableStateFlow(AppFilter.ALL)
+    private var lastSubmittedScore: SovereigntyScore? = null
 
     init {
         viewModelScope.launch {
@@ -95,6 +100,11 @@ class DashboardViewModel(
                         error = null
                     )
                 }
+
+                if (score != lastSubmittedScore) {
+                    lastSubmittedScore = score
+                    submitStats(score)
+                }
             }
         }
     }
@@ -145,6 +155,19 @@ class DashboardViewModel(
             unknownCount = unknownCount,
             ignoredCount = ignoredCount
         )
+    }
+
+    private fun submitStats(score: SovereigntyScore) {
+        viewModelScope.launch {
+            val deviceId = preferencesManager.getOrCreateDeviceId()
+            appRepository.submitScanStats(
+                deviceId = deviceId,
+                fossCount = score.fossCount,
+                proprietaryCount = score.proprietaryCount,
+                unknownCount = score.unknownCount,
+                appVersion = preferencesManager.getAppVersion()
+            )
+        }
     }
 }
 

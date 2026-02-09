@@ -2,8 +2,9 @@ package com.jksalcedo.librefind.data.local
 
 import android.content.Context
 import android.content.SharedPreferences
+import java.util.UUID
 
-class PreferencesManager(context: Context) {
+class PreferencesManager(private val context: Context) {
     private val prefs: SharedPreferences = 
         context.getSharedPreferences("librefind_prefs", Context.MODE_PRIVATE)
 
@@ -39,9 +40,27 @@ class PreferencesManager(context: Context) {
         prefs.edit().putBoolean(KEY_TUTORIAL_COMPLETE, false).apply()
     }
 
+    fun getOrCreateDeviceId(): String {
+        val existing = prefs.getString(KEY_DEVICE_ID, null)
+        if (existing != null) return existing
+        
+        val newId = UUID.randomUUID().toString()
+        prefs.edit().putString(KEY_DEVICE_ID, newId).apply()
+        return newId
+    }
+
+    fun getAppVersion(): String {
+        return try {
+            context.packageManager.getPackageInfo(context.packageName, 0).versionName ?: "unknown"
+        } catch (_: Exception) {
+            "unknown"
+        }
+    }
+
     companion object {
         private const val KEY_ONBOARDING_COMPLETE = "onboarding_complete"
         private const val KEY_LAST_VERSION = "last_seen_version"
         private const val KEY_TUTORIAL_COMPLETE = "tutorial_complete"
+        private const val KEY_DEVICE_ID = "device_id"
     }
 }

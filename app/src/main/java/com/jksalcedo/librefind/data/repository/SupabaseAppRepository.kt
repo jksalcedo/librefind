@@ -1,6 +1,7 @@
 package com.jksalcedo.librefind.data.repository
 
 import android.util.Log
+import com.jksalcedo.librefind.data.remote.model.AppScanStatsDto
 import com.jksalcedo.librefind.data.remote.model.ProfileDto
 import com.jksalcedo.librefind.data.remote.model.SolutionDto
 import com.jksalcedo.librefind.data.remote.model.UserReportDto
@@ -759,5 +760,31 @@ class SupabaseAppRepository(
         @SerialName("package_name") val packageName: String,
         val alternatives: List<String>? = null
     )
+
+    override suspend fun submitScanStats(
+        deviceId: String,
+        fossCount: Int,
+        proprietaryCount: Int,
+        unknownCount: Int,
+        appVersion: String?
+    ): Result<Unit> = runCatching {
+        val userId = supabase.auth.currentUserOrNull()?.id
+        
+        val stats = AppScanStatsDto(
+            deviceId = deviceId,
+            userId = userId,
+            fossCount = fossCount,
+            proprietaryCount = proprietaryCount,
+            unknownCount = unknownCount,
+            totalApps = fossCount + proprietaryCount + unknownCount,
+            appVersion = appVersion
+        )
+        
+        supabase.postgrest.from("app_scan_stats").upsert(stats) {
+            onConflict = "device_id"
+            defaultToNull = false
+        }
+        Log.d("SupabaseAppRepo", "Scan stats submitted for device: $deviceId")
+    }
 }
 
