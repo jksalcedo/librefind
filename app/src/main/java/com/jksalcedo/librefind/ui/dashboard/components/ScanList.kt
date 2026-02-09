@@ -23,6 +23,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Android
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -47,6 +48,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import com.jksalcedo.librefind.domain.model.AppItem
+import com.jksalcedo.librefind.domain.model.AppStatus
 import com.jksalcedo.librefind.ui.common.StatusBadge
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -80,6 +82,7 @@ fun ScanList(
     apps: List<AppItem>,
     onAppClick: (String, String) -> Unit,
     onIgnoreClick: (String) -> Unit,
+    onRestoreClick: (String) -> Unit,
     onRefresh: () -> Unit,
     isRefreshing: Boolean,
     modifier: Modifier = Modifier,
@@ -111,6 +114,7 @@ fun ScanList(
                     app = app,
                     onClick = { onAppClick(app.label, app.packageName) },
                     onIgnoreClick = { onIgnoreClick(app.packageName) },
+                    onRestoreClick = { onRestoreClick(app.packageName)},
                     modifier = Modifier.animateItem()
                 )
             }
@@ -124,6 +128,7 @@ fun AppRow(
     app: AppItem,
     onClick: () -> Unit,
     onIgnoreClick: () -> Unit,
+    onRestoreClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var showMenu by remember { mutableStateOf(false) }
@@ -182,16 +187,29 @@ fun AppRow(
                 expanded = showMenu,
                 onDismissRequest = { showMenu = false }
             ) {
-                DropdownMenuItem(
-                    text = { Text("Ignore") },
-                    onClick = {
-                        showMenu = false
-                        onIgnoreClick()
-                    },
-                    leadingIcon = {
-                        Icon(Icons.Default.VisibilityOff, contentDescription = null)
-                    }
-                )
+                if (app.status != AppStatus.IGNORED) {
+                    DropdownMenuItem(
+                        text = { Text("Ignore") },
+                        onClick = {
+                            showMenu = false
+                            onIgnoreClick()
+                        },
+                        leadingIcon = {
+                            Icon(Icons.Default.VisibilityOff, contentDescription = null)
+                        }
+                    )
+                } else {
+                    DropdownMenuItem(
+                        text = { Text("Restore") },
+                        onClick = {
+                            showMenu = false
+                            onRestoreClick()
+                        },
+                        leadingIcon = {
+                            Icon(Icons.Default.Refresh, contentDescription = null)
+                        }
+                    )
+                }
             }
         }
     }

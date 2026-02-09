@@ -367,6 +367,7 @@ fun DashboardScreen(
                                 apps = state.apps,
                                 onAppClick = onAppClick,
                                 onIgnoreClick = { packageName -> viewModel.ignoreApp(packageName) },
+                                onRestoreClick = { packageName -> viewModel.restoreApp(packageName)},
                                 onRefresh = { viewModel.scan() },
                                 isRefreshing = state.isLoading,
                                 modifier = Modifier.fillMaxSize(),
