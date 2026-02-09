@@ -71,3 +71,14 @@ data class UserReportDto(
     @SerialName("resolved_at") val resolvedAt: String? = null,
     @SerialName("created_at") val createdAt: String? = null
 )
+
+@Serializable
+data class AppScanStatsDto(
+    @SerialName("device_id") val deviceId: String,
+    @SerialName("user_id") val userId: String? = null,
+    @SerialName("foss_count") val fossCount: Int,
+    @SerialName("proprietary_count") val proprietaryCount: Int,
+    @SerialName("unknown_count") val unknownCount: Int,
+    @SerialName("total_apps") val totalApps: Int,
+    @SerialName("app_version") val appVersion: String? = null
+)

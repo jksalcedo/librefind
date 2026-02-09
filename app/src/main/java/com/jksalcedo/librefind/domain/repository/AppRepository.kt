@@ -89,4 +89,12 @@ interface AppRepository {
     suspend fun getAlternativesCount(packageName: String): Int
 
     suspend fun getPendingSubmissionPackages(): Set<String>
+
+    suspend fun submitScanStats(
+        deviceId: String,
+        fossCount: Int,
+        proprietaryCount: Int,
+        unknownCount: Int,
+        appVersion: String? = null
+    ): Result<Unit>
 }
