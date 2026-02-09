@@ -9,3 +9,4 @@ Beta 12
 - Link existing FOSS apps in submissions
 - Add in-app submission tutorial
 - Fix bug in voting system
+- Add obtainium button

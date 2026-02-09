@@ -21,6 +21,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Shop
@@ -101,29 +102,59 @@ fun AlternativeDetailScreen(
                             onDismissRequest = { menuExpanded = false }
                         ) {
                             state.alternative?.let { alt ->
-                                DropdownMenuItem(
-                                    text = { Text("Open in F-Droid") },
-                                    onClick = {
-                                        menuExpanded = false
-                                        val fdroidUri =
-                                            "market://details?id=${alt.fdroidId}".toUri()
-                                        val webUri =
-                                            "https://f-droid.org/packages/${alt.fdroidId}/".toUri()
-                                        try {
-                                            val intent = Intent(Intent.ACTION_VIEW, fdroidUri)
-                                            intent.setPackage("com.fdroid.fdroid")
-                                            context.startActivity(intent)
-                                        } catch (_: Exception) {
-                                            context.startActivity(
-                                                Intent(
-                                                    Intent.ACTION_VIEW,
-                                                    webUri
+                                if (alt.fdroidId.isNotBlank()) {
+                                    DropdownMenuItem(
+                                        text = { Text("Open in F-Droid") },
+                                        onClick = {
+                                            menuExpanded = false
+                                            val fdroidUri =
+                                                "market://details?id=${alt.fdroidId}".toUri()
+                                            val webUri =
+                                                "https://f-droid.org/packages/${alt.fdroidId}/".toUri()
+                                            try {
+                                                val intent = Intent(Intent.ACTION_VIEW, fdroidUri)
+                                                intent.setPackage("com.fdroid.fdroid")
+                                                context.startActivity(intent)
+                                            } catch (_: Exception) {
+                                                context.startActivity(
+                                                    Intent(
+                                                        Intent.ACTION_VIEW,
+                                                        webUri
+                                                    )
                                                 )
-                                            )
-                                        }
-                                    },
-                                    leadingIcon = { Icon(Icons.Default.Shop, null) }
-                                )
+                                            }
+                                        },
+                                        leadingIcon = { Icon(Icons.Default.Shop, null) }
+                                    )
+                                }
+
+                                if (alt.fdroidId.isBlank() && alt.repoUrl.isNotBlank()) {
+                                    DropdownMenuItem(
+                                        text = { Text("Open in Obtainium") },
+                                        onClick = {
+                                            menuExpanded = false
+                                            val obtainiumUri =
+                                                "obtainium://add/${alt.repoUrl}".toUri()
+                                            try {
+                                                context.startActivity(
+                                                    Intent(
+                                                        Intent.ACTION_VIEW,
+                                                        obtainiumUri
+                                                    )
+                                                )
+                                            } catch (_: Exception) {
+                                                context.startActivity(
+                                                    Intent(
+                                                        Intent.ACTION_VIEW,
+                                                        "https://obtainium.imranr.dev".toUri()
+                                                    )
+                                                )
+                                            }
+                                        },
+                                        leadingIcon = { Icon(Icons.Default.Download, null) }
+                                    )
+                                }
+
                                 if (alt.website.isNotBlank()) {
                                     DropdownMenuItem(
                                         text = { Text("Open Website") },
