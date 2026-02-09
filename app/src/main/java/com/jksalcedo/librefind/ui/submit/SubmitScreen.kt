@@ -22,9 +22,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LinkOff
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
@@ -58,6 +58,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.jksalcedo.librefind.domain.model.SubmissionType
+import com.jksalcedo.librefind.ui.common.FieldWithHelp
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -203,45 +204,60 @@ fun SubmitScreen(
                 )
             }
 
-            OutlinedTextField(
-                value = appName,
-                onValueChange = {
-                    appName = it
-                },
-                label = { Text("App Name *") },
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
-                readOnly = uiState.linkedSolution != null
-            )
+            FieldWithHelp(
+                helpTitle = SubmitFieldHelp.appName.title,
+                helpText = SubmitFieldHelp.appName.description,
+                tipText = SubmitFieldHelp.appName.tip
+            ) {
+                OutlinedTextField(
+                    value = appName,
+                    onValueChange = { appName = it },
+                    label = { Text("App Name *") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                    readOnly = uiState.linkedSolution != null
+                )
+            }
 
-            OutlinedTextField(
-                value = packageName,
-                onValueChange = {
-                    packageName = it
-                    viewModel.checkDuplicate(it)
-                    viewModel.validatePackageName(it)
-                },
-                label = { Text("Package Name *") },
-                placeholder = { Text("com.example.app") },
-                singleLine = true,
-                isError = uiState.packageNameError != null,
-                supportingText = {
-                    uiState.packageNameError?.let { error ->
-                        Text(error, color = MaterialTheme.colorScheme.error)
-                    }
-                },
-                modifier = Modifier.fillMaxWidth(),
-                readOnly = uiState.linkedSolution != null
-            )
+            FieldWithHelp(
+                helpTitle = SubmitFieldHelp.packageName.title,
+                helpText = SubmitFieldHelp.packageName.description,
+                tipText = SubmitFieldHelp.packageName.tip
+            ) {
+                OutlinedTextField(
+                    value = packageName,
+                    onValueChange = {
+                        packageName = it
+                        viewModel.checkDuplicate(it)
+                        viewModel.validatePackageName(it)
+                    },
+                    label = { Text("Package Name *") },
+                    placeholder = { Text("com.example.app") },
+                    singleLine = true,
+                    isError = uiState.packageNameError != null,
+                    supportingText = {
+                        uiState.packageNameError?.let { error ->
+                            Text(error, color = MaterialTheme.colorScheme.error)
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    readOnly = uiState.linkedSolution != null
+                )
+            }
 
-            OutlinedTextField(
-                value = description,
-                onValueChange = { description = it },
-                label = { Text("Description (optional)") },
-                minLines = 3,
-                maxLines = 5,
-                modifier = Modifier.fillMaxWidth()
-            )
+            FieldWithHelp(
+                helpTitle = SubmitFieldHelp.description.title,
+                helpText = SubmitFieldHelp.description.description
+            ) {
+                OutlinedTextField(
+                    value = description,
+                    onValueChange = { description = it },
+                    label = { Text("Description *") },
+                    minLines = 3,
+                    maxLines = 5,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
 
             if (type == SubmissionType.NEW_PROPRIETARY) {
                 HorizontalDivider()
@@ -378,14 +394,14 @@ fun SubmitScreen(
                         placeholder = { Text("Search existing database...") },
                         leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                         trailingIcon = {
-                             if (fossSearchQuery.isNotEmpty()) {
-                                 IconButton(onClick = {
-                                     fossSearchQuery = ""
-                                     viewModel.searchFossApps("")
-                                 }) {
-                                     Icon(Icons.Default.Close, contentDescription = "Clear")
-                                 }
-                             }
+                            if (fossSearchQuery.isNotEmpty()) {
+                                IconButton(onClick = {
+                                    fossSearchQuery = ""
+                                    viewModel.searchFossApps("")
+                                }) {
+                                    Icon(Icons.Default.Close, contentDescription = "Clear")
+                                }
+                            }
                         },
                         singleLine = true,
                         modifier = Modifier.fillMaxWidth()
@@ -407,10 +423,10 @@ fun SubmitScreen(
                                                 // Auto-fill fields
                                                 appName = app.name
                                                 packageName = app.packageName
-                                                description = app.description ?: ""
-                                                repoUrl = app.repoUrl ?: ""
-                                                fdroidId = app.fdroidId ?: ""
-                                                license = app.license ?: ""
+                                                description = app.description
+                                                repoUrl = app.repoUrl
+                                                fdroidId = app.fdroidId
+                                                license = app.license
                                             }
                                             .padding(12.dp),
                                         verticalAlignment = Alignment.CenterVertically
@@ -471,15 +487,11 @@ fun SubmitScreen(
                                     color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
                                 )
                             }
-                            IconButton(onClick = { 
-                                viewModel.clearLinkedApp() 
-                                // Optional: Clear fields or keep them? 
-                                // Keeping them allows user to use it as a template, 
-                                // but clearing might be less confusing if they want to start over.
-                                // Let's keep them for now as it's less destructive.
+                            IconButton(onClick = {
+                                viewModel.clearLinkedApp()
                             }) {
                                 Icon(
-                                    Icons.Default.LinkOff, 
+                                    Icons.Default.LinkOff,
                                     contentDescription = "Unlink",
                                     tint = MaterialTheme.colorScheme.onPrimaryContainer
                                 )
@@ -498,21 +510,27 @@ fun SubmitScreen(
 
                 var showDialog by remember { mutableStateOf(false) }
 
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    OutlinedTextField(
-                        value = if (selectedProprietaryPackages.isEmpty()) "" else "${selectedProprietaryPackages.size} selected",
-                        onValueChange = {},
-                        readOnly = true,
-                        label = { Text("Target Proprietary Apps") },
-                        placeholder = { Text("Search to add...") },
-                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = showDialog) },
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Box(
-                        modifier = Modifier
-                            .matchParentSize()
-                            .clickable { showDialog = true }
-                    )
+                FieldWithHelp(
+                    helpTitle = SubmitFieldHelp.targetProprietaryApps.title,
+                    helpText = SubmitFieldHelp.targetProprietaryApps.description,
+                    tipText = SubmitFieldHelp.targetProprietaryApps.tip
+                ) {
+                    Box(modifier = Modifier.fillMaxWidth()) {
+                        OutlinedTextField(
+                            value = if (selectedProprietaryPackages.isEmpty()) "" else "${selectedProprietaryPackages.size} selected",
+                            onValueChange = {},
+                            readOnly = true,
+                            label = { Text("Target Proprietary Apps") },
+                            placeholder = { Text("Search to add...") },
+                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = showDialog) },
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        Box(
+                            modifier = Modifier
+                                .matchParentSize()
+                                .clickable { showDialog = true }
+                        )
+                    }
                 }
 
                 if (selectedProprietaryPackages.isNotEmpty()) {
@@ -558,33 +576,45 @@ fun SubmitScreen(
                     )
                 }
 
-                OutlinedTextField(
-                    value = repoUrl,
-                    onValueChange = {
-                        repoUrl = it
-                        viewModel.validateRepoUrl(it)
-                    },
-                    label = { Text("Repository URL *") },
-                    placeholder = { Text("https://github.com/...") },
-                    singleLine = true,
-                    isError = uiState.repoUrlError != null,
-                    supportingText = {
-                        uiState.repoUrlError?.let { error ->
-                            Text(error, color = MaterialTheme.colorScheme.error)
-                        }
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    readOnly = uiState.linkedSolution != null
-                )
+                FieldWithHelp(
+                    helpTitle = SubmitFieldHelp.repoUrl.title,
+                    helpText = SubmitFieldHelp.repoUrl.description,
+                    tipText = SubmitFieldHelp.repoUrl.tip
+                ) {
+                    OutlinedTextField(
+                        value = repoUrl,
+                        onValueChange = {
+                            repoUrl = it
+                            viewModel.validateRepoUrl(it)
+                        },
+                        label = { Text("Repository URL *") },
+                        placeholder = { Text("https://github.com/...") },
+                        singleLine = true,
+                        isError = uiState.repoUrlError != null,
+                        supportingText = {
+                            uiState.repoUrlError?.let { error ->
+                                Text(error, color = MaterialTheme.colorScheme.error)
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        readOnly = uiState.linkedSolution != null
+                    )
+                }
 
-                OutlinedTextField(
-                    value = fdroidId,
-                    onValueChange = { fdroidId = it },
-                    label = { Text("F-Droid ID") },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
-                    readOnly = uiState.linkedSolution != null
-                )
+                FieldWithHelp(
+                    helpTitle = SubmitFieldHelp.fdroidId.title,
+                    helpText = SubmitFieldHelp.fdroidId.description,
+                    tipText = SubmitFieldHelp.fdroidId.tip
+                ) {
+                    OutlinedTextField(
+                        value = fdroidId,
+                        onValueChange = { fdroidId = it },
+                        label = { Text("F-Droid ID") },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth(),
+                        readOnly = uiState.linkedSolution != null
+                    )
+                }
 
                 var showLicenseDropdown by remember { mutableStateOf(false) }
                 val commonLicenses = listOf(
@@ -612,22 +642,31 @@ fun SubmitScreen(
                 val isCustomLicense = license.isNotBlank() && license !in commonLicenses
                 var showCustomLicenseField by remember(license) { mutableStateOf(isCustomLicense || license == "Other") }
 
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    OutlinedTextField(
-                        value = if (isCustomLicense) "Other" else license,
-                        onValueChange = {},
-                        readOnly = true,
-                        label = { Text("License *") },
-                        placeholder = { Text("Select a license") },
-                        trailingIcon = { if (uiState.linkedSolution == null) ExposedDropdownMenuDefaults.TrailingIcon(expanded = showLicenseDropdown) },
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    if (uiState.linkedSolution == null) {
-                        Box(
-                            modifier = Modifier
-                                .matchParentSize()
-                                .clickable { showLicenseDropdown = true }
+                FieldWithHelp(
+                    helpTitle = SubmitFieldHelp.license.title,
+                    helpText = SubmitFieldHelp.license.description,
+                    tipText = SubmitFieldHelp.license.tip
+                ) {
+                    Box(modifier = Modifier.fillMaxWidth()) {
+                        OutlinedTextField(
+                            value = if (isCustomLicense) "Other" else license,
+                            onValueChange = {},
+                            readOnly = true,
+                            label = { Text("License *") },
+                            placeholder = { Text("Select a license") },
+                            trailingIcon = {
+                                if (uiState.linkedSolution == null)
+                                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = showLicenseDropdown)
+                            },
+                            modifier = Modifier.fillMaxWidth()
                         )
+                        if (uiState.linkedSolution == null) {
+                            Box(
+                                modifier = Modifier
+                                    .matchParentSize()
+                                    .clickable { showLicenseDropdown = true }
+                            )
+                        }
                     }
                 }
 
@@ -655,10 +694,10 @@ fun SubmitScreen(
                                         modifier = Modifier
                                             .fillMaxWidth()
                                             .clickable {
-                                                if (licenseName == "Other") {
-                                                    license = "Other"
+                                                license = if (licenseName == "Other") {
+                                                    "Other"
                                                 } else {
-                                                    license = licenseName
+                                                    licenseName
                                                 }
                                                 showLicenseDropdown = false
                                             }
@@ -710,6 +749,7 @@ fun SubmitScreen(
                 },
                 enabled = appName.isNotBlank() &&
                         packageName.isNotBlank() &&
+                        description.isNotBlank() &&
                         uiState.duplicateWarning == null &&
                         !uiState.isLoading &&
                         uiState.packageNameError == null &&
@@ -744,7 +784,6 @@ fun MultiSelectDialog(
 ) {
     var tempSelection by remember { mutableStateOf(initialSelection) }
     var searchText by remember { mutableStateOf("") }
-    var showSheet by remember { mutableStateOf(false) }
 
     Dialog(
         onDismissRequest = onDismiss,
@@ -852,7 +891,6 @@ fun MultiSelectDialog(
                                 style = MaterialTheme.typography.bodyMedium
                             )
                         }
-                    } else {
                     }
 
                     items(filteredList) { pkg ->
