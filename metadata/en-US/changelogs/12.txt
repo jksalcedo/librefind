@@ -10,3 +10,4 @@ Beta 12
 - Add in-app submission tutorial
 - Fix bug in voting system
 - Add obtainium button
+- Fix bug in alternative details
