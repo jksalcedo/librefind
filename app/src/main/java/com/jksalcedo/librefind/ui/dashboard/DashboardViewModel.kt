@@ -45,6 +45,7 @@ class DashboardViewModel(
     private val _searchQuery = MutableStateFlow("")
     private val _statusFilter = MutableStateFlow<AppStatus?>(null)
     private val _appFilter = MutableStateFlow(AppFilter.ALL)
+    private var lastSubmittedScore: SovereigntyScore? = null
 
     init {
         viewModelScope.launch {
@@ -100,7 +101,10 @@ class DashboardViewModel(
                     )
                 }
 
-                score.let { submitStats(it) }
+                if (score != lastSubmittedScore) {
+                    lastSubmittedScore = score
+                    submitStats(score)
+                }
             }
         }
     }
