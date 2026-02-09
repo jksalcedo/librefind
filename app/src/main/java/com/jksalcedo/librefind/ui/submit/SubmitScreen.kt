@@ -252,7 +252,7 @@ fun SubmitScreen(
                 OutlinedTextField(
                     value = description,
                     onValueChange = { description = it },
-                    label = { Text("Description (optional)") },
+                    label = { Text("Description *") },
                     minLines = 3,
                     maxLines = 5,
                     modifier = Modifier.fillMaxWidth()
@@ -749,6 +749,7 @@ fun SubmitScreen(
                 },
                 enabled = appName.isNotBlank() &&
                         packageName.isNotBlank() &&
+                        description.isNotBlank() &&
                         uiState.duplicateWarning == null &&
                         !uiState.isLoading &&
                         uiState.packageNameError == null &&
