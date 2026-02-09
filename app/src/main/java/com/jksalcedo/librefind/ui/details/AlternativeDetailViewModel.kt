@@ -81,12 +81,29 @@ class AlternativeDetailViewModel(
         rateJob = viewModelScope.launch {
             delay(600)
             try {
-                appRepository.castVote(currentAltId, voteType.key, stars)
-                loadAlternative(currentAltId)
+                appRepository.castVote(currentAltId, voteType.key, stars).getOrThrow()
+                refreshUserVotes()
             } catch (e: Exception) {
                 Log.e("AltDetailVM", "Vote failed", e)
-                // Revert optimistic update on failure
                 loadAlternative(currentAltId)
+            }
+        }
+    }
+
+    private fun refreshUserVotes() {
+        viewModelScope.launch {
+            val user = authRepository.getCurrentUser() ?: return@launch
+            val userVotes = appRepository.getUserVote(currentAltId, user.uid)
+
+            _state.update { state ->
+                state.copy(
+                    alternative = state.alternative?.copy(
+                        userUsabilityRating = userVotes["usability"],
+                        userPrivacyRating = userVotes["privacy"],
+                        userFeaturesRating = userVotes["features"],
+                        userRating = userVotes["usability"]
+                    )
+                )
             }
         }
     }

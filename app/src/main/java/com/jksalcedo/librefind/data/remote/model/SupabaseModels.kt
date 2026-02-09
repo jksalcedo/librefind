@@ -52,8 +52,8 @@ data class ProfileDto(
 
 @Serializable
 data class UserVoteDto(
-    @SerialName("user_id") val userId: String,
-    @SerialName("package_name") val packageName: String,
+    @SerialName("user_id") val userId: String = "",
+    @SerialName("package_name") val packageName: String = "",
     @SerialName("vote_type") val voteType: String,
     val value: Int
 )

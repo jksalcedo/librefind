@@ -574,7 +574,7 @@ private fun UserRatingRow(
                     Icon(
                         Icons.Default.Star,
                         "Rate $star",
-                        tint = if (star <= (userRating ?: 0)) MaterialTheme.colorScheme.primary
+                        tint = if (userRating != null && star <= userRating) MaterialTheme.colorScheme.primary
                         else MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.size(24.dp)
                     )

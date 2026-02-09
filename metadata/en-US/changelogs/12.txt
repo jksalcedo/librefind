@@ -3,3 +3,9 @@ Beta 12
 - Change sovereignty color from gold to green
 - Fix score calculation
 - Fix bugs in duplicate checker
+- Fix navigation to handle special characters
+- Improve submission validation
+- Add rate limiting to feedback submissions
+- Link existing FOSS apps in submissions
+- Add in-app submission tutorial
+- Fix bug in voting system
