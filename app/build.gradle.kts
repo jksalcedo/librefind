@@ -15,8 +15,8 @@ android {
         applicationId = "com.jksalcedo.librefind"
         minSdk = 24
         targetSdk = 36
-        versionCode = 12
-        versionName = "1.0.0-beta12"
+        versionCode = 13
+        versionName = "1.0.0-beta13"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

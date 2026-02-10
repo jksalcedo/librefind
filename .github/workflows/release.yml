@@ -52,14 +52,14 @@ jobs:
           keytool -list -keystore release-keystore.jks \
             -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
             -alias ${{ secrets.KEY_ALIAS }} || {
-            echo "❌ Keystore is corrupted or credentials are wrong"
+            echo "Keystore is corrupted or credentials are wrong"
             exit 1
           }
 
       - name: Sign APK
         run: |
           UNSIGNED_APK=$(find app/build/outputs/apk/release -name '*.apk' | head -1)
-          SIGNED_APK="${UNSIGNED_APK%.apk}-signed.apk"
+          SIGNED_APK="${UNSIGNED_APK%.apk}.apk"
 
           # Zipalign first
           ${ANDROID_HOME}/build-tools/$(ls ${ANDROID_HOME}/build-tools/ | tail -1)/zipalign -v -p 4 \
