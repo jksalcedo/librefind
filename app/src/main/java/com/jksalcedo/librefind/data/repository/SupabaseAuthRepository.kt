@@ -46,6 +46,10 @@ class SupabaseAuthRepository(
                     ProfileDto(id = userId, username = username)
                 )
             }
+        }.also { result ->
+            result.exceptionOrNull()?.let {
+                android.util.Log.e("SignUp", "SignUp failed: ${it.message}", it)
+            }
         }
 
     override suspend fun signIn(email: String, password: String): Result<Unit> = runCatching {

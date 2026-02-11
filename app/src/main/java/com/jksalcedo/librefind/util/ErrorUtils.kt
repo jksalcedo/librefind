@@ -1,5 +1,7 @@
 package com.jksalcedo.librefind.util
 
+import android.util.Log
+
 object ErrorUtils {
 
     fun sanitizeAuthError(error: Throwable): String {
@@ -43,6 +45,8 @@ object ErrorUtils {
                     .substringBefore("(")
                     .substringBefore("Details:")
                     .trim()
+
+                Log.e("AuthError", "Raw error: $message")
 
                 if (cleanMessage.isNotBlank() && cleanMessage.length < 100) {
                     cleanMessage
