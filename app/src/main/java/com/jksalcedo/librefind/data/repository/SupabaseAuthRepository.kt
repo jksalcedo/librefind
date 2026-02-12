@@ -9,6 +9,7 @@ import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.Github
 import io.github.jan.supabase.auth.providers.builtin.Email
 import io.github.jan.supabase.auth.status.SessionStatus
+import io.github.jan.supabase.auth.user.UserInfo
 import io.github.jan.supabase.postgrest.postgrest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -25,7 +26,10 @@ class SupabaseAuthRepository(
 
     override val currentUser: Flow<UserProfile?> = auth.sessionStatus.map { status ->
         if (status is SessionStatus.Authenticated) {
-            fetchUserProfile(status.session.user?.id)
+            status.session.user?.let { user ->
+                ensureProfileCreated(user)
+                fetchUserProfile(user.id)
+            }
         } else {
             null
         }
@@ -70,6 +74,7 @@ class SupabaseAuthRepository(
 
     override suspend fun getCurrentUser(): UserProfile? {
         val user = auth.currentUserOrNull() ?: return null
+        ensureProfileCreated(user)
         return fetchUserProfile(user.id)
     }
 
@@ -91,9 +96,10 @@ class SupabaseAuthRepository(
 
     override suspend fun deleteAccount(): Result<Unit> = runCatching {
         supabase.postgrest.rpc("delete_account")
-        auth.currentUserOrNull()?.id.let {
-            auth.admin.deleteUser(it!!)
-        }
+        val userId = auth.currentUserOrNull()?.id ?: throw IllegalStateException("Not logged in")
+
+        auth.admin.deleteUser(userId)
+
         auth.signOut()
     }
 
@@ -127,6 +133,23 @@ class SupabaseAuthRepository(
         } catch (e: Exception) {
             e.printStackTrace()
             null
+        }
+    }
+
+    private suspend fun ensureProfileCreated(user: UserInfo) {
+        try {
+            val userId = user.id
+            // Try to extract username from metadata, usually in 'user_name' or 'preferred_username' for GitHub
+            val metadata = user.userMetadata
+            val username = metadata?.get("user_name")?.toString()?.replace("\"", "")
+                ?: metadata?.get("preferred_username")?.toString()?.replace("\"", "")
+                ?: ""
+
+            supabase.postgrest.from("profiles").upsert(
+                ProfileDto(id = userId, username = username)
+            )
+        } catch (e: Exception) {
+            android.util.Log.e("AuthRepository", "Failed to ensure profile creation", e)
         }
     }
 }
