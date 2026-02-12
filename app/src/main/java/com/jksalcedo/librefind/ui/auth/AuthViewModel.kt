@@ -105,6 +105,29 @@ class AuthViewModel(
         }
     }
 
+    fun signInWithGithub() {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isLoading = true, error = null)
+            authRepository.signInWithGithub()
+                .onSuccess {
+                    // Logic for success similar to signIn/signUp
+                    val currentUser = authRepository.getCurrentUser()
+                     _uiState.value = _uiState.value.copy(
+                        isLoading = false,
+                        isSignedIn = true,
+                        needsProfileSetup = currentUser?.username?.isBlank() ?: false,
+                        userProfile = currentUser
+                    )
+                }
+                .onFailure { e ->
+                    _uiState.value = _uiState.value.copy(
+                        isLoading = false,
+                        error = sanitizeAuthError(e.message)
+                    )
+                }
+        }
+    }
+
     fun saveProfile(username: String) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)

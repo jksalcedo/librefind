@@ -150,6 +150,28 @@ fun AuthScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                HorizontalDivider(modifier = Modifier.weight(1f))
+                Text(
+                    text = "OR",
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    style = MaterialTheme.typography.bodySmall
+                )
+                HorizontalDivider(modifier = Modifier.weight(1f))
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            OutlinedButton(
+                onClick = { viewModel.signInWithGithub() },
+                modifier = Modifier.fillMaxWidth(),
+                enabled = !uiState.isLoading
+            ) {
+                Text("Sign in with GitHub")
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             TextButton(onClick = { isSignUp = !isSignUp }) {
                 Text(
                     if (isSignUp) "Already have an account? Sign In"

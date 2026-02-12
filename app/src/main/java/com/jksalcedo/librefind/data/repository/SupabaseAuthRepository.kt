@@ -6,6 +6,7 @@ import com.jksalcedo.librefind.domain.repository.AuthRepository
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.auth.auth
+import io.github.jan.supabase.auth.providers.Github
 import io.github.jan.supabase.auth.providers.builtin.Email
 import io.github.jan.supabase.auth.status.SessionStatus
 import io.github.jan.supabase.postgrest.postgrest
@@ -46,6 +47,10 @@ class SupabaseAuthRepository(
                     ProfileDto(id = userId, username = username)
                 )
             }
+        }.also { result ->
+            result.exceptionOrNull()?.let {
+                android.util.Log.e("SignUp", "SignUp failed: ${it.message}", it)
+            }
         }
 
     override suspend fun signIn(email: String, password: String): Result<Unit> = runCatching {
@@ -53,6 +58,10 @@ class SupabaseAuthRepository(
             this.email = email
             this.password = password
         }
+    }
+
+    override suspend fun signInWithGithub(): Result<Unit> = runCatching {
+        auth.signInWith(Github, redirectUrl = "librefind://login-callback")
     }
 
     override suspend fun signOut() {
@@ -82,6 +91,9 @@ class SupabaseAuthRepository(
 
     override suspend fun deleteAccount(): Result<Unit> = runCatching {
         supabase.postgrest.rpc("delete_account")
+        auth.currentUserOrNull()?.id.let {
+            auth.admin.deleteUser(it!!)
+        }
         auth.signOut()
     }
 
