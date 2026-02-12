@@ -51,6 +51,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.VolunteerActivism
+import androidx.compose.material.icons.filled.PrivacyTip
 import com.jksalcedo.librefind.data.local.PreferencesManager
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
@@ -112,6 +113,7 @@ fun SettingsScreen(
     onBackClick: () -> Unit,
     onReportClick: () -> Unit = {},
     onMyReportsClick: () -> Unit = {},
+    onPrivacyPolicyClick: () -> Unit = {},
     viewModel: SettingsViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsState()
@@ -215,6 +217,12 @@ fun SettingsScreen(
                     icon = Icons.Default.VolunteerActivism,
                     label = "Donate to LibreFind",
                     onClick = { uriHandler.openUri("https://ko-fi.com/jksalcedo") }
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                SettingsLinkButton(
+                    icon = Icons.Default.PrivacyTip,
+                    label = "Privacy Policy",
+                    onClick = onPrivacyPolicyClick
                 )
             }
 

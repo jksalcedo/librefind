@@ -202,7 +202,16 @@ fun NavGraph(
                     } else {
                         navController.navigate(Route.Auth.route)
                     }
+                },
+                onPrivacyPolicyClick = {
+                    navController.navigate(Route.PrivacyPolicy.route)
                 }
+            )
+        }
+
+        composable(Route.PrivacyPolicy.route) {
+            com.jksalcedo.librefind.ui.settings.PrivacyPolicyScreen(
+                onBackClick = { navController.navigateUp() }
             )
         }
 

@@ -38,4 +38,5 @@ sealed class Route(val route: String) {
     data object Settings : Route("settings")
     data object Report : Route("report")
     data object MyReports : Route("my_reports")
+    data object PrivacyPolicy : Route("privacy_policy")
 }
