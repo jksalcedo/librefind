@@ -16,6 +16,7 @@ val UnknownGrayLight = Color(0xFF9E9E9E)
 val UnknownGrayDark = Color(0xFF616161)
 
 val PendingOrange = Color(0xFFFFA000)   // Pending submission status
+val IgnoredGray = Color(0xFF9E9E9E)     // Ignored apps - italic styled
 
 // Sovereignty Levels
 val SovereignGreen = Color(0xFF4CAF50)   // Sovereign level achievement
