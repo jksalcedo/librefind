@@ -1,0 +1,23 @@
+[weblate.components.app_strings]
+name = "App Strings"
+repo = "."
+file_format = "android"
+search = "app/src/main/res/values/strings.xml"
+
+[weblate.components.metadata_title]
+name = "Metadata: Title"
+repo = "."
+file_format = "txt"
+search = "metadata/en-US/title.txt"
+
+[weblate.components.metadata_short_description]
+name = "Metadata: Short Description"
+repo = "."
+file_format = "txt"
+search = "metadata/en-US/short_description.txt"
+
+[weblate.components.metadata_full_description]
+name = "Metadata: Full Description"
+repo = "."
+file_format = "txt"
+search = "metadata/en-US/full_description.txt"
