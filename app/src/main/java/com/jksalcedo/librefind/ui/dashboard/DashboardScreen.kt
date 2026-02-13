@@ -187,7 +187,19 @@ fun DashboardScreen(
                                     )
                                     HorizontalDivider()
                                     DropdownMenuItem(
-                                        text = { Text("PROP with Alternatives") },
+                                        text = { Text("All Proprietary") },
+                                        onClick = {
+                                            viewModel.setAppFilter(AppFilter.PROP_ONLY)
+                                            showFilterMenu = false
+                                        },
+                                        leadingIcon = {
+                                            if (state.appFilter == AppFilter.PROP_ONLY) {
+                                                Icon(Icons.Default.Check, contentDescription = null)
+                                            }
+                                        }
+                                    )
+                                    DropdownMenuItem(
+                                        text = { Text("With Alternatives") },
                                         onClick = {
                                             viewModel.setAppFilter(AppFilter.PROP_WITH_ALTERNATIVES)
                                             showFilterMenu = false
@@ -199,7 +211,7 @@ fun DashboardScreen(
                                         }
                                     )
                                     DropdownMenuItem(
-                                        text = { Text("PROP without Alternatives") },
+                                        text = { Text("Without Alternatives") },
                                         onClick = {
                                             viewModel.setAppFilter(AppFilter.PROP_NO_ALTERNATIVES)
                                             showFilterMenu = false

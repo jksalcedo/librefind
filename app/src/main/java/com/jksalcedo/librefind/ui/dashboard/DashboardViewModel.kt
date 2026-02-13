@@ -22,6 +22,7 @@ import kotlinx.coroutines.launch
 
 enum class AppFilter {
     ALL,
+    PROP_ONLY,
     PROP_WITH_ALTERNATIVES,
     PROP_NO_ALTERNATIVES,
     FOSS_ONLY,
@@ -76,6 +77,7 @@ class DashboardViewModel(
                         } else {
                             when (appFilter) {
                                 AppFilter.ALL -> app.status != AppStatus.IGNORED
+                                AppFilter.PROP_ONLY -> app.status == AppStatus.PROP
                                 AppFilter.PROP_WITH_ALTERNATIVES -> app.status == AppStatus.PROP && app.knownAlternatives > 0
                                 AppFilter.PROP_NO_ALTERNATIVES -> app.status == AppStatus.PROP && app.knownAlternatives == 0
                                 AppFilter.FOSS_ONLY -> app.status == AppStatus.FOSS
@@ -121,12 +123,30 @@ class DashboardViewModel(
 
     fun setStatusFilter(status: AppStatus?) {
         _statusFilter.value = status
-        _appFilter.value = AppFilter.ALL
+        // Sync app filter based on status
+        _appFilter.value = when (status) {
+            AppStatus.FOSS -> AppFilter.FOSS_ONLY
+            AppStatus.PROP -> AppFilter.PROP_ONLY
+            AppStatus.UNKN -> AppFilter.UNKNOWN_ONLY
+            AppStatus.PENDING -> AppFilter.PENDING_ONLY
+            AppStatus.IGNORED -> AppFilter.IGNORED_ONLY
+            null -> AppFilter.ALL
+        }
     }
 
     fun setAppFilter(filter: AppFilter) {
         _appFilter.value = filter
-        _statusFilter.value = null
+        // Sync status filter based on app filter
+        _statusFilter.value = when (filter) {
+            AppFilter.FOSS_ONLY -> AppStatus.FOSS
+            AppFilter.PROP_ONLY,
+            AppFilter.PROP_WITH_ALTERNATIVES,
+            AppFilter.PROP_NO_ALTERNATIVES -> AppStatus.PROP
+            AppFilter.UNKNOWN_ONLY -> AppStatus.UNKN
+            AppFilter.PENDING_ONLY -> AppStatus.PENDING
+            AppFilter.IGNORED_ONLY -> AppStatus.IGNORED
+            AppFilter.ALL -> null
+        }
     }
 
     fun ignoreApp(packageName: String) {
