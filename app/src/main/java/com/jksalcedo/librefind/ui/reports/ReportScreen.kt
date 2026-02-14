@@ -32,11 +32,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.jksalcedo.librefind.R
 import com.jksalcedo.librefind.domain.model.ReportPriority
 import com.jksalcedo.librefind.domain.model.ReportType
-import androidx.compose.ui.res.stringResource
-import com.jksalcedo.librefind.R
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -147,7 +148,6 @@ fun ReportScreen(
                     CircularProgressIndicator(
                         modifier = Modifier.height(20.dp),
                         color = MaterialTheme.colorScheme.onPrimary
-                    )
                     )
                 } else {
                     Text(stringResource(R.string.report_submit_button))

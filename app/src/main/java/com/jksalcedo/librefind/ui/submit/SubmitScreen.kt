@@ -721,8 +721,9 @@ fun SubmitContent(
                         stringResource(R.string.submit_other)
                     )
 
+                    val otherLicenseString = stringResource(R.string.submit_other)
                     val isCustomLicense = license.isNotBlank() && license !in commonLicenses
-                    var showCustomLicenseField by remember(license) { mutableStateOf(isCustomLicense || license == stringResource(R.string.submit_other)) }
+                    var showCustomLicenseField by remember(license, otherLicenseString) { mutableStateOf(isCustomLicense || license == otherLicenseString) }
 
                     val licenseHelp = SubmitFieldHelp.getLicense()
                     FieldWithHelp(
@@ -777,8 +778,8 @@ fun SubmitContent(
                                             modifier = Modifier
                                                 .fillMaxWidth()
                                                 .clickable {
-                                                    license = if (licenseName == stringResource(R.string.submit_other)) {
-                                                        stringResource(R.string.submit_other)
+                                                    license = if (licenseName == otherLicenseString) {
+                                                        otherLicenseString
                                                     } else {
                                                         licenseName
                                                     }

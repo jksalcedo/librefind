@@ -104,6 +104,7 @@
     <string name="submit_link_solutions_title">Link Existing Solutions</string>
     <string name="submit_link_solutions_desc">Link an existing FOSS app to an existing proprietary app in our database.</string>
     <string name="submit_target_app">Target Proprietary App</string>
+    <string name="submit_link_solutions_target">Select the proprietary app that this FOSS solution replaces.</string>
     <string name="submit_select_target">Select a target app...</string>
     <string name="submit_select_solutions">Select Solutions to Link</string>
     <string name="submit_search_solutions">Search for solutions</string>
