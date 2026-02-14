@@ -2,6 +2,8 @@ package com.jksalcedo.librefind.ui.settings
 
 import android.content.pm.PackageManager
 import android.os.Build
+import androidx.compose.foundation.LocalIndication
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,7 +23,9 @@ import androidx.compose.material.icons.filled.Feedback
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.PrivacyTip
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.VolunteerActivism
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -33,7 +37,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -47,16 +50,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.VolunteerActivism
-import androidx.compose.material.icons.filled.PrivacyTip
+import com.jksalcedo.librefind.R
 import com.jksalcedo.librefind.data.local.PreferencesManager
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
-import androidx.compose.ui.res.stringResource
-import com.jksalcedo.librefind.R
 
 // ──────────────────────────────────
 // Reusable section card composable
@@ -95,14 +97,25 @@ private fun SettingsLinkButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    OutlinedButton(
-        onClick = onClick,
-        modifier = modifier.fillMaxWidth()
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(42.dp)
+            .clickable(
+                interactionSource = null,
+                indication = LocalIndication.current,
+                onClick = onClick
+            ),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(icon, contentDescription = null)
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(label)
+        Spacer(modifier = Modifier.width(12.dp))
+        Text(
+            label,
+            textAlign = TextAlign.Start
+        )
     }
+
 }
 
 // ───────────────────────
@@ -119,9 +132,9 @@ fun SettingsScreen(
     viewModel: SettingsViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsState()
+    val preferencesManager: PreferencesManager = koinInject()
     val context = LocalContext.current
     val uriHandler = LocalUriHandler.current
-    val preferencesManager: PreferencesManager = koinInject()
 
     val version = remember {
         val packageManager = context.packageManager
@@ -134,6 +147,49 @@ fun SettingsScreen(
         }
         packageInfo.versionName ?: "Unknown"
     }
+
+    SettingsContent(
+        state = state,
+        version = version,
+        onBackClick = onBackClick,
+        onReportClick = onReportClick,
+        onMyReportsClick = onMyReportsClick,
+        onPrivacyPolicyClick = onPrivacyPolicyClick,
+        onResetTutorial = { preferencesManager.resetTutorial() },
+        onOpenUri = { uriHandler.openUri(it) },
+        onClearCacheRequest = { viewModel.showClearConfirmation() },
+        onClearCacheConfirm = { viewModel.clearCache() },
+        onClearCacheDismiss = { viewModel.hideClearConfirmation() },
+        onDeleteAccountRequest = { viewModel.showDeleteAccountConfirmation() },
+        onDeleteAccountConfirm = { viewModel.deleteAccount() },
+        onDeleteAccountDismiss = { viewModel.hideDeleteAccountConfirmation() },
+        onDeleteAccountErrorDismiss = { viewModel.clearDeleteAccountError() },
+        onAccountDeletedDismiss = onBackClick
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SettingsContent(
+    state: SettingsState,
+    version: String,
+    onBackClick: () -> Unit,
+    onReportClick: () -> Unit,
+    onMyReportsClick: () -> Unit,
+    onPrivacyPolicyClick: () -> Unit,
+    onResetTutorial: () -> Unit,
+    onOpenUri: (String) -> Unit,
+    // Cache Actions
+    onClearCacheRequest: () -> Unit,
+    onClearCacheConfirm: () -> Unit,
+    onClearCacheDismiss: () -> Unit,
+    // Account Actions
+    onDeleteAccountRequest: () -> Unit,
+    onDeleteAccountConfirm: () -> Unit,
+    onDeleteAccountDismiss: () -> Unit,
+    onDeleteAccountErrorDismiss: () -> Unit,
+    onAccountDeletedDismiss: () -> Unit
+) {
 
     Scaffold(
         topBar = {
@@ -155,19 +211,10 @@ fun SettingsScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // 1. Cache Management
-            CacheManagementSection(state = state, viewModel = viewModel)
+            // Cache Management
+            CacheManagementSection(state = state, onClearCacheRequest = onClearCacheRequest)
 
-            //  2. Help
-            SettingsSection(title = stringResource(R.string.settings_help)) {
-                SettingsLinkButton(
-                    icon = Icons.Default.Refresh,
-                    label = stringResource(R.string.settings_reset_tutorial),
-                    onClick = { preferencesManager.resetTutorial() }
-                )
-            }
-
-            //  3. Feedback & Community
+            //  Feedback & Community
             SettingsSection(title = stringResource(R.string.settings_feedback)) {
                 SettingsLinkButton(
                     icon = Icons.Default.Feedback,
@@ -184,13 +231,22 @@ fun SettingsScreen(
                 SettingsLinkButton(
                     icon = Icons.Default.BugReport,
                     label = stringResource(R.string.settings_github_issues),
-                    onClick = { uriHandler.openUri("https://github.com/jksalcedo/librefind/issues") }
+                    onClick = { onOpenUri("https://github.com/jksalcedo/librefind/issues") }
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 SettingsLinkButton(
                     icon = Icons.Default.Group,
                     label = stringResource(R.string.settings_join_community),
-                    onClick = { uriHandler.openUri("https://t.me/librefind") }
+                    onClick = { onOpenUri("https://t.me/librefind") }
+                )
+            }
+
+            //  Help
+            SettingsSection(title = stringResource(R.string.settings_help)) {
+                SettingsLinkButton(
+                    icon = Icons.Default.Refresh,
+                    label = stringResource(R.string.settings_reset_tutorial),
+                    onClick = onResetTutorial
                 )
             }
 
@@ -201,7 +257,10 @@ fun SettingsScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(stringResource(R.string.settings_version), style = MaterialTheme.typography.bodyLarge)
+                    Text(
+                        stringResource(R.string.settings_version),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
                     Text(
                         text = version,
                         style = MaterialTheme.typography.bodyMedium,
@@ -212,13 +271,13 @@ fun SettingsScreen(
                 SettingsLinkButton(
                     icon = Icons.Default.Info,
                     label = stringResource(R.string.settings_view_github),
-                    onClick = { uriHandler.openUri("https://github.com/jksalcedo/librefind") }
+                    onClick = { onOpenUri("https://github.com/jksalcedo/librefind") }
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 SettingsLinkButton(
                     icon = Icons.Default.VolunteerActivism,
                     label = stringResource(R.string.settings_donate),
-                    onClick = { uriHandler.openUri("https://ko-fi.com/jksalcedo") }
+                    onClick = { onOpenUri("https://ko-fi.com/jksalcedo") }
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 SettingsLinkButton(
@@ -229,15 +288,23 @@ fun SettingsScreen(
             }
 
             // 5. Account
-            AccountSection(state = state, viewModel = viewModel)
+            AccountSection(onDeleteAccountRequest = onDeleteAccountRequest)
         }
     }
 
     // Dialogs
-    ClearCacheDialog(state = state, viewModel = viewModel)
-    DeleteAccountDialog(state = state, viewModel = viewModel)
-    AccountDeletedDialog(state = state, onDismiss = onBackClick)
-    DeleteAccountErrorDialog(state = state, viewModel = viewModel)
+    ClearCacheDialog(
+        state = state,
+        onConfirm = onClearCacheConfirm,
+        onDismiss = onClearCacheDismiss
+    )
+    DeleteAccountDialog(
+        state = state,
+        onConfirm = onDeleteAccountConfirm,
+        onDismiss = onDeleteAccountDismiss
+    )
+    AccountDeletedDialog(state = state, onDismiss = onAccountDeletedDismiss)
+    DeleteAccountErrorDialog(state = state, onDismiss = onDeleteAccountErrorDismiss)
 }
 
 // ─────────────────────────────────────────────
@@ -247,7 +314,7 @@ fun SettingsScreen(
 @Composable
 private fun CacheManagementSection(
     state: SettingsState,
-    viewModel: SettingsViewModel
+    onClearCacheRequest: () -> Unit
 ) {
     SettingsSection(title = stringResource(R.string.settings_cache_management)) {
         Row(
@@ -256,7 +323,10 @@ private fun CacheManagementSection(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column {
-                Text(stringResource(R.string.settings_cache_size), style = MaterialTheme.typography.bodyLarge)
+                Text(
+                    stringResource(R.string.settings_cache_size),
+                    style = MaterialTheme.typography.bodyLarge
+                )
                 Text(
                     text = state.cacheSizeMB,
                     style = MaterialTheme.typography.bodyMedium,
@@ -264,7 +334,7 @@ private fun CacheManagementSection(
                 )
             }
             Button(
-                onClick = { viewModel.showClearConfirmation() },
+                onClick = onClearCacheRequest,
                 enabled = !state.isClearing,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.error
@@ -287,12 +357,11 @@ private fun CacheManagementSection(
 
 @Composable
 private fun AccountSection(
-    state: SettingsState,
-    viewModel: SettingsViewModel
+    onDeleteAccountRequest: () -> Unit
 ) {
     SettingsSection(title = stringResource(R.string.settings_account)) {
         Button(
-            onClick = { viewModel.showDeleteAccountConfirmation() },
+            onClick = onDeleteAccountRequest,
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.error
             ),
@@ -312,19 +381,20 @@ private fun AccountSection(
 @Composable
 private fun ClearCacheDialog(
     state: SettingsState,
-    viewModel: SettingsViewModel
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
 ) {
     if (!state.showClearConfirmation) return
 
     AlertDialog(
-        onDismissRequest = { viewModel.hideClearConfirmation() },
+        onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.settings_clear_cache_title)) },
         text = {
             Text(stringResource(R.string.settings_clear_cache_message))
         },
         confirmButton = {
             TextButton(
-                onClick = { viewModel.clearCache() },
+                onClick = onConfirm,
                 colors = ButtonDefaults.textButtonColors(
                     contentColor = MaterialTheme.colorScheme.error
                 )
@@ -333,7 +403,7 @@ private fun ClearCacheDialog(
             }
         },
         dismissButton = {
-            TextButton(onClick = { viewModel.hideClearConfirmation() }) {
+            TextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.settings_cancel))
             }
         }
@@ -343,19 +413,20 @@ private fun ClearCacheDialog(
 @Composable
 private fun DeleteAccountDialog(
     state: SettingsState,
-    viewModel: SettingsViewModel
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
 ) {
     if (!state.showDeleteAccountConfirmation) return
 
     AlertDialog(
-        onDismissRequest = { viewModel.hideDeleteAccountConfirmation() },
+        onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.settings_delete_account_title)) },
         text = {
             Text(stringResource(R.string.settings_delete_account_message))
         },
         confirmButton = {
             TextButton(
-                onClick = { viewModel.deleteAccount() },
+                onClick = onConfirm,
                 colors = ButtonDefaults.textButtonColors(
                     contentColor = MaterialTheme.colorScheme.error
                 ),
@@ -373,7 +444,7 @@ private fun DeleteAccountDialog(
         },
         dismissButton = {
             if (!state.isDeletingAccount) {
-                TextButton(onClick = { viewModel.hideDeleteAccountConfirmation() }) {
+                TextButton(onClick = onDismiss) {
                     Text(stringResource(R.string.settings_cancel))
                 }
             }
@@ -403,18 +474,41 @@ private fun AccountDeletedDialog(
 @Composable
 private fun DeleteAccountErrorDialog(
     state: SettingsState,
-    viewModel: SettingsViewModel
+    onDismiss: () -> Unit
 ) {
     val error = state.deleteAccountError ?: return
 
     AlertDialog(
-        onDismissRequest = { viewModel.clearDeleteAccountError() },
+        onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.settings_error)) },
         text = { Text(error) },
         confirmButton = {
-            TextButton(onClick = { viewModel.clearDeleteAccountError() }) {
+            TextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.settings_ok))
             }
         }
+    )
+}
+
+@Preview
+@Composable
+fun SettingsScreenPreview() {
+    SettingsContent(
+        state = SettingsState(),
+        version = "1.0.0",
+        onBackClick = {},
+        onReportClick = {},
+        onMyReportsClick = {},
+        onPrivacyPolicyClick = {},
+        onResetTutorial = {},
+        onOpenUri = {},
+        onClearCacheRequest = {},
+        onClearCacheConfirm = {},
+        onClearCacheDismiss = {},
+        onDeleteAccountRequest = {},
+        onDeleteAccountConfirm = {},
+        onDeleteAccountDismiss = {},
+        onDeleteAccountErrorDismiss = {},
+        onAccountDeletedDismiss = {}
     )
 }
