@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">LibreFind</string>
-    <string name="dashboard_search_hint">Kontrol Paneli</string>
+    <string name="dashboard_search_hint">Uygulama Ara...</string>
+    <string name="dashboard_search">Arama</string>
+    <string name="dashboard_filter">Filtre</string>
+    <string name="dashboard_filter_show_all">Hepsini Göster</string>
 </resources>
