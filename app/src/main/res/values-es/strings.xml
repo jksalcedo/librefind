@@ -1,3 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="app_name">LibreFind</string>
+    <string name="auth_email">Email</string>
+    <string name="auth_password">Password</string>
+    <string name="auth_or">O</string>
+    <string name="setup_continue">Continúa</string>
+    <string name="submit_package_placeholder">com.ejemplo.app</string>
+    <string name="submit_description">Descripción</string>
+    <string name="submit_repo_placeholder">https://github.com/...</string>
+    <string name="submit_other">Otro</string>
+    <string name="submit_confirm">Confirma</string>
+    <string name="help_description_title">Descripción</string>
+    <string name="settings_ok">OK</string>
+</resources>
