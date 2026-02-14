@@ -23,6 +23,8 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import com.jksalcedo.librefind.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -32,7 +34,7 @@ fun PrivacyPolicyScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Privacy Policy") },
+                title = { Text(stringResource(R.string.settings_privacy_policy)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
@@ -52,126 +54,128 @@ fun PrivacyPolicyScreen(
                 .padding(16.dp)
         ) {
             Text(
-                text = "Privacy Policy for LibreFind",
+                text = stringResource(R.string.privacy_title),
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Last updated: February 10, 2026",
+                text = stringResource(R.string.privacy_last_updated),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Spacer(modifier = Modifier.height(16.dp))
 
+            Spacer(modifier = Modifier.height(16.dp))
+
             Text(
-                text = "This Privacy Policy describes how LibreFind (\"we\", \"us\", or \"our\") collects, uses, and discloses your information when you use our mobile application (the \"Service\").",
+                text = stringResource(R.string.privacy_intro),
                 style = MaterialTheme.typography.bodyLarge
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "By using the Service, you agree to the collection and use of information in accordance with this policy.",
+                text = stringResource(R.string.privacy_agreement),
                 style = MaterialTheme.typography.bodyLarge
             )
             Spacer(modifier = Modifier.height(24.dp))
 
-            SectionTitle("1. Information We Collect")
+            SectionTitle(stringResource(R.string.privacy_section_1))
             Text(
-                text = "We collect the minimum amount of data necessary to provide our services.",
+                text = stringResource(R.string.privacy_section_1_desc),
                 style = MaterialTheme.typography.bodyLarge
             )
             Spacer(modifier = Modifier.height(16.dp))
 
-            SubsectionTitle("A. Device & Usage Data (Anonymous)")
+            SubsectionTitle(stringResource(R.string.privacy_subsection_1a))
             Text(
-                text = "When you scan your device, we collect the following anonymized data to generate your sovereignty score:",
+                text = stringResource(R.string.privacy_subsection_1a_desc),
                 style = MaterialTheme.typography.bodyLarge
             )
             Spacer(modifier = Modifier.height(8.dp))
-            BulletPoint("Device ID: A randomly generated unique identifier (UUID) stored locally on your device. This allows us to sync your preferences without tracking your real identity.")
-            BulletPoint("App Statistics: The total count of installed apps, count of FOSS (Free and Open Source Software) apps, count of proprietary apps, and count of unknown/unclassified apps.")
+            BulletPoint(stringResource(R.string.privacy_bullet_device_id))
+            BulletPoint(stringResource(R.string.privacy_bullet_app_stats))
             Text(
-                text = "Note: We send your installed app package names to our servers solely for classification purposes (determining FOSS vs. proprietary status). We do not store or log these package names beyond what is necessary for the query.",
+                text = stringResource(R.string.privacy_note_app_names),
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(start = 16.dp, top = 4.dp, bottom = 4.dp),
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-            BulletPoint("App Version: The version of LibreFind you are using.")
+            BulletPoint(stringResource(R.string.privacy_bullet_app_version))
             Spacer(modifier = Modifier.height(16.dp))
 
-            SubsectionTitle("B. Account Data (Optional)")
+            SubsectionTitle(stringResource(R.string.privacy_subsection_1b))
             Text(
-                text = "If you choose to create an account to contribute alternatives or sync data, we collect:",
+                text = stringResource(R.string.privacy_subsection_1b_desc),
                 style = MaterialTheme.typography.bodyLarge
             )
             Spacer(modifier = Modifier.height(8.dp))
-            BulletPoint("Username & Email: To identify you and prevent spam.")
-            BulletPoint("Password: Securely hashed by our authentication provider. We never have access to your plaintext password.")
-            BulletPoint("User Submissions: Any alternative app suggestions or votes you submit to the community database.")
+            BulletPoint(stringResource(R.string.privacy_bullet_user_email))
+            BulletPoint(stringResource(R.string.privacy_bullet_password))
+            BulletPoint(stringResource(R.string.privacy_bullet_submissions))
             Spacer(modifier = Modifier.height(24.dp))
 
-            SectionTitle("2. How We Use Your Information")
+            SectionTitle(stringResource(R.string.privacy_section_2))
             Text(
-                text = "We use the collected data for the following purposes:",
+                text = stringResource(R.string.privacy_section_2_desc),
                 style = MaterialTheme.typography.bodyLarge
             )
             Spacer(modifier = Modifier.height(8.dp))
-            BulletPoint("To Provide the Service: Calculating your \"Sovereignty Score\" and syncing your preferences across devices.")
-            BulletPoint("To Improve Our Service: Your submissions help us identify proprietary apps that need FOSS alternatives.")
-            BulletPoint("Security & Authentication: Your email and password are used strictly to secure your account.")
-            BulletPoint("Community Features: To prevent vote manipulation (spam) on app recommendations.")
+            BulletPoint(stringResource(R.string.privacy_bullet_provide_service))
+            BulletPoint(stringResource(R.string.privacy_bullet_improve_service))
+            BulletPoint(stringResource(R.string.privacy_bullet_security))
+            BulletPoint(stringResource(R.string.privacy_bullet_community))
             Spacer(modifier = Modifier.height(24.dp))
 
-            SectionTitle("3. Third-Party Services")
+            SectionTitle(stringResource(R.string.privacy_section_3))
             Text(
-                text = "We use trusted third-party services to operate our infrastructure. We do not sell your data. We do not share your data with third parties for advertising purposes.",
+                text = stringResource(R.string.privacy_section_3_desc),
                 style = MaterialTheme.typography.bodyLarge
             )
             Spacer(modifier = Modifier.height(16.dp))
 
-            SubsectionTitle("Supabase")
+            SubsectionTitle(stringResource(R.string.privacy_subsection_supabase))
             Text(
-                text = "We use Supabase as our backend database and authentication provider.",
+                text = stringResource(R.string.privacy_subsection_supabase_desc),
                 style = MaterialTheme.typography.bodyLarge
             )
             Spacer(modifier = Modifier.height(8.dp))
-            BulletPoint("Data stored: User accounts, submissions, and anonymized stats.")
-            BulletPoint("Privacy Policy: https://supabase.com/privacy")
+            BulletPoint(stringResource(R.string.privacy_bullet_supabase_data))
+            BulletPoint(stringResource(R.string.privacy_bullet_supabase_policy))
             Spacer(modifier = Modifier.height(24.dp))
 
-            SectionTitle("4. Data Security")
+            SectionTitle(stringResource(R.string.privacy_section_4))
             Text(
-                text = "We implement industry-standard security measures to protect your data, including encrypted connections (HTTPS/TLS) and secure authentication via our backend provider.",
+                text = stringResource(R.string.privacy_section_4_desc),
                 style = MaterialTheme.typography.bodyLarge
             )
             Spacer(modifier = Modifier.height(24.dp))
 
-            SectionTitle("5. Data Retention and Deletion")
-            BulletPoint("Retention: We retain account data as long as your account is active.")
-            BulletPoint("Deletion: You have the right to delete your account at any time. You can request data deletion by contacting us or using the \"Delete Account\" option within the app settings. Upon deletion, all associated account data will be removed from our servers.")
+            SectionTitle(stringResource(R.string.privacy_section_5))
+            BulletPoint(stringResource(R.string.privacy_bullet_retention))
+            BulletPoint(stringResource(R.string.privacy_bullet_deletion))
             Spacer(modifier = Modifier.height(24.dp))
 
-            SectionTitle("6. Children's Privacy")
+            SectionTitle(stringResource(R.string.privacy_section_6))
             Text(
-                text = "This Service is not directed to anyone under the age of 13. We do not knowingly collect personal information from children under 13. If we discover that a child under 13 has provided us with personal information, we will promptly delete it.",
+                text = stringResource(R.string.privacy_section_6_desc),
                 style = MaterialTheme.typography.bodyLarge
             )
             Spacer(modifier = Modifier.height(24.dp))
 
-            SectionTitle("7. Changes to This Privacy Policy")
+            SectionTitle(stringResource(R.string.privacy_section_7))
             Text(
-                text = "We may update this Privacy Policy from time to time. We will notify you of any changes by updating the \"Last updated\" date at the top of this policy. You are advised to review this Privacy Policy periodically for any changes.",
+                text = stringResource(R.string.privacy_section_7_desc),
                 style = MaterialTheme.typography.bodyLarge
             )
             Spacer(modifier = Modifier.height(24.dp))
 
-            SectionTitle("8. Contact Us")
+            SectionTitle(stringResource(R.string.privacy_section_8))
             Text(
-                text = "If you have any questions about this Privacy Policy, please contact us:",
+                text = stringResource(R.string.privacy_section_8_desc),
                 style = MaterialTheme.typography.bodyLarge
             )
             Spacer(modifier = Modifier.height(8.dp))
-            BulletPoint("By email: jks.create@gmail.com")
+            BulletPoint(stringResource(R.string.privacy_bullet_email))
             
             Spacer(modifier = Modifier.height(32.dp))
         }

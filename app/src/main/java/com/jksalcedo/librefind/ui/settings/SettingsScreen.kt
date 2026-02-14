@@ -55,6 +55,8 @@ import androidx.compose.material.icons.filled.PrivacyTip
 import com.jksalcedo.librefind.data.local.PreferencesManager
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
+import androidx.compose.ui.res.stringResource
+import com.jksalcedo.librefind.R
 
 // ──────────────────────────────────
 // Reusable section card composable
@@ -136,7 +138,7 @@ fun SettingsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Settings") },
+                title = { Text(stringResource(R.string.settings_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
@@ -157,49 +159,49 @@ fun SettingsScreen(
             CacheManagementSection(state = state, viewModel = viewModel)
 
             //  2. Help
-            SettingsSection(title = "Help") {
+            SettingsSection(title = stringResource(R.string.settings_help)) {
                 SettingsLinkButton(
                     icon = Icons.Default.Refresh,
-                    label = "Reset Tutorial",
+                    label = stringResource(R.string.settings_reset_tutorial),
                     onClick = { preferencesManager.resetTutorial() }
                 )
             }
 
             //  3. Feedback & Community
-            SettingsSection(title = "Feedback & Community") {
+            SettingsSection(title = stringResource(R.string.settings_feedback)) {
                 SettingsLinkButton(
                     icon = Icons.Default.Feedback,
-                    label = "Report Issue / Suggestion",
+                    label = stringResource(R.string.settings_report_issue),
                     onClick = onReportClick
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 SettingsLinkButton(
                     icon = Icons.Default.History,
-                    label = "My Reports",
+                    label = stringResource(R.string.settings_my_reports),
                     onClick = onMyReportsClick
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 SettingsLinkButton(
                     icon = Icons.Default.BugReport,
-                    label = "GitHub Issues",
+                    label = stringResource(R.string.settings_github_issues),
                     onClick = { uriHandler.openUri("https://github.com/jksalcedo/librefind/issues") }
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 SettingsLinkButton(
                     icon = Icons.Default.Group,
-                    label = "Join Community",
+                    label = stringResource(R.string.settings_join_community),
                     onClick = { uriHandler.openUri("https://t.me/librefind") }
                 )
             }
 
             //  About
-            SettingsSection(title = "About") {
+            SettingsSection(title = stringResource(R.string.settings_about)) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Version", style = MaterialTheme.typography.bodyLarge)
+                    Text(stringResource(R.string.settings_version), style = MaterialTheme.typography.bodyLarge)
                     Text(
                         text = version,
                         style = MaterialTheme.typography.bodyMedium,
@@ -209,19 +211,19 @@ fun SettingsScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 SettingsLinkButton(
                     icon = Icons.Default.Info,
-                    label = "View on GitHub",
+                    label = stringResource(R.string.settings_view_github),
                     onClick = { uriHandler.openUri("https://github.com/jksalcedo/librefind") }
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 SettingsLinkButton(
                     icon = Icons.Default.VolunteerActivism,
-                    label = "Donate to LibreFind",
+                    label = stringResource(R.string.settings_donate),
                     onClick = { uriHandler.openUri("https://ko-fi.com/jksalcedo") }
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 SettingsLinkButton(
                     icon = Icons.Default.PrivacyTip,
-                    label = "Privacy Policy",
+                    label = stringResource(R.string.settings_privacy_policy),
                     onClick = onPrivacyPolicyClick
                 )
             }
@@ -247,14 +249,14 @@ private fun CacheManagementSection(
     state: SettingsState,
     viewModel: SettingsViewModel
 ) {
-    SettingsSection(title = "Cache Management") {
+    SettingsSection(title = stringResource(R.string.settings_cache_management)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column {
-                Text("Icon Cache Size", style = MaterialTheme.typography.bodyLarge)
+                Text(stringResource(R.string.settings_cache_size), style = MaterialTheme.typography.bodyLarge)
                 Text(
                     text = state.cacheSizeMB,
                     style = MaterialTheme.typography.bodyMedium,
@@ -276,7 +278,7 @@ private fun CacheManagementSection(
                 } else {
                     Icon(Icons.Default.Delete, contentDescription = null)
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text("Clear")
+                    Text(stringResource(R.string.settings_clear))
                 }
             }
         }
@@ -288,7 +290,7 @@ private fun AccountSection(
     state: SettingsState,
     viewModel: SettingsViewModel
 ) {
-    SettingsSection(title = "Account") {
+    SettingsSection(title = stringResource(R.string.settings_account)) {
         Button(
             onClick = { viewModel.showDeleteAccountConfirmation() },
             colors = ButtonDefaults.buttonColors(
@@ -298,7 +300,7 @@ private fun AccountSection(
         ) {
             Icon(Icons.Default.Delete, contentDescription = null)
             Spacer(modifier = Modifier.width(8.dp))
-            Text("Delete Account")
+            Text(stringResource(R.string.settings_delete_account))
         }
     }
 }
@@ -316,9 +318,9 @@ private fun ClearCacheDialog(
 
     AlertDialog(
         onDismissRequest = { viewModel.hideClearConfirmation() },
-        title = { Text("Clear Icon Cache?") },
+        title = { Text(stringResource(R.string.settings_clear_cache_title)) },
         text = {
-            Text("This will remove all cached app icons. They will be reloaded when you scroll through the dashboard.")
+            Text(stringResource(R.string.settings_clear_cache_message))
         },
         confirmButton = {
             TextButton(
@@ -327,12 +329,12 @@ private fun ClearCacheDialog(
                     contentColor = MaterialTheme.colorScheme.error
                 )
             ) {
-                Text("Clear")
+                Text(stringResource(R.string.settings_clear))
             }
         },
         dismissButton = {
             TextButton(onClick = { viewModel.hideClearConfirmation() }) {
-                Text("Cancel")
+                Text(stringResource(R.string.settings_cancel))
             }
         }
     )
@@ -347,9 +349,9 @@ private fun DeleteAccountDialog(
 
     AlertDialog(
         onDismissRequest = { viewModel.hideDeleteAccountConfirmation() },
-        title = { Text("Delete Account?") },
+        title = { Text(stringResource(R.string.settings_delete_account_title)) },
         text = {
-            Text("Are you sure you want to delete your account? This action cannot be undone and will permanently remove all your data.")
+            Text(stringResource(R.string.settings_delete_account_message))
         },
         confirmButton = {
             TextButton(
@@ -365,14 +367,14 @@ private fun DeleteAccountDialog(
                         strokeWidth = 2.dp
                     )
                 } else {
-                    Text("Delete")
+                    Text(stringResource(R.string.settings_delete))
                 }
             }
         },
         dismissButton = {
             if (!state.isDeletingAccount) {
                 TextButton(onClick = { viewModel.hideDeleteAccountConfirmation() }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.settings_cancel))
                 }
             }
         }
@@ -388,11 +390,11 @@ private fun AccountDeletedDialog(
 
     AlertDialog(
         onDismissRequest = { /* Block dismiss — force user to tap OK */ },
-        title = { Text("Account Deleted") },
-        text = { Text("Your account has been successfully deleted.") },
+        title = { Text(stringResource(R.string.settings_account_deleted_title)) },
+        text = { Text(stringResource(R.string.settings_account_deleted_message)) },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text("OK")
+                Text(stringResource(R.string.settings_ok))
             }
         }
     )
@@ -407,11 +409,11 @@ private fun DeleteAccountErrorDialog(
 
     AlertDialog(
         onDismissRequest = { viewModel.clearDeleteAccountError() },
-        title = { Text("Error") },
+        title = { Text(stringResource(R.string.settings_error)) },
         text = { Text(error) },
         confirmButton = {
             TextButton(onClick = { viewModel.clearDeleteAccountError() }) {
-                Text("OK")
+                Text(stringResource(R.string.settings_ok))
             }
         }
     )

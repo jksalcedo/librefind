@@ -63,6 +63,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import org.koin.androidx.compose.koinViewModel
+import androidx.compose.ui.res.stringResource
+import com.jksalcedo.librefind.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -86,7 +88,7 @@ fun AlternativeDetailScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(state.alternative?.name ?: "Details") },
+                title = { Text(state.alternative?.name ?: stringResource(R.string.alt_detail_title_default)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -104,7 +106,7 @@ fun AlternativeDetailScreen(
                             state.alternative?.let { alt ->
                                 if (alt.fdroidId.isNotBlank()) {
                                     DropdownMenuItem(
-                                        text = { Text("Open in F-Droid") },
+                                        text = { Text(stringResource(R.string.alt_detail_open_fdroid)) },
                                         onClick = {
                                             menuExpanded = false
                                             val fdroidUri =
@@ -130,7 +132,7 @@ fun AlternativeDetailScreen(
 
                                 if (alt.fdroidId.isBlank() && alt.repoUrl.isNotBlank()) {
                                     DropdownMenuItem(
-                                        text = { Text("Open in Obtainium") },
+                                        text = { Text(stringResource(R.string.alt_detail_open_obtainium)) },
                                         onClick = {
                                             menuExpanded = false
                                             val obtainiumUri =
@@ -157,7 +159,7 @@ fun AlternativeDetailScreen(
 
                                 if (alt.website.isNotBlank()) {
                                     DropdownMenuItem(
-                                        text = { Text("Open Website") },
+                                        text = { Text(stringResource(R.string.alt_detail_open_website)) },
                                         onClick = {
                                             menuExpanded = false
                                             context.startActivity(
@@ -171,7 +173,7 @@ fun AlternativeDetailScreen(
                                     )
                                 }
                                 DropdownMenuItem(
-                                    text = { Text("View Source") },
+                                    text = { Text(stringResource(R.string.alt_detail_view_source)) },
                                     onClick = {
                                         menuExpanded = false
                                         context.startActivity(
@@ -185,7 +187,7 @@ fun AlternativeDetailScreen(
                                 )
                                 HorizontalDivider()
                                 DropdownMenuItem(
-                                    text = { Text("Copy Package Name") },
+                                    text = { Text(stringResource(R.string.alt_detail_copy_package)) },
                                     onClick = {
                                         menuExpanded = false
                                         val clipboard =
@@ -217,7 +219,7 @@ fun AlternativeDetailScreen(
                 }
 
                 state.alternative == null -> {
-                    Text("Alternative not found", modifier = Modifier.align(Alignment.Center))
+                    Text(stringResource(R.string.alt_detail_not_found), modifier = Modifier.align(Alignment.Center))
                 }
 
                 else -> {
@@ -249,7 +251,7 @@ fun AlternativeDetailScreen(
                         ) {
                             Column(modifier = Modifier.padding(16.dp)) {
                                 Text(
-                                    "Ratings",
+                                    stringResource(R.string.alt_detail_ratings_title),
                                     style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.Bold
                                 )
@@ -257,8 +259,8 @@ fun AlternativeDetailScreen(
 
                                 // Privacy Rating
                                 DimensionalRatingRow(
-                                    label = "Privacy",
-                                    description = "Respects your data",
+                                    label = stringResource(R.string.alt_detail_privacy),
+                                    description = stringResource(R.string.alt_detail_privacy_desc),
                                     rating = alt.privacyRating,
                                     displayRating = alt.displayPrivacyRating
                                 )
@@ -267,8 +269,8 @@ fun AlternativeDetailScreen(
 
                                 // Usability Rating
                                 DimensionalRatingRow(
-                                    label = "Usability",
-                                    description = "Easy to use",
+                                    label = stringResource(R.string.alt_detail_usability),
+                                    description = stringResource(R.string.alt_detail_usability_desc),
                                     rating = alt.usabilityRating,
                                     displayRating = alt.displayUsabilityRating
                                 )
@@ -277,8 +279,8 @@ fun AlternativeDetailScreen(
 
                                 // Feature Parity Rating
                                 DimensionalRatingRow(
-                                    label = "Feature Parity",
-                                    description = "Complete alternative",
+                                    label = stringResource(R.string.alt_detail_feature_parity),
+                                    description = stringResource(R.string.alt_detail_features_desc),
                                     rating = alt.featuresRating,
                                     displayRating = alt.displayFeaturesRating
                                 )
@@ -295,7 +297,7 @@ fun AlternativeDetailScreen(
                                 ) {
                                     Icon(Icons.Default.Star, contentDescription = null)
                                     Spacer(modifier = Modifier.width(8.dp))
-                                    Text("Rate this app")
+                                    Text(stringResource(R.string.alt_detail_rate_app))
                                 }
                             } else {
                                 Card(
@@ -309,7 +311,7 @@ fun AlternativeDetailScreen(
                                             verticalAlignment = Alignment.CenterVertically
                                         ) {
                                             Text(
-                                                "Your Ratings",
+                                                stringResource(R.string.alt_detail_your_ratings),
                                                 style = MaterialTheme.typography.titleMedium,
                                                 fontWeight = FontWeight.Bold
                                             )
@@ -327,7 +329,7 @@ fun AlternativeDetailScreen(
 
                                         // Privacy
                                         UserRatingRow(
-                                            label = "Privacy",
+                                            label = stringResource(R.string.alt_detail_privacy),
                                             userRating = alt.userPrivacyRating,
                                             onRate = { stars ->
                                                 viewModel.rateDimension(
@@ -341,7 +343,7 @@ fun AlternativeDetailScreen(
 
                                         // Usability
                                         UserRatingRow(
-                                            label = "Usability",
+                                            label = stringResource(R.string.alt_detail_usability),
                                             userRating = alt.userUsabilityRating,
                                             onRate = { stars ->
                                                 viewModel.rateDimension(
@@ -355,7 +357,7 @@ fun AlternativeDetailScreen(
 
                                         // Feature Parity
                                         UserRatingRow(
-                                            label = "Features",
+                                            label = stringResource(R.string.alt_detail_features),
                                             userRating = alt.userFeaturesRating,
                                             onRate = { stars ->
                                                 viewModel.rateDimension(
@@ -373,7 +375,7 @@ fun AlternativeDetailScreen(
                         if (alt.description.isNotBlank()) {
                             Spacer(modifier = Modifier.height(16.dp))
                             Text(
-                                "Description",
+                                stringResource(R.string.alt_detail_description),
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold
                             )
@@ -385,7 +387,7 @@ fun AlternativeDetailScreen(
                         if (alt.features.isNotEmpty()) {
                             Spacer(modifier = Modifier.height(16.dp))
                             Text(
-                                "Features",
+                                stringResource(R.string.alt_detail_features_list),
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold
                             )
@@ -407,7 +409,7 @@ fun AlternativeDetailScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                "Pros",
+                                stringResource(R.string.alt_detail_pros),
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.secondary
@@ -422,7 +424,7 @@ fun AlternativeDetailScreen(
                         }
                         if (alt.pros.isEmpty()) {
                             Text(
-                                "No pros yet",
+                                stringResource(R.string.alt_detail_no_pros),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -444,7 +446,7 @@ fun AlternativeDetailScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                "Cons",
+                                stringResource(R.string.alt_detail_cons),
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.error
@@ -459,7 +461,7 @@ fun AlternativeDetailScreen(
                         }
                         if (alt.cons.isEmpty()) {
                             Text(
-                                "No cons yet",
+                                stringResource(R.string.alt_detail_no_cons),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -482,7 +484,7 @@ fun AlternativeDetailScreen(
     if (showFeedbackDialog) {
         AlertDialog(
             onDismissRequest = { showFeedbackDialog = false },
-            title = { Text(if (feedbackType == 0) "Add a Pro" else "Add a Con") },
+            title = { Text(if (feedbackType == 0) stringResource(R.string.alt_detail_add_pro) else stringResource(R.string.alt_detail_add_con)) },
             text = {
                 Column {
                     SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
@@ -490,18 +492,18 @@ fun AlternativeDetailScreen(
                             selected = feedbackType == 0,
                             onClick = { feedbackType = 0 },
                             shape = SegmentedButtonDefaults.itemShape(0, 2)
-                        ) { Text("Pro") }
+                        ) { Text(stringResource(R.string.alt_detail_pro)) }
                         SegmentedButton(
                             selected = feedbackType == 1,
                             onClick = { feedbackType = 1 },
                             shape = SegmentedButtonDefaults.itemShape(1, 2)
-                        ) { Text("Con") }
+                        ) { Text(stringResource(R.string.alt_detail_con)) }
                     }
                     Spacer(modifier = Modifier.height(16.dp))
                     OutlinedTextField(
                         value = feedbackText,
                         onValueChange = { feedbackText = it },
-                        label = { Text("Your feedback") },
+                        label = { Text(stringResource(R.string.alt_detail_feedback_label)) },
                         modifier = Modifier.fillMaxWidth(),
                         maxLines = 3
                     )
@@ -518,10 +520,10 @@ fun AlternativeDetailScreen(
                         showFeedbackDialog = false
                     },
                     enabled = feedbackText.isNotBlank()
-                ) { Text("Submit") }
+                ) { Text(stringResource(R.string.alt_detail_submit)) }
             },
             dismissButton = {
-                TextButton(onClick = { showFeedbackDialog = false }) { Text("Cancel") }
+                TextButton(onClick = { showFeedbackDialog = false }) { Text(stringResource(R.string.alt_detail_cancel)) }
             }
         )
     }

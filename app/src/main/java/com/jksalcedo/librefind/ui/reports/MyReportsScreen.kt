@@ -36,6 +36,8 @@ import androidx.compose.ui.unit.dp
 import com.jksalcedo.librefind.domain.model.Report
 import com.jksalcedo.librefind.domain.model.ReportStatus
 import org.koin.androidx.compose.koinViewModel
+import androidx.compose.ui.res.stringResource
+import com.jksalcedo.librefind.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,7 +50,7 @@ fun MyReportsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("My Reports") },
+                title = { Text(stringResource(R.string.my_reports_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -68,14 +70,14 @@ fun MyReportsScreen(
                 }
                 state.error != null -> {
                     Text(
-                        text = state.error ?: "Unknown error",
+                        text = state.error ?: stringResource(R.string.details_error_unknown),
                         color = MaterialTheme.colorScheme.error,
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
                 state.reports.isEmpty() -> {
                     Text(
-                        text = "No reports found",
+                        text = stringResource(R.string.my_reports_empty),
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.align(Alignment.Center)
                     )
@@ -142,7 +144,7 @@ fun ReportItem(report: Report) {
                     ) {
                         Column(modifier = Modifier.padding(8.dp)) {
                             Text(
-                                text = "Response:",
+                                text = stringResource(R.string.my_reports_response),
                                 style = MaterialTheme.typography.labelSmall,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSecondaryContainer
@@ -168,32 +170,32 @@ fun ReportStatusBadge(status: ReportStatus) {
         ReportStatus.OPEN -> Triple(
             MaterialTheme.colorScheme.surface,
             Color(0xFF2E7D32),
-            "Open"
+            stringResource(R.string.report_status_open)
         )
         ReportStatus.IN_PROGRESS -> Triple(
             MaterialTheme.colorScheme.surface,
             Color(0xFF1565C0),
-            "In Progress"
+            stringResource(R.string.report_status_in_progress)
         )
         ReportStatus.RESOLVED -> Triple(
             MaterialTheme.colorScheme.surface,
             Color(0xFF6A1B9A),
-            "Resolved"
+            stringResource(R.string.report_status_resolved)
         )
         ReportStatus.WONTFIX -> Triple(
             MaterialTheme.colorScheme.surface,
             Color(0xFF757575),
-            "Won't Fix"
+            stringResource(R.string.report_status_wontfix)
         )
         ReportStatus.DUPLICATE -> Triple(
             MaterialTheme.colorScheme.surface,
             Color(0xFF757575),
-            "Duplicate"
+            stringResource(R.string.report_status_duplicate)
         )
         ReportStatus.CLOSED -> Triple(
             MaterialTheme.colorScheme.surface,
             Color(0xFFC62828),
-            "Closed"
+            stringResource(R.string.report_status_closed)
         )
     }
 

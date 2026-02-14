@@ -12,10 +12,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.jksalcedo.librefind.R
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,7 +43,7 @@ fun AuthScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(if (isSignUp) "Create Account" else "Sign In") }
+                title = { Text(if (isSignUp) stringResource(R.string.auth_create_account) else stringResource(R.string.auth_sign_in)) }
             )
         }
     ) { padding ->
@@ -54,7 +56,7 @@ fun AuthScreen(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "LibreFind",
+                text = stringResource(R.string.app_name),
                 style = MaterialTheme.typography.headlineLarge,
                 color = MaterialTheme.colorScheme.primary
             )
@@ -62,7 +64,7 @@ fun AuthScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "Submit FOSS alternatives",
+                text = stringResource(R.string.auth_subtitle),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -73,7 +75,7 @@ fun AuthScreen(
                 OutlinedTextField(
                     value = username,
                     onValueChange = { username = it },
-                    label = { Text("Username") },
+                    label = { Text(stringResource(R.string.auth_username)) },
                     leadingIcon = { Icon(Icons.Default.Person, contentDescription = null) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
@@ -85,7 +87,7 @@ fun AuthScreen(
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
-                label = { Text("Email") },
+                label = { Text(stringResource(R.string.auth_email)) },
                 leadingIcon = { Icon(Icons.Default.Email, contentDescription = null) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 singleLine = true,
@@ -97,13 +99,13 @@ fun AuthScreen(
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
-                label = { Text("Password") },
+                label = { Text(stringResource(R.string.auth_password)) },
                 leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null) },
                 trailingIcon = {
                     IconButton(onClick = { showPassword = !showPassword }) {
                         Icon(
                             if (showPassword) Icons.Default.VisibilityOff else Icons.Default.Visibility,
-                            contentDescription = if (showPassword) "Hide password" else "Show password"
+                            contentDescription = if (showPassword) stringResource(R.string.auth_hide_password) else stringResource(R.string.auth_show_password)
                         )
                     }
                 },
@@ -144,7 +146,7 @@ fun AuthScreen(
                         strokeWidth = 2.dp
                     )
                 } else {
-                    Text(if (isSignUp) "Create Account" else "Sign In")
+                    Text(if (isSignUp) stringResource(R.string.auth_create_account) else stringResource(R.string.auth_sign_in))
                 }
             }
 
@@ -153,7 +155,7 @@ fun AuthScreen(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 HorizontalDivider(modifier = Modifier.weight(1f))
                 Text(
-                    text = "OR",
+                    text = stringResource(R.string.auth_or),
                     modifier = Modifier.padding(horizontal = 8.dp),
                     style = MaterialTheme.typography.bodySmall
                 )
@@ -167,15 +169,15 @@ fun AuthScreen(
                 modifier = Modifier.fillMaxWidth(),
                 enabled = !uiState.isLoading
             ) {
-                Text("Sign in with GitHub")
+                Text(stringResource(R.string.auth_sign_in_github))
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
             TextButton(onClick = { isSignUp = !isSignUp }) {
                 Text(
-                    if (isSignUp) "Already have an account? Sign In"
-                    else "Don't have an account? Sign Up"
+                    if (isSignUp) stringResource(R.string.auth_already_have_account)
+                    else stringResource(R.string.auth_dont_have_account)
                 )
             }
         }
@@ -184,16 +186,16 @@ fun AuthScreen(
     if (uiState.showCheckEmailDialog) {
         AlertDialog(
             onDismissRequest = { },
-            title = { Text("Check Your Email") },
+            title = { Text(stringResource(R.string.auth_check_email_title)) },
             text = {
-                Text("We've sent a verification link to your email address. Please verify your email before signing in.")
+                Text(stringResource(R.string.auth_check_email_message))
             },
             confirmButton = {
                 Button(onClick = {
                     viewModel.dismissCheckEmailDialog()
                     isSignUp = false
                 }) {
-                    Text("Go to Sign In")
+                    Text(stringResource(R.string.auth_go_to_sign_in))
                 }
             }
         )

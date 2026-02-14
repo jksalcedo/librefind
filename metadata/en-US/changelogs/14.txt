@@ -1,0 +1,8 @@
+What's New:
+- Enhanced user interface for My Submissions and My Reports.
+- Added visual status badges for app categories (FOSS/PROPRIETARY).
+- Introduced a Tutorial Overlay for new users.
+- Added helpful tooltips to various form fields.
+- Included an App Privacy Policy screen.
+- Significant under-the-hood improvements for localization support.
+- Bug fixes and performance enhancements.

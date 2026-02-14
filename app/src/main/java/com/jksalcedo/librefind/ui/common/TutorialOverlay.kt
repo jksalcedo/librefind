@@ -41,6 +41,8 @@ import androidx.compose.ui.graphics.ClipOp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.clipPath
+import androidx.compose.ui.res.stringResource
+import com.jksalcedo.librefind.R
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
@@ -164,10 +166,10 @@ fun TutorialOverlay(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     TextButton(onClick = onSkip) {
-                        Text("Skip")
+                        Text(stringResource(R.string.tutorial_skip))
                     }
                     Button(onClick = onNext) {
-                        Text(if (stepIndex == totalSteps - 1) "Done" else "Next")
+                        Text(if (stepIndex == totalSteps - 1) stringResource(R.string.tutorial_done) else stringResource(R.string.tutorial_next))
                     }
                 }
             }

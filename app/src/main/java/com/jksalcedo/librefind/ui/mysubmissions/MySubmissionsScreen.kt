@@ -36,6 +36,8 @@ import androidx.compose.ui.unit.dp
 import com.jksalcedo.librefind.domain.model.Submission
 import com.jksalcedo.librefind.domain.model.SubmissionStatus
 import org.koin.androidx.compose.koinViewModel
+import androidx.compose.ui.res.stringResource
+import com.jksalcedo.librefind.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,7 +51,7 @@ fun MySubmissionsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("My Submissions") },
+                title = { Text(stringResource(R.string.my_submissions_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -80,7 +82,7 @@ fun MySubmissionsScreen(
 
                 state.submissions.isEmpty() -> {
                     Text(
-                        text = "No submissions found",
+                        text = stringResource(R.string.my_submissions_empty),
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.align(Alignment.Center)
                     )
@@ -154,7 +156,7 @@ fun SubmissionItem(
                     ) {
                         Column(modifier = Modifier.padding(8.dp)) {
                             Text(
-                                text = "Rejection Reason:",
+                                text = stringResource(R.string.my_submissions_rejection_reason),
                                 style = MaterialTheme.typography.labelSmall,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onErrorContainer
@@ -180,19 +182,19 @@ fun StatusBadge(status: SubmissionStatus) {
         SubmissionStatus.PENDING -> Triple(
             MaterialTheme.colorScheme.surface,
             Color(0xFFE65100),
-            "Pending"
+            stringResource(R.string.status_pending)
         )
 
         SubmissionStatus.APPROVED -> Triple(
             MaterialTheme.colorScheme.surface,
             Color(0xFF2E7D32),
-            "Approved"
+            stringResource(R.string.status_approved)
         )
 
         SubmissionStatus.REJECTED -> Triple(
             MaterialTheme.colorScheme.surface,
             Color(0xFFC62828),
-            "Rejected"
+            stringResource(R.string.status_rejected)
         )
     }
 

@@ -39,6 +39,8 @@ import androidx.compose.ui.unit.dp
 import com.jksalcedo.librefind.data.local.IgnoredAppEntity
 import com.jksalcedo.librefind.ui.dashboard.components.AppIconAsync
 import org.koin.androidx.compose.koinViewModel
+import androidx.compose.ui.res.stringResource
+import com.jksalcedo.librefind.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,7 +53,7 @@ fun IgnoredAppsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Ignored Apps") },
+                title = { Text(stringResource(R.string.ignored_apps_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -68,8 +70,7 @@ fun IgnoredAppsScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "No ignored apps. \n" +
-                            "Long-press any app in the list → tap Ignore.",
+                    text = stringResource(R.string.ignored_apps_empty),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center
@@ -150,7 +151,7 @@ private fun IgnoredAppRow(
                     modifier = Modifier.size(18.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
-                Text("Restore")
+                Text(stringResource(R.string.ignored_apps_restore))
             }
         }
     }

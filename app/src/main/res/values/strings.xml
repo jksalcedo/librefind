@@ -1,3 +1,306 @@
 <resources>
     <string name="app_name">LibreFind</string>
+
+    <!-- Dashboard -->
+    <string name="dashboard_search_hint">Search apps...</string>
+    <string name="dashboard_close_search">Close search</string>
+    <string name="dashboard_search">Search</string>
+    <string name="dashboard_filter">Filter</string>
+    <string name="dashboard_filter_show_all">Show All</string>
+    <string name="dashboard_filter_all_proprietary">All Proprietary</string>
+    <string name="dashboard_filter_with_alternatives">With Alternatives</string>
+    <string name="dashboard_filter_no_alternatives">Without Alternatives</string>
+    <string name="dashboard_filter_foss_only">FOSS Only</string>
+    <string name="dashboard_filter_unknown_only">Unknown Only</string>
+    <string name="dashboard_filter_pending_only">Pending Only</string>
+    <string name="dashboard_filter_ignored_only">Ignored Only</string>
+    <string name="dashboard_profile">Profile</string>
+    <string name="dashboard_settings">Settings</string>
+    <string name="dashboard_submit_app">Submit App</string>
+    <string name="dashboard_error_title">Error</string>
+    <string name="dashboard_unknown_error">Unknown error</string>
+    <string name="dashboard_retry">Retry</string>
+    <string name="dashboard_no_matching_apps">No matching apps</string>
+    <string name="dashboard_no_apps_found">No apps found</string>
+    
+    <!-- Profile Dialog -->
+    <string name="profile_dialog_title">Profile &amp; Settings</string>
+    <string name="profile_unknown_username">Unknown Username</string>
+    <string name="profile_no_email">No Email</string>
+    <string name="profile_ignored_apps">Ignored Apps</string>
+    <string name="profile_my_submissions">My Submissions</string>
+    <string name="profile_sign_out">Sign Out</string>
+    <string name="profile_close">Close</string>
+    <string name="profile_missing_title">Profile Missing</string>
+    <string name="profile_not_signed_in_title">Not Signed In</string>
+    <string name="profile_missing_message">Your profile could not be found. Please try signing out and back in, or contact support.</string>
+    <string name="profile_not_signed_in_message">Please sign in to view your profile.</string>
+    <string name="profile_fix_profile">Fix Profile</string>
+    <string name="profile_sign_in">Sign In</string>
+
+    <!-- Auth -->
+    <string name="auth_create_account">Create Account</string>
+    <string name="auth_sign_in">Sign In</string>
+    <string name="auth_subtitle">Submit FOSS alternatives</string>
+    <string name="auth_username">Username</string>
+    <string name="auth_email">Email</string>
+    <string name="auth_password">Password</string>
+    <string name="auth_hide_password">Hide password</string>
+    <string name="auth_show_password">Show password</string>
+    <string name="auth_or">OR</string>
+    <string name="auth_sign_in_github">Sign in with GitHub</string>
+    <string name="auth_already_have_account">Already have an account? Sign In</string>
+    <string name="auth_dont_have_account">Don\'t have an account? Sign Up</string>
+    <string name="auth_check_email_title">Check Your Email</string>
+    <string name="auth_check_email_message">We\'ve sent a verification link to your email address. Please verify your email before signing in.</string>
+    <string name="auth_go_to_sign_in">Go to Sign In</string>
+    
+    <!-- Profile Setup -->
+    <string name="setup_title">Set Up Profile</string>
+    <string name="setup_choose_username">Choose a Username</string>
+    <string name="setup_username_desc">This will be shown with your submissions</string>
+    <string name="setup_username_rules">Letters, numbers, underscore only</string>
+    <string name="setup_continue">Continue</string>
+
+    <!-- Submit Screen -->
+    <string name="submit_title_new">Submit App</string>
+    <string name="submit_title_edit">Edit Submission</string>
+    <string name="submit_success_title">Submission Received!</string>
+    <string name="submit_update_title">Submission Updated!</string>
+    <string name="submit_success_message">Thanks! Your submission for \'%1$s\' has been received.</string>
+    <string name="submit_update_message">Your submission for \'%1$s\' has been updated.</string>
+    <string name="submit_done">Done</string>
+    <string name="submit_what_submitting">What are you submitting?</string>
+    <string name="submit_contribution_guide">Contribution Guide</string>
+    <string name="submit_type_foss">FOSS App</string>
+    <string name="submit_type_proprietary">Proprietary App</string>
+    <string name="submit_type_link">Link App</string>
+    <string name="submit_app_name">App Name *</string>
+    <string name="submit_package_name">Package Name *</string>
+    <string name="submit_package_placeholder">com.example.app</string>
+    <string name="submit_description">Description</string>
+    <string name="submit_description_required">Description *</string>
+    <string name="submit_add_alternatives">Add Alternatives (optional)</string>
+    <string name="submit_search_alternatives">Search for alternatives</string>
+    <string name="submit_search_placeholder">Search by app name or package...</string>
+    <string name="submit_selected_alternatives">Selected Alternatives:</string>
+    <string name="submit_alternative_details">Alternative Details</string>
+    <string name="submit_search_foss_optional">Search specific FOSS app (optional)</string>
+    <string name="submit_search_foss_placeholder">Search existing database...</string>
+    <string name="submit_linked_app">Linked to Existing App</string>
+    <string name="submit_foss_requirements">License and Repository URL are required for FOSS alternatives</string>
+    <string name="submit_target_proprietary">Target Proprietary Apps</string>
+    <string name="submit_search_to_add">Search to add...</string>
+    <string name="submit_repo_url">Repository URL *</string>
+    <string name="submit_repo_placeholder">https://github.com/...</string>
+    <string name="submit_fdroid_id">F-Droid ID</string>
+    <string name="submit_license">License *</string>
+    <string name="submit_license_placeholder">Select a license</string>
+    <string name="submit_custom_license">Custom License Name *</string>
+    <string name="submit_custom_license_placeholder">e.g. My Custom License</string>
+    <string name="submit_select_license">Select License</string>
+    <string name="submit_other">Other</string>
+    <string name="submit_cancel">Cancel</string>
+    <string name="submit_link_solutions_title">Link Existing Solutions</string>
+    <string name="submit_link_solutions_desc">Link an existing FOSS app to an existing proprietary app in our database.</string>
+    <string name="submit_target_app">Target Proprietary App</string>
+    <string name="submit_select_target">Select a target app...</string>
+    <string name="submit_select_solutions">Select Solutions to Link</string>
+    <string name="submit_search_solutions">Search for solutions</string>
+    <string name="submit_selected_solutions">Selected Solutions:</string>
+    <string name="submit_update_button">Update Submission</string>
+    <string name="submit_submit_button">Submit for Review</string>
+    <string name="submit_select_targets_dialog">Select Target Apps</string>
+    <string name="submit_search">Search</string>
+    <string name="submit_no_targets">No targets found in database.</string>
+    <string name="submit_unknown_apps">Unknown apps from your device:</string>
+    <string name="submit_suggest_target">Suggest as target</string>
+    <string name="submit_no_results">No results found.</string>
+    <string name="submit_confirm">Confirm</string>
+
+    <!-- Submit Field Help -->
+    <string name="help_app_name_title">App Name</string>
+    <string name="help_app_name_desc">The display name of the app as users know it (e.g. \"Signal\", \"Firefox\", \"VLC\").</string>
+    <string name="help_app_name_tip">Use the official name from the app\'s website or store listing.</string>
+    <string name="help_package_name_title">Package Name</string>
+    <string name="help_package_name_desc">The unique technical identifier for the app (e.g. \"org.mozilla.firefox\"). This is NOT the display name.</string>
+    <string name="help_package_name_tip">Find it on F-Droid (listed on the app page), or on the Play Store URL: play.google.com/store/apps/details?id=&lt;package.name>. On your device: Settings → Apps → [App] → App info.</string>
+    <string name="help_description_title">Description</string>
+    <string name="help_description_desc">A brief summary of what the app does. Keep it to 1-3 sentences.</string>
+    <string name="help_repo_url_title">Repository URL</string>
+    <string name="help_repo_url_desc">The link to the app\'s public source code repository. This is required to verify the app is truly open source.</string>
+    <string name="help_repo_url_tip">Look for it on the app\'s website, F-Droid listing, or search \"&lt;app name> source code\" on GitHub/GitLab/Codeberg.</string>
+    <string name="help_fdroid_id_title">F-Droid ID</string>
+    <string name="help_fdroid_id_desc">The package name as listed on F-Droid. Usually the same as the package name, but some apps use a different ID for F-Droid builds.</string>
+    <string name="help_fdroid_id_tip">Find it at f-droid.org — the ID is in the URL: f-droid.org/packages/&lt;fdroid.id>/</string>
+    <string name="help_license_title">License</string>
+    <string name="help_license_desc">The open source license the app is released under (e.g. GPL-3.0, MIT, Apache-2.0). This is required for FOSS submissions.</string>
+    <string name="help_license_tip">Check the LICENSE or COPYING file in the app\'s source code repository, or look at the F-Droid listing.</string>
+    <string name="help_target_apps_title">Target Proprietary Apps</string>
+    <string name="help_target_apps_desc">The proprietary apps that this FOSS app can replace. For example, Signal replaces WhatsApp/Telegram.</string>
+    <string name="help_target_apps_tip">Select from the list of known proprietary apps. If the target isn\'t listed, you can suggest it as a new proprietary target first.</string>
+    <string name="help_search_alternatives_title">Search Alternatives</string>
+    <string name="help_search_alternatives_desc">Search for existing FOSS alternatives in our database to link to this proprietary app.</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_help">Help</string>
+    <string name="settings_reset_tutorial">Reset Tutorial</string>
+    <string name="settings_feedback">Feedback &amp; Community</string>
+    <string name="settings_report_issue">Report Issue / Suggestion</string>
+    <string name="settings_my_reports">My Reports</string>
+    <string name="settings_github_issues">GitHub Issues</string>
+    <string name="settings_join_community">Join Community</string>
+    <string name="settings_about">About</string>
+    <string name="settings_version">Version</string>
+    <string name="settings_view_github">View on GitHub</string>
+    <string name="settings_donate">Donate to LibreFind</string>
+    <string name="settings_privacy_policy">Privacy Policy</string>
+    <string name="settings_cache_management">Cache Management</string>
+    <string name="settings_cache_size">Icon Cache Size</string>
+    <string name="settings_clear">Clear</string>
+    <string name="settings_account">Account</string>
+    <string name="settings_delete_account">Delete Account</string>
+    <string name="settings_clear_cache_title">Clear Icon Cache?</string>
+    <string name="settings_clear_cache_message">This will remove all cached app icons. They will be reloaded when you scroll through the dashboard.</string>
+    <string name="settings_cancel">Cancel</string>
+    <string name="settings_delete_account_title">Delete Account?</string>
+    <string name="settings_delete_account_message">Are you sure you want to delete your account? This action cannot be undone and will permanently remove all your data.</string>
+    <string name="settings_delete">Delete</string>
+    <string name="settings_account_deleted_title">Account Deleted</string>
+    <string name="settings_account_deleted_message">Your account has been successfully deleted.</string>
+    <string name="settings_ok">OK</string>
+    <string name="settings_error">Error</string>
+
+    <!-- Ignored Apps Screen -->
+    <string name="ignored_apps_title">Ignored Apps</string>
+    <string name="ignored_apps_empty">No ignored apps. \nLong-press any app in the list → tap Ignore.</string>
+    <string name="ignored_apps_restore">Restore</string>
+
+    <!-- Privacy Policy Screen -->
+    <string name="privacy_title">Privacy Policy for LibreFind</string>
+    <string name="privacy_last_updated">Last updated: February 10, 2026</string>
+    <string name="privacy_intro">This Privacy Policy describes how LibreFind (\"we\", \"us\", or \"our\") collects, uses, and discloses your information when you use our mobile application (the \"Service\").</string>
+    <string name="privacy_agreement">By using the Service, you agree to the collection and use of information in accordance with this policy.</string>
+    <string name="privacy_section_1">1. Information We Collect</string>
+    <string name="privacy_section_1_desc">We collect the minimum amount of data necessary to provide our services.</string>
+    <string name="privacy_subsection_1a">A. Device &amp; Usage Data (Anonymous)</string>
+    <string name="privacy_subsection_1a_desc">When you scan your device, we collect the following anonymized data to generate your sovereignty score:</string>
+    <string name="privacy_bullet_device_id">Device ID: A randomly generated unique identifier (UUID) stored locally on your device. This allows us to sync your preferences without tracking your real identity.</string>
+    <string name="privacy_bullet_app_stats">App Statistics: The total count of installed apps, count of FOSS (Free and Open Source Software) apps, count of proprietary apps, and count of unknown/unclassified apps.</string>
+    <string name="privacy_note_app_names">Note: We send your installed app package names to our servers solely for classification purposes (determining FOSS vs. proprietary status). We do not store or log these package names beyond what is necessary for the query.</string>
+    <string name="privacy_bullet_app_version">App Version: The version of LibreFind you are using.</string>
+    <string name="privacy_subsection_1b">B. Account Data (Optional)</string>
+    <string name="privacy_subsection_1b_desc">If you choose to create an account to contribute alternatives or sync data, we collect:</string>
+    <string name="privacy_bullet_user_email">Username &amp; Email: To identify you and prevent spam.</string>
+    <string name="privacy_bullet_password">Password: Securely hashed by our authentication provider. We never have access to your plaintext password.</string>
+    <string name="privacy_bullet_submissions">User Submissions: Any alternative app suggestions or votes you submit to the community database.</string>
+    <string name="privacy_section_2">2. How We Use Your Information</string>
+    <string name="privacy_section_2_desc">We use the collected data for the following purposes:</string>
+    <string name="privacy_bullet_provide_service">To Provide the Service: Calculating your \"Sovereignty Score\" and syncing your preferences across devices.</string>
+    <string name="privacy_bullet_improve_service">To Improve Our Service: Your submissions help us identify proprietary apps that need FOSS alternatives.</string>
+    <string name="privacy_bullet_security">Security &amp; Authentication: Your email and password are used strictly to secure your account.</string>
+    <string name="privacy_bullet_community">Community Features: To prevent vote manipulation (spam) on app recommendations.</string>
+    <string name="privacy_section_3">3. Third-Party Services</string>
+    <string name="privacy_section_3_desc">We use trusted third-party services to operate our infrastructure. We do not sell your data. We do not share your data with third parties for advertising purposes.</string>
+    <string name="privacy_subsection_supabase">Supabase</string>
+    <string name="privacy_subsection_supabase_desc">We use Supabase as our backend database and authentication provider.</string>
+    <string name="privacy_bullet_supabase_data">Data stored: User accounts, submissions, and anonymized stats.</string>
+    <string name="privacy_bullet_supabase_policy">Privacy Policy: https://supabase.com/privacy</string>
+    <string name="privacy_section_4">4. Data Security</string>
+    <string name="privacy_section_4_desc">We implement industry-standard security measures to protect your data, including encrypted connections (HTTPS/TLS) and secure authentication via our backend provider.</string>
+    <string name="privacy_section_5">5. Data Retention and Deletion</string>
+    <string name="privacy_bullet_retention">Retention: We retain account data as long as your account is active.</string>
+    <string name="privacy_bullet_deletion">Deletion: You have the right to delete your account at any time. You can request data deletion by contacting us or using the \"Delete Account\" option within the app settings. Upon deletion, all associated account data will be removed from our servers.</string>
+    <string name="privacy_section_6">6. Children\'s Privacy</string>
+    <string name="privacy_section_6_desc">This Service is not directed to anyone under the age of 13. We do not knowingly collect personal information from children under 13. If we discover that a child under 13 has provided us with personal information, we will promptly delete it.</string>
+    <string name="privacy_section_7">7. Changes to This Privacy Policy</string>
+    <string name="privacy_section_7_desc">We may update this Privacy Policy from time to time. We will notify you of any changes by updating the \"Last updated\" date at the top of this policy. You are advised to review this Privacy Policy periodically for any changes.</string>
+    <string name="privacy_section_8">8. Contact Us</string>
+    <string name="privacy_section_8_desc">If you have any questions about this Privacy Policy, please contact us:</string>
+    <string name="privacy_bullet_email">By email: jks.create@gmail.com</string>
+
+    <!-- Alternative Detail Screen -->
+    <string name="alt_detail_title_default">Details</string>
+    <string name="alt_detail_open_fdroid">Open in F-Droid</string>
+    <string name="alt_detail_open_obtainium">Open in Obtainium</string>
+    <string name="alt_detail_open_website">Open Website</string>
+    <string name="alt_detail_view_source">View Source</string>
+    <string name="alt_detail_copy_package">Copy Package Name</string>
+    <string name="alt_detail_not_found">Alternative not found</string>
+    <string name="alt_detail_ratings_title">Ratings</string>
+    <string name="alt_detail_privacy">Privacy</string>
+    <string name="alt_detail_privacy_desc">Respects your data</string>
+    <string name="alt_detail_usability">Usability</string>
+    <string name="alt_detail_usability_desc">Easy to use</string>
+    <string name="alt_detail_features">Features</string>
+    <string name="alt_detail_feature_parity">Feature Parity</string>
+    <string name="alt_detail_features_desc">Complete alternative</string>
+    <string name="alt_detail_rate_app">Rate this app</string>
+    <string name="alt_detail_your_ratings">Your Ratings</string>
+    <string name="alt_detail_description">Description</string>
+    <string name="alt_detail_features_list">Features</string>
+    <string name="alt_detail_pros">Pros</string>
+    <string name="alt_detail_no_pros">No pros yet</string>
+    <string name="alt_detail_cons">Cons</string>
+    <string name="alt_detail_no_cons">No cons yet</string>
+    <string name="alt_detail_add_pro">Add a Pro</string>
+    <string name="alt_detail_add_con">Add a Con</string>
+    <string name="alt_detail_pro">Pro</string>
+    <string name="alt_detail_con">Con</string>
+    <string name="alt_detail_feedback_label">Your feedback</string>
+    <string name="alt_detail_submit">Submit</string>
+    <string name="alt_detail_cancel">Cancel</string>
+
+    <!-- Details Screen -->
+    <string name="details_title_format">%1$s alternatives</string>
+    <string name="details_error_unknown">Unknown error</string>
+    <string name="details_retry">Retry</string>
+    <string name="details_no_alternatives">No alternatives found</string>
+    <string name="details_not_in_db">This app is not in our database yet.</string>
+    <string name="details_help_categorize">Help us categorize this app:</string>
+    <string name="details_suggest_foss">Suggest as FOSS</string>
+    <string name="details_suggest_proprietary">Suggest as Proprietary</string>
+    <string name="details_found_format">Found %1$d FOSS alternative%2$s</string>
+
+    <!-- My Submissions Screen -->
+    <string name="my_submissions_title">My Submissions</string>
+    <string name="my_submissions_empty">No submissions found</string>
+    <string name="my_submissions_rejection_reason">Rejection Reason:</string>
+    <string name="status_pending">Pending</string>
+    <string name="status_approved">Approved</string>
+    <string name="status_rejected">Rejected</string>
+
+    <!-- Status Badge -->
+    <string name="status_foss">FOSS</string>
+    <string name="status_proprietary">PROPRIETARY</string>
+    <string name="status_unknown">UNKNOWN</string>
+    <string name="status_ignored">ignored</string>
+
+    <!-- Common -->
+    <string name="field_help_content_desc">Help for %1$s</string>
+    <string name="tutorial_skip">Skip</string>
+    <string name="tutorial_done">Done</string>
+    <string name="tutorial_next">Next</string>
+
+    <!-- My Reports Screen -->
+    <string name="my_reports_title">My Reports</string>
+    <string name="my_reports_empty">No reports found</string>
+    <string name="my_reports_response">Response:</string>
+    <string name="report_status_open">Open</string>
+    <string name="report_status_in_progress">In Progress</string>
+    <string name="report_status_resolved">Resolved</string>
+    <string name="report_status_wontfix">Won\'t Fix</string>
+    <string name="report_status_duplicate">Duplicate</string>
+    <string name="report_status_closed">Closed</string>
+
+    <!-- Report Screen -->
+    <string name="report_issue_title">Report Issue</string>
+    <string name="report_type_label">Report Type</string>
+    <string name="report_title_label">Title</string>
+    <string name="report_title_placeholder">Brief summary of the issue</string>
+    <string name="report_desc_label">Description</string>
+    <string name="report_desc_placeholder">Describe the issue or suggestion in detail...</string>
+    <string name="report_priority_label">Priority</string>
+    <string name="report_submit_button">Submit Report</string>
 </resources>

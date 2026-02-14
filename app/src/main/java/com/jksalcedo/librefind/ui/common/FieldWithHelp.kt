@@ -30,6 +30,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import com.jksalcedo.librefind.R
 
 /**
  * A reusable composable that wraps any form field with a help icon.
@@ -61,7 +63,7 @@ fun FieldWithHelp(
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Outlined.HelpOutline,
-                    contentDescription = "Help for $helpTitle",
+                    contentDescription = stringResource(R.string.field_help_content_desc, helpTitle),
                     tint = if (showHelp)
                         MaterialTheme.colorScheme.primary
                     else

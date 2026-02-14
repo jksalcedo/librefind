@@ -41,6 +41,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jksalcedo.librefind.domain.model.Alternative
 import org.koin.androidx.compose.koinViewModel
+import androidx.compose.ui.res.stringResource
+import com.jksalcedo.librefind.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,7 +64,7 @@ fun DetailsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("$appName alternatives") },
+                title = { Text(stringResource(R.string.details_title_format, appName)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
@@ -102,13 +104,13 @@ fun DetailsScreen(
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
-                            text = state.error ?: "Unknown error",
+                            text = state.error ?: stringResource(R.string.details_error_unknown),
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.error
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         Button(onClick = { viewModel.retry(packageName) }) {
-                            Text("Retry")
+                            Text(stringResource(R.string.details_retry))
                         }
                     }
                 }
@@ -129,20 +131,20 @@ fun DetailsScreen(
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
-                            text = "No alternatives found",
+                            text = stringResource(R.string.details_no_alternatives),
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            text = "This app is not in our database yet.",
+                            text = stringResource(R.string.details_not_in_db),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         if (state.isUnknown) {
                             Spacer(modifier = Modifier.height(24.dp))
                             Text(
-                                text = "Help us categorize this app:",
+                                text = stringResource(R.string.details_help_categorize),
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.SemiBold
                             )
@@ -154,13 +156,13 @@ fun DetailsScreen(
                                     onClick = { onSuggestAsFoss(appName, packageName) },
                                     modifier = Modifier.width(160.dp)
                                 ) {
-                                    Text("Suggest as FOSS")
+                                    Text(stringResource(R.string.details_suggest_foss))
                                 }
                                 Button(
                                     onClick = { onSuggestAsProprietary(appName, packageName) },
                                     modifier = Modifier.width(160.dp)
                                 ) {
-                                    Text("Suggest as Proprietary")
+                                    Text(stringResource(R.string.details_suggest_proprietary))
                                 }
                             }
                         }
@@ -175,7 +177,7 @@ fun DetailsScreen(
                     ) {
                         item {
                             Text(
-                                text = "Found ${state.alternatives.size} FOSS alternative${if (state.alternatives.size > 1) "s" else ""}",
+                                text = stringResource(R.string.details_found_format, state.alternatives.size, if (state.alternatives.size > 1) "s" else ""),
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.SemiBold,
                                 modifier = Modifier.padding(bottom = 8.dp)

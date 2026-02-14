@@ -62,7 +62,9 @@ import com.jksalcedo.librefind.domain.model.Alternative
 import com.jksalcedo.librefind.domain.model.SubmissionType
 import com.jksalcedo.librefind.ui.common.FieldWithHelp
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
 import org.koin.androidx.compose.koinViewModel
+import com.jksalcedo.librefind.R
 
 @Composable
 fun SubmitScreen(
@@ -188,15 +190,15 @@ fun SubmitContent(
                     modifier = Modifier.size(48.dp)
                 )
             },
-            title = { Text(if (uiState.isEditing) "Submission Updated!" else "Submission Received!") },
+            title = { Text(if (uiState.isEditing) stringResource(R.string.submit_title_edit) else stringResource(R.string.submit_success_title)) },
             text = {
-                Text(if (uiState.isEditing) "Your submission for '${uiState.submittedAppName}' has been updated." else "Thanks! Your submission for '${uiState.submittedAppName}' has been received.")
+                Text(if (uiState.isEditing) stringResource(R.string.submit_update_message, uiState.submittedAppName ?: "") else stringResource(R.string.submit_success_message, uiState.submittedAppName ?: ""))
             },
             confirmButton = {
                 Button(
                     onClick = onSuccess
                 ) {
-                    Text("Done")
+                    Text(stringResource(R.string.submit_done))
                 }
             },
             properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
@@ -206,7 +208,7 @@ fun SubmitContent(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(if (uiState.isEditing) "Edit Submission" else "Submit App") },
+                title = { Text(if (uiState.isEditing) stringResource(R.string.submit_title_edit) else stringResource(R.string.submit_title_new)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -229,12 +231,12 @@ fun SubmitContent(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "What are you submitting?",
+                    text = stringResource(R.string.submit_what_submitting),
                     style = MaterialTheme.typography.titleMedium
                 )
                 val uriHandler = LocalUriHandler.current
                 TextButton(onClick = { uriHandler.openUri("https://github.com/jksalcedo/librefind/wiki/How-to-Contribute") }) {
-                    Text("Contribution Guide", style = MaterialTheme.typography.labelMedium)
+                    Text(stringResource(R.string.submit_contribution_guide), style = MaterialTheme.typography.labelMedium)
                 }
             }
 
@@ -242,17 +244,17 @@ fun SubmitContent(
                 FilterChip(
                     selected = type == SubmissionType.NEW_ALTERNATIVE,
                     onClick = { type = SubmissionType.NEW_ALTERNATIVE },
-                    label = { Text("FOSS App") }
+                    label = { Text(stringResource(R.string.submit_type_foss)) }
                 )
                 FilterChip(
                     selected = type == SubmissionType.NEW_PROPRIETARY,
                     onClick = { type = SubmissionType.NEW_PROPRIETARY },
-                    label = { Text("Proprietary App") }
+                    label = { Text(stringResource(R.string.submit_type_proprietary)) }
                 )
                 FilterChip(
                     selected = type == SubmissionType.LINKING,
                     onClick = { type = SubmissionType.LINKING },
-                    label = { Text("Link App") }
+                    label = { Text(stringResource(R.string.submit_type_link)) }
                 )
             }
 
@@ -269,25 +271,27 @@ fun SubmitContent(
 
             if (type != SubmissionType.LINKING) {
 
+                val appNameHelp = SubmitFieldHelp.getAppName()
                 FieldWithHelp(
-                    helpTitle = SubmitFieldHelp.appName.title,
-                    helpText = SubmitFieldHelp.appName.description,
-                    tipText = SubmitFieldHelp.appName.tip
+                    helpTitle = appNameHelp.title,
+                    helpText = appNameHelp.description,
+                    tipText = appNameHelp.tip
                 ) {
                     OutlinedTextField(
                         value = appName,
                         onValueChange = { appName = it },
-                        label = { Text("App Name *") },
+                        label = { Text(stringResource(R.string.submit_app_name)) },
                         singleLine = true,
                         modifier = Modifier.fillMaxWidth(),
                         readOnly = uiState.linkedSolution != null
                     )
                 }
 
+                val packageNameHelp = SubmitFieldHelp.getPackageName()
                 FieldWithHelp(
-                    helpTitle = SubmitFieldHelp.packageName.title,
-                    helpText = SubmitFieldHelp.packageName.description,
-                    tipText = SubmitFieldHelp.packageName.tip
+                    helpTitle = packageNameHelp.title,
+                    helpText = packageNameHelp.description,
+                    tipText = packageNameHelp.tip
                 ) {
                     OutlinedTextField(
                         value = packageName,
@@ -296,8 +300,8 @@ fun SubmitContent(
                             onCheckDuplicate(it)
                             onValidatePackageName(it)
                         },
-                        label = { Text("Package Name *") },
-                        placeholder = { Text("com.example.app") },
+                        label = { Text(stringResource(R.string.submit_package_name)) },
+                        placeholder = { Text(stringResource(R.string.submit_package_placeholder)) },
                         singleLine = true,
                         isError = uiState.packageNameError != null,
                         supportingText = {
@@ -310,17 +314,18 @@ fun SubmitContent(
                     )
                 }
 
+                val descriptionHelp = SubmitFieldHelp.getDescription()
                 FieldWithHelp(
-                    helpTitle = SubmitFieldHelp.description.title,
-                    helpText = SubmitFieldHelp.description.description
+                    helpTitle = descriptionHelp.title,
+                    helpText = descriptionHelp.description
                 ) {
                     OutlinedTextField(
                         value = description,
                         onValueChange = { description = it },
                         label = {
                             Text(
-                                if (type == SubmissionType.NEW_ALTERNATIVE) "Description *"
-                                else "Description"
+                                if (type == SubmissionType.NEW_ALTERNATIVE) stringResource(R.string.submit_description_required)
+                                else stringResource(R.string.submit_description)
                             )
                         },
                         minLines = 3,
@@ -333,7 +338,7 @@ fun SubmitContent(
                     HorizontalDivider()
 
                     Text(
-                        text = "Add Alternatives (optional)",
+                        text = stringResource(R.string.submit_add_alternatives),
                         style = MaterialTheme.typography.titleMedium
                     )
 
@@ -345,8 +350,8 @@ fun SubmitContent(
                             alternativeSearchQuery = it
                             onSearchSolutions(it)
                         },
-                        label = { Text("Search for alternatives") },
-                        placeholder = { Text("Search by app name or package...") },
+                        label = { Text(stringResource(R.string.submit_search_alternatives)) },
+                        placeholder = { Text(stringResource(R.string.submit_search_placeholder)) },
                         leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                         trailingIcon = {
                             if (alternativeSearchQuery.isNotEmpty()) {
@@ -414,7 +419,7 @@ fun SubmitContent(
 
                     if (uiState.selectedAlternatives.isNotEmpty()) {
                         Text(
-                            text = "Selected Alternatives:",
+                            text = stringResource(R.string.submit_selected_alternatives),
                             style = MaterialTheme.typography.labelMedium,
                             color = MaterialTheme.colorScheme.primary
                         )
@@ -446,7 +451,7 @@ fun SubmitContent(
                     HorizontalDivider()
 
                     Text(
-                        text = "Alternative Details",
+                        text = stringResource(R.string.submit_alternative_details),
                         style = MaterialTheme.typography.titleMedium
                     )
 
@@ -460,8 +465,8 @@ fun SubmitContent(
                                 fossSearchQuery = it
                                 onSearchFossApps(it)
                             },
-                            label = { Text("Search specific FOSS app (optional)") },
-                            placeholder = { Text("Search existing database...") },
+                            label = { Text(stringResource(R.string.submit_search_foss_optional)) },
+                            placeholder = { Text(stringResource(R.string.submit_search_foss_placeholder)) },
                             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                             trailingIcon = {
                                 if (fossSearchQuery.isNotEmpty()) {
@@ -542,7 +547,7 @@ fun SubmitContent(
                             ) {
                                 Column(modifier = Modifier.weight(1f)) {
                                     Text(
-                                        text = "Linked to Existing App",
+                                        text = stringResource(R.string.submit_linked_app),
                                         style = MaterialTheme.typography.labelSmall,
                                         color = MaterialTheme.colorScheme.onPrimaryContainer
                                     )
@@ -575,25 +580,26 @@ fun SubmitContent(
 
 
                     Text(
-                        text = "License and Repository URL are required for FOSS alternatives",
+                        text = stringResource(R.string.submit_foss_requirements),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
 
                     var showDialog by remember { mutableStateOf(false) }
 
+                    val targetAppsHelp = SubmitFieldHelp.getTargetProprietaryApps()
                     FieldWithHelp(
-                        helpTitle = SubmitFieldHelp.targetProprietaryApps.title,
-                        helpText = SubmitFieldHelp.targetProprietaryApps.description,
-                        tipText = SubmitFieldHelp.targetProprietaryApps.tip
+                        helpTitle = targetAppsHelp.title,
+                        helpText = targetAppsHelp.description,
+                        tipText = targetAppsHelp.tip
                     ) {
                         Box(modifier = Modifier.fillMaxWidth()) {
                             OutlinedTextField(
                                 value = if (selectedProprietaryPackages.isEmpty()) "" else "${selectedProprietaryPackages.size} selected",
                                 onValueChange = {},
                                 readOnly = true,
-                                label = { Text("Target Proprietary Apps") },
-                                placeholder = { Text("Search to add...") },
+                                label = { Text(stringResource(R.string.submit_target_proprietary)) },
+                                placeholder = { Text(stringResource(R.string.submit_search_to_add)) },
                                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = showDialog) },
                                 modifier = Modifier.fillMaxWidth()
                             )
@@ -648,10 +654,11 @@ fun SubmitContent(
                         )
                     }
 
+                    val repoUrlHelp = SubmitFieldHelp.getRepoUrl()
                     FieldWithHelp(
-                        helpTitle = SubmitFieldHelp.repoUrl.title,
-                        helpText = SubmitFieldHelp.repoUrl.description,
-                        tipText = SubmitFieldHelp.repoUrl.tip
+                        helpTitle = repoUrlHelp.title,
+                        helpText = repoUrlHelp.description,
+                        tipText = repoUrlHelp.tip
                     ) {
                         OutlinedTextField(
                             value = repoUrl,
@@ -659,8 +666,8 @@ fun SubmitContent(
                                 repoUrl = it
                                 onValidateRepoUrl(it)
                             },
-                            label = { Text("Repository URL *") },
-                            placeholder = { Text("https://github.com/...") },
+                            label = { Text(stringResource(R.string.submit_repo_url)) },
+                            placeholder = { Text(stringResource(R.string.submit_repo_placeholder)) },
                             singleLine = true,
                             isError = uiState.repoUrlError != null,
                             supportingText = {
@@ -673,15 +680,16 @@ fun SubmitContent(
                         )
                     }
 
+                    val fdroidIdHelp = SubmitFieldHelp.getFdroidId()
                     FieldWithHelp(
-                        helpTitle = SubmitFieldHelp.fdroidId.title,
-                        helpText = SubmitFieldHelp.fdroidId.description,
-                        tipText = SubmitFieldHelp.fdroidId.tip
+                        helpTitle = fdroidIdHelp.title,
+                        helpText = fdroidIdHelp.description,
+                        tipText = fdroidIdHelp.tip
                     ) {
                         OutlinedTextField(
                             value = fdroidId,
                             onValueChange = { fdroidId = it },
-                            label = { Text("F-Droid ID") },
+                            label = { Text(stringResource(R.string.submit_fdroid_id)) },
                             singleLine = true,
                             modifier = Modifier.fillMaxWidth(),
                             readOnly = uiState.linkedSolution != null
@@ -708,24 +716,27 @@ fun SubmitContent(
                         "CC-BY-SA-4.0",
                         "WTFPL",
                         "Unknown",
-                        "Other"
+                        "WTFPL",
+                        "Unknown",
+                        stringResource(R.string.submit_other)
                     )
 
                     val isCustomLicense = license.isNotBlank() && license !in commonLicenses
-                    var showCustomLicenseField by remember(license) { mutableStateOf(isCustomLicense || license == "Other") }
+                    var showCustomLicenseField by remember(license) { mutableStateOf(isCustomLicense || license == stringResource(R.string.submit_other)) }
 
+                    val licenseHelp = SubmitFieldHelp.getLicense()
                     FieldWithHelp(
-                        helpTitle = SubmitFieldHelp.license.title,
-                        helpText = SubmitFieldHelp.license.description,
-                        tipText = SubmitFieldHelp.license.tip
+                        helpTitle = licenseHelp.title,
+                        helpText = licenseHelp.description,
+                        tipText = licenseHelp.tip
                     ) {
                         Box(modifier = Modifier.fillMaxWidth()) {
                             OutlinedTextField(
-                                value = if (isCustomLicense) "Other" else license,
+                                value = if (isCustomLicense) stringResource(R.string.submit_other) else license,
                                 onValueChange = {},
                                 readOnly = true,
-                                label = { Text("License *") },
-                                placeholder = { Text("Select a license") },
+                                label = { Text(stringResource(R.string.submit_license)) },
+                                placeholder = { Text(stringResource(R.string.submit_license_placeholder)) },
                                 trailingIcon = {
                                     if (uiState.linkedSolution == null)
                                         ExposedDropdownMenuDefaults.TrailingIcon(expanded = showLicenseDropdown)
@@ -742,13 +753,13 @@ fun SubmitContent(
                         }
                     }
 
-                    if (showCustomLicenseField || license == "Other") {
+                    if (showCustomLicenseField || license == stringResource(R.string.submit_other)) {
                         Spacer(modifier = Modifier.height(8.dp))
                         OutlinedTextField(
-                            value = if (license == "Other" || (license in commonLicenses && license != "Other")) "" else license,
+                            value = if (license == stringResource(R.string.submit_other) || (license in commonLicenses && license != stringResource(R.string.submit_other))) "" else license,
                             onValueChange = { license = it },
-                            label = { Text("Custom License Name *") },
-                            placeholder = { Text("e.g. My Custom License") },
+                            label = { Text(stringResource(R.string.submit_custom_license)) },
+                            placeholder = { Text(stringResource(R.string.submit_custom_license_placeholder)) },
                             singleLine = true,
                             modifier = Modifier.fillMaxWidth(),
                             readOnly = uiState.linkedSolution != null
@@ -758,7 +769,7 @@ fun SubmitContent(
                     if (showLicenseDropdown) {
                         AlertDialog(
                             onDismissRequest = { showLicenseDropdown = false },
-                            title = { Text("Select License") },
+                            title = { Text(stringResource(R.string.submit_select_license)) },
                             text = {
                                 LazyColumn {
                                     items(commonLicenses) { licenseName ->
@@ -766,8 +777,8 @@ fun SubmitContent(
                                             modifier = Modifier
                                                 .fillMaxWidth()
                                                 .clickable {
-                                                    license = if (licenseName == "Other") {
-                                                        "Other"
+                                                    license = if (licenseName == stringResource(R.string.submit_other)) {
+                                                        stringResource(R.string.submit_other)
                                                     } else {
                                                         licenseName
                                                     }
@@ -789,7 +800,7 @@ fun SubmitContent(
                             },
                             confirmButton = {
                                 TextButton(onClick = { showLicenseDropdown = false }) {
-                                    Text("Cancel")
+                                    Text(stringResource(R.string.submit_cancel))
                                 }
                             }
                         )
@@ -798,12 +809,12 @@ fun SubmitContent(
             } else {
                 // LINKING
                 Text(
-                    text = "Link Existing Solutions",
+                    text = stringResource(R.string.submit_link_solutions_title),
                     style = MaterialTheme.typography.titleMedium
                 )
 
                 Text(
-                    text = "Link an existing FOSS app to an existing proprietary app in our database.",
+                    text = stringResource(R.string.submit_link_solutions_desc),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -813,17 +824,18 @@ fun SubmitContent(
                 // Target App Selection
                 var showTargetDialog by remember { mutableStateOf(false) }
 
+                val targetAppsHelp = SubmitFieldHelp.getTargetProprietaryApps()
                 FieldWithHelp(
-                    helpTitle = "Target Proprietary App",
-                    helpText = "The proprietary app you want to link solutions to."
+                    helpTitle = stringResource(R.string.submit_target_app),
+                    helpText = stringResource(R.string.submit_link_solutions_target)
                 ) {
                     Box(modifier = Modifier.fillMaxWidth()) {
                         OutlinedTextField(
                             value = uiState.linkTargetPackage ?: "",
                             onValueChange = {},
                             readOnly = true,
-                            label = { Text("Target Proprietary App") },
-                            placeholder = { Text("Select a target app...") },
+                            label = { Text(stringResource(R.string.submit_target_app)) },
+                            placeholder = { Text(stringResource(R.string.submit_select_target)) },
                             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = showTargetDialog) },
                             modifier = Modifier.fillMaxWidth()
                         )
@@ -859,7 +871,7 @@ fun SubmitContent(
 
                 // Solutions Selection
                 Text(
-                    text = "Select Solutions to Link",
+                    text = stringResource(R.string.submit_select_solutions),
                     style = MaterialTheme.typography.titleMedium
                 )
 
@@ -871,8 +883,8 @@ fun SubmitContent(
                         alternativeSearchQuery = it
                         onSearchSolutions(it)
                     },
-                    label = { Text("Search for solutions") },
-                    placeholder = { Text("Search by app name or package...") },
+                    label = { Text(stringResource(R.string.submit_search_solutions)) },
+                    placeholder = { Text(stringResource(R.string.submit_search_placeholder)) },
                     leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                     trailingIcon = {
                         if (alternativeSearchQuery.isNotEmpty()) {
@@ -940,7 +952,7 @@ fun SubmitContent(
 
                 if (uiState.selectedAlternatives.isNotEmpty()) {
                     Text(
-                        text = "Selected Solutions:",
+                        text = stringResource(R.string.submit_selected_solutions),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -1015,7 +1027,7 @@ fun SubmitContent(
                         strokeWidth = 2.dp
                     )
                 } else {
-                    Text(if (uiState.isEditing) "Update Submission" else "Submit for Review")
+                    Text(if (uiState.isEditing) stringResource(R.string.submit_update_button) else stringResource(R.string.submit_submit_button))
                 }
             }
 
@@ -1052,7 +1064,7 @@ fun MultiSelectDialog(
             Column(modifier = Modifier.padding(16.dp)) {
 
                 Text(
-                    text = "Select Target Apps",
+                    text = stringResource(R.string.submit_select_targets_dialog),
                     style = MaterialTheme.typography.headlineSmall
                 )
 
@@ -1062,7 +1074,7 @@ fun MultiSelectDialog(
                 OutlinedTextField(
                     value = searchText,
                     onValueChange = { searchText = it },
-                    label = { Text("Search") },
+                    label = { Text(stringResource(R.string.submit_search)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) }
@@ -1092,13 +1104,13 @@ fun MultiSelectDialog(
                     if (filteredList.isEmpty() && searchText.isNotBlank() && filteredUnknown.isNotEmpty()) {
                         item {
                             Text(
-                                "No targets found in database.",
+                                stringResource(R.string.submit_no_targets),
                                 modifier = Modifier.padding(16.dp),
                                 style = MaterialTheme.typography.bodyMedium
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
-                                "Unknown apps from your device:",
+                                stringResource(R.string.submit_unknown_apps),
                                 modifier = Modifier.padding(horizontal = 16.dp),
                                 style = MaterialTheme.typography.labelMedium,
                                 color = MaterialTheme.colorScheme.primary
@@ -1128,7 +1140,7 @@ fun MultiSelectDialog(
                                     )
                                 }
                                 Text(
-                                    text = "Suggest as target",
+                                    text = stringResource(R.string.submit_suggest_target),
                                     style = MaterialTheme.typography.labelMedium,
                                     color = MaterialTheme.colorScheme.primary
                                 )
@@ -1138,7 +1150,7 @@ fun MultiSelectDialog(
                     } else if (filteredList.isEmpty()) {
                         item {
                             Text(
-                                "No results found.",
+                                stringResource(R.string.submit_no_results),
                                 modifier = Modifier.padding(16.dp),
                                 style = MaterialTheme.typography.bodyMedium
                             )
@@ -1186,11 +1198,11 @@ fun MultiSelectDialog(
                     horizontalArrangement = Arrangement.End
                 ) {
                     TextButton(onClick = onDismiss) {
-                        Text("Cancel")
+                        Text(stringResource(R.string.submit_cancel))
                     }
                     Spacer(modifier = Modifier.width(8.dp))
                     Button(onClick = { onConfirm(tempSelection) }) {
-                        Text("Confirm (${tempSelection.size})")
+                        Text("${stringResource(R.string.submit_confirm)} (${tempSelection.size})")
                     }
                 }
             }

@@ -17,6 +17,8 @@ import com.jksalcedo.librefind.ui.theme.PendingOrange
 import com.jksalcedo.librefind.ui.theme.PropRed
 import com.jksalcedo.librefind.ui.theme.UnknownGray
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.res.stringResource
+import com.jksalcedo.librefind.R
 
 /**
  * Visual status badge component
@@ -39,11 +41,11 @@ fun StatusBadge(
     }
 
     val text = when (status) {
-        AppStatus.FOSS -> "FOSS"
-        AppStatus.PROP -> "PROPRIETARY"
-        AppStatus.UNKN -> "UNKNOWN"
-        AppStatus.PENDING -> "PENDING"
-        else -> "ignored"
+        AppStatus.FOSS -> stringResource(R.string.status_foss)
+        AppStatus.PROP -> stringResource(R.string.status_proprietary)
+        AppStatus.UNKN -> stringResource(R.string.status_unknown)
+        AppStatus.PENDING -> stringResource(R.string.status_pending)
+        else -> stringResource(R.string.status_ignored)
     }
 
     Surface(

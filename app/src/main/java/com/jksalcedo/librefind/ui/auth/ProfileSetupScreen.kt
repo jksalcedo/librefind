@@ -7,7 +7,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.jksalcedo.librefind.R
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -27,7 +29,7 @@ fun ProfileSetupScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Set Up Profile") })
+            TopAppBar(title = { Text(stringResource(R.string.setup_title)) })
         }
     ) { padding ->
         Column(
@@ -39,14 +41,14 @@ fun ProfileSetupScreen(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "Choose a Username",
+                text = stringResource(R.string.setup_choose_username),
                 style = MaterialTheme.typography.headlineSmall
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "This will be shown with your submissions",
+                text = stringResource(R.string.setup_username_desc),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -56,9 +58,9 @@ fun ProfileSetupScreen(
             OutlinedTextField(
                 value = username,
                 onValueChange = { username = it.take(20).filter { c -> c.isLetterOrDigit() || c == '_' } },
-                label = { Text("Username") },
+                label = { Text(stringResource(R.string.auth_username)) },
                 leadingIcon = { Icon(Icons.Default.Person, contentDescription = null) },
-                supportingText = { Text("Letters, numbers, underscore only") },
+                supportingText = { Text(stringResource(R.string.setup_username_rules)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -85,7 +87,7 @@ fun ProfileSetupScreen(
                         strokeWidth = 2.dp
                     )
                 } else {
-                    Text("Continue")
+                    Text(stringResource(R.string.setup_continue))
                 }
             }
         }

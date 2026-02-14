@@ -55,10 +55,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
+import com.jksalcedo.librefind.R
 import com.jksalcedo.librefind.data.local.PreferencesManager
 import com.jksalcedo.librefind.ui.auth.AuthViewModel
 import com.jksalcedo.librefind.ui.common.TargetArea
@@ -118,7 +120,7 @@ fun DashboardScreen(
                             TextField(
                                 value = state.searchQuery,
                                 onValueChange = { viewModel.updateSearchQuery(it) },
-                                placeholder = { Text("Search apps...") },
+                                placeholder = { Text(stringResource(R.string.dashboard_search_hint)) },
                                 singleLine = true,
                                 colors = TextFieldDefaults.colors(
                                     focusedContainerColor = Color.Transparent,
@@ -131,7 +133,7 @@ fun DashboardScreen(
                             )
                         } else {
                             Text(
-                                text = authState.userProfile?.username ?: "LibreFind",
+                                text = authState.userProfile?.username ?: stringResource(R.string.app_name),
                                 fontWeight = FontWeight.Bold
                             )
                         }
@@ -142,7 +144,7 @@ fun DashboardScreen(
                                 isSearchActive = false
                                 viewModel.updateSearchQuery("")
                             }) {
-                                Icon(Icons.Default.Close, contentDescription = "Close search")
+                                Icon(Icons.Default.Close, contentDescription = stringResource(R.string.dashboard_close_search))
                             }
                         } else {
                             IconButton(
@@ -151,7 +153,7 @@ fun DashboardScreen(
                                     searchRect = coords.boundsInRoot()
                                 }
                             ) {
-                                Icon(Icons.Default.Search, contentDescription = "Search")
+                                Icon(Icons.Default.Search, contentDescription = stringResource(R.string.dashboard_search))
                             }
                             Box {
                                 IconButton(
@@ -162,7 +164,7 @@ fun DashboardScreen(
                                 ) {
                                     Icon(
                                         Icons.Default.FilterList,
-                                        contentDescription = "Filter",
+                                        contentDescription = stringResource(R.string.dashboard_filter),
                                         tint = if (state.appFilter != AppFilter.ALL)
                                             MaterialTheme.colorScheme.primary
                                         else
@@ -174,7 +176,7 @@ fun DashboardScreen(
                                     onDismissRequest = { showFilterMenu = false }
                                 ) {
                                     DropdownMenuItem(
-                                        text = { Text("Show All") },
+                                        text = { Text(stringResource(R.string.dashboard_filter_show_all)) },
                                         onClick = {
                                             viewModel.setAppFilter(AppFilter.ALL)
                                             showFilterMenu = false
@@ -187,7 +189,7 @@ fun DashboardScreen(
                                     )
                                     HorizontalDivider()
                                     DropdownMenuItem(
-                                        text = { Text("All Proprietary") },
+                                        text = { Text(stringResource(R.string.dashboard_filter_all_proprietary)) },
                                         onClick = {
                                             viewModel.setAppFilter(AppFilter.PROP_ONLY)
                                             showFilterMenu = false
@@ -199,7 +201,7 @@ fun DashboardScreen(
                                         }
                                     )
                                     DropdownMenuItem(
-                                        text = { Text("With Alternatives") },
+                                        text = { Text(stringResource(R.string.dashboard_filter_with_alternatives)) },
                                         onClick = {
                                             viewModel.setAppFilter(AppFilter.PROP_WITH_ALTERNATIVES)
                                             showFilterMenu = false
@@ -211,7 +213,7 @@ fun DashboardScreen(
                                         }
                                     )
                                     DropdownMenuItem(
-                                        text = { Text("Without Alternatives") },
+                                        text = { Text(stringResource(R.string.dashboard_filter_no_alternatives)) },
                                         onClick = {
                                             viewModel.setAppFilter(AppFilter.PROP_NO_ALTERNATIVES)
                                             showFilterMenu = false
@@ -224,7 +226,7 @@ fun DashboardScreen(
                                     )
                                     HorizontalDivider()
                                     DropdownMenuItem(
-                                        text = { Text("FOSS Only") },
+                                        text = { Text(stringResource(R.string.dashboard_filter_foss_only)) },
                                         onClick = {
                                             viewModel.setAppFilter(AppFilter.FOSS_ONLY)
                                             showFilterMenu = false
@@ -236,7 +238,7 @@ fun DashboardScreen(
                                         }
                                     )
                                     DropdownMenuItem(
-                                        text = { Text("Unknown Only") },
+                                        text = { Text(stringResource(R.string.dashboard_filter_unknown_only)) },
                                         onClick = {
                                             viewModel.setAppFilter(AppFilter.UNKNOWN_ONLY)
                                             showFilterMenu = false
@@ -248,7 +250,7 @@ fun DashboardScreen(
                                         }
                                     )
                                     DropdownMenuItem(
-                                        text = { Text("Pending Only") },
+                                        text = { Text(stringResource(R.string.dashboard_filter_pending_only)) },
                                         onClick = {
                                             viewModel.setAppFilter(AppFilter.PENDING_ONLY)
                                             showFilterMenu = false
@@ -260,7 +262,7 @@ fun DashboardScreen(
                                         }
                                     )
                                     DropdownMenuItem(
-                                        text = { Text("Ignored Only") },
+                                        text = { Text(stringResource(R.string.dashboard_filter_ignored_only)) },
                                         onClick = {
                                             viewModel.setAppFilter(AppFilter.IGNORED_ONLY)
                                             showFilterMenu = false
@@ -281,7 +283,7 @@ fun DashboardScreen(
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.AccountCircle,
-                                    contentDescription = "Profile"
+                                    contentDescription = stringResource(R.string.dashboard_profile)
                                 )
                             }
                             IconButton(
@@ -289,7 +291,7 @@ fun DashboardScreen(
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Settings,
-                                    contentDescription = "Settings"
+                                    contentDescription = stringResource(R.string.dashboard_settings)
                                 )
                             }
                         }
@@ -304,7 +306,7 @@ fun DashboardScreen(
                         fabRect = coords.boundsInRoot()
                     }
                 ) {
-                    Icon(Icons.Default.Add, contentDescription = "Submit App")
+                    Icon(Icons.Default.Add, contentDescription = stringResource(R.string.dashboard_submit_app))
                 }
             }
         ) { innerPadding ->
@@ -329,19 +331,19 @@ fun DashboardScreen(
                             verticalArrangement = Arrangement.Center
                         ) {
                             Text(
-                                text = "Error",
+                                text = stringResource(R.string.dashboard_error_title),
                                 style = MaterialTheme.typography.headlineMedium,
                                 fontWeight = FontWeight.Bold
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
-                                text = state.error ?: "Unknown error",
+                                text = state.error ?: stringResource(R.string.dashboard_unknown_error),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.error
                             )
                             Spacer(modifier = Modifier.height(16.dp))
                             Button(onClick = { viewModel.scan() }) {
-                                Text("Retry")
+                                Text(stringResource(R.string.dashboard_retry))
                             }
                         }
                     }
@@ -368,7 +370,7 @@ fun DashboardScreen(
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Text(
-                                        text = if (state.searchQuery.isNotEmpty()) "No matching apps" else "No apps found",
+                                        text = if (state.searchQuery.isNotEmpty()) stringResource(R.string.dashboard_no_matching_apps) else stringResource(R.string.dashboard_no_apps_found),
                                         style = MaterialTheme.typography.bodyLarge,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
@@ -421,7 +423,7 @@ fun DashboardScreen(
                     if (authState.isSignedIn && authState.userProfile != null) {
                         AlertDialog(
                             onDismissRequest = { showProfileDialog = false },
-                            title = { Text("Profile & Settings") },
+                            title = { Text(stringResource(R.string.profile_dialog_title)) },
                             text = {
                                 Column(
                                     modifier = Modifier.fillMaxWidth(),
@@ -431,12 +433,12 @@ fun DashboardScreen(
                                     val email = authState.userProfile?.email
 
                                     Text(
-                                        text = if (username.isNullOrBlank()) "Unknown Username" else username,
+                                        text = if (username.isNullOrBlank()) stringResource(R.string.profile_unknown_username) else username,
                                         style = MaterialTheme.typography.titleMedium,
                                         fontWeight = FontWeight.Bold
                                     )
                                     Text(
-                                        text = if (email.isNullOrBlank()) "No Email" else email,
+                                        text = if (email.isNullOrBlank()) stringResource(R.string.profile_no_email) else email,
                                         style = MaterialTheme.typography.bodyMedium,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
@@ -454,7 +456,7 @@ fun DashboardScreen(
                                     ) {
                                         Icon(Icons.Default.VisibilityOff, contentDescription = null)
                                         Spacer(modifier = Modifier.width(8.dp))
-                                        Text("Ignored Apps")
+                                        Text(stringResource(R.string.profile_ignored_apps))
                                     }
 
                                     Spacer(modifier = Modifier.height(8.dp))
@@ -468,7 +470,7 @@ fun DashboardScreen(
                                     ) {
                                         Icon(Icons.Default.CloudUpload, contentDescription = null)
                                         Spacer(modifier = Modifier.width(8.dp))
-                                        Text("My Submissions")
+                                        Text(stringResource(R.string.profile_my_submissions))
                                     }
 
                                     Spacer(modifier = Modifier.height(16.dp))
@@ -492,13 +494,13 @@ fun DashboardScreen(
                                             contentDescription = null
                                         )
                                         Spacer(modifier = Modifier.width(8.dp))
-                                        Text("Sign Out")
+                                        Text(stringResource(R.string.profile_sign_out))
                                     }
                                 }
                             },
                             confirmButton = {
                                 TextButton(onClick = { showProfileDialog = false }) {
-                                    Text("Close")
+                                    Text(stringResource(R.string.profile_close))
                                 }
                             },
                             properties = DialogProperties(
@@ -508,10 +510,10 @@ fun DashboardScreen(
                             modifier = Modifier.fillMaxWidth(0.9f)
                         )
                     } else {
-                        val title = if (authState.isSignedIn) "Profile Missing" else "Not Signed In"
+                        val title = if (authState.isSignedIn) stringResource(R.string.profile_missing_title) else stringResource(R.string.profile_not_signed_in_title)
                         val message = if (authState.isSignedIn)
-                            "Your profile could not be found. Please try signing out and back in, or contact support."
-                        else "Please sign in to view your profile."
+                            stringResource(R.string.profile_missing_message)
+                        else stringResource(R.string.profile_not_signed_in_message)
 
                         AlertDialog(
                             onDismissRequest = { showProfileDialog = false },
@@ -524,12 +526,12 @@ fun DashboardScreen(
                                         onSubmitClick() // Redirect to Auth/Submit flow which handles login
                                     }
                                 ) {
-                                    Text(if (authState.isSignedIn) "Fix Profile" else "Sign In")
+                                    Text(if (authState.isSignedIn) stringResource(R.string.profile_fix_profile) else stringResource(R.string.profile_sign_in))
                                 }
                             },
                             dismissButton = {
                                 TextButton(onClick = { showProfileDialog = false }) {
-                                    Text("Close")
+                                    Text(stringResource(R.string.profile_close))
                                 }
                             }
                         )

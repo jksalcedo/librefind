@@ -35,7 +35,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.jksalcedo.librefind.domain.model.ReportPriority
 import com.jksalcedo.librefind.domain.model.ReportType
-import org.koin.androidx.compose.koinViewModel
+import androidx.compose.ui.res.stringResource
+import com.jksalcedo.librefind.R
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -63,7 +64,7 @@ fun ReportScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Report Issue") },
+                title = { Text(stringResource(R.string.report_issue_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -82,7 +83,7 @@ fun ReportScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
-                text = "Report Type",
+                text = stringResource(R.string.report_type_label),
                 style = MaterialTheme.typography.titleSmall
             )
             FlowRow(
@@ -101,8 +102,8 @@ fun ReportScreen(
             OutlinedTextField(
                 value = state.title,
                 onValueChange = { viewModel.updateTitle(it) },
-                label = { Text("Title") },
-                placeholder = { Text("Brief summary of the issue") },
+                label = { Text(stringResource(R.string.report_title_label)) },
+                placeholder = { Text(stringResource(R.string.report_title_placeholder)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
@@ -110,8 +111,8 @@ fun ReportScreen(
             OutlinedTextField(
                 value = state.description,
                 onValueChange = { viewModel.updateDescription(it) },
-                label = { Text("Description") },
-                placeholder = { Text("Describe the issue or suggestion in detail...") },
+                label = { Text(stringResource(R.string.report_desc_label)) },
+                placeholder = { Text(stringResource(R.string.report_desc_placeholder)) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp),
@@ -119,7 +120,7 @@ fun ReportScreen(
             )
 
             Text(
-                text = "Priority",
+                text = stringResource(R.string.report_priority_label),
                 style = MaterialTheme.typography.titleSmall
             )
             FlowRow(
@@ -147,8 +148,9 @@ fun ReportScreen(
                         modifier = Modifier.height(20.dp),
                         color = MaterialTheme.colorScheme.onPrimary
                     )
+                    )
                 } else {
-                    Text("Submit Report")
+                    Text(stringResource(R.string.report_submit_button))
                 }
             }
         }
