@@ -15,7 +15,7 @@
     <string name="dashboard_filter_ignored_only">Solo ignorate</string>
     <string name="dashboard_profile">Profilo</string>
     <string name="dashboard_settings">Impostazioni</string>
-    <string name="dashboard_submit_app">Invia app</string>
+    <string name="dashboard_submit_app">Proponi app</string>
     <string name="dashboard_error_title">Errore</string>
     <string name="dashboard_unknown_error">Errore sconosciuto</string>
     <string name="dashboard_retry">Riprova</string>
@@ -80,4 +80,20 @@
     <string name="submit_search_foss_placeholder">Cerca database esistente...</string>
     <string name="submit_linked_app">Collega ad app esistente</string>
     <string name="submit_foss_requirements">La licenza e l\'URL del repository sono richieste per le alternative FOSS</string>
+    <string name="submit_target_proprietary">App proprietarie interessate</string>
+    <string name="submit_search_to_add">Cerca per aggiungere...</string>
+    <string name="submit_repo_url">URL repository *</string>
+    <string name="submit_repo_placeholder">https://github.com/...</string>
+    <string name="submit_fdroid_id">ID F-Droid</string>
+    <string name="submit_license">Licenza *</string>
+    <string name="submit_license_placeholder">Scegli licenza</string>
+    <string name="submit_custom_license">Nome licenza personalizzato *</string>
+    <string name="submit_custom_license_placeholder">ad es. La Mia Licenza</string>
+    <string name="submit_select_license">Seleziona licenza</string>
+    <string name="submit_other">Altro</string>
+    <string name="submit_cancel">Annulla</string>
+    <string name="submit_link_solutions_title">Collega soluzioni esistenti</string>
+    <string name="submit_link_solutions_desc">Collega un\'app FOSS esistente ad una proprietaria nel nostro database.</string>
+    <string name="submit_target_app">App proprietaria interessata</string>
+    <string name="submit_link_solutions_target">Seleziona l\'app proprietaria da sostituire con la soluzione FOSS.</string>
 </resources>
