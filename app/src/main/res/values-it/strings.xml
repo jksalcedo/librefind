@@ -137,4 +137,13 @@
     <string name="settings_feedback">Feedback e community</string>
     <string name="settings_report_issue">Segnala problema / Suggerimento</string>
     <string name="settings_my_reports">Le mie segnalazioni</string>
+    <string name="settings_github_issues">GitHub Issues</string>
+    <string name="settings_join_community">Unisciti alla community</string>
+    <string name="settings_about">Informazioni</string>
+    <string name="settings_version">Versione</string>
+    <string name="settings_view_github">Vedi su GitHub</string>
+    <string name="settings_donate">Dona a LibreFind</string>
+    <string name="settings_privacy_policy">Informativa sulla privacy</string>
+    <string name="settings_cache_management">Gestione cache</string>
+    <string name="settings_cache_size">Dimensioni cache icone</string>
 </resources>
