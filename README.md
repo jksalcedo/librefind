@@ -21,12 +21,19 @@
 <a href="https://apt.izzysoft.de/packages/com.jksalcedo.librefind">
   <img alt="Get it on IzzyOnDroid" src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" width="160">
 </a>
+ 
   <a href="https://github.com/jksalcedo/librefind/releases">
   <img src="https://github.com/SilentCoderHere/aihub/blob/main/fastlane/metadata/android/en-US/images/badge_github.png" width="160" alt="Get it on GitHub">
   </a>
+  
   <br>
+
   <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/jksalcedo/librefind">
     <img alt="Get it on Obtainium" src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/badge_obtainium.png" width="140">
+  </a>
+
+   <a href="https://zapstore.dev/apps/naddr1qqtkxmmd9e4xkumpd33k2er09ekxjcnjv4nxjmnyqgs83nn04fezvsu89p8xg7axjwye2u67errat3dx2um725fs7qnrqlgrqsqqqlstekghss">
+    <img alt="Zapstore" src="https://github.com/zapstore/zapstore/blob/master/assets/images/badge.png" width="140">
   </a>
 </p>
 
