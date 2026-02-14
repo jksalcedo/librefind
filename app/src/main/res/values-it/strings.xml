@@ -136,4 +136,5 @@
     <string name="settings_reset_tutorial">Reimposta tutorial</string>
     <string name="settings_feedback">Feedback e community</string>
     <string name="settings_report_issue">Segnala problema / Suggerimento</string>
+    <string name="settings_my_reports">Le mie segnalazioni</string>
 </resources>
