@@ -93,4 +93,32 @@
     <string name="submit_other">Andere</string>
     <string name="submit_cancel">Abbrechen</string>
     <string name="submit_link_solutions_title">Verknüpfte existiertende Lösungen</string>
+    <string name="submit_link_solutions_desc">Verknüpfe eine existierende FOSS-App mit einer existierenden proprietären App in unserer Datenbank.</string>
+    <string name="submit_target_app">Ziel proprietäre App</string>
+    <string name="submit_link_solutions_target">Wähle die proprietäre App, die durch diese FOSS Lösung ersetzt wird.</string>
+    <string name="submit_select_target">Wähle eine Ziel App ...</string>
+    <string name="submit_select_solutions">Wähle Lösungen zum Verknüpfen</string>
+    <string name="submit_search_solutions">Suche nach Lösungen</string>
+    <string name="submit_selected_solutions">Ausgewählte Lösungen:</string>
+    <string name="submit_update_button">Aktualisiere Einreichung</string>
+    <string name="submit_submit_button">Zur Überprüfung einreichen</string>
+    <string name="submit_select_targets_dialog">Wähle Ziel-Apps</string>
+    <string name="submit_search">Suche</string>
+    <string name="submit_no_targets">Keine Ziele in der Datenbank gefunden.</string>
+    <string name="submit_unknown_apps">Unbekannte Apps von deinem Gerät:</string>
+    <string name="submit_suggest_target">Schlage ein Ziel vor</string>
+    <string name="submit_no_results">Keine Ergebnisse gefunden.</string>
+    <string name="submit_confirm">Bestätigen</string>
+    <string name="help_app_name_title">App Name</string>
+    <string name="help_app_name_desc">Der Anzeigename der App, unter dem Benutzer sie kennen (z.B. „Signal“, „Firefox“, „VLC“).</string>
+    <string name="help_app_name_tip">Nutze den offiziellen Namen von der App-Website oder dem App-Store Eintrag.</string>
+    <string name="help_package_name_title">Paketname</string>
+    <string name="help_package_name_desc">Die Eindeutige technische Kennung der App (z.B. „org.mozilla.firefox“). Das ist NICHT der Anzeigename.</string>
+    <string name="help_package_name_tip">Finde sie auf F-Droid (gelistet auf der App-Seite) oder in der Play Store URL: play.google.com/store/apps/details?id=&lt;package.name&gt;. Auf deinem Gerät: Einstellungen → Apps → [App] → App Info.</string>
+    <string name="help_description_title">Beschreibung</string>
+    <string name="help_description_desc">Eine kurze Zusammenfassung der Funktion der App. Beschränke dich auf 1-3 Sätze.</string>
+    <string name="help_repo_url_title">Repository URL</string>
+    <string name="help_repo_url_desc">Der Link zu dem öffentlichen Quellcode-Repository der App. Dieser wird benötigt um zu verifizieren, dass die App wirklich quelloffen ist.</string>
+    <string name="help_repo_url_tip">Suche danach auf der App-Website, dem F-Droid Eintrag oder suche nach „&lt;app name&gt; source code“ auf GitHub/GitLab/Codeberg.</string>
+    <string name="help_fdroid_id_title">F-Droid ID</string>
 </resources>
