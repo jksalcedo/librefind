@@ -1,3 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="app_name">LibreFind</string>
+    <string name="dashboard_search_hint">Recherche des applis...</string>
+    <string name="dashboard_close_search">Fermer la recherche</string>
+    <string name="dashboard_filter">Filtrer</string>
+    <string name="dashboard_filter_show_all">Montrer tout</string>
+    <string name="dashboard_filter_all_proprietary">Applis propriétaires</string>
+    <string name="dashboard_filter_with_alternatives">Avec des alternatives</string>
+    <string name="dashboard_filter_no_alternatives">Sans alternative</string>
+    <string name="dashboard_filter_foss_only">FOSS seulement</string>
+    <string name="dashboard_filter_unknown_only">Inconnues seulement</string>
+    <string name="dashboard_filter_pending_only">En attente seulement</string>
+    <string name="dashboard_filter_ignored_only">Ignorées seulement</string>
+    <string name="dashboard_profile">Profil</string>
+    <string name="dashboard_settings">Paramètres</string>
+    <string name="dashboard_submit_app">Soumettre une appli</string>
+    <string name="dashboard_error_title">Erreur</string>
+    <string name="dashboard_unknown_error">Erreur inconnue</string>
+    <string name="dashboard_retry">Ré-essayer</string>
+    <string name="dashboard_no_matching_apps">Pas d\'appli correspondante</string>
+    <string name="dashboard_no_apps_found">Aucune appli trouvée</string>
+    <string name="profile_dialog_title">Compte et paramètres</string>
+    <string name="profile_unknown_username">Pseudo inconnu</string>
+    <string name="profile_no_email">Email manquant</string>
+    <string name="profile_ignored_apps">Applis ignorées</string>
+    <string name="profile_my_submissions">Mes suggestions</string>
+    <string name="profile_sign_out">Se déconnecter</string>
+    <string name="profile_close">Fermer</string>
+    <string name="dashboard_search">Chercher</string>
+    <string name="profile_missing_title">Compte non retrouvé</string>
+    <string name="profile_not_signed_in_title">Non connecté</string>
+    <string name="profile_missing_message">Votre compte n\'a pu être trouvé. Merci de vous connecter à nouveau ou bien contactez le support.</string>
+    <string name="profile_not_signed_in_message">Merci de vous connecter pour accéder à votre profil.</string>
+</resources>
