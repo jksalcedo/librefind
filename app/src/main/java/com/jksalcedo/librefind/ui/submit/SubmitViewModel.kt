@@ -115,7 +115,7 @@ class SubmitViewModel(
 
             if (submission != null) {
                 // Pre-fill state
-                val isProprietary = submission.type == SubmissionType.NEW_PROPRIETARY
+                //val isProprietary = submission.type == SubmissionType.NEW_PROPRIETARY
 
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
@@ -171,12 +171,18 @@ class SubmitViewModel(
                 if (type == SubmissionType.LINKING) {
                     if (_uiState.value.linkTargetPackage == null) {
                         _uiState.value =
-                            _uiState.value.copy(isLoading = false, error = "Please select a target app")
+                            _uiState.value.copy(
+                                isLoading = false,
+                                error = "Please select a target app"
+                            )
                         return@launch
                     }
                     if (_uiState.value.selectedAlternatives.isEmpty()) {
                         _uiState.value =
-                            _uiState.value.copy(isLoading = false, error = "Please select at least one solution")
+                            _uiState.value.copy(
+                                isLoading = false,
+                                error = "Please select at least one solution"
+                            )
                         return@launch
                     }
 
