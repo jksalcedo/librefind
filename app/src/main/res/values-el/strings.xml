@@ -14,4 +14,8 @@
     <string name="dashboard_error_title">Σφάλμα</string>
     <string name="dashboard_unknown_error">Άγνωστο σφάλμα</string>
     <string name="dashboard_no_apps_found">Δεν βρέθηκαν εφαρμογές</string>
+    <string name="profile_dialog_title">Προφίλ &amp; Ρυθμίσεις</string>
+    <string name="profile_unknown_username">Άγνωστο Όνομα Χρήστη</string>
+    <string name="profile_sign_out">Αποσύνδεση</string>
+    <string name="profile_close">Κλείσιμο</string>
 </resources>
