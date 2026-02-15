@@ -32,7 +32,7 @@
     <img alt="Get it on Obtainium" src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/badge_obtainium.png" width="140">
   </a>
 
-   <a href="https://zapstore.dev/apps/naddr1qqtkxmmd9e4xkumpd33k2er09ekxjcnjv4nxjmnyqgs83nn04fezvsu89p8xg7axjwye2u67errat3dx2um725fs7qnrqlgrqsqqqlstekghss">
+   <a href="https://zapstore.dev/apps/naddr1qqtkxmmd9e4xkumpd33k2er09ekxjcnjv4nxjmnyqgsx2k5ctva9q7wztnpgrcrcsjnt30s0hq8mjjna7sjcef0j0saqa8grqsqqqlstgxhlut">
     <img alt="Zapstore" src="https://github.com/zapstore/zapstore/blob/master/assets/images/badge.png" width="140">
   </a>
 </p>
