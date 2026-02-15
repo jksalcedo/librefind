@@ -208,7 +208,8 @@ class SubmitViewModel(
                         fdroidId = fdroidId,
                         license = license,
                         userId = user.uid,
-                        alternatives = _uiState.value.selectedAlternatives.toList()
+                        alternatives = _uiState.value.selectedAlternatives.toList(),
+                        submissionType = type
                     )
                 }
 

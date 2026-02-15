@@ -3,6 +3,7 @@ package com.jksalcedo.librefind.domain.repository
 import com.jksalcedo.librefind.domain.model.Alternative
 import com.jksalcedo.librefind.domain.model.Report
 import com.jksalcedo.librefind.domain.model.Submission
+import com.jksalcedo.librefind.domain.model.SubmissionType
 
 interface AppRepository {
 
@@ -50,7 +51,8 @@ interface AppRepository {
         fdroidId: String,
         license: String,
         userId: String,
-        alternatives: List<String> = emptyList()
+        alternatives: List<String> = emptyList(),
+        submissionType: SubmissionType
     ): Result<Unit>
 
     suspend fun submitLinkedAlternatives(

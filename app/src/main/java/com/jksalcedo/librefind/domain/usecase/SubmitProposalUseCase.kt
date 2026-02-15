@@ -1,6 +1,7 @@
 package com.jksalcedo.librefind.domain.usecase
 
 import com.jksalcedo.librefind.domain.repository.AppRepository
+import com.jksalcedo.librefind.domain.model.SubmissionType
 
 
 /**
@@ -29,7 +30,8 @@ class SubmitProposalUseCase(
         fdroidId: String,
         license: String,
         userId: String,
-        alternatives: List<String> = emptyList()
+        alternatives: List<String> = emptyList(),
+        submissionType: SubmissionType
     ): Result<Unit> {
         if (alternativeId.isBlank() || userId.isBlank()) {
             return Result.failure(IllegalArgumentException("Missing required fields"))
@@ -44,7 +46,8 @@ class SubmitProposalUseCase(
             fdroidId = fdroidId,
             license = license,
             userId = userId,
-            alternatives = alternatives
+            alternatives = alternatives,
+            submissionType = submissionType
         )
     }
 }

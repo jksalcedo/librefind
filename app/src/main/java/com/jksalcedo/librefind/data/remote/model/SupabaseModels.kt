@@ -34,6 +34,7 @@ data class UserSubmissionDto(
     @SerialName("fdroid_id") val fdroidId: String? = null,
     val license: String? = null,
     val alternatives: List<String>? = null,
+    @SerialName("submission_type") val submissionType: String? = null,
     val status: String = "PENDING",
     @SerialName("submitter_id") val submitterId: String,
     @SerialName("created_at") val createdAt: String? = null,
