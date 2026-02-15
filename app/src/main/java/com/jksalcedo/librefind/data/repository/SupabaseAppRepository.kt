@@ -26,6 +26,7 @@ import io.github.jan.supabase.postgrest.query.Count
 import io.github.jan.supabase.postgrest.rpc
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import java.time.Instant
 
 class SupabaseAppRepository(
     private val supabase: SupabaseClient
@@ -450,29 +451,48 @@ class SupabaseAppRepository(
 
     override suspend fun getMySubmissions(userId: String): List<Submission> {
         return try {
-            val result = supabase.postgrest.from("user_submissions")
-                .select(
-                    columns = Columns.list(
-                        "id",
-                        "app_name",
-                        "app_package",
-                        "description",
-                        "proprietary_package",
-                        "repo_url",
-                        "fdroid_id",
-                        "license",
-                        "status",
-                        "submitter_id",
-                        "rejection_reason",
-                        "profiles(id, username)"
-                    )
-                ) {
-                    filter { eq("submitter_id", userId) }
-                }
+            // 1. Fetch standard submissions
+            val standardDtos =
+                supabase.postgrest.from("user_submissions")
+                    .select(
+                        columns = Columns.list(
+                            "id",
+                            "app_name",
+                            "app_package",
+                            "description",
+                            "proprietary_package",
+                            "repo_url",
+                            "fdroid_id",
+                            "license",
+                            "status",
+                            "submitter_id",
+                            "rejection_reason",
+                            "created_at",
+                            "profiles(id, username)"
+                        )
+                    ) {
+                        filter { eq("submitter_id", userId) }
+                    }.decodeList<UserSubmissionWithProfileDto>()
 
-            val submissions = result.decodeList<UserSubmissionWithProfileDto>()
+            // 2. Fetch linking submissions
+            val linkingDtos =
+                supabase.postgrest.from("user_linking_submissions")
+                    .select(
+                        columns = Columns.list(
+                            "id",
+                            "proprietary_package",
+                            "alternatives",
+                            "status",
+                            "submitter_id",
+                            "rejection_reason",
+                            "created_at",
+                            "profiles(id, username)"
+                        )
+                    ) {
+                        filter { eq("submitter_id", userId) }
+                    }.decodeList<UserLinkingSubmissionWithProfileDto>()
 
-            submissions.map { dto ->
+            val standardList = standardDtos.map { dto ->
                 Submission(
                     id = dto.id ?: "",
                     type = if (!dto.license.isNullOrBlank() || !dto.repoUrl.isNullOrBlank())
@@ -490,6 +510,9 @@ class SupabaseAppRepository(
                     ),
                     submitterUid = dto.submitterId,
                     submitterUsername = dto.profile?.username ?: "Unknown",
+                    // Parse created_at timestamp or use current time if missing
+                    submittedAt = dto.createdAt?.let { parseTimestamp(it) }
+                        ?: System.currentTimeMillis(),
                     status = try {
                         SubmissionStatus.valueOf(dto.status)
                     } catch (_: Exception) {
@@ -498,9 +521,55 @@ class SupabaseAppRepository(
                     rejectionReason = dto.rejectionReason
                 )
             }
+
+            val linkingList = linkingDtos.map { dto ->
+                Submission(
+                    id = dto.id ?: "",
+                    type = SubmissionType.LINKING,
+                    proprietaryPackages = dto.proprietaryPackage,
+                    submittedApp = SubmittedApp(
+                        // format the name in the UI based on the type.
+                        name = "Link ${dto.alternatives.size} Alternatives",
+                        packageName = dto.proprietaryPackage,
+                        description = "Linking request for ${dto.proprietaryPackage}"
+                    ),
+                    submitterUid = dto.submitterId,
+                    submitterUsername = dto.profile?.username ?: "Unknown",
+                    submittedAt = dto.createdAt?.let { parseTimestamp(it) }
+                        ?: System.currentTimeMillis(),
+                    status = try {
+                        SubmissionStatus.valueOf(dto.status)
+                    } catch (_: Exception) {
+                        SubmissionStatus.PENDING
+                    },
+                    rejectionReason = dto.rejectionReason,
+                    linkedAlternatives = dto.alternatives
+                )
+            }
+
+            (standardList + linkingList).sortedByDescending { it.submittedAt }
+
         } catch (e: Exception) {
             e.printStackTrace()
             emptyList()
+        }
+    }
+
+    private fun parseTimestamp(isoString: String): Long {
+        return try {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                Instant.parse(isoString).toEpochMilli()
+            } else {
+                // Regex to truncate fractional seconds to 3 digits
+                val truncated = isoString.replace(Regex("(\\.\\d{3})\\d+"), "$1")
+                val format =
+                    java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX", java.util.Locale.US)
+                format.timeZone = java.util.TimeZone.getTimeZone("UTC")
+                format.parse(truncated)?.time ?: System.currentTimeMillis()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            System.currentTimeMillis()
         }
     }
 
@@ -659,15 +728,27 @@ class SupabaseAppRepository(
         val id: String? = null,
         @SerialName("app_name") val appName: String,
         @SerialName("app_package") val appPackage: String,
-        val description: String,
+        val description: String = "",
         @SerialName("proprietary_package") val proprietaryPackage: String? = null,
         @SerialName("repo_url") val repoUrl: String? = null,
         @SerialName("fdroid_id") val fdroidId: String? = null,
         val license: String? = null,
-        val status: String = "PENDING",
+        val status: String,
         @SerialName("submitter_id") val submitterId: String,
-        @SerialName("created_at") val createdAt: String? = null,
         @SerialName("rejection_reason") val rejectionReason: String? = null,
+        @SerialName("created_at") val createdAt: String? = null,
+        @SerialName("profiles") val profile: ProfileDto? = null
+    )
+
+    @Serializable
+    private data class UserLinkingSubmissionWithProfileDto(
+        val id: String? = null,
+        @SerialName("proprietary_package") val proprietaryPackage: String,
+        val alternatives: List<String> = emptyList(),
+        val status: String,
+        @SerialName("submitter_id") val submitterId: String,
+        @SerialName("rejection_reason") val rejectionReason: String? = null,
+        @SerialName("created_at") val createdAt: String? = null,
         @SerialName("profiles") val profile: ProfileDto? = null
     )
 

@@ -1,17 +1,16 @@
 name: LibreFind
 package_name: com.jksalcedo.librefind
+summary: Discover and replace proprietary apps with FOSS alternatives 
 description: |
   LibreFind is a free and lightweight Android app that scans your device locally and queries our database to identify proprietary software and recommend Free and Open Source Software (FOSS) alternatives.
 
   Core Features
-
   • Scan installed apps to detect proprietary software
   • Get FOSS alternative recommendations
   • View sovereignty scores showing FOSS vs proprietary ratio
   • Community-driven database
 
   Community Contributions
-
   • Propose new FOSS alternatives for review
   • Submit pros and cons for existing alternatives
   • Vote on app recommendations
