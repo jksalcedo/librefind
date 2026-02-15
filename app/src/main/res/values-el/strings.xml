@@ -1,3 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="app_name">LibreFind</string>
+    <string name="dashboard_search_hint">Αναζήτηση εφαρμογών...</string>
+    <string name="dashboard_close_search">Κλείσιμο αναζήτησης</string>
+    <string name="dashboard_search">Αναζήτηση</string>
+    <string name="dashboard_filter">Φίλτρο</string>
+    <string name="dashboard_filter_show_all">Εμφάνιση Όλων</string>
+    <string name="dashboard_filter_with_alternatives">Με Εναλλακτικές</string>
+    <string name="dashboard_filter_no_alternatives">Χωρίς Εναλλακτικές</string>
+    <string name="dashboard_filter_unknown_only">Άγνωστα Μόνο</string>
+    <string name="dashboard_profile">Προφίλ</string>
+    <string name="dashboard_settings">Ρυθμίσεις</string>
+    <string name="dashboard_error_title">Σφάλμα</string>
+    <string name="dashboard_unknown_error">Άγνωστο σφάλμα</string>
+    <string name="dashboard_no_apps_found">Δεν βρέθηκαν εφαρμογές</string>
+</resources>
