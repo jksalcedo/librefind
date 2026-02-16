@@ -31,7 +31,7 @@
     <string name="profile_missing_title">Profil fehlt</string>
     <string name="profile_not_signed_in_title">Nicht angemeldet</string>
     <string name="profile_missing_message">Dein Profil konnte nicht gefunden werden. Bitte versuche dich ab- und wieder anzumelden oder kontaktiere den Support.</string>
-    <string name="profile_not_signed_in_message">Bitte melde dich an um dein Profil zu sehen</string>
+    <string name="profile_not_signed_in_message">Bitte melde dich an, um dein Profil zu sehen.</string>
     <string name="profile_fix_profile">Profil reparieren</string>
     <string name="profile_sign_in">Anmelden</string>
     <string name="auth_create_account">Account erstellen</string>
@@ -47,7 +47,7 @@
     <string name="auth_already_have_account">Du hast bereits einen Account? Melde dich an</string>
     <string name="auth_dont_have_account">Du hast noch keinen Account? Melde dich an</string>
     <string name="auth_check_email_title">Prüfe deine E-Mail</string>
-    <string name="auth_check_email_message">Wir haben dir einen Verifizierungslink an deine E-Mail-Adresse gesendet. Bitte prüfe deine E-Mail bevor du dich anmeldest</string>
+    <string name="auth_check_email_message">Wir haben dir einen Verifizierungslink an deine E-Mail-Adresse gesendet. Bitte prüfe deine E-Mail bevor du dich anmeldest.</string>
     <string name="auth_go_to_sign_in">Gehe zum Anmelden</string>
     <string name="setup_title">Profil einrichten</string>
     <string name="setup_choose_username">Wähle einen Benutzernamen</string>
@@ -80,7 +80,7 @@
     <string name="submit_search_foss_placeholder">Durchsuche existiertende Datenbank ...</string>
     <string name="submit_linked_app">Verknüpft mit existiertender App</string>
     <string name="submit_foss_requirements">Lizenz und Repository URL sind erforderlich für FOSS Alternativen</string>
-    <string name="submit_target_proprietary">Ziel-proprietäre Apps</string>
+    <string name="submit_target_proprietary">Ziel-Proprietäre Apps</string>
     <string name="submit_search_to_add">Suche zum hinzufügen ...</string>
     <string name="submit_repo_url">Repository URL *</string>
     <string name="submit_repo_placeholder">https://github.com/...</string>
@@ -92,9 +92,9 @@
     <string name="submit_select_license">Wähle Lizenz</string>
     <string name="submit_other">Andere</string>
     <string name="submit_cancel">Abbrechen</string>
-    <string name="submit_link_solutions_title">Verknüpfte existiertende Lösungen</string>
+    <string name="submit_link_solutions_title">Verknüpfe existiertende Lösungen</string>
     <string name="submit_link_solutions_desc">Verknüpfe eine existierende FOSS-App mit einer existierenden proprietären App in unserer Datenbank.</string>
-    <string name="submit_target_app">Ziel proprietäre App</string>
+    <string name="submit_target_app">Ziel-Proprietäre App</string>
     <string name="submit_link_solutions_target">Wähle die proprietäre App, die durch diese FOSS Lösung ersetzt wird.</string>
     <string name="submit_select_target">Wähle eine Ziel App ...</string>
     <string name="submit_select_solutions">Wähle Lösungen zum Verknüpfen</string>
@@ -126,7 +126,7 @@
     <string name="help_license_title">Lizenz</string>
     <string name="help_license_desc">Die Open-Source-Lizenz, unter welcher die App veröffentlicht wird (z.B. GPL-3.0, MIT, Apache-2.0). Diese wird benötigt für FOSS-Einreichungen.</string>
     <string name="help_license_tip">Prüfe die LICENSE oder COPYING Datei in dem Quellcode-Repository der App oder schaue auf den F-Droid-Eintrag.</string>
-    <string name="help_target_apps_title">Ziel Proprietäre Apps</string>
+    <string name="help_target_apps_title">Ziel-Proprietäre Apps</string>
     <string name="help_target_apps_desc">Die proprietären Apps, die diese FOSS-App ersetzen kann. Zum Beispiel: Signal ersetzt WhatsApp/Telegram.</string>
     <string name="help_target_apps_tip">Wähle von der Liste bekannter proprietären Apps. Falls das Ziel nicht gelistet ist, kannst du es zuerst vorschlagen als ein neues proprietäres Ziel.</string>
     <string name="help_search_alternatives_title">Suche Alternativen</string>
