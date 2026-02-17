@@ -110,7 +110,6 @@ class AlternativeDetailViewModel(
 
     fun submitFeedback(type: String, text: String) {
         val now = System.currentTimeMillis()
-        //  minimum 5-second cooldown between feedback submissions
         if (now - lastFeedbackSubmitTime < 5_000) {
             return
         }
@@ -124,11 +123,30 @@ class AlternativeDetailViewModel(
             }
         }
     }
+
+    fun submitAppReport(issueType: String, description: String) {
+        viewModelScope.launch {
+            appRepository.submitAppReport(currentAltId, issueType, description)
+                .onSuccess {
+                    _state.update { it.copy(reportSubmitted = true) }
+                }
+                .onFailure { e ->
+                    Log.e("AltDetailVM", "Report submission failed", e)
+                    _state.update { it.copy(reportError = e.message) }
+                }
+        }
+    }
+
+    fun clearReportState() {
+        _state.update { it.copy(reportSubmitted = false, reportError = null) }
+    }
 }
 
 data class AlternativeDetailState(
     val isLoading: Boolean = false,
     val alternative: Alternative? = null,
     val isSignedIn: Boolean = false,
-    val username: String? = null
+    val username: String? = null,
+    val reportSubmitted: Boolean = false,
+    val reportError: String? = null
 )

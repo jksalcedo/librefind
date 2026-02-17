@@ -105,4 +105,10 @@ interface AppRepository {
         unknownCount: Int,
         appVersion: String? = null
     ): Result<Unit>
+
+    suspend fun submitAppReport(
+        packageName: String,
+        issueType: String,
+        description: String
+    ): Result<Unit>
 }

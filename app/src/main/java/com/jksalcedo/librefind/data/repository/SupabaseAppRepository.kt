@@ -1,6 +1,7 @@
 package com.jksalcedo.librefind.data.repository
 
 import android.util.Log
+import com.jksalcedo.librefind.data.remote.model.AppReport
 import com.jksalcedo.librefind.data.remote.model.AppScanStatsDto
 import com.jksalcedo.librefind.data.remote.model.ProfileDto
 import com.jksalcedo.librefind.data.remote.model.SolutionDto
@@ -887,6 +888,24 @@ class SupabaseAppRepository(
             defaultToNull = false
         }
         Log.d("SupabaseAppRepo", "Scan stats submitted for device: $deviceId")
+    }
+
+    override suspend fun submitAppReport(
+        packageName: String,
+        issueType: String,
+        description: String
+    ): Result<Unit> = runCatching {
+        val currentUser = supabase.auth.currentUserOrNull()
+            ?: throw IllegalStateException("Not logged in")
+
+        val report = AppReport(
+            userId = currentUser.id,
+            packageName = packageName,
+            issueType = issueType,
+            description = description
+        )
+
+        supabase.postgrest.from("app_reports").insert(report)
     }
 }
 

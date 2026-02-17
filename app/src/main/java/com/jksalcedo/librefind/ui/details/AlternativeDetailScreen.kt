@@ -3,6 +3,7 @@ package com.jksalcedo.librefind.ui.details
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Intent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +23,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Download
+import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Shop
@@ -39,10 +41,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -58,13 +63,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import org.koin.androidx.compose.koinViewModel
-import androidx.compose.ui.res.stringResource
 import com.jksalcedo.librefind.R
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -77,18 +82,38 @@ fun AlternativeDetailScreen(
     val context = LocalContext.current
     var menuExpanded by remember { mutableStateOf(false) }
     var showFeedbackDialog by remember { mutableStateOf(false) }
+    var showReportDialog by remember { mutableStateOf(false) }
     var showVotingSection by remember { mutableStateOf(false) }
     var feedbackType by remember { mutableIntStateOf(0) }
     var feedbackText by remember { mutableStateOf("") }
+    val snackbarHostState = remember { SnackbarHostState() }
+    val reportSuccessMsg = stringResource(R.string.alt_detail_report_success)
+    val reportErrorMsg = stringResource(R.string.alt_detail_report_error)
+
+    LaunchedEffect(state.reportSubmitted, state.reportError) {
+        if (state.reportSubmitted) {
+            snackbarHostState.showSnackbar(reportSuccessMsg)
+            viewModel.clearReportState()
+        }
+        state.reportError?.let {
+            snackbarHostState.showSnackbar(reportErrorMsg)
+            viewModel.clearReportState()
+        }
+    }
 
     LaunchedEffect(altId) {
         viewModel.loadAlternative(altId)
     }
 
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
-                title = { Text(state.alternative?.name ?: stringResource(R.string.alt_detail_title_default)) },
+                title = {
+                    Text(
+                        state.alternative?.name ?: stringResource(R.string.alt_detail_title_default)
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -201,6 +226,17 @@ fun AlternativeDetailScreen(
                                     },
                                     leadingIcon = { Icon(Icons.Default.ContentCopy, null) }
                                 )
+                                HorizontalDivider()
+                                if (state.isSignedIn) {
+                                    DropdownMenuItem(
+                                        text = { Text(stringResource(R.string.alt_detail_report)) },
+                                        onClick = {
+                                            menuExpanded = false
+                                            showReportDialog = true
+                                        },
+                                        leadingIcon = { Icon(Icons.Default.Flag, null) }
+                                    )
+                                }
                             }
                         }
                     }
@@ -219,7 +255,10 @@ fun AlternativeDetailScreen(
                 }
 
                 state.alternative == null -> {
-                    Text(stringResource(R.string.alt_detail_not_found), modifier = Modifier.align(Alignment.Center))
+                    Text(
+                        stringResource(R.string.alt_detail_not_found),
+                        modifier = Modifier.align(Alignment.Center)
+                    )
                 }
 
                 else -> {
@@ -484,7 +523,13 @@ fun AlternativeDetailScreen(
     if (showFeedbackDialog) {
         AlertDialog(
             onDismissRequest = { showFeedbackDialog = false },
-            title = { Text(if (feedbackType == 0) stringResource(R.string.alt_detail_add_pro) else stringResource(R.string.alt_detail_add_con)) },
+            title = {
+                Text(
+                    if (feedbackType == 0) stringResource(R.string.alt_detail_add_pro) else stringResource(
+                        R.string.alt_detail_add_con
+                    )
+                )
+            },
             text = {
                 Column {
                     SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
@@ -523,9 +568,25 @@ fun AlternativeDetailScreen(
                 ) { Text(stringResource(R.string.alt_detail_submit)) }
             },
             dismissButton = {
-                TextButton(onClick = { showFeedbackDialog = false }) { Text(stringResource(R.string.alt_detail_cancel)) }
+                TextButton(onClick = {
+                    showFeedbackDialog = false
+                }) { Text(stringResource(R.string.alt_detail_cancel)) }
             }
         )
+    }
+
+    // Report dialog
+    if (showReportDialog) {
+        state.alternative?.let { alt ->
+            ReportDialog(
+                packageName = alt.name,
+                onDismiss = { showReportDialog = false },
+                onSubmit = { issueType, description ->
+                    viewModel.submitAppReport(issueType, description)
+                    showReportDialog = false
+                }
+            )
+        }
     }
 }
 
@@ -615,4 +676,60 @@ private fun UserRatingRow(
             }
         }
     }
+}
+
+@Composable
+fun ReportDialog(
+    packageName: String,
+    onDismiss: () -> Unit,
+    onSubmit: (String, String) -> Unit
+) {
+    val issueLabels = listOf(
+        stringResource(R.string.alt_detail_report_not_foss),
+        stringResource(R.string.alt_detail_report_unrelated),
+        stringResource(R.string.alt_detail_report_broken_link),
+        stringResource(R.string.alt_detail_report_malware),
+        stringResource(R.string.alt_detail_report_other)
+    )
+    var selectedIssue by remember { mutableStateOf(issueLabels.first()) }
+    var description by remember { mutableStateOf("") }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.alt_detail_report_title, packageName)) },
+        text = {
+            Column {
+                Text(stringResource(R.string.alt_detail_report_prompt))
+                Spacer(Modifier.height(8.dp))
+
+                issueLabels.forEach { issue ->
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.clickable { selectedIssue = issue }
+                    ) {
+                        RadioButton(
+                            selected = (selectedIssue == issue),
+                            onClick = { selectedIssue = issue }
+                        )
+                        Text(text = issue)
+                    }
+                }
+
+                OutlinedTextField(
+                    value = description,
+                    onValueChange = { description = it },
+                    label = { Text(stringResource(R.string.alt_detail_report_details)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        },
+        confirmButton = {
+            Button(onClick = { onSubmit(selectedIssue, description) }) {
+                Text(stringResource(R.string.alt_detail_submit))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.alt_detail_cancel)) }
+        }
+    )
 }
