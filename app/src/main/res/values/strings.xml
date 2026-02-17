@@ -135,7 +135,7 @@
     <string name="help_fdroid_id_desc">The package name as listed on F-Droid. Usually the same as the package name, but some apps use a different ID for F-Droid builds.</string>
     <string name="help_fdroid_id_tip">Find it at f-droid.org — the ID is in the URL: f-droid.org/packages/&lt;fdroid.id>/</string>
     <string name="help_license_title">License</string>
-    <string name="help_license_desc">The open source license the app is released under (e.g. GPL-3.0, MIT, Apache-2.0). This is required for FOSS submissions.</string>
+    <string name="help_license_desc">The open source license the app is released under (e.g. GPL-3.0-only, GPL-3.0-or-later, MIT, Apache-2.0). This is required for FOSS submissions.</string>
     <string name="help_license_tip">Check the LICENSE or COPYING file in the app\'s source code repository, or look at the F-Droid listing.</string>
     <string name="help_target_apps_title">Target Proprietary Apps</string>
     <string name="help_target_apps_desc">The proprietary apps that this FOSS app can replace. For example, Signal replaces WhatsApp/Telegram.</string>
@@ -252,6 +252,17 @@
     <string name="alt_detail_feedback_label">Your feedback</string>
     <string name="alt_detail_submit">Submit</string>
     <string name="alt_detail_cancel">Cancel</string>
+    <string name="alt_detail_report">Report</string>
+    <string name="alt_detail_report_title">Report %1$s</string>
+    <string name="alt_detail_report_prompt">What\'s wrong with this recommendation?</string>
+    <string name="alt_detail_report_details">Details (Optional)</string>
+    <string name="alt_detail_report_success">Report submitted</string>
+    <string name="alt_detail_report_error">Failed to submit report</string>
+    <string name="alt_detail_report_not_foss">Not FOSS</string>
+    <string name="alt_detail_report_unrelated">Unrelated</string>
+    <string name="alt_detail_report_broken_link">Broken Link</string>
+    <string name="alt_detail_report_malware">Malware</string>
+    <string name="alt_detail_report_other">Other</string>
 
     <!-- Details Screen -->
     <string name="details_title_format">%1$s alternatives</string>

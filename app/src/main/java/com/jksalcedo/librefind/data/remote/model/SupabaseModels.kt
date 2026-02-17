@@ -94,3 +94,12 @@ data class UserLinkingSubmissionsDto(
     @SerialName("rejection_reason") val rejectionReason: String? = null,
     @SerialName("created_at") val createdAt: String? = null
 )
+
+@Serializable
+data class AppReport(
+    @SerialName("user_id") val userId: String,
+    @SerialName("package_name") val packageName: String,
+    @SerialName("issue_type") val issueType: String,
+    @SerialName("description") val description: String,
+    @SerialName("status") val status: String = "pending"
+)
