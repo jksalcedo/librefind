@@ -52,7 +52,8 @@ interface AppRepository {
         license: String,
         userId: String,
         alternatives: List<String> = emptyList(),
-        submissionType: SubmissionType
+        submissionType: SubmissionType,
+        category: String = ""
     ): Result<Unit>
 
     suspend fun submitLinkedAlternatives(
@@ -70,7 +71,8 @@ interface AppRepository {
         repoUrl: String,
         fdroidId: String,
         license: String,
-        alternatives: List<String> = emptyList()
+        alternatives: List<String> = emptyList(),
+        category: String = ""
     ): Result<Unit>
 
     suspend fun castVote(

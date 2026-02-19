@@ -284,7 +284,8 @@ class SupabaseAppRepository(
         license: String,
         userId: String,
         alternatives: List<String>,
-        submissionType: SubmissionType
+        submissionType: SubmissionType,
+        category: String
     ): Result<Unit> = runCatching {
         try {
             val submission = UserSubmissionDto(
@@ -297,7 +298,8 @@ class SupabaseAppRepository(
                 license = license.ifBlank { null },
                 alternatives = alternatives.ifEmpty { null },
                 submissionType = submissionType.name,
-                submitterId = userId
+                submitterId = userId,
+                category = category.ifBlank { null }
             )
             supabase.postgrest.from("user_submissions").insert(submission)
             Log.d("SupabaseAppRepo", "Submission successful")
@@ -335,7 +337,8 @@ class SupabaseAppRepository(
         repoUrl: String,
         fdroidId: String,
         license: String,
-        alternatives: List<String>
+        alternatives: List<String>,
+        category: String
     ): Result<Unit> = runCatching {
         try {
             val updateData = UserSubmissionDto(
@@ -349,8 +352,9 @@ class SupabaseAppRepository(
                 alternatives = alternatives.ifEmpty { null },
                 submitterId = supabase.auth.currentUserOrNull()?.id
                     ?: throw IllegalStateException("Not logged in"),
-                status = "PENDING", // Reset status to PENDING on update
-                rejectionReason = null // Clear rejection reason
+                status = "PENDING",
+                rejectionReason = null,
+                category = category.ifBlank { null }
             )
 
             val result = supabase.postgrest.from("user_submissions").update(updateData) {

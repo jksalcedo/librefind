@@ -135,7 +135,7 @@ fun SubmitContent(
     onSelectFossApp: (Alternative) -> Unit,
     onClearLinkedApp: () -> Unit,
     onValidateRepoUrl: (String) -> Unit,
-    onSubmit: (SubmissionType, String, String, String, String, String, String, String) -> Unit
+    onSubmit: (SubmissionType, String, String, String, String, String, String, String, String) -> Unit
 ) {
     val isPrefilled = prefilledAppName != null && prefilledPackageName != null
     val defaultType = when {
@@ -152,6 +152,16 @@ fun SubmitContent(
     var fdroidId by remember { mutableStateOf("") }
     var license by remember { mutableStateOf("") }
     var selectedProprietaryPackages by remember { mutableStateOf(emptySet<String>()) }
+    var category by remember { mutableStateOf("") }
+    var showCategoryDropdown by remember { mutableStateOf(false) }
+    val categories = listOf(
+        "Browser", "Email", "Messenger", "Social Media",
+        "Maps & Navigation", "Cloud Storage", "Notes", "Calendar",
+        "File Manager", "Music Player", "Video Player", "Photo Editor",
+        "Office Suite", "Keyboard", "Launcher", "Camera",
+        "Weather", "News Reader", "Password Manager", "VPN",
+        "App Store", "Fitness & Health", "Finance", "Other"
+    )
 
     LaunchedEffect(uiState.loadedSubmission) {
         uiState.loadedSubmission?.let { sub ->
@@ -259,6 +269,62 @@ fun SubmitContent(
             }
 
             HorizontalDivider()
+
+            // Category dropdown (proprietary apps only)
+            if (type == SubmissionType.NEW_PROPRIETARY) {
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    OutlinedTextField(
+                        value = category,
+                        onValueChange = {},
+                        readOnly = true,
+                        label = { Text("Category") },
+                        placeholder = { Text("Select a category") },
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = showCategoryDropdown) },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Box(
+                        modifier = Modifier
+                            .matchParentSize()
+                            .clickable { showCategoryDropdown = true }
+                    )
+                }
+
+                if (showCategoryDropdown) {
+                    AlertDialog(
+                        onDismissRequest = { showCategoryDropdown = false },
+                        title = { Text("Select Category") },
+                        text = {
+                            LazyColumn {
+                                items(categories) { cat ->
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .clickable {
+                                                category = cat
+                                                showCategoryDropdown = false
+                                            }
+                                            .padding(vertical = 12.dp, horizontal = 16.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Text(
+                                            text = cat,
+                                            style = MaterialTheme.typography.bodyLarge
+                                        )
+                                    }
+                                    if (cat != categories.last()) {
+                                        HorizontalDivider(modifier = Modifier.alpha(0.5f))
+                                    }
+                                }
+                            }
+                        },
+                        confirmButton = {
+                            TextButton(onClick = { showCategoryDropdown = false }) {
+                                Text(stringResource(R.string.submit_cancel))
+                            }
+                        }
+                    )
+                }
+            }
 
             uiState.duplicateWarning?.let { warning ->
                 Text(
@@ -1005,7 +1071,8 @@ fun SubmitContent(
                         repoUrl,
                         fdroidId,
                         license,
-                        selectedProprietaryPackages.joinToString(", ")
+                        selectedProprietaryPackages.joinToString(", "),
+                        category
                     )
                 },
                 enabled = !uiState.isLoading && (
@@ -1235,7 +1302,7 @@ fun SubmitScreenPreview() {
         onSelectFossApp = {},
         onClearLinkedApp = {},
         onValidateRepoUrl = {},
-        onSubmit = { _, _, _, _, _, _, _, _ -> },
+        onSubmit = { _, _, _, _, _, _, _, _, _ -> },
         onAddTarget = {}
     )
 }

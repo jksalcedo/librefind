@@ -138,7 +138,8 @@ class SubmitViewModel(
         repoUrl: String = "",
         fdroidId: String = "",
         license: String = "",
-        proprietaryPackages: String = ""
+        proprietaryPackages: String = "",
+        category: String = ""
     ) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)
@@ -202,7 +203,8 @@ class SubmitViewModel(
                         repoUrl = repoUrl,
                         fdroidId = fdroidId,
                         license = license,
-                        alternatives = _uiState.value.selectedAlternatives.toList()
+                        alternatives = _uiState.value.selectedAlternatives.toList(),
+                        category = category
                     )
                 } else {
                     submitProposalUseCase(
@@ -215,7 +217,8 @@ class SubmitViewModel(
                         license = license,
                         userId = user.uid,
                         alternatives = _uiState.value.selectedAlternatives.toList(),
-                        submissionType = type
+                        submissionType = type,
+                        category = category
                     )
                 }
 
