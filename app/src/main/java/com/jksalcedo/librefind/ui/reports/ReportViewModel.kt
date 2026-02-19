@@ -5,8 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.jksalcedo.librefind.domain.model.ReportPriority
 import com.jksalcedo.librefind.domain.model.ReportType
 import com.jksalcedo.librefind.domain.repository.AppRepository
-import io.github.jan.supabase.SupabaseClient
-import io.github.jan.supabase.auth.auth
+import com.jksalcedo.librefind.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,7 +24,7 @@ data class ReportUiState(
 
 class ReportViewModel(
     private val repository: AppRepository,
-    private val supabase: SupabaseClient
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ReportUiState())
@@ -54,21 +53,21 @@ class ReportViewModel(
             return
         }
 
-        val userId = supabase.auth.currentUserOrNull()?.id
-        if (userId == null) {
-            _uiState.update { it.copy(error = "You must be logged in to submit a report") }
-            return
-        }
-
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
+
+            val user = authRepository.getCurrentUser()
+            if (user == null) {
+                _uiState.update { it.copy(isLoading = false, error = "You must be logged in to submit a report") }
+                return@launch
+            }
 
             repository.submitReport(
                 title = state.title,
                 description = state.description,
                 type = state.selectedType.name,
                 priority = state.selectedPriority.name,
-                userId = userId
+                userId = user.uid
             ).onSuccess {
                 _uiState.update { it.copy(isLoading = false, isSuccess = true) }
             }.onFailure { e ->
