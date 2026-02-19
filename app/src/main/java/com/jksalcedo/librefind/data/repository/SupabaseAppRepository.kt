@@ -848,18 +848,25 @@ class SupabaseAppRepository(
     override suspend fun getPendingSubmissionPackages(): Set<String> {
         return try {
             val result = supabase.postgrest.from("user_submissions")
-                .select(columns = Columns.list("app_package")) {
+                .select(columns = Columns.list("app_package", "proprietary_package")) {
                     filter { eq("status", "PENDING") }
                 }
-            result.decodeList<PackageNameOnlyDto>().map { it.appPackage }.toSet()
+            val submissions = result.decodeList<PendingPackageDto>()
+            val packages = mutableSetOf<String>()
+            submissions.forEach { dto ->
+                packages.add(dto.appPackage)
+                dto.proprietaryPackage?.let { packages.add(it) }
+            }
+            packages
         } catch (_: Exception) {
             emptySet()
         }
     }
 
     @Serializable
-    private data class PackageNameOnlyDto(
-        @SerialName("app_package") val appPackage: String
+    private data class PendingPackageDto(
+        @SerialName("app_package") val appPackage: String,
+        @SerialName("proprietary_package") val proprietaryPackage: String? = null
     )
 
     @Serializable
