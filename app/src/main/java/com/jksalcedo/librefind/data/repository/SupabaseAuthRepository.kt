@@ -14,6 +14,7 @@ import io.github.jan.supabase.postgrest.postgrest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
@@ -139,11 +140,20 @@ class SupabaseAuthRepository(
     private suspend fun ensureProfileCreated(user: UserInfo) {
         try {
             val userId = user.id
-            // Try to extract username from metadata, usually in 'user_name' or 'preferred_username' for GitHub
             val metadata = user.userMetadata
-            val username = metadata?.get("user_name")?.toString()?.replace("\"", "")
-                ?: metadata?.get("preferred_username")?.toString()?.replace("\"", "")
+
+            fun extractString(key: String): String? =
+                try { metadata?.get(key)?.jsonPrimitive?.content?.takeIf { it.isNotBlank() } }
+                catch (_: Exception) { null }
+
+            val username = extractString("user_name")
+                ?: extractString("preferred_username")
+                ?: extractString("full_name")
+                ?: extractString("name")
+                ?: user.email?.substringBefore("@")
                 ?: ""
+
+            android.util.Log.d("AuthRepository", "ensureProfileCreated: userId=$userId, username=$username, metadataKeys=${metadata?.keys}")
 
             supabase.postgrest.from("profiles").upsert(
                 ProfileDto(id = userId, username = username)
