@@ -29,4 +29,14 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    override fun onNewIntent(intent: android.content.Intent) {
+        super.onNewIntent(intent)
+        supabase.handleDeeplinks(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        supabase.handleDeeplinks(intent)
+    }
 }
