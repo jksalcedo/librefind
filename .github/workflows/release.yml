@@ -29,12 +29,6 @@ jobs:
         with:
           cache-read-only: false
 
-      - name: Create supabase.properties
-        run: |
-          mkdir -p app/src/main/assets
-          echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" > app/src/main/assets/supabase.properties
-          echo "SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}" >> app/src/main/assets/supabase.properties
-
       - name: Build release APK
         run: |
           ./gradlew assembleRelease \

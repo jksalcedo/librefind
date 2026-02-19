@@ -339,18 +339,12 @@ class SubmitViewModel(
             return
         }
 
-        val allowedHosts = listOf(
-            "github.com", "gitlab.com", "codeberg.org",
-            "bitbucket.org", "sr.ht", "gitea.com",
-            "framagit.org", "salsa.debian.org"
-        )
-
         val error = when {
             !url.startsWith("https://") ->
                 "URL must start with https://"
 
-            !allowedHosts.any { host -> url.startsWith("https://$host/") } ->
-                "URL must be from a known code hosting platform (GitHub, GitLab, Codeberg, etc.)"
+            !isAllowedFossHost(url) ->
+                "URL must be from a known code hosting platform (e.g., GitHub, GitLab, Codeberg, or a self-hosted Git instance)"
 
             url.count { it == '/' } < 4 ->
                 "URL must include the repository path (e.g. https://github.com/owner/repo)"
@@ -359,6 +353,37 @@ class SubmitViewModel(
         }
 
         _uiState.value = _uiState.value.copy(repoUrlError = error)
+    }
+
+    private fun isAllowedFossHost(urlString: String): Boolean {
+        val host = try {
+            java.net.URL(urlString).host?.lowercase() ?: return false
+        } catch (_: Exception) {
+            return false
+        }
+
+        val allowedSuffixes = listOf(
+            "github.com", "gitlab.com", "bitbucket.org", "codeberg.org",
+            "sr.ht", "gitea.com", "framagit.org", "notabug.org",
+            "kde.org", "gnome.org", "debian.org", "gnu.org",
+            "wikimedia.org", "freedesktop.org", "torproject.org",
+            "kernel.org", "videolan.org"
+        )
+
+        // Check if the host matches exactly or is a subdomain (e.g., gist.github.com)
+        if (allowedSuffixes.any { host == it || host.endsWith(".$it") }) {
+            return true
+        }
+
+        // Catch-all for unknown, self-hosted FOSS instances using common subdomains
+        if (host.startsWith("git.") || host.startsWith("gitlab.") || host.startsWith("gitea.") || host.startsWith(
+                "forgejo."
+            )
+        ) {
+            return true
+        }
+
+        return false
     }
 
     private var searchSolutionsJob: Job? = null
