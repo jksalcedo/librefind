@@ -7,3 +7,4 @@
 - Improve source URL validation
 - Fix bug in GitHub authentication
 - Fix bug in User Reports
+- Add smooth transitions

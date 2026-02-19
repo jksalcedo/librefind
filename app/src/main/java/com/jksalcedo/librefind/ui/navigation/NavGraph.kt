@@ -1,6 +1,11 @@
 package com.jksalcedo.librefind.ui.navigation
 
 import android.net.Uri
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -22,13 +27,19 @@ import com.jksalcedo.librefind.ui.reports.ReportScreen
 import com.jksalcedo.librefind.ui.settings.IgnoredAppsScreen
 import com.jksalcedo.librefind.ui.submit.SubmitScreen
 
+private const val NAV_DURATION = 300
+
 @Composable
 fun NavGraph(
     navController: NavHostController
 ) {
     NavHost(
         navController = navController,
-        startDestination = Route.Dashboard.route
+        startDestination = Route.Dashboard.route,
+        enterTransition = { slideInHorizontally(tween(NAV_DURATION)) { it / 4 } + fadeIn(tween(NAV_DURATION)) },
+        exitTransition = { slideOutHorizontally(tween(NAV_DURATION)) { -it / 4 } + fadeOut(tween(NAV_DURATION)) },
+        popEnterTransition = { slideInHorizontally(tween(NAV_DURATION)) { -it / 4 } + fadeIn(tween(NAV_DURATION)) },
+        popExitTransition = { slideOutHorizontally(tween(NAV_DURATION)) { it / 4 } + fadeOut(tween(NAV_DURATION)) }
     ) {
         composable(Route.Dashboard.route) {
             val authViewModel: AuthViewModel = koinViewModel()
