@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dashboard_close_search">إغلاق البحث</string>
+    <string name="dashboard_search">بحث</string>
+    <string name="dashboard_filter_show_all">عرض الكل</string>
+    <string name="dashboard_settings">الإعدادات</string>
+    <string name="dashboard_error_title">خطأ</string>
+    <string name="dashboard_unknown_error">خطأ غير معروف</string>
+    <string name="dashboard_retry">إعادة المحاولة</string>
+    <string name="dashboard_no_matching_apps">لا توجد تطبيقات مطابقة</string>
+    <string name="dashboard_no_apps_found">لم يتم العثور على أي تطبيقات</string>
+    <string name="profile_dialog_title">الملف الشخصي والإعدادات</string>
+    <string name="profile_unknown_username">إسم مستخدم غير معروف</string>
+    <string name="profile_no_email">لا يوجد بريد إلكتروني</string>
+    <string name="profile_my_submissions">مشاركاتي</string>
+    <string name="profile_sign_out">تسجيل الخروج</string>
+    <string name="profile_missing_title">الملف الشخصي مفقود</string>
+    <string name="profile_missing_message">لم يتم العثور على ملفك الشخصي. يرجى محاولة تسجيل الخروج ثم تسجيل الدخول مرة أخرى، أو الإتصال بالدعم الفني.</string>
+    <string name="profile_not_signed_in_message">يرجى تسجيل الدخول لعرض ملفك الشخصي.</string>
+    <string name="profile_sign_in">تسجيل الدخول</string>
+    <string name="auth_create_account">إنشاء حساب</string>
+    <string name="auth_username">إسم المستخدم</string>
+    <string name="auth_email">بريد إلكتروني</string>
+    <string name="auth_password">كلمة المرور</string>
+    <string name="auth_hide_password">إخفاء كلمة المرور</string>
+    <string name="auth_show_password">إظهار كلمة المرور</string>
+    <string name="auth_sign_in_github">سجّل الدخول باستخدام GitHub</string>
+    <string name="auth_already_have_account">هل لديك حساب بالفعل؟ سجّل الدخول</string>
+    <string name="auth_dont_have_account">ليس لديك حساب؟ سجل الآن</string>
+    <string name="auth_check_email_title">تحقق من بريدك الإلكتروني</string>
+    <string name="auth_check_email_message">لقد أرسلنا رابط التحقق إلى بريدك الإلكتروني. يرجى التحقق من بريدك الإلكتروني قبل تسجيل الدخول.</string>
+    <string name="auth_go_to_sign_in">إنتقل إلى تسجيل الدخول</string>
+    <string name="setup_title">إعداد الملف الشخصي</string>
+    <string name="submit_contribution_guide">دليل المساهمة</string>
+    <string name="submit_search_alternatives">إبحث عن بدائل</string>
+    <string name="submit_selected_alternatives">البدائل المختارة:</string>
+    <string name="submit_search_foss_placeholder">البحث في قاعدة البيانات الموجودة...</string>
+    <string name="submit_repo_url">رابط المستودع *</string>
+    <string name="submit_license">رخصة *</string>
+    <string name="submit_cancel">إلغاء</string>
+    <string name="submit_search_solutions">إبحث عن الحلول</string>
+    <string name="submit_selected_solutions">الحلول المختارة:</string>
+</resources>
