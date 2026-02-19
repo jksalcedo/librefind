@@ -3,3 +3,7 @@
 - Add alternative reporting system
 - Update license list
 - Add alternative reporting system
+- New category dropdown selection
+- Improve source URL validation
+- Fix bug in GitHub authentication
+- Fix bug in User Reports
