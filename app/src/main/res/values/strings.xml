@@ -2,7 +2,7 @@
     <string name="app_name">LibreFind</string>
 
     <!-- Dashboard -->
-    <string name="dashboard_search_hint">Search apps...</string>
+    <string name="dashboard_search_hint">Search apps…</string>
     <string name="dashboard_close_search">Close search</string>
     <string name="dashboard_search">Search</string>
     <string name="dashboard_filter">Filter</string>
@@ -22,7 +22,7 @@
     <string name="dashboard_retry">Retry</string>
     <string name="dashboard_no_matching_apps">No matching apps</string>
     <string name="dashboard_no_apps_found">No apps found</string>
-    
+
     <!-- Profile Dialog -->
     <string name="profile_dialog_title">Profile &amp; Settings</string>
     <string name="profile_unknown_username">Unknown Username</string>
@@ -54,7 +54,7 @@
     <string name="auth_check_email_title">Check Your Email</string>
     <string name="auth_check_email_message">We\'ve sent a verification link to your email address. Please verify your email before signing in.</string>
     <string name="auth_go_to_sign_in">Go to Sign In</string>
-    
+
     <!-- Profile Setup -->
     <string name="setup_title">Set Up Profile</string>
     <string name="setup_choose_username">Choose a Username</string>
@@ -82,17 +82,17 @@
     <string name="submit_description_required">Description *</string>
     <string name="submit_add_alternatives">Add Alternatives (optional)</string>
     <string name="submit_search_alternatives">Search for alternatives</string>
-    <string name="submit_search_placeholder">Search by app name or package...</string>
+    <string name="submit_search_placeholder">Search by app name or package…</string>
     <string name="submit_selected_alternatives">Selected Alternatives:</string>
     <string name="submit_alternative_details">Alternative Details</string>
     <string name="submit_search_foss_optional">Search specific FOSS app (optional)</string>
-    <string name="submit_search_foss_placeholder">Search existing database...</string>
+    <string name="submit_search_foss_placeholder">Search existing database…</string>
     <string name="submit_linked_app">Linked to Existing App</string>
     <string name="submit_foss_requirements">License and Repository URL are required for FOSS alternatives</string>
     <string name="submit_target_proprietary">Target Proprietary Apps</string>
-    <string name="submit_search_to_add">Search to add...</string>
+    <string name="submit_search_to_add">Search to add…</string>
     <string name="submit_repo_url">Repository URL *</string>
-    <string name="submit_repo_placeholder">https://github.com/...</string>
+    <string name="submit_repo_placeholder">https://github.com/…</string>
     <string name="submit_fdroid_id">F-Droid ID</string>
     <string name="submit_license">License *</string>
     <string name="submit_license_placeholder">Select a license</string>
@@ -105,7 +105,7 @@
     <string name="submit_link_solutions_desc">Link an existing FOSS app to an existing proprietary app in our database.</string>
     <string name="submit_target_app">Target Proprietary App</string>
     <string name="submit_link_solutions_target">Select the proprietary app that this FOSS solution replaces.</string>
-    <string name="submit_select_target">Select a target app...</string>
+    <string name="submit_select_target">Select a target app…</string>
     <string name="submit_select_solutions">Select Solutions to Link</string>
     <string name="submit_search_solutions">Search for solutions</string>
     <string name="submit_selected_solutions">Selected Solutions:</string>

@@ -1,5 +1,6 @@
 package com.jksalcedo.librefind.ui.submit
 
+import SubmitFieldHelp
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -54,17 +55,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.jksalcedo.librefind.R
 import com.jksalcedo.librefind.domain.model.Alternative
 import com.jksalcedo.librefind.domain.model.SubmissionType
 import com.jksalcedo.librefind.ui.common.FieldWithHelp
-import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.res.stringResource
 import org.koin.androidx.compose.koinViewModel
-import com.jksalcedo.librefind.R
 
 @Composable
 fun SubmitScreen(
@@ -135,7 +136,7 @@ fun SubmitContent(
     onSelectFossApp: (Alternative) -> Unit,
     onClearLinkedApp: () -> Unit,
     onValidateRepoUrl: (String) -> Unit,
-    onSubmit: (SubmissionType, String, String, String, String, String, String, String) -> Unit
+    onSubmit: (SubmissionType, String, String, String, String, String, String, String, String) -> Unit
 ) {
     val isPrefilled = prefilledAppName != null && prefilledPackageName != null
     val defaultType = when {
@@ -152,6 +153,16 @@ fun SubmitContent(
     var fdroidId by remember { mutableStateOf("") }
     var license by remember { mutableStateOf("") }
     var selectedProprietaryPackages by remember { mutableStateOf(emptySet<String>()) }
+    var category by remember { mutableStateOf("") }
+    var showCategoryDropdown by remember { mutableStateOf(false) }
+    val categories = listOf(
+        "Browser", "Email", "Messenger", "Social Media",
+        "Maps & Navigation", "Cloud Storage", "Notes", "Calendar",
+        "File Manager", "Music Player", "Video Player", "Photo Editor",
+        "Office Suite", "Keyboard", "Launcher", "Camera",
+        "Weather", "News Reader", "Password Manager", "VPN",
+        "App Store", "Fitness & Health", "Finance", "Utility", "Other"
+    )
 
     LaunchedEffect(uiState.loadedSubmission) {
         uiState.loadedSubmission?.let { sub ->
@@ -190,9 +201,23 @@ fun SubmitContent(
                     modifier = Modifier.size(48.dp)
                 )
             },
-            title = { Text(if (uiState.isEditing) stringResource(R.string.submit_title_edit) else stringResource(R.string.submit_success_title)) },
+            title = {
+                Text(
+                    if (uiState.isEditing) stringResource(R.string.submit_title_edit) else stringResource(
+                        R.string.submit_success_title
+                    )
+                )
+            },
             text = {
-                Text(if (uiState.isEditing) stringResource(R.string.submit_update_message, uiState.submittedAppName ?: "") else stringResource(R.string.submit_success_message, uiState.submittedAppName ?: ""))
+                Text(
+                    if (uiState.isEditing) stringResource(
+                        R.string.submit_update_message,
+                        uiState.submittedAppName ?: ""
+                    ) else stringResource(
+                        R.string.submit_success_message,
+                        uiState.submittedAppName ?: ""
+                    )
+                )
             },
             confirmButton = {
                 Button(
@@ -208,7 +233,13 @@ fun SubmitContent(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(if (uiState.isEditing) stringResource(R.string.submit_title_edit) else stringResource(R.string.submit_title_new)) },
+                title = {
+                    Text(
+                        if (uiState.isEditing) stringResource(R.string.submit_title_edit) else stringResource(
+                            R.string.submit_title_new
+                        )
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -236,7 +267,10 @@ fun SubmitContent(
                 )
                 val uriHandler = LocalUriHandler.current
                 TextButton(onClick = { uriHandler.openUri("https://github.com/jksalcedo/librefind/wiki/How-to-Contribute") }) {
-                    Text(stringResource(R.string.submit_contribution_guide), style = MaterialTheme.typography.labelMedium)
+                    Text(
+                        stringResource(R.string.submit_contribution_guide),
+                        style = MaterialTheme.typography.labelMedium
+                    )
                 }
             }
 
@@ -259,6 +293,62 @@ fun SubmitContent(
             }
 
             HorizontalDivider()
+
+            // Category dropdown (proprietary apps only)
+            if (type == SubmissionType.NEW_PROPRIETARY) {
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    OutlinedTextField(
+                        value = category,
+                        onValueChange = {},
+                        readOnly = true,
+                        label = { Text("Category") },
+                        placeholder = { Text("Select a category") },
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = showCategoryDropdown) },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Box(
+                        modifier = Modifier
+                            .matchParentSize()
+                            .clickable { showCategoryDropdown = true }
+                    )
+                }
+
+                if (showCategoryDropdown) {
+                    AlertDialog(
+                        onDismissRequest = { showCategoryDropdown = false },
+                        title = { Text("Select Category") },
+                        text = {
+                            LazyColumn {
+                                items(categories) { cat ->
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .clickable {
+                                                category = cat
+                                                showCategoryDropdown = false
+                                            }
+                                            .padding(vertical = 12.dp, horizontal = 16.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Text(
+                                            text = cat,
+                                            style = MaterialTheme.typography.bodyLarge
+                                        )
+                                    }
+                                    if (cat != categories.last()) {
+                                        HorizontalDivider(modifier = Modifier.alpha(0.5f))
+                                    }
+                                }
+                            }
+                        },
+                        confirmButton = {
+                            TextButton(onClick = { showCategoryDropdown = false }) {
+                                Text(stringResource(R.string.submit_cancel))
+                            }
+                        }
+                    )
+                }
+            }
 
             uiState.duplicateWarning?.let { warning ->
                 Text(
@@ -726,7 +816,10 @@ fun SubmitContent(
 
                     val otherLicenseString = stringResource(R.string.submit_other)
                     val isCustomLicense = license.isNotBlank() && license !in commonLicenses
-                    var showCustomLicenseField by remember(license, otherLicenseString) { mutableStateOf(isCustomLicense || license == otherLicenseString) }
+                    var showCustomLicenseField by remember(
+                        license,
+                        otherLicenseString
+                    ) { mutableStateOf(isCustomLicense || license == otherLicenseString) }
 
                     val licenseHelp = SubmitFieldHelp.getLicense()
                     FieldWithHelp(
@@ -760,7 +853,10 @@ fun SubmitContent(
                     if (showCustomLicenseField || license == stringResource(R.string.submit_other)) {
                         Spacer(modifier = Modifier.height(8.dp))
                         OutlinedTextField(
-                            value = if (license == stringResource(R.string.submit_other) || (license in commonLicenses && license != stringResource(R.string.submit_other))) "" else license,
+                            value = if (license == stringResource(R.string.submit_other) || (license in commonLicenses && license != stringResource(
+                                    R.string.submit_other
+                                ))
+                            ) "" else license,
                             onValueChange = { license = it },
                             label = { Text(stringResource(R.string.submit_custom_license)) },
                             placeholder = { Text(stringResource(R.string.submit_custom_license_placeholder)) },
@@ -781,11 +877,12 @@ fun SubmitContent(
                                             modifier = Modifier
                                                 .fillMaxWidth()
                                                 .clickable {
-                                                    license = if (licenseName == otherLicenseString) {
-                                                        otherLicenseString
-                                                    } else {
-                                                        licenseName
-                                                    }
+                                                    license =
+                                                        if (licenseName == otherLicenseString) {
+                                                            otherLicenseString
+                                                        } else {
+                                                            licenseName
+                                                        }
                                                     showLicenseDropdown = false
                                                 }
                                                 .padding(vertical = 12.dp, horizontal = 16.dp),
@@ -855,7 +952,8 @@ fun SubmitContent(
                     MultiSelectDialog(
                         allPackages = uiState.proprietaryTargets, // Reuse existing list for now
                         unknownApps = uiState.unknownApps,
-                        initialSelection = uiState.linkTargetPackage?.let { setOf(it) } ?: emptySet(),
+                        initialSelection = uiState.linkTargetPackage?.let { setOf(it) }
+                            ?: emptySet(),
                         onDismiss = { showTargetDialog = false },
                         onConfirm = { newSelection ->
                             // MultiSelectDialog returns a Set, but we only want one for target
@@ -1005,24 +1103,25 @@ fun SubmitContent(
                         repoUrl,
                         fdroidId,
                         license,
-                        selectedProprietaryPackages.joinToString(", ")
+                        selectedProprietaryPackages.joinToString(", "),
+                        category
                     )
                 },
                 enabled = !uiState.isLoading && (
-                    if (type == SubmissionType.LINKING) {
-                        uiState.linkTargetPackage != null && uiState.selectedAlternatives.isNotEmpty()
-                    } else {
-                        appName.isNotBlank() &&
-                                packageName.isNotBlank() &&
-                                uiState.duplicateWarning == null &&
-                                uiState.packageNameError == null &&
-                                if (type == SubmissionType.NEW_ALTERNATIVE) {
-                                    description.isNotBlank() && repoUrl.isNotBlank() && license.isNotBlank() && uiState.repoUrlError == null
-                                } else {
-                                    true
-                                }
-                    }
-                ),
+                        if (type == SubmissionType.LINKING) {
+                            uiState.linkTargetPackage != null && uiState.selectedAlternatives.isNotEmpty()
+                        } else {
+                            appName.isNotBlank() &&
+                                    packageName.isNotBlank() &&
+                                    uiState.duplicateWarning == null &&
+                                    uiState.packageNameError == null &&
+                                    if (type == SubmissionType.NEW_ALTERNATIVE) {
+                                        description.isNotBlank() && repoUrl.isNotBlank() && license.isNotBlank() && uiState.repoUrlError == null
+                                    } else {
+                                        true
+                                    }
+                        }
+                        ),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 if (uiState.isLoading) {
@@ -1031,7 +1130,11 @@ fun SubmitContent(
                         strokeWidth = 2.dp
                     )
                 } else {
-                    Text(if (uiState.isEditing) stringResource(R.string.submit_update_button) else stringResource(R.string.submit_submit_button))
+                    Text(
+                        if (uiState.isEditing) stringResource(R.string.submit_update_button) else stringResource(
+                            R.string.submit_submit_button
+                        )
+                    )
                 }
             }
 
@@ -1235,7 +1338,7 @@ fun SubmitScreenPreview() {
         onSelectFossApp = {},
         onClearLinkedApp = {},
         onValidateRepoUrl = {},
-        onSubmit = { _, _, _, _, _, _, _, _ -> },
+        onSubmit = { _, _, _, _, _, _, _, _, _ -> },
         onAddTarget = {}
     )
 }
