@@ -223,6 +223,7 @@ class SubmitViewModel(
                 }
 
             result.onSuccess {
+                cacheRepository.clearCache()
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
                     success = true,

@@ -15,7 +15,7 @@ class CacheRepositoryImpl(
 ) : CacheRepository {
 
     companion object {
-        private const val CACHE_TTL_MS = 24 * 60 * 60 * 1000L
+        private const val CACHE_TTL_MS = 6 * 60 * 60 * 1000L // 6 hours
         private const val TAG = "CacheRepo"
     }
 
