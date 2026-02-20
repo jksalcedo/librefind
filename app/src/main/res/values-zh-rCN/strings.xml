@@ -273,4 +273,15 @@
     <string name="report_desc_placeholder">详细描述问题或建议...</string>
     <string name="report_priority_label">优先级</string>
     <string name="report_submit_button">提交报告</string>
+    <string name="alt_detail_report">报告</string>
+    <string name="alt_detail_report_title">报告内容 %1$s</string>
+    <string name="alt_detail_report_prompt">这条建议有什么问题吗？</string>
+    <string name="alt_detail_report_details">详细信息（可选）</string>
+    <string name="alt_detail_report_malware">恶意软件</string>
+    <string name="alt_detail_report_broken_link">无法访问的链接</string>
+    <string name="alt_detail_report_unrelated">无关的</string>
+    <string name="alt_detail_report_not_foss">不是FOSS</string>
+    <string name="alt_detail_report_error">未能提交报告</string>
+    <string name="alt_detail_report_other">其他类型</string>
+    <string name="alt_detail_report_success">报告已提交的</string>
 </resources>
