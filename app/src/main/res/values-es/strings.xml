@@ -7,7 +7,7 @@
     <string name="setup_continue">Continúa</string>
     <string name="submit_package_placeholder">com.ejemplo.app</string>
     <string name="submit_description">Descripción</string>
-    <string name="submit_repo_placeholder">https://github.com/...</string>
+    <string name="submit_repo_placeholder">https://github.com/…</string>
     <string name="submit_other">Otro</string>
     <string name="submit_confirm">Confirma</string>
     <string name="help_description_title">Descripción</string>
@@ -173,4 +173,5 @@
     <string name="privacy_bullet_device_id">ID del dispositivo: Un identificador unico generado aleatoriamente (UUID en inglés) almacenado localmente en tu dispositivo. Esto nos permite sincronizar tus preferencias sin saber tu identidad real.</string>
     <string name="privacy_bullet_app_stats">Estadísticas de las app: La cantidad total de apps instaladas, incluyendo las apps FOSS (Software gratis y de código abierto), las propietarias y las desconocidas/no clasificadas.</string>
     <string name="privacy_note_app_names">Nota: Enviamos el nombre de paquete de tus apps instaladas a nuestros servidores solamente para clasificarla (determinado si es FOSS o Propietaria). No almacenamos ni registramos estos nombres de paquete más alla de lo necesario para la consulta.</string>
+    <string name="privacy_subsection_supabase">Supabase</string>
 </resources>
