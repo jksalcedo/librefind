@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">LibreFind</string>
-    <string name="dashboard_search_hint">搜索应用...</string>
+    <string name="dashboard_search_hint">搜索应用…</string>
     <string name="dashboard_close_search">关闭搜索</string>
     <string name="dashboard_search">搜索</string>
     <string name="dashboard_filter">筛选</string>
@@ -73,17 +73,17 @@
     <string name="submit_description_required">描述 *</string>
     <string name="submit_add_alternatives">添加替代品（可选）</string>
     <string name="submit_search_alternatives">搜索替代品</string>
-    <string name="submit_search_placeholder">按应用名称或包名搜索...</string>
+    <string name="submit_search_placeholder">按应用名称或包名搜索…</string>
     <string name="submit_selected_alternatives">已选替代品：</string>
     <string name="submit_alternative_details">替代品详情</string>
     <string name="submit_search_foss_optional">搜索特定自由开源软件应用（可选）</string>
-    <string name="submit_search_foss_placeholder">搜索现有数据库...</string>
+    <string name="submit_search_foss_placeholder">搜索现有数据库…</string>
     <string name="submit_linked_app">链接到现有应用</string>
     <string name="submit_foss_requirements">自由开源软件替代品需要许可证和仓库 URL</string>
     <string name="submit_target_proprietary">目标专有软件应用</string>
-    <string name="submit_search_to_add">搜索以添加...</string>
+    <string name="submit_search_to_add">搜索以添加…</string>
     <string name="submit_repo_url">仓库 URL *</string>
-    <string name="submit_repo_placeholder">https://github.com/...</string>
+    <string name="submit_repo_placeholder">https://github.com/…</string>
     <string name="submit_fdroid_id">F-Droid ID</string>
     <string name="submit_license">许可证 *</string>
     <string name="submit_license_placeholder">选择许可证</string>
@@ -96,7 +96,7 @@
     <string name="submit_link_solutions_desc">将现有的自由开源软件应用链接到我们数据库中的现有专有软件应用。</string>
     <string name="submit_target_app">目标专有软件应用</string>
     <string name="submit_link_solutions_target">选择此自由开源软件解决方案所替代的专有软件应用。</string>
-    <string name="submit_select_target">选择目标应用...</string>
+    <string name="submit_select_target">选择目标应用…</string>
     <string name="submit_select_solutions">选择要链接的解决方案</string>
     <string name="submit_search_solutions">搜索解决方案</string>
     <string name="submit_selected_solutions">已选解决方案：</string>
@@ -124,7 +124,7 @@
     <string name="help_fdroid_id_desc">F-Droid 上列出的包名。通常与包名相同，但有些应用在 F-Droid 构建中使用不同的 ID。</string>
     <string name="help_fdroid_id_tip">在 f-droid.org 查找 — ID 位于网址中：f-droid.org/packages/&lt;fdroid.id&gt;/</string>
     <string name="help_license_title">许可证</string>
-    <string name="help_license_desc">应用程序发布所采用的开源许可证（例如 GPL-3.0、MIT、Apache-2.0）。这是提交 FOSS 应用所必需的。</string>
+    <string name="help_license_desc">应用程序发布所采用的开源许可证（例如 GPL-3.0-only、GPL-3.0-or-later、MIT、Apache-2.0）。这是提交 FOSS 应用所必需的。</string>
     <string name="help_license_tip">请检查应用程序源代码仓库中的 LICENSE 或 COPYING 文件，或查看 F-Droid 列表。</string>
     <string name="help_target_apps_title">目标专有应用</string>
     <string name="help_target_apps_desc">此 FOSS 应用可以替代的专有应用。例如，Signal 可替代 WhatsApp/Telegram。</string>
