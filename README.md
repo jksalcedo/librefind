@@ -92,14 +92,14 @@ If you find this tool useful for reclaiming your digital privacy, please conside
 
 ## Translations
 <a href="https://hosted.weblate.org/engage/librefind/">
-<img src="https://hosted.weblate.org/widget/librefind/svg-badge.svg" alt="Translation status" />
+<img src="https://hosted.weblate.org/widget/librefind/android-strings/multi-auto.svg" alt="Translation status" />
 </a>
 
 LibreFind uses [Weblate](https://hosted.weblate.org/engage/librefind/) to manage translations. You can help translate LibreFind into your language!
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=jksalcedo/librefind&type=date&legend=top-left)](https://www.star-history.com/#jksalcedo/librefind&type=date&legend=top-left)
+[![Star History Chart](https://api.star-history.com/svg?repos=jksalcedo/librefind&type=date&legend=top-left&theme=dark)](https://www.star-history.com/#jksalcedo/librefind&type=date&legend=top-left&theme=dark)
 
 ## License
 
