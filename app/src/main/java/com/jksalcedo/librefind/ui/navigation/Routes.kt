@@ -4,6 +4,7 @@ import android.net.Uri
 
 sealed class Route(val route: String) {
     data object Dashboard : Route("dashboard")
+    data object Discover : Route("discover")
     data object Details : Route("details/{appName}/{packageName}") {
         fun createRoute(appName: String, packageName: String) =
             "details/${Uri.encode(appName)}/${Uri.encode(packageName)}"

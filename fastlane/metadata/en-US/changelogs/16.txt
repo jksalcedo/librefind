@@ -1,0 +1,3 @@
+- Added Discovery tab for finding new apps
+- Added several new languages
+- Fixed some bugs
