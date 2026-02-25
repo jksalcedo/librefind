@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">LibreFind</string>
-    <string name="dashboard_search_hint">Cerca app...</string>
+    <string name="dashboard_search_hint">Cerca app…</string>
     <string name="dashboard_close_search">Chiudi ricerca</string>
     <string name="dashboard_search">Cerca</string>
     <string name="dashboard_filter">Filtro</string>
@@ -73,17 +73,17 @@
     <string name="submit_description_required">Descrizione *</string>
     <string name="submit_add_alternatives">Aggiungi alternative (facoltativo)</string>
     <string name="submit_search_alternatives">Cerca alternative</string>
-    <string name="submit_search_placeholder">Cerca per nome app o pacchetto...</string>
+    <string name="submit_search_placeholder">Cerca per nome app o pacchetto…</string>
     <string name="submit_selected_alternatives">Alternative selezionate:</string>
     <string name="submit_alternative_details">Dettagli alternativa</string>
     <string name="submit_search_foss_optional">Cerca app FOSS specifica (facoltativo)</string>
-    <string name="submit_search_foss_placeholder">Cerca database esistente...</string>
+    <string name="submit_search_foss_placeholder">Cerca database esistente…</string>
     <string name="submit_linked_app">Associata ad app esistente</string>
     <string name="submit_foss_requirements">La licenza e l\'URL del repository sono richieste per le alternative FOSS</string>
     <string name="submit_target_proprietary">App proprietarie interessate</string>
-    <string name="submit_search_to_add">Cerca per aggiungere...</string>
+    <string name="submit_search_to_add">Cerca per aggiungere…</string>
     <string name="submit_repo_url">URL repository *</string>
-    <string name="submit_repo_placeholder">https://github.com/...</string>
+    <string name="submit_repo_placeholder">https://github.com/…</string>
     <string name="submit_fdroid_id">ID F-Droid</string>
     <string name="submit_license">Licenza *</string>
     <string name="submit_license_placeholder">Scegli licenza</string>
@@ -273,4 +273,9 @@
     <string name="report_status_wontfix">Non risolvibile</string>
     <string name="report_issue_title">Segnala problema</string>
     <string name="report_type_label">Tipo segnalazione</string>
+    <string name="alt_detail_report_prompt">Cosa c\'è di sbagliato in questo suggerimento?</string>
+    <string name="alt_detail_report_details">Dettagli (Facoltativo)</string>
+    <string name="alt_detail_report_not_foss">Non FOSS</string>
+    <string name="alt_detail_report_broken_link">Link Non Funzionante</string>
+    <string name="alt_detail_report_other">Altro</string>
 </resources>
