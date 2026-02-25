@@ -7,7 +7,7 @@
     <string name="setup_continue">Continúa</string>
     <string name="submit_package_placeholder">com.ejemplo.app</string>
     <string name="submit_description">Descripción</string>
-    <string name="submit_repo_placeholder">https://github.com/...</string>
+    <string name="submit_repo_placeholder">https://github.com/…</string>
     <string name="submit_other">Otro</string>
     <string name="submit_confirm">Confirma</string>
     <string name="help_description_title">Descripción</string>
@@ -283,4 +283,5 @@
     <string name="alt_detail_report_broken_link"></string>
     <string name="alt_detail_submit"></string>
     <string name="alt_detail_features_list"></string>
+    <string name="privacy_subsection_supabase">Supabase</string>
 </resources>
