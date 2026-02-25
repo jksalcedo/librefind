@@ -721,6 +721,44 @@ class SupabaseAppRepository(
         }
     }
 
+    @Serializable
+    private data class TargetSearchDto(@SerialName("package_name") val packageName: String)
+
+    override suspend fun searchProprietary(query: String, limit: Int): List<Alternative> {
+        if (query.isBlank()) return emptyList()
+
+        return try {
+            val sanitizedQuery = query
+                .replace("\\", "\\\\")
+                .replace("%", "\\%")
+                .replace("_", "\\_")
+
+            val targets = supabase.postgrest.from("targets")
+                .select(columns = Columns.list("package_name")) {
+                    filter {
+                        ilike("package_name", "%$sanitizedQuery%")
+                    }
+                    limit(limit.toLong())
+                }.decodeList<TargetSearchDto>()
+
+            targets.map { dto ->
+                Alternative(
+                    id = dto.packageName,
+                    packageName = dto.packageName,
+                    name = dto.packageName,
+                    license = "Proprietary",
+                    repoUrl = "",
+                    fdroidId = "",
+                    iconUrl = null,
+                    description = "Proprietary App"
+                )
+            }
+        } catch (e: Exception) {
+            Log.e("SupabaseAppRepo", "searchProprietary failed", e)
+            emptyList()
+        }
+    }
+
     override suspend fun getAlternativesCount(packageName: String): Int {
         return try {
             val target = supabase.postgrest.from("targets")

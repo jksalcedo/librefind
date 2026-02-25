@@ -57,9 +57,6 @@ fun NavGraph(
                         navController.navigate(Route.Auth.route)
                     }
                 },
-                onDiscoverClick = {
-                    navController.navigate(Route.Discover.route)
-                },
                 onMySubmissionsClick = {
                     navController.navigate(Route.MySubmissions.route)
                 },

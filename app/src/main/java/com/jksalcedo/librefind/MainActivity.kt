@@ -11,6 +11,20 @@ import com.jksalcedo.librefind.ui.theme.LibreFindTheme
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.handleDeeplinks
 import org.koin.android.ext.android.inject
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Explore
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.navigation.compose.currentBackStackEntryAsState
+import com.jksalcedo.librefind.ui.navigation.Route
 
 
 class MainActivity : ComponentActivity() {
@@ -25,7 +39,49 @@ class MainActivity : ComponentActivity() {
         setContent {
             LibreFindTheme {
                 val navController = rememberNavController()
-                NavGraph(navController = navController)
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentRoute = navBackStackEntry?.destination?.route
+
+                val showBottomBar = currentRoute == Route.Dashboard.route || currentRoute == Route.Discover.route
+
+                Scaffold(
+                    bottomBar = {
+                        if (showBottomBar) {
+                            NavigationBar {
+                                NavigationBarItem(
+                                    icon = { Icon(Icons.Default.Home, contentDescription = "Dashboard") },
+                                    label = { Text("Dashboard") },
+                                    selected = currentRoute == Route.Dashboard.route,
+                                    onClick = {
+                                        if (currentRoute != Route.Dashboard.route) {
+                                            navController.navigate(Route.Dashboard.route) {
+                                                popUpTo(Route.Dashboard.route) { inclusive = false }
+                                                launchSingleTop = true
+                                            }
+                                        }
+                                    }
+                                )
+                                NavigationBarItem(
+                                    icon = { Icon(Icons.Default.Explore, contentDescription = "Discover") },
+                                    label = { Text("Discover") },
+                                    selected = currentRoute == Route.Discover.route,
+                                    onClick = {
+                                        if (currentRoute != Route.Discover.route) {
+                                            navController.navigate(Route.Discover.route) {
+                                                popUpTo(Route.Dashboard.route) { inclusive = false }
+                                                launchSingleTop = true
+                                            }
+                                        }
+                                    }
+                                )
+                            }
+                        }
+                    }
+                ) { innerPadding ->
+                    Box(modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding())) {
+                        NavGraph(navController = navController)
+                    }
+                }
             }
         }
     }

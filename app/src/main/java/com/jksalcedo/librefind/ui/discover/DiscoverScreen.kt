@@ -1,6 +1,7 @@
 package com.jksalcedo.librefind.ui.discover
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,6 +18,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -49,7 +52,7 @@ fun DiscoverScreen(
                     TextField(
                         value = state.query,
                         onValueChange = viewModel::updateQuery,
-                        placeholder = { Text("Search FOSS alternatives...") },
+                        placeholder = { Text("Search database...") },
                         singleLine = true,
                         colors = TextFieldDefaults.colors(
                             focusedContainerColor = Color.Transparent,
@@ -86,63 +89,81 @@ fun DiscoverScreen(
             )
         }
     ) { innerPadding ->
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            when {
-                state.isLoading -> {
-                    CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.Center)
-                    )
-                }
+            TabRow(
+                selectedTabIndex = if (state.isProprietaryTabSelected) 1 else 0,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Tab(
+                    selected = !state.isProprietaryTabSelected,
+                    onClick = { viewModel.setProprietaryTabSelected(false) },
+                    text = { Text("FOSS Alternatives") }
+                )
+                Tab(
+                    selected = state.isProprietaryTabSelected,
+                    onClick = { viewModel.setProprietaryTabSelected(true) },
+                    text = { Text("Proprietary Apps") }
+                )
+            }
 
-                state.error != null -> {
-                    Text(
-                        text = state.error!!,
-                        color = MaterialTheme.colorScheme.error,
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .padding(16.dp)
-                    )
-                }
+            Box(modifier = Modifier.fillMaxSize()) {
+                val results = if (state.isProprietaryTabSelected) state.proprietaryResults else state.fossResults
 
-                state.results.isEmpty() && state.query.isNotEmpty() -> {
-                    Text(
-                        text = stringResource(R.string.dashboard_no_apps_found),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .padding(16.dp)
-                    )
-                }
-
-                state.results.isNotEmpty() -> {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(16.dp),
-                        verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(
-                            12.dp
+                when {
+                    state.isLoading -> {
+                        CircularProgressIndicator(
+                            modifier = Modifier.align(Alignment.Center)
                         )
-                    ) {
-                        items(state.results) { alternative ->
-                            AlternativeListItem(
-                                alternative = alternative,
-                                onClick = { onAlternativeClick(alternative.id) }
-                            )
+                    }
+
+                    state.error != null -> {
+                        Text(
+                            text = state.error!!,
+                            color = MaterialTheme.colorScheme.error,
+                            modifier = Modifier
+                                .align(Alignment.Center)
+                                .padding(16.dp)
+                        )
+                    }
+
+                    results.isEmpty() && state.query.isNotEmpty() -> {
+                        Text(
+                            text = stringResource(R.string.dashboard_no_apps_found),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier
+                                .align(Alignment.Center)
+                                .padding(16.dp)
+                        )
+                    }
+
+                    results.isNotEmpty() -> {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize(),
+                            contentPadding = PaddingValues(16.dp),
+                            verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(12.dp)
+                        ) {
+                            items(results) { alternative ->
+                                AlternativeListItem(
+                                    alternative = alternative,
+                                    onClick = { onAlternativeClick(alternative.id) }
+                                )
+                            }
                         }
                     }
-                }
 
-                else -> {
-                    Text(
-                        text = "Type to search the FOSS alternatives database.",
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .padding(16.dp)
-                    )
+                    else -> {
+                        Text(
+                            text = "Type to search the database.",
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier
+                                .align(Alignment.Center)
+                                .padding(16.dp)
+                        )
+                    }
                 }
             }
         }

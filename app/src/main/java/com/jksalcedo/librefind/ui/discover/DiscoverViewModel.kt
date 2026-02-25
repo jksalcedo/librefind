@@ -15,7 +15,9 @@ import kotlinx.coroutines.launch
 data class DiscoverUiState(
     val query: String = "",
     val isLoading: Boolean = false,
-    val results: List<Alternative> = emptyList(),
+    val fossResults: List<Alternative> = emptyList(),
+    val proprietaryResults: List<Alternative> = emptyList(),
+    val isProprietaryTabSelected: Boolean = false,
     val error: String? = null
 )
 
@@ -32,7 +34,7 @@ class DiscoverViewModel(
         _uiState.update { it.copy(query = query) }
         searchJob?.cancel()
         if (query.isBlank()) {
-            _uiState.update { it.copy(results = emptyList(), isLoading = false, error = null) }
+            _uiState.update { it.copy(fossResults = emptyList(), proprietaryResults = emptyList(), isLoading = false, error = null) }
             return
         }
 
@@ -40,11 +42,16 @@ class DiscoverViewModel(
             _uiState.update { it.copy(isLoading = true, error = null) }
             delay(500) // Debounce typing
             try {
-                val results = repository.searchSolutions(query)
-                _uiState.update { it.copy(results = results, isLoading = false) }
+                val fossResults = repository.searchSolutions(query)
+                val propResults = repository.searchProprietary(query)
+                _uiState.update { it.copy(fossResults = fossResults, proprietaryResults = propResults, isLoading = false) }
             } catch (e: Exception) {
                 _uiState.update { it.copy(isLoading = false, error = e.localizedMessage ?: "Unknown error") }
             }
         }
+    }
+
+    fun setProprietaryTabSelected(isSelected: Boolean) {
+        _uiState.update { it.copy(isProprietaryTabSelected = isSelected) }
     }
 }
