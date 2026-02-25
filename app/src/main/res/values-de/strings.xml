@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">LibreFind</string>
-    <string name="dashboard_search_hint">Apps suchen ...</string>
+    <string name="dashboard_search_hint">Apps suchen …</string>
     <string name="dashboard_close_search">Suche schließen</string>
     <string name="dashboard_search">Suche</string>
     <string name="dashboard_filter">Filter</string>
@@ -73,17 +73,17 @@
     <string name="submit_description_required">Beschreibung *</string>
     <string name="submit_add_alternatives">Füge Alternativen hinzu (optional)</string>
     <string name="submit_search_alternatives">Suche nach Alternativen</string>
-    <string name="submit_search_placeholder">Suche nach App-Namen oder Paket ...</string>
+    <string name="submit_search_placeholder">Suche nach App-Namen oder Paket …</string>
     <string name="submit_selected_alternatives">Ausgewählte Alternativen:</string>
     <string name="submit_alternative_details">Alternativen Details</string>
     <string name="submit_search_foss_optional">Suche spezifische FOSS App (optional)</string>
-    <string name="submit_search_foss_placeholder">Durchsuche existiertende Datenbank ...</string>
+    <string name="submit_search_foss_placeholder">Durchsuche existierende Datenbank …</string>
     <string name="submit_linked_app">Verknüpft mit existiertender App</string>
     <string name="submit_foss_requirements">Lizenz und Repository URL sind erforderlich für FOSS Alternativen</string>
     <string name="submit_target_proprietary">Ziel-Proprietäre Apps</string>
-    <string name="submit_search_to_add">Suche zum hinzufügen ...</string>
+    <string name="submit_search_to_add">Suche zum hinzufügen …</string>
     <string name="submit_repo_url">Repository URL *</string>
-    <string name="submit_repo_placeholder">https://github.com/...</string>
+    <string name="submit_repo_placeholder">https://github.com/…</string>
     <string name="submit_fdroid_id">F-Droid ID</string>
     <string name="submit_license">Lizenz *</string>
     <string name="submit_license_placeholder">Wähle eine Lizenz</string>
@@ -96,7 +96,7 @@
     <string name="submit_link_solutions_desc">Verknüpfe eine existierende FOSS-App mit einer existierenden proprietären App in unserer Datenbank.</string>
     <string name="submit_target_app">Ziel-Proprietäre App</string>
     <string name="submit_link_solutions_target">Wähle die proprietäre App, die durch diese FOSS Lösung ersetzt wird.</string>
-    <string name="submit_select_target">Wähle eine Ziel App ...</string>
+    <string name="submit_select_target">Wähle eine Ziel App …</string>
     <string name="submit_select_solutions">Wähle Lösungen zum Verknüpfen</string>
     <string name="submit_search_solutions">Suche nach Lösungen</string>
     <string name="submit_selected_solutions">Ausgewählte Lösungen:</string>
@@ -124,7 +124,7 @@
     <string name="help_fdroid_id_desc">Der Paketname wie auf F-Droid aufgeführt. Normalerweise gleich dem Paketnamen, aber manche Apps nutzen eine andere ID für F-Droid-Builds.</string>
     <string name="help_fdroid_id_tip">Finde sie auf f-droid.org — die ID ist in der URL: f-droid.org/packages/&lt;fdroid.id&gt;/</string>
     <string name="help_license_title">Lizenz</string>
-    <string name="help_license_desc">Die Open-Source-Lizenz, unter welcher die App veröffentlicht wird (z.B. GPL-3.0, MIT, Apache-2.0). Diese wird benötigt für FOSS-Einreichungen.</string>
+    <string name="help_license_desc">Die Open-Source-Lizenz, unter welcher die App veröffentlicht wird (z.B. GPL-3.0-only, GPL-3.0-or-later, MIT, Apache-2.0). Diese wird benötigt für FOSS-Einreichungen.</string>
     <string name="help_license_tip">Prüfe die LICENSE oder COPYING Datei in dem Quellcode-Repository der App oder schaue auf den F-Droid-Eintrag.</string>
     <string name="help_target_apps_title">Ziel-Proprietäre Apps</string>
     <string name="help_target_apps_desc">Die proprietären Apps, die diese FOSS-App ersetzen kann. Zum Beispiel: Signal ersetzt WhatsApp/Telegram.</string>
