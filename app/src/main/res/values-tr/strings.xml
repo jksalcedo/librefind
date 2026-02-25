@@ -273,15 +273,4 @@
     <string name="report_desc_placeholder">Sorunu veya öneriyi ayrıntılı olarak açıklayın...</string>
     <string name="report_priority_label">Öncelik</string>
     <string name="report_submit_button">Rapor Gönder</string>
-    <string name="alt_detail_report_prompt"></string>
-    <string name="alt_detail_report"></string>
-    <string name="alt_detail_report_other"></string>
-    <string name="alt_detail_report_malware"></string>
-    <string name="alt_detail_report_unrelated"></string>
-    <string name="alt_detail_report_error"></string>
-    <string name="alt_detail_report_success"></string>
-    <string name="alt_detail_report_not_foss"></string>
-    <string name="alt_detail_report_details"></string>
-    <string name="alt_detail_report_title"></string>
-    <string name="alt_detail_report_broken_link"></string>
 </resources>
