@@ -21,6 +21,7 @@ import com.jksalcedo.librefind.ui.dashboard.DashboardScreen
 import org.koin.androidx.compose.koinViewModel
 import com.jksalcedo.librefind.ui.details.AlternativeDetailScreen
 import com.jksalcedo.librefind.ui.details.DetailsScreen
+import com.jksalcedo.librefind.ui.discover.DiscoverScreen
 import com.jksalcedo.librefind.ui.mysubmissions.MySubmissionsScreen
 import com.jksalcedo.librefind.ui.reports.MyReportsScreen
 import com.jksalcedo.librefind.ui.reports.ReportScreen
@@ -56,6 +57,9 @@ fun NavGraph(
                         navController.navigate(Route.Auth.route)
                     }
                 },
+                onDiscoverClick = {
+                    navController.navigate(Route.Discover.route)
+                },
                 onMySubmissionsClick = {
                     navController.navigate(Route.MySubmissions.route)
                 },
@@ -64,6 +68,15 @@ fun NavGraph(
                 },
                 onSettingsClick = {
                     navController.navigate(Route.Settings.route)
+                }
+            )
+        }
+
+        composable(Route.Discover.route) {
+            DiscoverScreen(
+                onBackClick = { navController.navigateUp() },
+                onAlternativeClick = { altId ->
+                    navController.navigate(Route.AlternativeDetail.createRoute(altId))
                 }
             )
         }

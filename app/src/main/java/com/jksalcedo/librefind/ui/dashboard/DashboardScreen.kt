@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.NewReleases
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.filled.Explore
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -77,6 +78,7 @@ import org.koin.compose.koinInject
 fun DashboardScreen(
     onAppClick: (String, String) -> Unit,
     onSubmitClick: () -> Unit = {},
+    onDiscoverClick: () -> Unit = {},
     onMySubmissionsClick: () -> Unit = {},
     onIgnoredAppsClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {},
@@ -147,6 +149,9 @@ fun DashboardScreen(
                                 Icon(Icons.Default.Close, contentDescription = stringResource(R.string.dashboard_close_search))
                             }
                         } else {
+                            IconButton(onClick = onDiscoverClick) {
+                                Icon(Icons.Default.Explore, contentDescription = "Discover FOSS Alternatives")
+                            }
                             IconButton(
                                 onClick = { isSearchActive = true },
                                 modifier = Modifier.onGloballyPositioned { coords ->
