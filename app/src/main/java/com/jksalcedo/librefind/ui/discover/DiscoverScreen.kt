@@ -41,6 +41,7 @@ import org.koin.androidx.compose.koinViewModel
 fun DiscoverScreen(
     onBackClick: () -> Unit,
     onAlternativeClick: (String) -> Unit,
+    onProprietaryClick: (appName: String, packageName: String) -> Unit,
     viewModel: DiscoverViewModel = koinViewModel()
 ) {
     val state by viewModel.uiState.collectAsState()
@@ -149,7 +150,13 @@ fun DiscoverScreen(
                             items(results) { alternative ->
                                 AlternativeListItem(
                                     alternative = alternative,
-                                    onClick = { onAlternativeClick(alternative.id) }
+                                    onClick = {
+                                        if (state.isProprietaryTabSelected) {
+                                            onProprietaryClick(alternative.name, alternative.packageName)
+                                        } else {
+                                            onAlternativeClick(alternative.id)
+                                        }
+                                    }
                                 )
                             }
                         }

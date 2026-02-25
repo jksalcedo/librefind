@@ -74,6 +74,9 @@ fun NavGraph(
                 onBackClick = { navController.navigateUp() },
                 onAlternativeClick = { altId ->
                     navController.navigate(Route.AlternativeDetail.createRoute(altId))
+                },
+                onProprietaryClick = { appName, packageName ->
+                    navController.navigate(Route.Details.createRoute(appName, packageName))
                 }
             )
         }

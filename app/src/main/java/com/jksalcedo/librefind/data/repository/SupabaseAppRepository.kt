@@ -722,7 +722,10 @@ class SupabaseAppRepository(
     }
 
     @Serializable
-    private data class TargetSearchDto(@SerialName("package_name") val packageName: String)
+    private data class TargetSearchDto(
+        @SerialName("package_name") val packageName: String,
+        val name: String = ""
+    )
 
     override suspend fun searchProprietary(query: String, limit: Int): List<Alternative> {
         if (query.isBlank()) return emptyList()
@@ -734,9 +737,12 @@ class SupabaseAppRepository(
                 .replace("_", "\\_")
 
             val targets = supabase.postgrest.from("targets")
-                .select(columns = Columns.list("package_name")) {
+                .select(columns = Columns.list("package_name", "name")) {
                     filter {
-                        ilike("package_name", "%$sanitizedQuery%")
+                        or {
+                            ilike("name", "%$sanitizedQuery%")
+                            ilike("package_name", "%$sanitizedQuery%")
+                        }
                     }
                     limit(limit.toLong())
                 }.decodeList<TargetSearchDto>()
@@ -745,12 +751,12 @@ class SupabaseAppRepository(
                 Alternative(
                     id = dto.packageName,
                     packageName = dto.packageName,
-                    name = dto.packageName,
+                    name = dto.name,
                     license = "Proprietary",
                     repoUrl = "",
                     fdroidId = "",
                     iconUrl = null,
-                    description = "Proprietary App"
+                    description = dto.packageName
                 )
             }
         } catch (e: Exception) {
