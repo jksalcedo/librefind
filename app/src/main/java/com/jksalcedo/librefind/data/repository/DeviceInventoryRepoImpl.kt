@@ -124,10 +124,6 @@ class DeviceInventoryRepoImpl(
             return createAppItem(packageName, label, AppStatus.IGNORED, installer, icon)
         }
 
-        if (packageName in pendingPackages) {
-            return createAppItem(packageName, label, AppStatus.PENDING, installer, icon)
-        }
-
         if (installer in FOSS_INSTALLERS) {
             return createAppItem(packageName, label, AppStatus.FOSS, installer, icon)
         }
@@ -136,7 +132,6 @@ class DeviceInventoryRepoImpl(
             return createAppItem(packageName, label, AppStatus.FOSS, installer, icon)
         }
 
-        // Use pre-fetched bulk data — no per-app network calls
         val isKnownSolution = try {
             cacheRepository.isSolutionCached(packageName) || packageName in solutionsSet
         } catch (_: Exception) {
@@ -153,12 +148,20 @@ class DeviceInventoryRepoImpl(
             false
         }
 
+        if (isProprietary) {
+            return createAppItem(packageName, label, AppStatus.PROP, installer, icon)
+        }
+
         if (installer in PROPRIETARY_INSTALLERS) {
             return createAppItem(packageName, label, AppStatus.PROP, installer, icon)
         }
 
-        val status = if (isProprietary) AppStatus.PROP else AppStatus.UNKN
-        return createAppItem(packageName, label, status, installer, icon)
+        // Only show PENDING if app isn't already classified
+        if (packageName in pendingPackages) {
+            return createAppItem(packageName, label, AppStatus.PENDING, installer, icon)
+        }
+
+        return createAppItem(packageName, label, AppStatus.UNKN, installer, icon)
     }
 
     private suspend fun createAppItem(
