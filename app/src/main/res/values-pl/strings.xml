@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="dashboard_search_hint">Szukaj aplikacji...</string>
+    <string name="dashboard_search_hint">Szukaj aplikacji…</string>
     <string name="dashboard_close_search">Zamknij wyszukiwanie</string>
     <string name="dashboard_search">Szukaj</string>
     <string name="dashboard_filter">Filtruj</string>
@@ -72,17 +72,17 @@
     <string name="submit_description_required">Opis *</string>
     <string name="submit_add_alternatives">Dodaj alternatywy (opcjonalne)</string>
     <string name="submit_search_alternatives">Szukaj alternatyw</string>
-    <string name="submit_search_placeholder">Szukaj po nazwie aplikacji lub pakietu...</string>
+    <string name="submit_search_placeholder">Szukaj po nazwie aplikacji lub pakietu…</string>
     <string name="submit_selected_alternatives">Wybrane alternatywy:</string>
     <string name="submit_alternative_details">Szczegóły alternatywy</string>
     <string name="submit_search_foss_optional">Szukaj konkretnej aplikacji FOSS (opcjonalne)</string>
-    <string name="submit_search_foss_placeholder">Szukaj w istniejących bazach...</string>
+    <string name="submit_search_foss_placeholder">Szukaj w istniejących bazach…</string>
     <string name="submit_linked_app">Linkowano do istniejącej aplikacji</string>
     <string name="submit_foss_requirements">Licencja i URL repozytorium są wymagane dla alternatyw FOSS</string>
     <string name="submit_target_proprietary">Docelowe aplikacje własnościowe</string>
-    <string name="submit_search_to_add">Szukaj żeby dodać...</string>
+    <string name="submit_search_to_add">Szukaj żeby dodać…</string>
     <string name="submit_repo_url">URL repozytorium *</string>
-    <string name="submit_repo_placeholder">https://github.com/...</string>
+    <string name="submit_repo_placeholder">https://github.com/…</string>
     <string name="submit_fdroid_id">ID F-droid</string>
     <string name="submit_license">Licencja *</string>
     <string name="submit_license_placeholder">Wybierz licencję</string>
@@ -95,7 +95,7 @@
     <string name="submit_link_solutions_desc">Linkuj istniejącą aplikację FOSS do aplikacji własnościowej w naszej bazie.</string>
     <string name="submit_target_app">Docelowa aplikacje własnościowa</string>
     <string name="submit_link_solutions_target">Wybierz aplikację własnościową, którą zastępuje to rozwiązanie FOSS.</string>
-    <string name="submit_select_target">Wybierz aplikację docelową...</string>
+    <string name="submit_select_target">Wybierz aplikację docelową…</string>
     <string name="submit_select_solutions">Wybierz rozwiązania do powiązania</string>
     <string name="submit_search_solutions">Szukaj rozwiązań</string>
     <string name="submit_selected_solutions">Wybrane rozwiązania:</string>
@@ -123,7 +123,7 @@
     <string name="help_fdroid_id_desc">Nazwa pakietu jak na F-droid. Zazwyczaj taka sama jak nazwa pakietu, ale niektóre aplikacje używają innego ID dla zbudowanych przez F-droid.</string>
     <string name="help_fdroid_id_tip">Znajdź na f-droid.org - ID jest w URL: f-droid.org/packages/&lt;fdroid.id&gt;/</string>
     <string name="help_license_title">Licencja</string>
-    <string name="help_license_desc">Licencja otwartoźródłowa, pod którą została wydana aplikacja (np.: GPL-3.0, MIT, Apache-2.0). To jest wymagane dla zgłoszonych aplikacji FOSS.</string>
+    <string name="help_license_desc">Licencja otwartoźródłowa, pod którą została wydana aplikacja (np.: GPL-3.0-only, GPL-3.0-or-later, MIT, Apache-2.0). To jest wymagane dla zgłoszonych aplikacji FOSS.</string>
     <string name="help_license_tip">Sprawdź plik LICENCJA albo KOPIOWANIE w repo z kodem źródłowym aplikacji, albo sprawdź na F-droid.</string>
     <string name="help_target_apps_title">Docelowe aplikacje własnościowe</string>
     <string name="help_target_apps_desc">Aplikacje własnościowe, które ta aplikacja FOSS może zastąpić. Np.: Signal zastępuje WhatsApp/Telegram.</string>
@@ -273,4 +273,15 @@
     <string name="report_desc_placeholder">Opisz problem lub sugestię szczegółowo…</string>
     <string name="report_priority_label">Priorytet</string>
     <string name="report_submit_button">Wyślij Raport</string>
+    <string name="alt_detail_report_prompt">Co jest nie tak z tą rekomendacją?</string>
+    <string name="alt_detail_report">Zgłoś</string>
+    <string name="alt_detail_report_other">Inne</string>
+    <string name="alt_detail_report_malware">Złośliwe oprogramowanie</string>
+    <string name="alt_detail_report_unrelated">Niezwiązane</string>
+    <string name="alt_detail_report_error">Nie udało się wysłać zgłoszenia</string>
+    <string name="alt_detail_report_success">Wysłano zgłoszenie</string>
+    <string name="alt_detail_report_not_foss">Nie jest to oprogramowanie FOSS</string>
+    <string name="alt_detail_report_details">Szczegóły (opcjonalnie)</string>
+    <string name="alt_detail_report_title">Zgłoś %1$s</string>
+    <string name="alt_detail_report_broken_link">Niedziałający link</string>
 </resources>
