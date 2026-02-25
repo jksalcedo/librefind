@@ -1,5 +1,5 @@
 [versions]
-agp = "8.13.2"
+agp = "9.0.1"
 coilCompose = "2.7.0"
 koinAndroid = "4.1.1"
 koinAndroidxCompose = "4.1.1"
