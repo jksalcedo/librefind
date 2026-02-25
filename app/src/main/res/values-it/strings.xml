@@ -274,8 +274,8 @@
     <string name="report_issue_title">Segnala problema</string>
     <string name="report_type_label">Tipo segnalazione</string>
     <string name="alt_detail_report_prompt">Cosa c\'è di sbagliato in questo suggerimento?</string>
-    <string name="alt_detail_report_other">Altro</string>
-    <string name="alt_detail_report_not_foss">Non FOSS</string>
     <string name="alt_detail_report_details">Dettagli (Facoltativo)</string>
+    <string name="alt_detail_report_not_foss">Non FOSS</string>
     <string name="alt_detail_report_broken_link">Link Non Funzionante</string>
+    <string name="alt_detail_report_other">Altro</string>
 </resources>
