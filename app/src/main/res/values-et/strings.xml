@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">LibreFind</string>
-    <string name="dashboard_search_hint">Otsi rakendusi...</string>
+    <string name="dashboard_search_hint">Otsi rakendusi…</string>
     <string name="dashboard_close_search">Sulge otsing</string>
     <string name="dashboard_search">Otsi</string>
     <string name="dashboard_filter">Filtreeri</string>
@@ -29,7 +29,7 @@
     <string name="submit_done">Valmis</string>
     <string name="submit_package_placeholder">com.sellinetore.app</string>
     <string name="submit_description">Kirjeldus</string>
-    <string name="submit_repo_placeholder">https://github.com/...</string>
+    <string name="submit_repo_placeholder">https://github.com/…</string>
     <string name="submit_other">Muu</string>
     <string name="submit_cancel">Katkesta</string>
     <string name="submit_search">Otsi</string>
@@ -77,4 +77,15 @@
     <string name="tutorial_skip">Jäta vahele</string>
     <string name="tutorial_done">Valmis</string>
     <string name="tutorial_next">Järgmine</string>
+    <string name="dashboard_filter_unknown_only">Vaid need, mis pole teada</string>
+    <string name="dashboard_filter_pending_only">Vaid need, mis on ootel</string>
+    <string name="dashboard_filter_ignored_only">Vaid need, mis on eiratud</string>
+    <string name="dashboard_submit_app">Saada rakendus</string>
+    <string name="dashboard_unknown_error">Tundmatu viga</string>
+    <string name="dashboard_no_matching_apps">Sobivaid rakendusi pole</string>
+    <string name="dashboard_no_apps_found">Rakendusi ei leidu</string>
+    <string name="profile_dialog_title">Profiil ja seadistused</string>
+    <string name="profile_unknown_username">Tundmatu kasutajanimi</string>
+    <string name="status_ignored">eiratud</string>
+    <string name="my_reports_response">Vastus:</string>
 </resources>
