@@ -183,7 +183,7 @@
     <string name="tutorial_skip">Salta</string>
     <string name="tutorial_done">Fatto</string>
     <string name="tutorial_next">Prossimo</string>
-    <string name="report_status_open">Apri</string>
+    <string name="report_status_open">Aperta</string>
     <string name="report_status_resolved">Risolta</string>
     <string name="report_status_duplicate">Duplicata</string>
     <string name="report_status_closed">Chiusa</string>
