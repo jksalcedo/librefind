@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LibreFind</string>
+    <string name="app_name" translatable="false">LibreFind</string>
 
     <!-- Dashboard -->
     <string name="dashboard_search_hint">Search apps…</string>
@@ -274,6 +274,7 @@
     <string name="details_suggest_foss">Suggest as FOSS</string>
     <string name="details_suggest_proprietary">Suggest as Proprietary</string>
     <string name="details_found_format">Found %1$d FOSS alternative%2$s</string>
+    <string name="details_suggest_alternative">Suggest an alternative</string>
 
     <!-- My Submissions Screen -->
     <string name="my_submissions_title">My Submissions</string>

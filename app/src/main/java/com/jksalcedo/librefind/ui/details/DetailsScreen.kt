@@ -20,10 +20,12 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -53,6 +55,7 @@ fun DetailsScreen(
     onAlternativeClick: (String) -> Unit,
     onSuggestAsFoss: (appName: String, packageName: String) -> Unit = { _, _ -> },
     onSuggestAsProprietary: (appName: String, packageName: String) -> Unit = { _, _ -> },
+    onAddAlternativeClick: (appName: String, packageName: String) -> Unit = { _, _ -> },
     viewModel: DetailsViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsState()
@@ -60,6 +63,8 @@ fun DetailsScreen(
     LaunchedEffect(packageName) {
         viewModel.loadAlternatives(packageName)
     }
+
+    val showFab = !state.isLoading && state.error == null && !state.isUnknown
 
     Scaffold(
         topBar = {
@@ -74,6 +79,18 @@ fun DetailsScreen(
                     }
                 }
             )
+        },
+        floatingActionButton = {
+            if (showFab) {
+                FloatingActionButton(
+                    onClick = { onAddAlternativeClick(appName, packageName) }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = stringResource(R.string.details_suggest_alternative)
+                    )
+                }
+            }
         }
     ) { paddingValues ->
         Box(

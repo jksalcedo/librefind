@@ -87,6 +87,8 @@ fun NavGraph(
                 navArgument("packageName") { type = NavType.StringType },
                 navArgument("appName") { type = NavType.StringType })
         ) { backStackEntry ->
+            val authViewModel: AuthViewModel = koinViewModel()
+            val authState by authViewModel.uiState.collectAsState()
             val packageName =
                 backStackEntry.arguments?.getString("packageName") ?: return@composable
             val appName = backStackEntry.arguments?.getString("appName") ?: return@composable
@@ -102,6 +104,15 @@ fun NavGraph(
                 },
                 onSuggestAsProprietary = { name, pkg ->
                     navController.navigate(Route.Submit.createRoute(name, pkg, "proprietary"))
+                },
+                onAddAlternativeClick = { _, pkg ->
+                    if (authState.isSignedIn) {
+                        navController.navigate(
+                            Route.Submit.createRoute(type = "foss", proprietaryTarget = pkg)
+                        )
+                    } else {
+                        navController.navigate(Route.Auth.route)
+                    }
                 }
             )
         }
@@ -165,6 +176,11 @@ fun NavGraph(
                     type = NavType.StringType
                     nullable = true
                     defaultValue = null
+                },
+                navArgument("proprietaryTarget") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
                 }
             )
         ) { backStackEntry ->
@@ -172,7 +188,8 @@ fun NavGraph(
             val prefilledPackageName = backStackEntry.arguments?.getString("packageName")
             val prefilledType = backStackEntry.arguments?.getString("type")
             val submissionId = backStackEntry.arguments?.getString("submissionId")
-            
+            val proprietaryTarget = backStackEntry.arguments?.getString("proprietaryTarget")
+
             SubmitScreen(
                 onBackClick = { navController.navigateUp() },
                 onSuccess = {
@@ -188,7 +205,8 @@ fun NavGraph(
                 prefilledAppName = prefilledAppName,
                 prefilledPackageName = prefilledPackageName,
                 prefilledType = prefilledType,
-                submissionId = submissionId
+                submissionId = submissionId,
+                prefilledProprietaryTarget = proprietaryTarget
             )
         }
 
