@@ -96,7 +96,7 @@
     <string name="submit_link_solutions_desc">Associa un\'app FOSS esistente ad una proprietaria nel nostro database.</string>
     <string name="submit_target_app">App proprietaria interessata</string>
     <string name="submit_link_solutions_target">Seleziona l\'app proprietaria da sostituire con la soluzione FOSS.</string>
-    <string name="submit_select_target">Seleziona un\'app interessata...</string>
+    <string name="submit_select_target">Seleziona un\'app interessata…</string>
     <string name="submit_select_solutions">Seleziona soluzioni da collegare</string>
     <string name="submit_search_solutions">Cerca soluzioni</string>
     <string name="submit_selected_solutions">Soluzioni selezionate:</string>
@@ -183,7 +183,7 @@
     <string name="tutorial_skip">Salta</string>
     <string name="tutorial_done">Fatto</string>
     <string name="tutorial_next">Prossimo</string>
-    <string name="report_status_open">Apri</string>
+    <string name="report_status_open">Aperta</string>
     <string name="report_status_resolved">Risolta</string>
     <string name="report_status_duplicate">Duplicata</string>
     <string name="report_status_closed">Chiusa</string>
