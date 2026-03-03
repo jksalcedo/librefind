@@ -10,6 +10,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -53,6 +54,7 @@ class MainActivity : ComponentActivity() {
                                             contentDescription = "Dashboard"
                                         )
                                     },
+                                    label = { Text("Dashboard") },
                                     selected = currentRoute == Route.Dashboard.route,
                                     onClick = {
                                         if (currentRoute != Route.Dashboard.route) {
@@ -70,6 +72,7 @@ class MainActivity : ComponentActivity() {
                                             contentDescription = "Discover"
                                         )
                                     },
+                                    label = { Text("Discover") },
                                     selected = currentRoute == Route.Discover.route,
                                     onClick = {
                                         if (currentRoute != Route.Discover.route) {
