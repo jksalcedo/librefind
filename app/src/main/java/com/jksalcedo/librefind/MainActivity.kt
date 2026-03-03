@@ -4,18 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.navigation.compose.rememberNavController
-import com.jksalcedo.librefind.ui.navigation.NavGraph
-import com.jksalcedo.librefind.ui.theme.LibreFindTheme
-import io.github.jan.supabase.SupabaseClient
-import io.github.jan.supabase.auth.handleDeeplinks
-import org.koin.android.ext.android.inject
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Explore
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -23,8 +13,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.jksalcedo.librefind.ui.navigation.NavGraph
 import com.jksalcedo.librefind.ui.navigation.Route
+import com.jksalcedo.librefind.ui.theme.LibreFindTheme
+import io.github.jan.supabase.SupabaseClient
+import io.github.jan.supabase.auth.handleDeeplinks
+import org.koin.android.ext.android.inject
 
 
 class MainActivity : ComponentActivity() {
@@ -42,14 +40,20 @@ class MainActivity : ComponentActivity() {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
 
-                val showBottomBar = currentRoute == Route.Dashboard.route || currentRoute == Route.Discover.route
+                val showBottomBar =
+                    currentRoute == Route.Dashboard.route || currentRoute == Route.Discover.route
 
                 Scaffold(
                     bottomBar = {
                         if (showBottomBar) {
                             NavigationBar {
                                 NavigationBarItem(
-                                    icon = { Icon(Icons.Default.Home, contentDescription = "Dashboard") },
+                                    icon = {
+                                        Icon(
+                                            painter = painterResource(R.drawable.ic_home),
+                                            contentDescription = "Dashboard"
+                                        )
+                                    },
                                     label = { Text("Dashboard") },
                                     selected = currentRoute == Route.Dashboard.route,
                                     onClick = {
@@ -62,7 +66,12 @@ class MainActivity : ComponentActivity() {
                                     }
                                 )
                                 NavigationBarItem(
-                                    icon = { Icon(Icons.Default.Explore, contentDescription = "Discover") },
+                                    icon = {
+                                        Icon(
+                                            painter = painterResource(R.drawable.ic_discover),
+                                            contentDescription = "Discover"
+                                        )
+                                    },
                                     label = { Text("Discover") },
                                     selected = currentRoute == Route.Discover.route,
                                     onClick = {
