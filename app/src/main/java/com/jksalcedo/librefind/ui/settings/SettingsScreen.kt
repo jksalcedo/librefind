@@ -17,6 +17,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Feedback
@@ -44,7 +45,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -316,8 +319,8 @@ fun SettingsContent(
 
 @Composable
 private fun LanguageSection() {
-    val context = LocalContext.current
-    var showDialog by remember { androidx.compose.runtime.mutableStateOf(false) }
+    LocalContext.current
+    var showDialog by remember { mutableStateOf(false) }
 
     val currentLocale = remember {
         androidx.appcompat.app.AppCompatDelegate.getApplicationLocales().getFirstMatch(
@@ -354,7 +357,7 @@ private fun LanguageSection() {
                 style = MaterialTheme.typography.bodyLarge
             )
             Icon(
-                imageVector = androidx.compose.material.icons.Icons.AutoMirrored.Filled.ArrowForward,
+                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
