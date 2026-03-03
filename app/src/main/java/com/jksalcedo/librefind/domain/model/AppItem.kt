@@ -17,5 +17,6 @@ data class AppItem(
     val status: AppStatus,
     val installerId: String?,
     val icon: Int? = null,
-    val knownAlternatives: Int = 0
+    val knownAlternatives: Int = 0,
+    val isUserReclassified: Boolean = false
 )

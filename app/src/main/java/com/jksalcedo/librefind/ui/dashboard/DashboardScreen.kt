@@ -387,6 +387,8 @@ fun DashboardScreen(
                                 onAppClick = onAppClick,
                                 onIgnoreClick = { packageName -> viewModel.ignoreApp(packageName) },
                                 onRestoreClick = { packageName -> viewModel.restoreApp(packageName) },
+                                onReclassifyClick = { packageName -> viewModel.reclassifyAsFoss(packageName) },
+                                onUndoReclassifyClick = { packageName -> viewModel.undoReclassify(packageName) },
                                 onRefresh = { viewModel.scan() },
                                 isRefreshing = state.isLoading,
                                 modifier = Modifier.fillMaxSize(),
