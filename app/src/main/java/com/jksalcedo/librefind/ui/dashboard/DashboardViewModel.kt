@@ -8,6 +8,7 @@ import com.jksalcedo.librefind.domain.model.AppStatus
 import com.jksalcedo.librefind.domain.model.SovereigntyScore
 import com.jksalcedo.librefind.domain.repository.AppRepository
 import com.jksalcedo.librefind.domain.repository.IgnoredAppsRepository
+import com.jksalcedo.librefind.domain.repository.ReclassifiedAppsRepository
 import com.jksalcedo.librefind.domain.usecase.ScanInventoryUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -35,6 +36,7 @@ enum class AppFilter {
 class DashboardViewModel(
     private val scanInventoryUseCase: ScanInventoryUseCase,
     private val ignoredAppsRepository: IgnoredAppsRepository,
+    private val reclassifiedAppsRepository: ReclassifiedAppsRepository,
     private val appRepository: AppRepository,
     private val preferencesManager: PreferencesManager
 ) : ViewModel() {
@@ -53,8 +55,9 @@ class DashboardViewModel(
             combine(
                 combine(
                     refreshTrigger.onStart { emit(Unit) },
-                    ignoredAppsRepository.getIgnoredPackageNames()
-                ) { _, _ -> }.flatMapLatest {
+                    ignoredAppsRepository.getIgnoredPackageNames(),
+                    reclassifiedAppsRepository.getReclassifiedPackageNames()
+                ) { _, _, _ -> }.flatMapLatest {
                     _state.update { it.copy(isLoading = true, error = null) }
                     scanInventoryUseCase()
                 },
@@ -158,6 +161,18 @@ class DashboardViewModel(
     fun restoreApp(packageName: String) {
         viewModelScope.launch {
             ignoredAppsRepository.restoreApp(packageName)
+        }
+    }
+
+    fun reclassifyAsFoss(packageName: String) {
+        viewModelScope.launch {
+            reclassifiedAppsRepository.reclassifyAsFoss(packageName)
+        }
+    }
+
+    fun undoReclassify(packageName: String) {
+        viewModelScope.launch {
+            reclassifiedAppsRepository.undoReclassify(packageName)
         }
     }
 

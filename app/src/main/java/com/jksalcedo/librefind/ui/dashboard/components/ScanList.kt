@@ -23,7 +23,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Android
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Undo
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -83,6 +85,8 @@ fun ScanList(
     onAppClick: (String, String) -> Unit,
     onIgnoreClick: (String) -> Unit,
     onRestoreClick: (String) -> Unit,
+    onReclassifyClick: (String) -> Unit,
+    onUndoReclassifyClick: (String) -> Unit,
     onRefresh: () -> Unit,
     isRefreshing: Boolean,
     modifier: Modifier = Modifier,
@@ -114,7 +118,9 @@ fun ScanList(
                     app = app,
                     onClick = { onAppClick(app.label, app.packageName) },
                     onIgnoreClick = { onIgnoreClick(app.packageName) },
-                    onRestoreClick = { onRestoreClick(app.packageName)},
+                    onRestoreClick = { onRestoreClick(app.packageName) },
+                    onReclassifyClick = { onReclassifyClick(app.packageName) },
+                    onUndoReclassifyClick = { onUndoReclassifyClick(app.packageName) },
                     modifier = Modifier.animateItem()
                 )
             }
@@ -129,6 +135,8 @@ fun AppRow(
     onClick: () -> Unit,
     onIgnoreClick: () -> Unit,
     onRestoreClick: () -> Unit,
+    onReclassifyClick: () -> Unit,
+    onUndoReclassifyClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var showMenu by remember { mutableStateOf(false) }
@@ -207,6 +215,30 @@ fun AppRow(
                         },
                         leadingIcon = {
                             Icon(Icons.Default.Refresh, contentDescription = null)
+                        }
+                    )
+                }
+
+                if (app.status == AppStatus.PROP || app.status == AppStatus.UNKN || app.status == AppStatus.PENDING) {
+                    DropdownMenuItem(
+                        text = { Text("Mark as FOSS") },
+                        onClick = {
+                            showMenu = false
+                            onReclassifyClick()
+                        },
+                        leadingIcon = {
+                            Icon(Icons.Default.CheckCircle, contentDescription = null)
+                        }
+                    )
+                } else if (app.isUserReclassified) {
+                    DropdownMenuItem(
+                        text = { Text("Undo reclassification") },
+                        onClick = {
+                            showMenu = false
+                            onUndoReclassifyClick()
+                        },
+                        leadingIcon = {
+                            Icon(Icons.Default.Undo, contentDescription = null)
                         }
                     )
                 }

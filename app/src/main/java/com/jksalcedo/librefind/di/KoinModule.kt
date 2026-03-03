@@ -9,9 +9,11 @@ import com.jksalcedo.librefind.data.local.SafeSignatureDb
 import com.jksalcedo.librefind.data.repository.CacheRepositoryImpl
 import com.jksalcedo.librefind.data.repository.DeviceInventoryRepoImpl
 import com.jksalcedo.librefind.data.repository.IgnoredAppsRepositoryImpl
+import com.jksalcedo.librefind.data.repository.ReclassifiedAppsRepositoryImpl
 import com.jksalcedo.librefind.domain.repository.CacheRepository
 import com.jksalcedo.librefind.domain.repository.DeviceInventoryRepo
 import com.jksalcedo.librefind.domain.repository.IgnoredAppsRepository
+import com.jksalcedo.librefind.domain.repository.ReclassifiedAppsRepository
 import com.jksalcedo.librefind.domain.usecase.GetAlternativeUseCase
 import com.jksalcedo.librefind.domain.usecase.ScanInventoryUseCase
 import com.jksalcedo.librefind.ui.auth.AuthViewModel
@@ -45,7 +47,9 @@ val appModule = module {
     single { AppDatabase.getInstance(androidContext()) }
     single { get<AppDatabase>().ignoredAppDao() }
     single { get<AppDatabase>().appCacheDao() }
+    single { get<AppDatabase>().reclassifiedAppDao() }
     single<IgnoredAppsRepository> { IgnoredAppsRepositoryImpl(get()) }
+    single<ReclassifiedAppsRepository> { ReclassifiedAppsRepositoryImpl(get()) }
 }
 
 val networkModule = module {
@@ -70,7 +74,7 @@ val networkModule = module {
 
 val repositoryModule = module {
     single<CacheRepository> { CacheRepositoryImpl(get(), get()) }
-    single<DeviceInventoryRepo> { DeviceInventoryRepoImpl(get(), get(), get(), get(), get()) }
+    single<DeviceInventoryRepo> { DeviceInventoryRepoImpl(get(), get(), get(), get(), get(), get()) }
 }
 
 val useCaseModule = module {
@@ -83,7 +87,7 @@ val useCaseModule = module {
 val viewModelModule = module {
     viewModel { DetailsViewModel(get(), get(), get(), get()) }
     viewModel { AlternativeDetailViewModel(get(), get()) }
-    viewModel { DashboardViewModel(get(), get(), get(), get()) }
+    viewModel { DashboardViewModel(get(), get(), get(), get(), get()) }
     viewModel { AuthViewModel(get()) }
     viewModel { SubmitViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { MySubmissionsViewModel(get(), get()) }

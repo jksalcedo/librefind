@@ -10,6 +10,7 @@ import com.jksalcedo.librefind.domain.repository.AppRepository
 import com.jksalcedo.librefind.domain.repository.CacheRepository
 import com.jksalcedo.librefind.domain.repository.DeviceInventoryRepo
 import com.jksalcedo.librefind.domain.repository.IgnoredAppsRepository
+import com.jksalcedo.librefind.domain.repository.ReclassifiedAppsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -24,7 +25,8 @@ class DeviceInventoryRepoImpl(
     private val signatureDb: SafeSignatureDb,
     private val appRepository: AppRepository,
     private val ignoredAppsRepository: IgnoredAppsRepository,
-    private val cacheRepository: CacheRepository
+    private val cacheRepository: CacheRepository,
+    private val reclassifiedAppsRepository: ReclassifiedAppsRepository
 ) : DeviceInventoryRepo {
 
     companion object {
@@ -42,7 +44,8 @@ class DeviceInventoryRepoImpl(
             "com.samyak.repostore",
             "com.nahnah.florid",
             "ie.defo.ech_apps",
-            "app.flicky"
+            "app.flicky",
+            "dev.imranr.obtainium.fdroid"
         )
 
         // Apps installed FROM these are proprietary
@@ -50,7 +53,6 @@ class DeviceInventoryRepoImpl(
             "com.android.vending",
             "com.aurora.store",
             "com.apkpure.aegon",
-            "dev.imranr.obtainium.fdroid",
             "com.tomclaw.appsend",
             "com.indus.appstore",
             "com.apkupdater"
@@ -60,6 +62,7 @@ class DeviceInventoryRepoImpl(
     override suspend fun scanAndClassify(): Flow<List<AppItem>> = flow {
         val rawApps = localSource.getRawApps()
         val ignoredAppsList = ignoredAppsRepository.getIgnoredPackageNames().first()
+        val reclassifiedAppsList = reclassifiedAppsRepository.getReclassifiedPackageNames().first()
 
         if (!cacheRepository.isCacheValid()) {
             try {
@@ -96,6 +99,7 @@ class DeviceInventoryRepoImpl(
                     classifyApp(
                         pkg = pkg,
                         ignoredApps = ignoredAppsList,
+                        reclassifiedApps = reclassifiedAppsList,
                         proprietaryMap = proprietaryMap,
                         solutionsSet = solutionsSet,
                         pendingPackages = pendingPackages
@@ -111,6 +115,7 @@ class DeviceInventoryRepoImpl(
     private suspend fun classifyApp(
         pkg: PackageInfo,
         ignoredApps: List<String>,
+        reclassifiedApps: List<String>,
         proprietaryMap: Map<String, Boolean>,
         solutionsSet: Set<String>,
         pendingPackages: Set<String>
@@ -122,6 +127,10 @@ class DeviceInventoryRepoImpl(
 
         if (packageName in ignoredApps) {
             return createAppItem(packageName, label, AppStatus.IGNORED, installer, icon)
+        }
+
+        if (packageName in reclassifiedApps) {
+            return createAppItem(packageName, label, AppStatus.FOSS, installer, icon, isUserReclassified = true)
         }
 
         if (installer in FOSS_INSTALLERS) {
@@ -169,7 +178,8 @@ class DeviceInventoryRepoImpl(
         label: String,
         status: AppStatus,
         installer: String?,
-        icon: Int?
+        icon: Int?,
+        isUserReclassified: Boolean = false
     ): AppItem {
         val alternativesCount = if (status == AppStatus.PROP) {
             try {
@@ -188,7 +198,8 @@ class DeviceInventoryRepoImpl(
             status = status,
             installerId = installer,
             knownAlternatives = alternativesCount,
-            icon = icon
+            icon = icon,
+            isUserReclassified = isUserReclassified
         )
     }
 
