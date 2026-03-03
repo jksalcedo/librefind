@@ -1,13 +1,40 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
 }
 
+val versionMajor = 1
+val versionMinor = 0
+val versionPatch = 0
+val versionStage = "beta" // Change to "alpha", "beta", "rc", or "stable"
+val versionBuild = 17
 
-android {
+val stageWeight = when (versionStage.lowercase()) {
+    "alpha" -> 0
+    "beta" -> 1
+    "rc" -> 2
+    "stable" -> 3
+    else -> 0
+}
+
+val computedVersionCode = (versionMajor * 100000) +
+        (versionMinor * 1000) +
+        (versionPatch * 100) +
+        (stageWeight * 10)
+
+// Construct the versionName dynamically
+// If stable, just output "1.0.0"
+// Otherwise, output "1.0.0-beta16" or "1.0.0-rc1"
+val mVersionName =
+    "$versionMajor.$versionMinor.$versionPatch-$versionStage${
+        if (versionStage.lowercase() == "stable") null else versionBuild
+    }"
+
+
+configure<com.android.build.api.dsl.ApplicationExtension> {
     namespace = "com.jksalcedo.librefind"
     compileSdk = 36
 
@@ -15,8 +42,8 @@ android {
         applicationId = "com.jksalcedo.librefind"
         minSdk = 24
         targetSdk = 36
-        versionCode = 16
-        versionName = "1.0.0-beta16"
+        versionCode = computedVersionCode
+        versionName = mVersionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -32,28 +59,11 @@ android {
         }
     }
 
-    applicationVariants.all {
-        val variant = this
-        outputs
-            .map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
-            .forEach { output ->
-                val appName = "librefind"
-                val version = variant.versionName
-                val buildType = variant.buildType.name
-
-                output.outputFileName = "$appName-v$version-$buildType.apk"
-            }
-    }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
-        }
-    }
+
     buildFeatures {
         compose = true
     }
@@ -61,6 +71,20 @@ android {
         // Disables "Dependency metadata" block in the APK signing
         includeInApk = false
         includeInBundle = false
+    }
+}
+
+androidComponents {
+    onVariants { variant ->
+        val appName = "librefind"
+        val versionName = mVersionName
+        val capitalizedName = variant.name.replaceFirstChar { it.titlecase() }
+
+        tasks.register<Copy>("rename${capitalizedName}Apk") {
+            from(variant.artifacts.get(com.android.build.api.artifact.SingleArtifact.APK))
+            into(layout.buildDirectory.dir("outputs/apk/${variant.name}"))
+            rename(".*\\.apk", "$appName-v$versionName-${variant.name}.apk")
+        }
     }
 }
 
