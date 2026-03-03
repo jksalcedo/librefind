@@ -3,3 +3,4 @@
 - Added AOSP system apps to known FOSS list
 - Replaced Material icons with custom drawable icons
 - Added "Add Alternative" option to details screens
+- Added language selection option
