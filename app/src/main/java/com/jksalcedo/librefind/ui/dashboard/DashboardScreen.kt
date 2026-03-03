@@ -11,15 +11,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.CloudUpload
-import androidx.compose.material.icons.filled.FilterList
-import androidx.compose.material.icons.filled.NewReleases
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -55,6 +50,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -153,7 +149,7 @@ fun DashboardScreen(
                                     searchRect = coords.boundsInRoot()
                                 }
                             ) {
-                                Icon(Icons.Default.Search, contentDescription = stringResource(R.string.dashboard_search))
+                                Icon(painter = painterResource(R.drawable.ic_search), contentDescription = stringResource(R.string.dashboard_search))
                             }
                             Box {
                                 IconButton(
@@ -163,7 +159,7 @@ fun DashboardScreen(
                                     }
                                 ) {
                                     Icon(
-                                        Icons.Default.FilterList,
+                                        painter = painterResource(R.drawable.ic_filter),
                                         contentDescription = stringResource(R.string.dashboard_filter),
                                         tint = if (state.appFilter != AppFilter.ALL)
                                             MaterialTheme.colorScheme.primary
@@ -282,7 +278,7 @@ fun DashboardScreen(
                                 }
                             ) {
                                 Icon(
-                                    imageVector = Icons.Default.AccountCircle,
+                                    painter = painterResource(R.drawable.ic_profile),
                                     contentDescription = stringResource(R.string.dashboard_profile)
                                 )
                             }
@@ -290,7 +286,7 @@ fun DashboardScreen(
                                 onClick = onSettingsClick
                             ) {
                                 Icon(
-                                    imageVector = Icons.Default.Settings,
+                                    painter = painterResource(R.drawable.ic_settings),
                                     contentDescription = stringResource(R.string.dashboard_settings)
                                 )
                             }
