@@ -270,6 +270,7 @@
     <string name="details_retry">Retry</string>
     <string name="details_no_alternatives">No alternatives found</string>
     <string name="details_not_in_db">This app is not in our database yet.</string>
+    <string name="details_no_suggested_alternatives">No FOSS alternatives have been suggested for this app yet.</string>
     <string name="details_help_categorize">Help us categorize this app:</string>
     <string name="details_suggest_foss">Suggest as FOSS</string>
     <string name="details_suggest_proprietary">Suggest as Proprietary</string>

@@ -154,7 +154,10 @@ fun DetailsScreen(
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            text = stringResource(R.string.details_not_in_db),
+                            text = stringResource(
+                                if (state.isUnknown) R.string.details_not_in_db 
+                                else R.string.details_no_suggested_alternatives
+                            ),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
