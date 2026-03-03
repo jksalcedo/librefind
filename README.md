@@ -77,12 +77,14 @@ Please join the Telegram channel for further discussions.
 
 ## ☕ Support
 
-LibreFind is a free and open-source project developed by a **student**. While the app is free, the **hosting servers** cost money to keep running 24/7.
+LibreFind is a free and open-source project managed independently. Our goal is to promote digital privacy by making FOSS apps mainstream. Currently, LibreFind is trusted by **1,334 registered users** globally. 
+
+While the app is free, **infrastructure and hosting servers** cost money to keep running 24/7. 
 
 If you find this tool useful for reclaiming your digital privacy, please consider buying me a coffee. Your support goes directly toward:
 * Paying monthly server bills.
 * Keeping the database online and fast.
-* Fueling late-night coding sessions
+* Development of new features.
 
 <div align="center">
   <a href="https://ko-fi.com/jksalcedo">
