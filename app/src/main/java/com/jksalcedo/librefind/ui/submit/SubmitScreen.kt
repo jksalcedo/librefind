@@ -76,7 +76,8 @@ fun SubmitScreen(
     prefilledAppName: String? = null,
     prefilledPackageName: String? = null,
     prefilledType: String? = null,
-    submissionId: String? = null
+    submissionId: String? = null,
+    prefilledProprietaryTarget: String? = null
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -100,6 +101,7 @@ fun SubmitScreen(
         prefilledAppName = prefilledAppName,
         prefilledPackageName = prefilledPackageName,
         prefilledType = prefilledType,
+        prefilledProprietaryTarget = prefilledProprietaryTarget,
         onCheckDuplicate = viewModel::checkDuplicate,
         onValidatePackageName = viewModel::validatePackageName,
         onSearchSolutions = viewModel::searchSolutions,
@@ -125,6 +127,7 @@ fun SubmitContent(
     prefilledAppName: String?,
     prefilledPackageName: String?,
     prefilledType: String?,
+    prefilledProprietaryTarget: String? = null,
     onCheckDuplicate: (String) -> Unit,
     onValidatePackageName: (String) -> Unit,
     onSearchSolutions: (String) -> Unit,
@@ -187,6 +190,12 @@ fun SubmitContent(
     LaunchedEffect(uiState.success) {
         if (uiState.success && uiState.submittedAppName == null) {
             onSuccess()
+        }
+    }
+
+    LaunchedEffect(prefilledProprietaryTarget) {
+        if (!prefilledProprietaryTarget.isNullOrBlank() && type == SubmissionType.NEW_ALTERNATIVE) {
+            selectedProprietaryPackages = selectedProprietaryPackages + prefilledProprietaryTarget
         }
     }
 

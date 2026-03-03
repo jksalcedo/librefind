@@ -17,18 +17,20 @@ sealed class Route(val route: String) {
     data object Auth : Route("auth")
     data object ProfileSetup : Route("profile_setup")
     data object Submit :
-        Route("submit?appName={appName}&packageName={packageName}&type={type}&submissionId={submissionId}") {
+        Route("submit?appName={appName}&packageName={packageName}&type={type}&submissionId={submissionId}&proprietaryTarget={proprietaryTarget}") {
         fun createRoute(
             appName: String? = null,
             packageName: String? = null,
             type: String? = null,
-            submissionId: String? = null
+            submissionId: String? = null,
+            proprietaryTarget: String? = null
         ): String {
             val params = mutableListOf<String>()
             if (appName != null) params.add("appName=${Uri.encode(appName)}")
             if (packageName != null) params.add("packageName=${Uri.encode(packageName)}")
             if (type != null) params.add("type=${Uri.encode(type)}")
             if (submissionId != null) params.add("submissionId=${Uri.encode(submissionId)}")
+            if (proprietaryTarget != null) params.add("proprietaryTarget=${Uri.encode(proprietaryTarget)}")
 
             return if (params.isEmpty()) "submit" else "submit?${params.joinToString("&")}"
         }
