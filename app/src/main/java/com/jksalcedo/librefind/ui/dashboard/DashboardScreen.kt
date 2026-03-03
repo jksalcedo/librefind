@@ -129,7 +129,8 @@ fun DashboardScreen(
                             )
                         } else {
                             Text(
-                                text = authState.userProfile?.username ?: stringResource(R.string.app_name),
+                                text = authState.userProfile?.username
+                                    ?: stringResource(R.string.app_name),
                                 fontWeight = FontWeight.Bold
                             )
                         }
@@ -140,7 +141,10 @@ fun DashboardScreen(
                                 isSearchActive = false
                                 viewModel.updateSearchQuery("")
                             }) {
-                                Icon(Icons.Default.Close, contentDescription = stringResource(R.string.dashboard_close_search))
+                                Icon(
+                                    Icons.Default.Close,
+                                    contentDescription = stringResource(R.string.dashboard_close_search)
+                                )
                             }
                         } else {
                             IconButton(
@@ -149,7 +153,10 @@ fun DashboardScreen(
                                     searchRect = coords.boundsInRoot()
                                 }
                             ) {
-                                Icon(painter = painterResource(R.drawable.ic_search), contentDescription = stringResource(R.string.dashboard_search))
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_search),
+                                    contentDescription = stringResource(R.string.dashboard_search)
+                                )
                             }
                             Box {
                                 IconButton(
@@ -160,11 +167,7 @@ fun DashboardScreen(
                                 ) {
                                     Icon(
                                         painter = painterResource(R.drawable.ic_filter),
-                                        contentDescription = stringResource(R.string.dashboard_filter),
-                                        tint = if (state.appFilter != AppFilter.ALL)
-                                            MaterialTheme.colorScheme.primary
-                                        else
-                                            MaterialTheme.colorScheme.onSurface
+                                        contentDescription = stringResource(R.string.dashboard_filter)
                                     )
                                 }
                                 DropdownMenu(
@@ -302,7 +305,10 @@ fun DashboardScreen(
                         fabRect = coords.boundsInRoot()
                     }
                 ) {
-                    Icon(Icons.Default.Add, contentDescription = stringResource(R.string.dashboard_submit_app))
+                    Icon(
+                        Icons.Default.Add,
+                        contentDescription = stringResource(R.string.dashboard_submit_app)
+                    )
                 }
             }
         ) { innerPadding ->
@@ -333,7 +339,8 @@ fun DashboardScreen(
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
-                                text = state.error ?: stringResource(R.string.dashboard_unknown_error),
+                                text = state.error
+                                    ?: stringResource(R.string.dashboard_unknown_error),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.error
                             )
@@ -366,7 +373,9 @@ fun DashboardScreen(
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Text(
-                                        text = if (state.searchQuery.isNotEmpty()) stringResource(R.string.dashboard_no_matching_apps) else stringResource(R.string.dashboard_no_apps_found),
+                                        text = if (state.searchQuery.isNotEmpty()) stringResource(R.string.dashboard_no_matching_apps) else stringResource(
+                                            R.string.dashboard_no_apps_found
+                                        ),
                                         style = MaterialTheme.typography.bodyLarge,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
@@ -377,7 +386,7 @@ fun DashboardScreen(
                                 apps = state.apps,
                                 onAppClick = onAppClick,
                                 onIgnoreClick = { packageName -> viewModel.ignoreApp(packageName) },
-                                onRestoreClick = { packageName -> viewModel.restoreApp(packageName)},
+                                onRestoreClick = { packageName -> viewModel.restoreApp(packageName) },
                                 onRefresh = { viewModel.scan() },
                                 isRefreshing = state.isLoading,
                                 modifier = Modifier.fillMaxSize(),
@@ -506,7 +515,10 @@ fun DashboardScreen(
                             modifier = Modifier.fillMaxWidth(0.9f)
                         )
                     } else {
-                        val title = if (authState.isSignedIn) stringResource(R.string.profile_missing_title) else stringResource(R.string.profile_not_signed_in_title)
+                        val title =
+                            if (authState.isSignedIn) stringResource(R.string.profile_missing_title) else stringResource(
+                                R.string.profile_not_signed_in_title
+                            )
                         val message = if (authState.isSignedIn)
                             stringResource(R.string.profile_missing_message)
                         else stringResource(R.string.profile_not_signed_in_message)
@@ -522,7 +534,11 @@ fun DashboardScreen(
                                         onSubmitClick() // Redirect to Auth/Submit flow which handles login
                                     }
                                 ) {
-                                    Text(if (authState.isSignedIn) stringResource(R.string.profile_fix_profile) else stringResource(R.string.profile_sign_in))
+                                    Text(
+                                        if (authState.isSignedIn) stringResource(R.string.profile_fix_profile) else stringResource(
+                                            R.string.profile_sign_in
+                                        )
+                                    )
                                 }
                             },
                             dismissButton = {
