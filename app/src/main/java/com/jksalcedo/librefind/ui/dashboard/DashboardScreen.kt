@@ -11,15 +11,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.CloudUpload
-import androidx.compose.material.icons.filled.FilterList
-import androidx.compose.material.icons.filled.NewReleases
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -55,6 +50,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -133,7 +129,8 @@ fun DashboardScreen(
                             )
                         } else {
                             Text(
-                                text = authState.userProfile?.username ?: stringResource(R.string.app_name),
+                                text = authState.userProfile?.username
+                                    ?: stringResource(R.string.app_name),
                                 fontWeight = FontWeight.Bold
                             )
                         }
@@ -144,7 +141,10 @@ fun DashboardScreen(
                                 isSearchActive = false
                                 viewModel.updateSearchQuery("")
                             }) {
-                                Icon(Icons.Default.Close, contentDescription = stringResource(R.string.dashboard_close_search))
+                                Icon(
+                                    Icons.Default.Close,
+                                    contentDescription = stringResource(R.string.dashboard_close_search)
+                                )
                             }
                         } else {
                             IconButton(
@@ -153,7 +153,10 @@ fun DashboardScreen(
                                     searchRect = coords.boundsInRoot()
                                 }
                             ) {
-                                Icon(Icons.Default.Search, contentDescription = stringResource(R.string.dashboard_search))
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_search),
+                                    contentDescription = stringResource(R.string.dashboard_search)
+                                )
                             }
                             Box {
                                 IconButton(
@@ -163,12 +166,8 @@ fun DashboardScreen(
                                     }
                                 ) {
                                     Icon(
-                                        Icons.Default.FilterList,
-                                        contentDescription = stringResource(R.string.dashboard_filter),
-                                        tint = if (state.appFilter != AppFilter.ALL)
-                                            MaterialTheme.colorScheme.primary
-                                        else
-                                            MaterialTheme.colorScheme.onSurface
+                                        painter = painterResource(R.drawable.ic_filter),
+                                        contentDescription = stringResource(R.string.dashboard_filter)
                                     )
                                 }
                                 DropdownMenu(
@@ -282,7 +281,7 @@ fun DashboardScreen(
                                 }
                             ) {
                                 Icon(
-                                    imageVector = Icons.Default.AccountCircle,
+                                    painter = painterResource(R.drawable.ic_profile),
                                     contentDescription = stringResource(R.string.dashboard_profile)
                                 )
                             }
@@ -290,7 +289,7 @@ fun DashboardScreen(
                                 onClick = onSettingsClick
                             ) {
                                 Icon(
-                                    imageVector = Icons.Default.Settings,
+                                    painter = painterResource(R.drawable.ic_settings),
                                     contentDescription = stringResource(R.string.dashboard_settings)
                                 )
                             }
@@ -306,7 +305,10 @@ fun DashboardScreen(
                         fabRect = coords.boundsInRoot()
                     }
                 ) {
-                    Icon(Icons.Default.Add, contentDescription = stringResource(R.string.dashboard_submit_app))
+                    Icon(
+                        Icons.Default.Add,
+                        contentDescription = stringResource(R.string.dashboard_submit_app)
+                    )
                 }
             }
         ) { innerPadding ->
@@ -337,7 +339,8 @@ fun DashboardScreen(
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
-                                text = state.error ?: stringResource(R.string.dashboard_unknown_error),
+                                text = state.error
+                                    ?: stringResource(R.string.dashboard_unknown_error),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.error
                             )
@@ -370,7 +373,9 @@ fun DashboardScreen(
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Text(
-                                        text = if (state.searchQuery.isNotEmpty()) stringResource(R.string.dashboard_no_matching_apps) else stringResource(R.string.dashboard_no_apps_found),
+                                        text = if (state.searchQuery.isNotEmpty()) stringResource(R.string.dashboard_no_matching_apps) else stringResource(
+                                            R.string.dashboard_no_apps_found
+                                        ),
                                         style = MaterialTheme.typography.bodyLarge,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
@@ -381,7 +386,7 @@ fun DashboardScreen(
                                 apps = state.apps,
                                 onAppClick = onAppClick,
                                 onIgnoreClick = { packageName -> viewModel.ignoreApp(packageName) },
-                                onRestoreClick = { packageName -> viewModel.restoreApp(packageName)},
+                                onRestoreClick = { packageName -> viewModel.restoreApp(packageName) },
                                 onRefresh = { viewModel.scan() },
                                 isRefreshing = state.isLoading,
                                 modifier = Modifier.fillMaxSize(),
@@ -510,7 +515,10 @@ fun DashboardScreen(
                             modifier = Modifier.fillMaxWidth(0.9f)
                         )
                     } else {
-                        val title = if (authState.isSignedIn) stringResource(R.string.profile_missing_title) else stringResource(R.string.profile_not_signed_in_title)
+                        val title =
+                            if (authState.isSignedIn) stringResource(R.string.profile_missing_title) else stringResource(
+                                R.string.profile_not_signed_in_title
+                            )
                         val message = if (authState.isSignedIn)
                             stringResource(R.string.profile_missing_message)
                         else stringResource(R.string.profile_not_signed_in_message)
@@ -526,7 +534,11 @@ fun DashboardScreen(
                                         onSubmitClick() // Redirect to Auth/Submit flow which handles login
                                     }
                                 ) {
-                                    Text(if (authState.isSignedIn) stringResource(R.string.profile_fix_profile) else stringResource(R.string.profile_sign_in))
+                                    Text(
+                                        if (authState.isSignedIn) stringResource(R.string.profile_fix_profile) else stringResource(
+                                            R.string.profile_sign_in
+                                        )
+                                    )
                                 }
                             },
                             dismissButton = {

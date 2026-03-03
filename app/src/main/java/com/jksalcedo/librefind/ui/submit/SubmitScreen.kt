@@ -25,7 +25,6 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LinkOff
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
@@ -56,6 +55,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -451,7 +451,7 @@ fun SubmitContent(
                         },
                         label = { Text(stringResource(R.string.submit_search_alternatives)) },
                         placeholder = { Text(stringResource(R.string.submit_search_placeholder)) },
-                        leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                        leadingIcon = { Icon(painter = painterResource(R.drawable.ic_search), contentDescription = null) },
                         trailingIcon = {
                             if (alternativeSearchQuery.isNotEmpty()) {
                                 IconButton(onClick = {
@@ -566,7 +566,7 @@ fun SubmitContent(
                             },
                             label = { Text(stringResource(R.string.submit_search_foss_optional)) },
                             placeholder = { Text(stringResource(R.string.submit_search_foss_placeholder)) },
-                            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                            leadingIcon = { Icon(painter = painterResource(R.drawable.ic_search), contentDescription = null) },
                             trailingIcon = {
                                 if (fossSearchQuery.isNotEmpty()) {
                                     IconButton(onClick = {
@@ -996,7 +996,7 @@ fun SubmitContent(
                     },
                     label = { Text(stringResource(R.string.submit_search_solutions)) },
                     placeholder = { Text(stringResource(R.string.submit_search_placeholder)) },
-                    leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                    leadingIcon = { Icon(painter = painterResource(R.drawable.ic_search), contentDescription = null) },
                     trailingIcon = {
                         if (alternativeSearchQuery.isNotEmpty()) {
                             IconButton(onClick = {
@@ -1193,7 +1193,7 @@ fun MultiSelectDialog(
                     label = { Text(stringResource(R.string.submit_search)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
-                    leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) }
+                    leadingIcon = { Icon(painter = painterResource(R.drawable.ic_search), contentDescription = null) }
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
