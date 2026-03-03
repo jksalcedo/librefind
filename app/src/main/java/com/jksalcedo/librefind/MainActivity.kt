@@ -25,7 +25,9 @@ import io.github.jan.supabase.auth.handleDeeplinks
 import org.koin.android.ext.android.inject
 
 
-class MainActivity : ComponentActivity() {
+import androidx.appcompat.app.AppCompatActivity
+
+class MainActivity : AppCompatActivity() {
 
     private val supabase: SupabaseClient by inject()
 

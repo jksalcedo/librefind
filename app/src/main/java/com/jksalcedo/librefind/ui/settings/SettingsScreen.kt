@@ -17,6 +17,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Feedback
@@ -44,7 +45,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -211,6 +214,9 @@ fun SettingsContent(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            // Language Selection
+            LanguageSection()
+
             // Cache Management
             CacheManagementSection(state = state, onClearCacheRequest = onClearCacheRequest)
 
@@ -310,6 +316,133 @@ fun SettingsContent(
 // ─────────────────────────────────────────────
 // Section composables
 // ─────────────────────────────────────────────
+
+@Composable
+private fun LanguageSection() {
+    LocalContext.current
+    var showDialog by remember { mutableStateOf(false) }
+
+    val currentLocale = remember {
+        androidx.appcompat.app.AppCompatDelegate.getApplicationLocales().getFirstMatch(
+            arrayOf("en", "ar", "de", "el", "es", "et", "fr", "it", "pl", "tr", "zh-rCN")
+        )?.language ?: ""
+    }
+
+    val currentLanguageLabel = when (currentLocale) {
+        "ar" -> stringResource(R.string.settings_language_arabic)
+        "de" -> stringResource(R.string.settings_language_german)
+        "el" -> stringResource(R.string.settings_language_greek)
+        "es" -> stringResource(R.string.settings_language_spanish)
+        "et" -> stringResource(R.string.settings_language_estonian)
+        "fr" -> stringResource(R.string.settings_language_french)
+        "it" -> stringResource(R.string.settings_language_italian)
+        "pl" -> stringResource(R.string.settings_language_polish)
+        "tr" -> stringResource(R.string.settings_language_turkish)
+        "zh" -> stringResource(R.string.settings_language_chinese_simplified)
+        "en" -> stringResource(R.string.settings_language_english)
+        else -> stringResource(R.string.settings_language_system)
+    }
+
+    SettingsSection(title = stringResource(R.string.settings_language)) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { showDialog = true }
+                .padding(vertical = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = currentLanguageLabel,
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
+
+    if (showDialog) {
+        LanguageSelectionDialog(
+            currentLocale = currentLocale,
+            onDismiss = { showDialog = false },
+            onLanguageSelected = { tag ->
+                showDialog = false
+                val localeList = if (tag.isEmpty()) {
+                    androidx.core.os.LocaleListCompat.getEmptyLocaleList()
+                } else {
+                    androidx.core.os.LocaleListCompat.forLanguageTags(tag)
+                }
+                androidx.appcompat.app.AppCompatDelegate.setApplicationLocales(localeList)
+            }
+        )
+    }
+}
+
+@Composable
+private fun LanguageSelectionDialog(
+    currentLocale: String,
+    onDismiss: () -> Unit,
+    onLanguageSelected: (String) -> Unit
+) {
+    val languages = listOf(
+        "" to stringResource(R.string.settings_language_system),
+        "en" to stringResource(R.string.settings_language_english),
+        "ar" to stringResource(R.string.settings_language_arabic),
+        "de" to stringResource(R.string.settings_language_german),
+        "el" to stringResource(R.string.settings_language_greek),
+        "es" to stringResource(R.string.settings_language_spanish),
+        "et" to stringResource(R.string.settings_language_estonian),
+        "fr" to stringResource(R.string.settings_language_french),
+        "it" to stringResource(R.string.settings_language_italian),
+        "pl" to stringResource(R.string.settings_language_polish),
+        "tr" to stringResource(R.string.settings_language_turkish),
+        "zh-rCN" to stringResource(R.string.settings_language_chinese_simplified)
+    )
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.settings_language)) },
+        text = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                languages.forEach { (tag, label) ->
+                    val isSelected = tag == currentLocale || (tag.isEmpty() && currentLocale.isEmpty())
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { onLanguageSelected(tag) }
+                            .padding(vertical = 12.dp, horizontal = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        androidx.compose.material3.RadioButton(
+                            selected = isSelected,
+                            onClick = { onLanguageSelected(tag) }
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = label,
+                            style = MaterialTheme.typography.bodyLarge,
+                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                        )
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.settings_cancel))
+            }
+        }
+    )
+}
+
 
 @Composable
 private fun CacheManagementSection(
