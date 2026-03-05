@@ -31,7 +31,7 @@
     <string name="profile_missing_title">Chýba profil</string>
     <string name="profile_not_signed_in_title">Neprihlásený</string>
     <string name="profile_missing_message">Váš profil nebolo možné nájsť. Prosíme, skúste sa odhlásiť a znova prihlásiť, prípadne kontaktujte podporu.</string>
-    <string name="profile_not_signed_in_message">Prihláste sa na zobrazenie vášho profilu-</string>
+    <string name="profile_not_signed_in_message">Prosím, prihláste sa, aby ste videli svoj profil.</string>
     <string name="profile_fix_profile">Opraviť profil</string>
     <string name="profile_sign_in">Prihlásiť sa</string>
     <string name="auth_create_account">Vytvoriť účet</string>
@@ -139,7 +139,7 @@
     <string name="settings_my_reports">Moje reposty</string>
     <string name="settings_github_issues">Problémy GitHub</string>
     <string name="settings_join_community">Pripojiť sa ku komunite</string>
-    <string name="settings_about">O &lt;something&gt;</string>
+    <string name="settings_about">O</string>
     <string name="settings_version">Verzia</string>
     <string name="settings_view_github">Zobraziť na GitHub</string>
     <string name="settings_donate">Prispieť LibreFind</string>
@@ -183,4 +183,13 @@
     <string name="privacy_section_2_desc">Na nasledujúce účely používame zhromaždené údaje:</string>
     <string name="privacy_bullet_provide_service">Na poskytnutie služby: Výpočet \"Skóre suverenity\" a synchronizácie vašich preferencií naprieč zariadeniami.</string>
     <string name="privacy_bullet_improve_service">Na zlepšenie našich služieb: Vaše návrhy nám pomáhajú identifikovať uzavreté aplikácie, ktoré potrebujú alternatívy FOSS.</string>
+    <string name="privacy_bullet_community">Komunitné funkcie: Aby sa zabránilo hlasovej manipulácii (spam) odporúčania aplikácie.</string>
+    <string name="privacy_section_3">3. Služby tretích strán</string>
+    <string name="privacy_section_3_desc">Používame dôveryhodné služby tretích strán na prevádzku našej infraštruktúry. Vaše údaje nepredávame. Vaše údaje nezdieľame tretím stranám na reklamné účely.</string>
+    <string name="privacy_subsection_supabase">Supabase</string>
+    <string name="privacy_subsection_supabase_desc">Používame Supabase ako nášho poskytovateľa backend databázy a autentifikácie.</string>
+    <string name="privacy_bullet_supabase_data">Uložené údaje: Používateľské účty, podanie a anonymizované štatistiky.</string>
+    <string name="privacy_bullet_supabase_policy">Zásady ochrany osobných údajov: https://supabase.com/privacy</string>
+    <string name="privacy_section_4">4. Bezpečnosť údajov</string>
+    <string name="privacy_section_4_desc">Implementujeme bezpečnostné opatrenia na ochranu vašich údajov vrátane šifrovaných spojení (HTTPS/TLS) a zabezpečujeme overenie prostredníctvom nášho poskytovateľa backend.</string>
 </resources>
