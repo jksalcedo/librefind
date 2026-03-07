@@ -22,6 +22,12 @@
 <a href="https://apt.izzysoft.de/packages/com.jksalcedo.librefind">
   <img alt="Get it on IzzyOnDroid" src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" width="160">
 </a>
+
+<a href="https://f-droid.org/packages/com.jksalcedo.librefind">
+    <img src="https://f-droid.org/badge/get-it-on.png"
+    alt="Get it on F-Droid"
+    width="160">
+</a>
  
   <a href="https://github.com/jksalcedo/librefind/releases">
   <img src="https://github.com/SilentCoderHere/aihub/blob/main/fastlane/metadata/android/en-US/images/badge_github.png" width="160" alt="Get it on GitHub">
