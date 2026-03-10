@@ -284,4 +284,19 @@
     <string name="report_desc_placeholder">Kirjelda probleem või pakkumine täpsemalt...</string>
     <string name="report_priority_label">Prioriteet</string>
     <string name="report_submit_button">Esita teatust</string>
+    <string name="details_no_suggested_alternatives">Selle rakenduse jaoks pole veel vabarakenduslike alternatiive pakutud.</string>
+    <string name="details_suggest_alternative">Paku alternatiivi</string>
+    <string name="settings_language">Keel</string>
+    <string name="settings_language_arabic">Araabia</string>
+    <string name="settings_language_chinese_simplified">Lihtsustatud Hiina</string>
+    <string name="settings_language_english">Inglise</string>
+    <string name="settings_language_estonian">Eesti</string>
+    <string name="settings_language_french">Prantsuse</string>
+    <string name="settings_language_german">Saksa</string>
+    <string name="settings_language_greek">Kreeka</string>
+    <string name="settings_language_italian">Itaalia</string>
+    <string name="settings_language_polish">Poola</string>
+    <string name="settings_language_spanish">Hispaania</string>
+    <string name="settings_language_system">Süsteemi</string>
+    <string name="settings_language_turkish">Türgi</string>
 </resources>
