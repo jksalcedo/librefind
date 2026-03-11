@@ -1,0 +1,6 @@
+- Added ability to reclassify apps (Mark as FOSS)
+- Fixed Obtainium apps being classified as proprietary
+- Added AOSP system apps to known FOSS list
+- Replaced Material icons with custom drawable icons
+- Added "Add Alternative" option to details screens
+- Added language selection option

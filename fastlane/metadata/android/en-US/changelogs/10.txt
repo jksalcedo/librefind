@@ -1,0 +1,13 @@
+Beta 10 Update
+
+New Features:
+• Pending status for apps with submissions awaiting review
+• Apps with pending submissions now show orange "PENDING" badge
+• Prevents duplicate submissions for same app
+
+Improvements:
+• Duplicate check now includes pending submissions
+• Reduced database load by checking pending status during scan
+
+Removed:
+• In-app changelog viewer

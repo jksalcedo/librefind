@@ -1,0 +1,22 @@
+Beta 7 Update
+
+New Features:
+• Settings screen with cache management
+• In-app changelog viewer ("What's New")
+• View and clear icon cache
+• Quick access to GitHub, Telegram, and bug reports
+
+Performance Improvements:
+• Significantly improved dashboard scrolling performance
+• Added 50MB in-memory icon cache (LRU)
+• Optimized app list rendering with async icon loading
+• Reduced data consumption with local caching
+• Removed Coil dependency for smaller APK size
+• Database query optimization (90% faster queries)
+• Added strategic indexes for better performance
+• Optimized vote aggregation system
+
+Bug Fixes:
+• Fixed lag during fast scrolling
+• Improved memory management
+• Better handling of large app lists (100+ apps)

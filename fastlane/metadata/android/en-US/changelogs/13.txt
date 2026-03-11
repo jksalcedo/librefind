@@ -1,0 +1,6 @@
+What's New:
+- Added contribution guidelines and Wiki link.
+- Improved app category styling (bold & capitalized).
+- Added 'ignored' status styling.
+- Added linking of alternatives to existing proprietary apps.
+- Synchronized the filter icon state with the dashboard gauge.

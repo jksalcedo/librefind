@@ -1,0 +1,10 @@
+Beta 9 Update
+
+Improvements:
+• Fixed submit button visibility issue
+• Query performance optimizations
+
+Bug Fixes:
+• Fixed FAB behavior on dashboard
+• Resolved rating display issues
+• Various stability improvements

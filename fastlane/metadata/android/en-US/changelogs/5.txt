@@ -1,0 +1,14 @@
+Beta update
+
+New Features:
+• Ignore apps feature - hide apps you don't want to see
+• Admin rejection reasons for better feedback
+• Multi-dimensional rating system improvements
+• Enhanced alternative detail screen
+
+Bug Fixes:
+• Fixed data loss in app submission
+• Improved error handling
+• UI alignment fixes
+
+Thank you for your continued support!
