@@ -1,2 +1,3 @@
-- Fixed duplicate app submission checks to prevent 'UNKNOWN' apps returning generic errors
-- UI now precisely explains if a duplicate entry is a FOSS solution, proprietary target, or a pending submission
+- Clarified duplicate app submission warnings
+- Added 'Pending' apps to Dashboard Sovereignty Gauge
+- Select multiple proprietary targets when linking FOSS alternatives

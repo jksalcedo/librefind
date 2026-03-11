@@ -40,7 +40,7 @@ data class SubmitUiState(
     // FOSS Search
     val fossSearchResults: List<Alternative> = emptyList(),
     val linkedSolution: Alternative? = null,
-    val linkTargetPackage: String? = null
+    val linkTargetPackages: Set<String> = emptySet()
 )
 
 class SubmitViewModel(
@@ -171,11 +171,11 @@ class SubmitViewModel(
 
             val result =
                 if (type == SubmissionType.LINKING) {
-                    if (_uiState.value.linkTargetPackage == null) {
+                    if (_uiState.value.linkTargetPackages.isEmpty()) {
                         _uiState.value =
                             _uiState.value.copy(
                                 isLoading = false,
-                                error = "Please select a target app"
+                                error = "Please select at least one target app"
                             )
                         return@launch
                     }
@@ -188,11 +188,20 @@ class SubmitViewModel(
                         return@launch
                     }
 
-                    appRepository.submitLinkedAlternatives(
-                        proprietaryPackage = _uiState.value.linkTargetPackage!!,
-                        alternatives = _uiState.value.selectedAlternatives.toList(),
-                        submitterId = user.uid
-                    )
+                    // Loop and submit for each proprietary package
+                    var lastResult: Result<Unit> = Result.success(Unit)
+                    for (proprietaryPackage in _uiState.value.linkTargetPackages) {
+                        val submitResult = appRepository.submitLinkedAlternatives(
+                            proprietaryPackage = proprietaryPackage,
+                            alternatives = _uiState.value.selectedAlternatives.toList(),
+                            submitterId = user.uid
+                        )
+                        if (submitResult.isFailure) {
+                            lastResult = submitResult
+                            break
+                        }
+                    }
+                    lastResult
 
                 } else if (_uiState.value.isEditing && _uiState.value.editingSubmissionId != null) {
                     updateSubmissionUseCase(
@@ -225,10 +234,14 @@ class SubmitViewModel(
 
             result.onSuccess {
                 cacheRepository.clearCache()
+                val successMessageTitle = if (type == SubmissionType.LINKING) {
+                    if (_uiState.value.linkTargetPackages.size > 1) "Multiple Apps" else _uiState.value.linkTargetPackages.firstOrNull()
+                } else appName
+
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
                     success = true,
-                    submittedAppName = if (type == SubmissionType.LINKING) _uiState.value.linkTargetPackage else appName
+                    submittedAppName = successMessageTitle
                 )
             }.onFailure { e ->
                 _uiState.value = _uiState.value.copy(
@@ -239,8 +252,8 @@ class SubmitViewModel(
         }
     }
 
-    fun setLinkTarget(packageName: String) {
-        _uiState.value = _uiState.value.copy(linkTargetPackage = packageName)
+    fun setLinkTargets(packages: Set<String>) {
+        _uiState.value = _uiState.value.copy(linkTargetPackages = packages)
     }
 
     fun resetState() {
