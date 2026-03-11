@@ -28,6 +28,7 @@ import com.jksalcedo.librefind.domain.model.AppStatus
 import com.jksalcedo.librefind.domain.model.SovereigntyScore
 import com.jksalcedo.librefind.ui.theme.CapturedOrange
 import com.jksalcedo.librefind.ui.theme.FossGreen
+import com.jksalcedo.librefind.ui.theme.PendingOrange
 import com.jksalcedo.librefind.ui.theme.SovereignGreen
 import com.jksalcedo.librefind.ui.theme.TransitionBlue
 
@@ -106,6 +107,19 @@ fun GaugeDetailsDialog(
                         onFilterClick(
                             if (currentFilter == AppStatus.IGNORED) null
                             else AppStatus.IGNORED
+                        )
+                        onDismissRequest()
+                    }
+                )
+                ClickableStatRow(
+                    label = "Pending Apps",
+                    value = "${score.pendingCount}",
+                    color = PendingOrange,
+                    isActive = currentFilter == AppStatus.PENDING,
+                    onClick = {
+                        onFilterClick(
+                            if (currentFilter == AppStatus.PENDING) null
+                            else AppStatus.PENDING
                         )
                         onDismissRequest()
                     }
@@ -192,7 +206,8 @@ fun PreviewGaugeDetailsDialog() {
         GaugeDetailsDialog(
             score = SovereigntyScore(
                 100, 45, 40, 10,
-                ignoredCount = 5
+                ignoredCount = 5,
+                pendingCount = 2
             ),
             currentFilter = null,
             onFilterClick = {},

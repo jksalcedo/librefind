@@ -14,7 +14,8 @@ data class SovereigntyScore(
     val fossCount: Int,
     val proprietaryCount: Int,
     val unknownCount: Int,
-    val ignoredCount: Int
+    val ignoredCount: Int,
+    val pendingCount: Int = 0
 ) {
     /**
      * Percentage of FOSS apps (0-100)
@@ -33,6 +34,12 @@ data class SovereigntyScore(
      */
     val unknownPercentage: Float
         get() = if (totalApps - ignoredCount > 0) (unknownCount.toFloat() / (totalApps - ignoredCount)) * 100 else 0f
+
+    /**
+     * Percentage of pending apps (0-100)
+     */
+    val pendingPercentage: Float
+        get() = if (totalApps - ignoredCount > 0) (pendingCount.toFloat() / (totalApps - ignoredCount)) * 100 else 0f
 
     /**
      * Percentage of ignored apps (0 because ignored apps get ignored)

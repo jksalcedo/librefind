@@ -182,13 +182,15 @@ class DashboardViewModel(
         val propCount = apps.count { it.status == AppStatus.PROP }
         val unknownCount = apps.count { it.status == AppStatus.UNKN }
         val ignoredCount = apps.count { it.status == AppStatus.IGNORED }
+        val pendingCount = apps.count { it.status == AppStatus.PENDING }
 
         return SovereigntyScore(
             totalApps = totalApps,
             fossCount = fossCount,
             proprietaryCount = propCount,
             unknownCount = unknownCount,
-            ignoredCount = ignoredCount
+            ignoredCount = ignoredCount,
+            pendingCount = pendingCount
         )
     }
 
