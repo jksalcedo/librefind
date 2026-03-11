@@ -39,6 +39,7 @@ import androidx.compose.material3.InputChip
 import androidx.compose.material3.InputChipDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -107,7 +108,7 @@ fun SubmitScreen(
         onSearchSolutions = viewModel::searchSolutions,
         onClearSolutionSearchResults = viewModel::clearSolutionSearchResults,
         onAddAlternative = viewModel::addAlternative,
-        onAddTarget = viewModel::setLinkTarget,
+        onAddTargets = viewModel::setLinkTargets,
         onRemoveAlternative = viewModel::removeAlternative,
         onSearchFossApps = viewModel::searchFossApps,
         onSelectFossApp = viewModel::selectFossApp,
@@ -133,7 +134,7 @@ fun SubmitContent(
     onSearchSolutions: (String) -> Unit,
     onClearSolutionSearchResults: () -> Unit,
     onAddAlternative: (String) -> Unit,
-    onAddTarget: (String) -> Unit,
+    onAddTargets: (Set<String>) -> Unit,
     onRemoveAlternative: (String) -> Unit,
     onSearchFossApps: (String) -> Unit,
     onSelectFossApp: (Alternative) -> Unit,
@@ -451,7 +452,12 @@ fun SubmitContent(
                         },
                         label = { Text(stringResource(R.string.submit_search_alternatives)) },
                         placeholder = { Text(stringResource(R.string.submit_search_placeholder)) },
-                        leadingIcon = { Icon(painter = painterResource(R.drawable.ic_search), contentDescription = null) },
+                        leadingIcon = {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_search),
+                                contentDescription = null
+                            )
+                        },
                         trailingIcon = {
                             if (alternativeSearchQuery.isNotEmpty()) {
                                 IconButton(onClick = {
@@ -566,7 +572,12 @@ fun SubmitContent(
                             },
                             label = { Text(stringResource(R.string.submit_search_foss_optional)) },
                             placeholder = { Text(stringResource(R.string.submit_search_foss_placeholder)) },
-                            leadingIcon = { Icon(painter = painterResource(R.drawable.ic_search), contentDescription = null) },
+                            leadingIcon = {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_search),
+                                    contentDescription = null
+                                )
+                            },
                             trailingIcon = {
                                 if (fossSearchQuery.isNotEmpty()) {
                                     IconButton(onClick = {
@@ -741,6 +752,7 @@ fun SubmitContent(
                             allPackages = uiState.proprietaryTargets,
                             unknownApps = uiState.unknownApps,
                             initialSelection = selectedProprietaryPackages,
+                            singleSelection = false,
                             onDismiss = { showDialog = false },
                             onConfirm = { newSelection ->
                                 selectedProprietaryPackages = newSelection
@@ -941,7 +953,7 @@ fun SubmitContent(
                 ) {
                     Box(modifier = Modifier.fillMaxWidth()) {
                         OutlinedTextField(
-                            value = uiState.linkTargetPackage ?: "",
+                            value = if (uiState.linkTargetPackages.isEmpty()) "" else "${uiState.linkTargetPackages.size} selected",
                             onValueChange = {},
                             readOnly = true,
                             label = { Text(stringResource(R.string.submit_target_app)) },
@@ -957,18 +969,40 @@ fun SubmitContent(
                     }
                 }
 
+                if (uiState.linkTargetPackages.isNotEmpty()) {
+                    FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        uiState.linkTargetPackages.forEach { selectedPkg ->
+                            InputChip(
+                                selected = true,
+                                onClick = {
+                                    val newSet = uiState.linkTargetPackages - selectedPkg
+                                    onAddTargets(newSet)
+                                },
+                                label = { Text(selectedPkg) },
+                                trailingIcon = {
+                                    Icon(
+                                        Icons.Default.Close,
+                                        contentDescription = "Remove",
+                                        modifier = Modifier.size(InputChipDefaults.AvatarSize)
+                                    )
+                                }
+                            )
+                        }
+                    }
+                }
+
                 if (showTargetDialog) {
                     MultiSelectDialog(
                         allPackages = uiState.proprietaryTargets, // Reuse existing list for now
                         unknownApps = uiState.unknownApps,
-                        initialSelection = uiState.linkTargetPackage?.let { setOf(it) }
-                            ?: emptySet(),
+                        initialSelection = uiState.linkTargetPackages,
+                        singleSelection = false,
                         onDismiss = { showTargetDialog = false },
                         onConfirm = { newSelection ->
-                            // MultiSelectDialog returns a Set, but we only want one for target
-                            newSelection.firstOrNull()?.let {
-                                onAddTarget(it)
-                            }
+                            onAddTargets(newSelection)
                             showTargetDialog = false
                         },
                         onSuggestAsTarget = { packageName, label ->
@@ -996,7 +1030,12 @@ fun SubmitContent(
                     },
                     label = { Text(stringResource(R.string.submit_search_solutions)) },
                     placeholder = { Text(stringResource(R.string.submit_search_placeholder)) },
-                    leadingIcon = { Icon(painter = painterResource(R.drawable.ic_search), contentDescription = null) },
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_search),
+                            contentDescription = null
+                        )
+                    },
                     trailingIcon = {
                         if (alternativeSearchQuery.isNotEmpty()) {
                             IconButton(onClick = {
@@ -1118,7 +1157,7 @@ fun SubmitContent(
                 },
                 enabled = !uiState.isLoading && (
                         if (type == SubmissionType.LINKING) {
-                            uiState.linkTargetPackage != null && uiState.selectedAlternatives.isNotEmpty()
+                            uiState.linkTargetPackages.isNotEmpty() && uiState.selectedAlternatives.isNotEmpty()
                         } else {
                             appName.isNotBlank() &&
                                     packageName.isNotBlank() &&
@@ -1158,6 +1197,7 @@ fun MultiSelectDialog(
     allPackages: List<String>,
     unknownApps: Map<String, String>,
     initialSelection: Set<String>,
+    singleSelection: Boolean = false,
     onDismiss: () -> Unit,
     onConfirm: (Set<String>) -> Unit,
     onSuggestAsTarget: (packageName: String, label: String) -> Unit
@@ -1193,7 +1233,12 @@ fun MultiSelectDialog(
                     label = { Text(stringResource(R.string.submit_search)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
-                    leadingIcon = { Icon(painter = painterResource(R.drawable.ic_search), contentDescription = null) }
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_search),
+                            contentDescription = null
+                        )
+                    }
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -1280,22 +1325,31 @@ fun MultiSelectDialog(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
-                                    tempSelection = if (isSelected) {
-                                        tempSelection - pkg
+                                    tempSelection = if (singleSelection) {
+                                        if (isSelected) emptySet() else setOf(pkg)
                                     } else {
-                                        tempSelection + pkg
+                                        if (isSelected) tempSelection - pkg else tempSelection + pkg
                                     }
                                 }
                                 .padding(vertical = 4.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Checkbox(
-                                checked = isSelected,
-                                onCheckedChange = { checked ->
-                                    tempSelection =
-                                        if (checked) tempSelection + pkg else tempSelection - pkg
-                                }
-                            )
+                            if (singleSelection) {
+                                RadioButton(
+                                    selected = isSelected,
+                                    onClick = {
+                                        tempSelection = if (isSelected) emptySet() else setOf(pkg)
+                                    }
+                                )
+                            } else {
+                                Checkbox(
+                                    checked = isSelected,
+                                    onCheckedChange = { checked ->
+                                        tempSelection =
+                                            if (checked) tempSelection + pkg else tempSelection - pkg
+                                    }
+                                )
+                            }
                             Text(
                                 text = pkg,
                                 modifier = Modifier.padding(start = 8.dp),
@@ -1348,6 +1402,7 @@ fun SubmitScreenPreview() {
         onClearLinkedApp = {},
         onValidateRepoUrl = {},
         onSubmit = { _, _, _, _, _, _, _, _, _ -> },
-        onAddTarget = {}
+        prefilledProprietaryTarget = null,
+        onAddTargets = {}
     )
 }
