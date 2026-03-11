@@ -72,6 +72,7 @@
     <string name="submit_done">Done</string>
     <string name="submit_what_submitting">What are you submitting?</string>
     <string name="submit_contribution_guide">Contribution Guide</string>
+    <string name="submit_web_submission_page">Open web submission page</string>
     <string name="submit_type_foss">FOSS App</string>
     <string name="submit_type_proprietary">Proprietary App</string>
     <string name="submit_type_link">Link App</string>
@@ -330,4 +331,5 @@
     <string name="report_desc_placeholder">Describe the issue or suggestion in detail...</string>
     <string name="report_priority_label">Priority</string>
     <string name="report_submit_button">Submit Report</string>
+    <string name="web_submission">Web Submission</string>
 </resources>

@@ -268,13 +268,9 @@ fun SubmitContent(
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.SpaceAround,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = stringResource(R.string.submit_what_submitting),
-                    style = MaterialTheme.typography.titleMedium
-                )
                 val uriHandler = LocalUriHandler.current
                 TextButton(onClick = { uriHandler.openUri("https://github.com/jksalcedo/librefind/wiki/How-to-Contribute") }) {
                     Text(
@@ -282,7 +278,20 @@ fun SubmitContent(
                         style = MaterialTheme.typography.labelMedium
                     )
                 }
+                TextButton(onClick = { uriHandler.openUri("https://librefind-submission.web.app") }) {
+                    Text(
+                        stringResource(R.string.web_submission),
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                }
             }
+
+            HorizontalDivider()
+
+            Text(
+                text = stringResource(R.string.submit_what_submitting),
+                style = MaterialTheme.typography.titleMedium
+            )
 
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 FilterChip(
