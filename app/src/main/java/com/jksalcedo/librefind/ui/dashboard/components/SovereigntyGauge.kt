@@ -28,6 +28,7 @@ import com.jksalcedo.librefind.domain.model.SovereigntyLevel
 import com.jksalcedo.librefind.domain.model.SovereigntyScore
 import com.jksalcedo.librefind.ui.theme.CapturedOrange
 import com.jksalcedo.librefind.ui.theme.FossGreen
+import com.jksalcedo.librefind.ui.theme.PendingOrange
 import com.jksalcedo.librefind.ui.theme.SovereignGreen
 import com.jksalcedo.librefind.ui.theme.TransitionBlue
 import kotlin.math.roundToInt
@@ -144,6 +145,18 @@ fun SovereigntyGauge(
                     )
                 }
             )
+            StatItem(
+                label = "Pending",
+                count = score.pendingCount,
+                color = PendingOrange,
+                isActive = currentFilter == AppStatus.PENDING,
+                onClick = {
+                    onFilterClick(
+                        if (currentFilter == AppStatus.PENDING) null
+                        else AppStatus.PENDING
+                    )
+                }
+            )
         }
     }
 }
@@ -184,6 +197,7 @@ private fun getAppStatusPercentage(score: SovereigntyScore, appStatus: AppStatus
         AppStatus.FOSS -> score.fossPercentage
         AppStatus.PROP -> score.proprietaryPercentage
         AppStatus.UNKN -> score.unknownPercentage
+        AppStatus.PENDING -> score.pendingPercentage
         AppStatus.IGNORED -> score.ignoredPercentage
         else -> score.fossPercentage
     }
@@ -195,6 +209,7 @@ private fun getAppStatusColor(level: SovereigntyLevel, appStatus: AppStatus?): C
         AppStatus.FOSS -> FossGreen
         AppStatus.PROP -> CapturedOrange
         AppStatus.UNKN -> MaterialTheme.colorScheme.outline
+        AppStatus.PENDING -> PendingOrange
         AppStatus.IGNORED -> MaterialTheme.colorScheme.error
         else -> getLevelColor(level)
     }
@@ -223,7 +238,8 @@ fun PreviewSovereigntyGauge() {
         totalApps = 100,
         fossCount = 85,
         proprietaryCount = 5,
-        unknownCount = 5,
+        unknownCount = 3,
+        pendingCount = 2,
         ignoredCount = 5
     )
 
