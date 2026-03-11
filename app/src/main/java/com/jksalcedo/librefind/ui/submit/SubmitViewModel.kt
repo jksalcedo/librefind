@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jksalcedo.librefind.data.local.InventorySource
 import com.jksalcedo.librefind.domain.model.Alternative
+import com.jksalcedo.librefind.domain.model.DuplicateStatus
 import com.jksalcedo.librefind.domain.model.Submission
 import com.jksalcedo.librefind.domain.model.SubmissionType
 import com.jksalcedo.librefind.domain.repository.AppRepository
@@ -310,11 +311,12 @@ class SubmitViewModel(
                 return@launch
             }
 
-            val isDuplicate = appRepository.checkDuplicateApp(packageName)
-            val warning = if (isDuplicate) {
-                "This app is already in our database."
-            } else {
-                null
+            val duplicateStatus = appRepository.checkDuplicateApp(packageName)
+            val warning = when (duplicateStatus) {
+                DuplicateStatus.APPROVED_SOLUTION -> "This app is already an approved FOSS app."
+                DuplicateStatus.APPROVED_TARGET -> "This app is already an approved proprietary target."
+                DuplicateStatus.PENDING -> "This app is already pending review."
+                DuplicateStatus.NONE -> null
             }
             _uiState.value = _uiState.value.copy(duplicateWarning = warning)
         }
