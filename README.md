@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-    <img src="./fastlane/metadata/en-US/images/icon.png" alt="LibreFind icon" width="150" />
+    <img src="./fastlane/metadata/android/en-US/images/icon.png" alt="LibreFind icon" width="150" />
   <br>
   LibreFind
   <br>
@@ -59,7 +59,7 @@ LibreFind is a free and lightweight Android app that scans your installed packag
 
 | Dashboard                                                          | Alternative List                                                             | Submission                                                           | Profile                                                        |
 |--------------------------------------------------------------------|------------------------------------------------------------------------------|----------------------------------------------------------------------|----------------------------------------------------------------|
-| ![Dashboard](fastlane/metadata/en-US/images/phoneScreenshots/dashboard.jpg) | ![Alternatives](fastlane/metadata/en-US/images/phoneScreenshots/alternative_list.jpg) | ![Submission](fastlane/metadata/en-US/images/phoneScreenshots/submission.jpg) | ![Profile](fastlane/metadata/en-US/images/phoneScreenshots/profile.jpg) |
+| ![Dashboard](fastlane/metadata/android/en-US/images/phoneScreenshots/dashboard.jpg) | ![Alternatives](fastlane/metadata/android/en-US/images/phoneScreenshots/alternative_list.jpg) | ![Submission](fastlane/metadata/android/en-US/images/phoneScreenshots/submission.jpg) | ![Profile](fastlane/metadata/android/en-US/images/phoneScreenshots/profile.jpg) |
 | Scan your apps and view sovereignty score                          | Browse FOSS alternatives                                                     | Contribute new alternatives                                          | Track your submissions                                         |
 
 ### Community Contributions
