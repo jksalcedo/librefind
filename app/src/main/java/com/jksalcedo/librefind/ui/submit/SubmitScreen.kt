@@ -278,9 +278,9 @@ fun SubmitContent(
                         style = MaterialTheme.typography.labelMedium
                     )
                 }
-                TextButton(onClick = { uriHandler.openUri("https://your-web-submission-url.com") /* TODO: Replace with actual Web URL */ }) {
+                TextButton(onClick = { uriHandler.openUri("https://librefind-submission.web.app") }) {
                     Text(
-                        "Web Submission", // TODO: Extract to strings.xml
+                        stringResource(R.string.web_submission),
                         style = MaterialTheme.typography.labelMedium
                     )
                 }

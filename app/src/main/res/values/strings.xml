@@ -331,4 +331,5 @@
     <string name="report_desc_placeholder">Describe the issue or suggestion in detail...</string>
     <string name="report_priority_label">Priority</string>
     <string name="report_submit_button">Submit Report</string>
+    <string name="web_submission">Web Submission</string>
 </resources>
