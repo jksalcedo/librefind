@@ -284,4 +284,19 @@
     <string name="privacy_section_7_desc">Мы можем время от времени обновлять эту Политику конфиденциальности. Мы будем сообщать Вам о любых изменениям, обновляя дату рядом с \"Последнее обновление\" в верхней части этой политики. Рекомендуем Вам периодически проверять эту Политику конфиденциальности на наличие изменений.</string>
     <string name="my_submissions_empty">Заявок не найдено</string>
     <string name="field_help_content_desc">Помощь по %1$s</string>
+    <string name="settings_language">Язык</string>
+    <string name="settings_language_system">По умолчанию в системе</string>
+    <string name="settings_language_english">Английский</string>
+    <string name="settings_language_arabic">Арабский</string>
+    <string name="settings_language_german">Немецкий</string>
+    <string name="settings_language_greek">Греческий</string>
+    <string name="settings_language_spanish">Испанский</string>
+    <string name="settings_language_estonian">Эстонский</string>
+    <string name="settings_language_french">Французский</string>
+    <string name="settings_language_italian">Итальянский</string>
+    <string name="settings_language_polish">Польский</string>
+    <string name="settings_language_turkish">Турецкий</string>
+    <string name="settings_language_chinese_simplified">Китайский (упрощённый)</string>
+    <string name="details_no_suggested_alternatives">Для этого приложения ещё не были предложены FOSS-альтернативы.</string>
+    <string name="details_suggest_alternative">Предложить как альтернативу</string>
 </resources>
