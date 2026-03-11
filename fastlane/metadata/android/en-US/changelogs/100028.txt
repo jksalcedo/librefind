@@ -1,3 +1,5 @@
 - Clarified duplicate app submission warnings
 - Added 'Pending' apps to Dashboard Sovereignty Gauge
 - Select multiple proprietary targets when linking FOSS alternatives
+- Improved submission/search reliability and Supabase integration
+- Updated and expanded app translations

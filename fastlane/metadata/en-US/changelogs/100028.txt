@@ -1,2 +1,0 @@
-- Fixed duplicate app submission checks to prevent 'UNKNOWN' apps returning generic errors
-- UI now explains if a duplicate entry is a FOSS solution, proprietary target, or a pending submission
