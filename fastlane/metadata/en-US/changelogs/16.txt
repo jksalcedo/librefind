@@ -1,4 +1,0 @@
-- Added Discovery tab for finding new apps
-- Added several new languages
-- Fixed approved apps incorrectly showing as pending
-- Fixed some bugs

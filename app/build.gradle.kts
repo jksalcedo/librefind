@@ -12,7 +12,7 @@ val versionMajor = 1
 val versionMinor = 0
 val versionPatch = 0
 val versionStage = "beta" // Change to "alpha", "beta", "rc", or "stable"
-val versionBuild = 17
+val versionBuild = 18
 
 val stageWeight = when (versionStage.lowercase()) {
     "alpha" -> 0
@@ -25,7 +25,8 @@ val stageWeight = when (versionStage.lowercase()) {
 val computedVersionCode = (versionMajor * 100000) +
         (versionMinor * 1000) +
         (versionPatch * 100) +
-        (stageWeight * 10)
+        (stageWeight * 10) +
+        versionBuild
 
 // Construct the versionName dynamically
 // If stable, just output "1.0.0"

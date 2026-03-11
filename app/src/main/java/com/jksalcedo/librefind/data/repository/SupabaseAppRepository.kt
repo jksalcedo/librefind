@@ -10,6 +10,7 @@ import com.jksalcedo.librefind.data.remote.model.UserReportDto
 import com.jksalcedo.librefind.data.remote.model.UserSubmissionDto
 import com.jksalcedo.librefind.data.remote.model.UserVoteDto
 import com.jksalcedo.librefind.domain.model.Alternative
+import com.jksalcedo.librefind.domain.model.DuplicateStatus
 import com.jksalcedo.librefind.domain.model.Report
 import com.jksalcedo.librefind.domain.model.ReportPriority
 import com.jksalcedo.librefind.domain.model.ReportStatus
@@ -612,8 +613,8 @@ class SupabaseAppRepository(
         }
     }
 
-    override suspend fun checkDuplicateApp(packageName: String): Boolean {
-        if (packageName.isBlank()) return false
+    override suspend fun checkDuplicateApp(packageName: String): DuplicateStatus {
+        if (packageName.isBlank()) return DuplicateStatus.NONE
 
         return try {
             // Check approved FOSS alternatives (solutions table)
@@ -624,7 +625,7 @@ class SupabaseAppRepository(
                     limit(1)
                 }.countOrNull() ?: 0
 
-            if (solutionsCount > 0) return true
+            if (solutionsCount > 0) return DuplicateStatus.APPROVED_SOLUTION
 
             // Check approved proprietary targets (targets table)
             val targetsCount = supabase.postgrest.from("targets")
@@ -634,7 +635,7 @@ class SupabaseAppRepository(
                     limit(1)
                 }.countOrNull() ?: 0
 
-            if (targetsCount > 0) return true
+            if (targetsCount > 0) return DuplicateStatus.APPROVED_TARGET
 
             // Check pending submissions (user_submissions table)
             val pendingCount = supabase.postgrest.from("user_submissions")
@@ -647,10 +648,10 @@ class SupabaseAppRepository(
                     limit(1)
                 }.countOrNull() ?: 0
 
-            pendingCount > 0
+            if (pendingCount > 0) DuplicateStatus.PENDING else DuplicateStatus.NONE
         } catch (e: Exception) {
             Log.e("SupabaseAppRepo", "checkDuplicateApp failed for $packageName", e)
-            false
+            DuplicateStatus.NONE
         }
     }
 

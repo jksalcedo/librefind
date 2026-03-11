@@ -1,4 +1,0 @@
-What's New:
-- Significant under-the-hood improvements for localization support.
-- Bug fixes and performance enhancements.
-- Include launchable system apps (eg. Camera)

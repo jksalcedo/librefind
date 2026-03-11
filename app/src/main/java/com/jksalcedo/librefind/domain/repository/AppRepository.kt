@@ -1,6 +1,7 @@
 package com.jksalcedo.librefind.domain.repository
 
 import com.jksalcedo.librefind.domain.model.Alternative
+import com.jksalcedo.librefind.domain.model.DuplicateStatus
 import com.jksalcedo.librefind.domain.model.Report
 import com.jksalcedo.librefind.domain.model.Submission
 import com.jksalcedo.librefind.domain.model.SubmissionType
@@ -89,7 +90,7 @@ interface AppRepository {
         text: String
     ): Result<Unit>
 
-    suspend fun checkDuplicateApp(packageName: String): Boolean
+    suspend fun checkDuplicateApp(packageName: String): DuplicateStatus
 
     suspend fun getUserVote(packageName: String, userId: String): Map<String, Int?>
 
