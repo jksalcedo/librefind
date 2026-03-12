@@ -104,3 +104,35 @@ data class AppReport(
     @SerialName("description") val description: String,
     @SerialName("status") val status: String = "pending"
 )
+
+@Serializable
+data class MatchVoteDto(
+    @SerialName("user_id") val userId: String,
+    @SerialName("target_package") val targetPackage: String,
+    @SerialName("solution_package") val solutionPackage: String,
+    val vote: Int  // +1 or -1
+)
+
+/** Returned by the get_alternatives_with_match_votes RPC */
+@Serializable
+data class AlternativeWithVoteDto(
+    @SerialName("package_name") val packageName: String,
+    val name: String,
+    val license: String,
+    @SerialName("repo_url") val repoUrl: String? = null,
+    @SerialName("fdroid_id") val fdroidId: String? = null,
+    @SerialName("icon_url") val iconUrl: String? = null,
+    val description: String = "",
+    val category: String = "Other",
+    val features: List<String>? = emptyList(),
+    val pros: List<String>? = emptyList(),
+    val cons: List<String>? = emptyList(),
+    @SerialName("rating_privacy") val ratingPrivacy: Float? = 0f,
+    @SerialName("rating_usability") val ratingUsability: Float? = 0f,
+    @SerialName("rating_features") val ratingFeatures: Float? = 0f,
+    @SerialName("vote_count") val voteCount: Int? = 0,
+    @SerialName("match_upvotes") val matchUpvotes: Int = 0,
+    @SerialName("match_downvotes") val matchDownvotes: Int = 0,
+    @SerialName("match_score") val matchScore: Int = 0,
+    @SerialName("user_match_vote") val userMatchVote: Int? = null
+)

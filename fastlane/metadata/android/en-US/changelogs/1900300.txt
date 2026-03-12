@@ -1,0 +1,5 @@
+- FOSS apps now show similar apps in the same category
+- Added F-Droid category taxonomy to submission form
+- Category is now required when submitting a FOSS alternative
+- Improved empty state messaging for uncategorized FOSS apps
+- Added up/downvote on alternatives to rate replacement quality
