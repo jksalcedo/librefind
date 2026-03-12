@@ -313,8 +313,8 @@ fun SubmitContent(
 
             HorizontalDivider()
 
-            // Category dropdown (proprietary apps only)
-            if (type == SubmissionType.NEW_PROPRIETARY) {
+            // Category dropdown (required for FOSS alternatives and proprietary apps)
+            if (type == SubmissionType.NEW_ALTERNATIVE || type == SubmissionType.NEW_PROPRIETARY) {
                 Box(modifier = Modifier.fillMaxWidth()) {
                     OutlinedTextField(
                         value = category,
@@ -1173,7 +1173,7 @@ fun SubmitContent(
                                     uiState.duplicateWarning == null &&
                                     uiState.packageNameError == null &&
                                     if (type == SubmissionType.NEW_ALTERNATIVE) {
-                                        description.isNotBlank() && repoUrl.isNotBlank() && license.isNotBlank() && uiState.repoUrlError == null
+                                        description.isNotBlank() && repoUrl.isNotBlank() && license.isNotBlank() && category.isNotBlank() && uiState.repoUrlError == null
                                     } else {
                                         true
                                     }

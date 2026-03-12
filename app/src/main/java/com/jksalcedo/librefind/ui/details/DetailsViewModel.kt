@@ -33,7 +33,21 @@ class DetailsViewModel(
             }
 
             try {
-                val alternatives = getAlternativeUseCase(packageName)
+                val isFoss = cacheRepository.isSolutionCached(packageName) ||
+                        appRepository.isSolution(packageName)
+
+                val alternatives = if (!isFoss) {
+                    getAlternativeUseCase(packageName)
+                } else {
+                    emptyList()
+                }
+
+                val siblings = if (isFoss) {
+                    appRepository.getSiblingAlternatives(packageName)
+                } else {
+                    emptyList()
+                }
+
                 val user = authRepository.getCurrentUser()
 
                 _state.update {
@@ -41,6 +55,8 @@ class DetailsViewModel(
                         isLoading = false,
                         packageName = packageName,
                         alternatives = alternatives,
+                        siblingAlternatives = siblings,
+                        isFoss = isFoss,
                         isSignedIn = user != null,
                         error = null
                     )
@@ -103,6 +119,8 @@ data class DetailsState(
     val isLoading: Boolean = false,
     val packageName: String = "",
     val alternatives: List<Alternative> = emptyList(),
+    val siblingAlternatives: List<Alternative> = emptyList(),
+    val isFoss: Boolean = false,
     val isSignedIn: Boolean = false,
     val error: String? = null,
     val isUnknown: Boolean = false

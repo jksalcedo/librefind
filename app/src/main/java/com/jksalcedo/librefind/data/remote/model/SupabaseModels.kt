@@ -8,7 +8,7 @@ data class SolutionDto(
     @SerialName("package_name") val packageName: String,
     val name: String,
     val description: String,
-    val category: String? = null,
+    val category: String = "Other",
     @SerialName("icon_url") val iconUrl: String? = null,
     @SerialName("fdroid_id") val fdroidId: String? = null,
     @SerialName("repo_url") val repoUrl: String? = null,
