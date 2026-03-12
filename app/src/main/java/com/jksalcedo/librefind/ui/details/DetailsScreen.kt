@@ -157,6 +157,7 @@ fun DetailsScreen(
                             text = stringResource(
                                 when {
                                     state.isUnknown -> R.string.details_not_in_db
+                                    state.fossCategoryUnset -> R.string.details_foss_category_unset
                                     state.isFoss -> R.string.details_no_siblings
                                     else -> R.string.details_no_suggested_alternatives
                                 }
