@@ -64,7 +64,7 @@ fun DetailsScreen(
         viewModel.loadAlternatives(packageName)
     }
 
-    val showFab = !state.isLoading && state.error == null && !state.isUnknown
+    val showFab = !state.isLoading && state.error == null && !state.isUnknown && !state.isFoss
 
     Scaffold(
         topBar = {
@@ -132,7 +132,7 @@ fun DetailsScreen(
                     }
                 }
 
-                state.alternatives.isEmpty() -> {
+                state.alternatives.isEmpty() && state.siblingAlternatives.isEmpty() -> {
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
@@ -155,8 +155,11 @@ fun DetailsScreen(
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = stringResource(
-                                if (state.isUnknown) R.string.details_not_in_db 
-                                else R.string.details_no_suggested_alternatives
+                                when {
+                                    state.isUnknown -> R.string.details_not_in_db
+                                    state.isFoss -> R.string.details_no_siblings
+                                    else -> R.string.details_no_suggested_alternatives
+                                }
                             ),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -190,6 +193,7 @@ fun DetailsScreen(
                 }
 
                 else -> {
+                    val displayList = if (state.isFoss) state.siblingAlternatives else state.alternatives
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
                         contentPadding = PaddingValues(16.dp),
@@ -197,14 +201,18 @@ fun DetailsScreen(
                     ) {
                         item {
                             Text(
-                                text = stringResource(R.string.details_found_format, state.alternatives.size, if (state.alternatives.size > 1) "s" else ""),
+                                text = if (state.isFoss) {
+                                    stringResource(R.string.details_siblings_found_format, displayList.size, if (displayList.size > 1) "s" else "")
+                                } else {
+                                    stringResource(R.string.details_found_format, displayList.size, if (displayList.size > 1) "s" else "")
+                                },
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.SemiBold,
                                 modifier = Modifier.padding(bottom = 8.dp)
                             )
                         }
 
-                        items(state.alternatives) { alternative ->
+                        items(displayList) { alternative ->
                             AlternativeListItem(
                                 alternative = alternative,
                                 onClick = { onAlternativeClick(alternative.id) }
