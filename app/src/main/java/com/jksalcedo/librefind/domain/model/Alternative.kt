@@ -11,6 +11,12 @@ data class Alternative(
     val fdroidId: String,
     val iconUrl: String? = null,
     val category: String = "Other",
+    // Match votes: "Is this a good replacement for the target app?"
+    val matchScore: Int = 0,          // net score (upvotes - downvotes)
+    val matchUpvotes: Int = 0,
+    val matchDownvotes: Int = 0,
+    val userMatchVote: Int? = null,   // +1, -1, or null (not voted)
+    // App quality ratings: "How good is this app on its own?"
     val ratingAvg: Float = 0f,
     val ratingCount: Int = 0,
     val usabilityRating: Float = 0f,

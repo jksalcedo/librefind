@@ -19,8 +19,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.ThumbDown
+import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.Button
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.FilledTonalIconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -216,7 +220,10 @@ fun DetailsScreen(
                         items(displayList) { alternative ->
                             AlternativeListItem(
                                 alternative = alternative,
-                                onClick = { onAlternativeClick(alternative.id) }
+                                onClick = { onAlternativeClick(alternative.id) },
+                                onMatchVote = if (!state.isFoss) { vote ->
+                                    viewModel.castMatchVote(alternative.packageName, vote)
+                                } else null
                             )
                         }
                     }
@@ -230,6 +237,7 @@ fun DetailsScreen(
 fun AlternativeListItem(
     alternative: Alternative,
     onClick: () -> Unit,
+    onMatchVote: ((vote: Int) -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -259,25 +267,72 @@ fun AlternativeListItem(
                     )
                 }
 
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        imageVector = Icons.Default.Star,
-                        contentDescription = null,
-                        modifier = Modifier.size(16.dp),
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = alternative.displayRating,
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                    if (alternative.ratingCount > 0) {
+                if (onMatchVote != null) {
+                    // Match-vote buttons: "Is this a good replacement?"
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        val upvoted = alternative.userMatchVote == 1
+                        val downvoted = alternative.userMatchVote == -1
+                        FilledTonalIconButton(
+                            onClick = { onMatchVote(1) },
+                            colors = IconButtonDefaults.filledTonalIconButtonColors(
+                                containerColor = if (upvoted) MaterialTheme.colorScheme.primary
+                                                else MaterialTheme.colorScheme.surfaceVariant,
+                                contentColor = if (upvoted) MaterialTheme.colorScheme.onPrimary
+                                               else MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.ThumbUp,
+                                contentDescription = stringResource(R.string.vote_upvote),
+                                modifier = Modifier.size(18.dp)
+                            )
+                        }
                         Text(
-                            text = " (${alternative.ratingCount})",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            text = alternative.matchScore.toString(),
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.SemiBold
                         )
+                        FilledTonalIconButton(
+                            onClick = { onMatchVote(-1) },
+                            colors = IconButtonDefaults.filledTonalIconButtonColors(
+                                containerColor = if (downvoted) MaterialTheme.colorScheme.error
+                                                else MaterialTheme.colorScheme.surfaceVariant,
+                                contentColor = if (downvoted) MaterialTheme.colorScheme.onError
+                                               else MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.ThumbDown,
+                                contentDescription = stringResource(R.string.vote_downvote),
+                                modifier = Modifier.size(18.dp)
+                            )
+                        }
+                    }
+                } else {
+                    // FOSS sibling context: show star rating (read-only)
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            imageVector = Icons.Default.Star,
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = alternative.displayRating,
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                        if (alternative.ratingCount > 0) {
+                            Text(
+                                text = " (${alternative.ratingCount})",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
                     }
                 }
             }
