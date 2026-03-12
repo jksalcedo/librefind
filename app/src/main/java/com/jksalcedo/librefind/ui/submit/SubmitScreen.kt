@@ -160,12 +160,21 @@ fun SubmitContent(
     var category by remember { mutableStateOf("") }
     var showCategoryDropdown by remember { mutableStateOf(false) }
     val categories = listOf(
-        "Browser", "Email", "Messenger", "Social Media",
-        "Maps & Navigation", "Cloud Storage", "Notes", "Calendar",
-        "File Manager", "Music Player", "Video Player", "Photo Editor",
-        "Office Suite", "Keyboard", "Launcher", "Camera",
-        "Weather", "News Reader", "Password Manager", "VPN",
-        "App Store", "Fitness & Health", "Finance", "Utility", "Other"
+        "App Store & Updater", "Bookmark", "Browser", "Calculator",
+        "Calendar & Agenda", "Cloud Storage & File Sync", "Connectivity",
+        "Development", "DNS & Hosts", "Draw", "Ebook Reader", "Email",
+        "File Encryption & Vault", "File Transfer", "Finance Manager",
+        "Forum", "Gallery", "Games", "Graphics", "Habit Tracker",
+        "Icon Pack", "Internet", "Keyboard & IME", "Launcher",
+        "Local Media Player", "Location Tracker & Sharer", "Messaging",
+        "Money", "Multimedia", "Music Practice Tool", "Navigation", "News",
+        "Note", "Online Media Player", "Pass Wallet", "Password & 2FA",
+        "Phone & SMS", "Podcast", "Public Transport", "Reading",
+        "Recipe Manager", "Science & Education", "Security", "Shopping List",
+        "Social Network", "Sports & Health", "System", "Task", "Text Editor",
+        "Theming", "Time", "Translation & Dictionary", "Unit Convertor",
+        "Voice & Video Chat", "VPN & Proxy", "Wallet", "Wallpaper",
+        "Weather", "Workout", "Writing", "Other"
     )
 
     LaunchedEffect(uiState.loadedSubmission) {
