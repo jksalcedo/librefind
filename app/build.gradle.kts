@@ -12,7 +12,7 @@ val versionMajor = 1
 val versionMinor = 0
 val versionPatch = 0
 val versionStage = "beta" // Change to "alpha", "beta", "rc", or "stable"
-val versionBuild = 18
+val versionBuild = 19
 
 val stageWeight = when (versionStage.lowercase()) {
     "alpha" -> 0
