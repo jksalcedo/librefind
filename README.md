@@ -85,7 +85,7 @@ Please join the Telegram channel for further discussions.
 ## ☕ Support
 
 LibreFind is a free and open-source project managed independently. Our goal is to promote digital
-privacy by making FOSS apps mainstream. Currently, LibreFind is trusted by **1,334 registered users
+privacy by making FOSS apps mainstream. Currently, LibreFind is trusted by **1,426 registered users
 ** globally.
 
 While the app is free, **infrastructure and hosting servers** cost money to keep running 24/7.
