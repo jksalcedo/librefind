@@ -28,11 +28,11 @@
     alt="Get it on F-Droid"
     width="160">
 </a>
- 
+
   <a href="https://github.com/jksalcedo/librefind/releases">
   <img src="https://github.com/SilentCoderHere/aihub/blob/main/fastlane/metadata/android/en-US/images/badge_github.png" width="160" alt="Get it on GitHub">
   </a>
-  
+
   <br>
 
   <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/jksalcedo/librefind">
@@ -46,7 +46,8 @@
 
 ## What is LibreFind?
 
-LibreFind is a free and lightweight Android app that scans your installed packages locally and queries our database to identify proprietary software and find FOSS alternatives.
+LibreFind is a free and lightweight Android app that scans your installed packages locally and
+queries our database to identify proprietary software and find FOSS alternatives.
 
 ### Core Features
 
@@ -57,10 +58,10 @@ LibreFind is a free and lightweight Android app that scans your installed packag
 
 ## Screenshots
 
-| Dashboard                                                          | Alternative List                                                             | Submission                                                           | Profile                                                        |
-|--------------------------------------------------------------------|------------------------------------------------------------------------------|----------------------------------------------------------------------|----------------------------------------------------------------|
+| Dashboard                                                                           | Alternative List                                                                              | Submission                                                                            | Profile                                                                         |
+|-------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
 | ![Dashboard](fastlane/metadata/android/en-US/images/phoneScreenshots/dashboard.jpg) | ![Alternatives](fastlane/metadata/android/en-US/images/phoneScreenshots/alternative_list.jpg) | ![Submission](fastlane/metadata/android/en-US/images/phoneScreenshots/submission.jpg) | ![Profile](fastlane/metadata/android/en-US/images/phoneScreenshots/profile.jpg) |
-| Scan your apps and view sovereignty score                          | Browse FOSS alternatives                                                     | Contribute new alternatives                                          | Track your submissions                                         |
+| Scan your apps and view sovereignty score                                           | Browse FOSS alternatives                                                                      | Contribute new alternatives                                                           | Track your submissions                                                          |
 
 ### Community Contributions
 
@@ -83,11 +84,15 @@ Please join the Telegram channel for further discussions.
 
 ## ☕ Support
 
-LibreFind is a free and open-source project managed independently. Our goal is to promote digital privacy by making FOSS apps mainstream. Currently, LibreFind is trusted by **1,334 registered users** globally. 
+LibreFind is a free and open-source project managed independently. Our goal is to promote digital
+privacy by making FOSS apps mainstream. Currently, LibreFind is trusted by **1,334 registered users
+** globally.
 
-While the app is free, **infrastructure and hosting servers** cost money to keep running 24/7. 
+While the app is free, **infrastructure and hosting servers** cost money to keep running 24/7.
 
-If you find this tool useful for reclaiming your digital privacy, please consider buying me a coffee. Your support goes directly toward:
+If you find this tool useful for reclaiming your digital privacy, please consider buying me a
+coffee. Your support goes directly toward:
+
 * Paying monthly server bills.
 * Keeping the database online and fast.
 * Development of new features.
@@ -98,12 +103,29 @@ If you find this tool useful for reclaiming your digital privacy, please conside
   </a>
 </div>
 
+## Contributing
+
+Can't donate? You can still make a real difference:
+
+- **Star the repo** — helps others discover LibreFind on GitHub
+- **Report bugs** — open an issue if something isn't working
+- **Suggest features** — share ideas through GitHub issues
+- **Test & give feedback** — usability and performance reports are valuable
+- **Translate** — help bring LibreFind to more languages
+  via [Weblate](https://hosted.weblate.org/engage/librefind/)
+- **Spread the word** — share with friends or on social media
+- **Contribute code** — fix bugs or add features via pull requests
+
+Every small contribution helps the project grow.
+
 ## Translations
+
 <a href="https://hosted.weblate.org/engage/librefind/">
 <img src="https://hosted.weblate.org/widget/librefind/android-strings/multi-auto.svg" alt="Translation status" />
 </a>
 
-LibreFind uses [Weblate](https://hosted.weblate.org/engage/librefind/) to manage translations. You can help translate LibreFind into your language!
+LibreFind uses [Weblate](https://hosted.weblate.org/engage/librefind/) to manage translations. You
+can help translate LibreFind into your language!
 
 ## Star History
 
