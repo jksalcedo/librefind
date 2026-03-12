@@ -786,7 +786,7 @@ class SupabaseAppRepository(
         }
     }
 
-    override suspend fun getSiblingAlternatives(packageName: String): List<Alternative> {
+    override suspend fun getSiblingAlternatives(packageName: String): List<Alternative>? {
         return try {
             // 1. Look up this solution's category
             @Serializable
@@ -796,10 +796,10 @@ class SupabaseAppRepository(
                 .select(columns = Columns.list("category")) {
                     filter { eq("package_name", packageName) }
                     limit(1)
-                }.decodeSingleOrNull<CategoryDto>() ?: return emptyList()
+                }.decodeSingleOrNull<CategoryDto>() ?: return null
 
-            // "Other" is a catch-all, siblings wouldn't be meaningful
-            if (categoryDto.category == "Other") return emptyList()
+            // Return null (not empty) so callers can distinguish "category unset" from "no peers"
+            if (categoryDto.category == "Other") return null
 
             // 2. Fetch all solutions in the same category, excluding self
             val siblings = supabase.postgrest.from("solutions")
@@ -854,7 +854,7 @@ class SupabaseAppRepository(
             }.sortedByDescending { it.ratingAvg }
         } catch (e: Exception) {
             Log.e("SupabaseAppRepo", "getSiblingAlternatives failed", e)
-            emptyList()
+            null
         }
     }
 

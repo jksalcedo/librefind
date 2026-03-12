@@ -101,8 +101,10 @@ interface AppRepository {
 
     /**
      * Returns other FOSS apps in the same category as [packageName], excluding itself.
+     * Returns null if the app has no meaningful category set (i.e. "Other"),
+     * as opposed to an empty list which means the category is set but has no peers yet.
      */
-    suspend fun getSiblingAlternatives(packageName: String): List<Alternative>
+    suspend fun getSiblingAlternatives(packageName: String): List<Alternative>?
 
     suspend fun getPendingSubmissionPackages(): Set<String>
 
