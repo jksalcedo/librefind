@@ -160,21 +160,22 @@ fun SubmitContent(
     var category by remember { mutableStateOf("") }
     var showCategoryDropdown by remember { mutableStateOf(false) }
     val categories = listOf(
-        "App Store & Updater", "Bookmark", "Browser", "Calculator",
-        "Calendar & Agenda", "Cloud Storage & File Sync", "Connectivity",
-        "Development", "DNS & Hosts", "Draw", "Ebook Reader", "Email",
-        "File Encryption & Vault", "File Transfer", "Finance Manager",
-        "Forum", "Gallery", "Games", "Graphics", "Habit Tracker",
-        "Icon Pack", "Internet", "Keyboard & IME", "Launcher",
-        "Local Media Player", "Location Tracker & Sharer", "Messaging",
-        "Money", "Multimedia", "Music Practice Tool", "Navigation", "News",
-        "Note", "Online Media Player", "Pass Wallet", "Password & 2FA",
-        "Phone & SMS", "Podcast", "Public Transport", "Reading",
-        "Recipe Manager", "Science & Education", "Security", "Shopping List",
-        "Social Network", "Sports & Health", "System", "Task", "Text Editor",
-        "Theming", "Time", "Translation & Dictionary", "Unit Convertor",
-        "Voice & Video Chat", "VPN & Proxy", "Wallet", "Wallpaper",
-        "Weather", "Workout", "Writing", "Other"
+        "AI & Virtual Assistant", "App Store & Updater", "Bookmark", "Boot & Kernel",
+        "Browser", "Calculator", "Calendar & Agenda", "Camera",
+        "Cloud Storage & File Sync", "Connectivity", "Development", "DNS & Hosts",
+        "Draw", "Ebook Reader", "Education", "Email",
+        "File Encryption & Vault", "File Transfer", "Finance", "Food & Delivery",
+        "Forum", "Gallery", "Games", "Graphics",
+        "Habit Tracker", "Icon Pack", "Internet", "Keyboard & IME",
+        "Launcher", "Local Media Player", "Location & Navigation", "Messaging",
+        "Multimedia", "Music Practice Tool", "News", "Note",
+        "Online Media Player", "Pass Wallet", "Password & 2FA", "Phone & SMS",
+        "Podcast", "Public Transport", "Reading", "Recipe Manager",
+        "Root Management", "Security", "Shopping", "Social Network",
+        "Sports & Health", "Storage Management", "Streaming Service", "System",
+        "Task", "Text Editor", "Theming", "Time",
+        "Translation & Dictionary", "Unit Converter", "Voice & Video Chat", "VPN & Proxy",
+        "Wallpaper", "Weather", "Writing", "Other"
     )
 
     LaunchedEffect(uiState.loadedSubmission) {
