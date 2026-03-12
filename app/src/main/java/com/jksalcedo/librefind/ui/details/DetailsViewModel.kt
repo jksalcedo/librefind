@@ -47,6 +47,8 @@ class DetailsViewModel(
                 } else {
                     emptyList()
                 }
+                // null = category is "Other"/unset; emptyList = category set but no peers yet
+                val fossCategoryUnset = isFoss && siblings == null
 
                 val user = authRepository.getCurrentUser()
 
@@ -55,8 +57,9 @@ class DetailsViewModel(
                         isLoading = false,
                         packageName = packageName,
                         alternatives = alternatives,
-                        siblingAlternatives = siblings,
+                        siblingAlternatives = siblings.orEmpty(),
                         isFoss = isFoss,
+                        fossCategoryUnset = fossCategoryUnset,
                         isSignedIn = user != null,
                         error = null
                     )
@@ -121,6 +124,7 @@ data class DetailsState(
     val alternatives: List<Alternative> = emptyList(),
     val siblingAlternatives: List<Alternative> = emptyList(),
     val isFoss: Boolean = false,
+    val fossCategoryUnset: Boolean = false,
     val isSignedIn: Boolean = false,
     val error: String? = null,
     val isUnknown: Boolean = false
