@@ -303,7 +303,10 @@ fun SubmitContent(
                 style = MaterialTheme.typography.titleMedium
             )
 
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
                 FilterChip(
                     selected = type == SubmissionType.NEW_ALTERNATIVE,
                     onClick = { type = SubmissionType.NEW_ALTERNATIVE },
