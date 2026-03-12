@@ -10,6 +10,7 @@ data class Alternative(
     val repoUrl: String,
     val fdroidId: String,
     val iconUrl: String? = null,
+    val category: String = "Other",
     val ratingAvg: Float = 0f,
     val ratingCount: Int = 0,
     val usabilityRating: Float = 0f,

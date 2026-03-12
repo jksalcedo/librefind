@@ -99,6 +99,11 @@ interface AppRepository {
 
     suspend fun getAlternativesCount(packageName: String): Int
 
+    /**
+     * Returns other FOSS apps in the same category as [packageName], excluding itself.
+     */
+    suspend fun getSiblingAlternatives(packageName: String): List<Alternative>
+
     suspend fun getPendingSubmissionPackages(): Set<String>
 
     suspend fun submitScanStats(
