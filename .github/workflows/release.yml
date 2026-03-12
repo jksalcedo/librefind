@@ -31,6 +31,19 @@ jobs:
         run: |
           echo "${{ secrets.KEYSTORE_BASE64 }}" | tr -d '\n\r ' | base64 --decode > release-keystore.jks
 
+      - name: Verify env vars are set
+        run: |
+          echo "KEYSTORE_PATH=$KEYSTORE_PATH"
+          [ -f "$KEYSTORE_PATH" ] && echo "✅ Keystore file exists" || echo "❌ Keystore file NOT found"
+          [ -n "$KEYSTORE_PASSWORD" ] && echo "✅ KEYSTORE_PASSWORD set" || echo "❌ KEYSTORE_PASSWORD missing"
+          [ -n "$KEY_ALIAS" ] && echo "✅ KEY_ALIAS set" || echo "❌ KEY_ALIAS missing"
+          [ -n "$KEY_PASSWORD" ] && echo "✅ KEY_PASSWORD set" || echo "❌ KEY_PASSWORD missing"
+        env:
+          KEYSTORE_PATH: ${{ github.workspace }}/release-keystore.jks
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
       - name: Build and Sign release APK
         env:
           KEYSTORE_PATH: ${{ github.workspace }}/release-keystore.jks  # env vars, not -P flags
