@@ -270,7 +270,7 @@
     <string name="report_title_label">Başlık</string>
     <string name="report_title_placeholder">Sorunun kısa özeti</string>
     <string name="report_desc_label">Açıklama</string>
-    <string name="report_desc_placeholder">Sorunu veya öneriyi ayrıntılı olarak açıklayın...</string>
+    <string name="report_desc_placeholder">Sorunu veya öneriyi ayrıntılı olarak açıklayın…</string>
     <string name="report_priority_label">Öncelik</string>
     <string name="report_submit_button">Rapor Gönder</string>
     <string name="settings_language">Dil</string>
