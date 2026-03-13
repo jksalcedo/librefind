@@ -270,7 +270,7 @@
     <string name="report_title_label">Titel</string>
     <string name="report_title_placeholder">Kurze Zusammenfassung des Problems</string>
     <string name="report_desc_label">Beschreibung</string>
-    <string name="report_desc_placeholder">Beschreibe das Problem oder den Vorschlag ausführlich ...</string>
+    <string name="report_desc_placeholder">Beschreibe das Problem oder den Vorschlag ausführlich …</string>
     <string name="report_priority_label">Priorität</string>
     <string name="report_submit_button">Meldung einreichen</string>
 </resources>
