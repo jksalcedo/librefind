@@ -281,7 +281,7 @@
     <string name="report_title_label">Pealkiri</string>
     <string name="report_title_placeholder">Lühike kokkuvõte probleemist</string>
     <string name="report_desc_label">Kirjeldus</string>
-    <string name="report_desc_placeholder">Kirjelda probleem või pakkumine täpsemalt...</string>
+    <string name="report_desc_placeholder">Kirjelda probleem või pakkumine täpsemalt…</string>
     <string name="report_priority_label">Prioriteet</string>
     <string name="report_submit_button">Esita teatust</string>
     <string name="details_no_suggested_alternatives">Selle rakenduse jaoks pole veel vabarakenduslike alternatiive pakutud.</string>
