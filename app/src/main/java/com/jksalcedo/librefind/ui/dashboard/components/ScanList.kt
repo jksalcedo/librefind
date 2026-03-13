@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -44,6 +45,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -172,13 +174,31 @@ fun AppRow(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-                Text(
-                    text = app.packageName,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = app.packageName,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f, fill = false)
+                    )
+                    if (app.isSystemPackage) {
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = "SYSTEM",
+                            style = MaterialTheme.typography.labelSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier
+                                .background(
+                                    color = MaterialTheme.colorScheme.surfaceVariant,
+                                    shape = RoundedCornerShape(4.dp)
+                                )
+                                .padding(horizontal = 4.dp, vertical = 2.dp)
+                        )
+                    }
+                }
                 if (app.knownAlternatives > 0) {
                     Text(
                         text = "${app.knownAlternatives} alternative${if (app.knownAlternatives > 1) "s" else ""} available",
@@ -253,10 +273,10 @@ internal fun AppIconAsync(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    var iconBitmap by remember(packageName) { 
+    var iconBitmap by remember(packageName) {
         mutableStateOf(AppIconCache.get(packageName))
     }
-    var isLoading by remember(packageName) { 
+    var isLoading by remember(packageName) {
         mutableStateOf(AppIconCache.get(packageName) == null)
     }
 
@@ -281,8 +301,7 @@ internal fun AppIconAsync(
 
     Box(
         modifier = modifier
-            .clip(RoundedCornerShape(8.dp))
-            .background(MaterialTheme.colorScheme.surfaceVariant),
+            .clip(RoundedCornerShape(8.dp)),
         contentAlignment = Alignment.Center
     ) {
         when {
@@ -299,7 +318,10 @@ internal fun AppIconAsync(
                 Image(
                     bitmap = iconBitmap!!.asImageBitmap(),
                     contentDescription = "App Icon",
-                    modifier = Modifier.size(40.dp)
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(8.dp)),
+                    contentScale = ContentScale.Crop
                 )
             }
 

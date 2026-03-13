@@ -294,6 +294,40 @@ fun SettingsContent(
             }
 
             // 5. Account
+            SettingsSection(title = stringResource(R.string.settings_hide_system_packages_title)) {
+                // Obtain preferences manager from Koin for this section
+                val preferencesManager: PreferencesManager = koinInject()
+                val hideSystem = remember { mutableStateOf(preferencesManager.shouldHideSystemPackages()) }
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable(
+                            interactionSource = null,
+                            indication = LocalIndication.current,
+                            onClick = {
+                                // Toggle preference and update local state
+                                val new = !hideSystem.value
+                                hideSystem.value = new
+                                preferencesManager.setHideSystemPackages(new)
+                            }
+                        )
+                        .padding(vertical = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(R.string.settings_hide_system_packages_label),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                    Text(
+                        text = if (hideSystem.value) stringResource(R.string.settings_on) else stringResource(R.string.settings_off),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+
             AccountSection(onDeleteAccountRequest = onDeleteAccountRequest)
         }
     }
