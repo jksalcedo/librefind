@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">LibreFind</string>
-    <string name="dashboard_search_hint">Uygulama Ara...</string>
+    <string name="dashboard_search_hint">Uygulama Ara…</string>
     <string name="dashboard_search">Arama</string>
     <string name="dashboard_filter">Filtre</string>
     <string name="dashboard_filter_show_all">Hepsini Göster</string>
@@ -72,17 +72,17 @@
     <string name="submit_description_required">Açıklama *</string>
     <string name="submit_add_alternatives">Alternatif Ekle (opsiyonel)</string>
     <string name="submit_search_alternatives">Alternatif Ara</string>
-    <string name="submit_search_placeholder">Dosya veya uygulama adı ile ara...</string>
+    <string name="submit_search_placeholder">Dosya veya uygulama adı ile ara…</string>
     <string name="submit_selected_alternatives">Seçilen Alternatifler:</string>
     <string name="submit_alternative_details">Alternatif Detayları</string>
     <string name="submit_search_foss_optional">Spesifik bir açık kaynak uygualama ara (opsiyonel)</string>
-    <string name="submit_search_foss_placeholder">Mevcut veritabanında arama yap...</string>
+    <string name="submit_search_foss_placeholder">Mevcut veritabanında arama yap…</string>
     <string name="submit_linked_app">Mevcut Bir Uygulamaya Bağla</string>
     <string name="submit_foss_requirements">Alternatif uygulamalar için lisans ve depo URL\'si gerekir</string>
     <string name="submit_target_proprietary">Hedef Kapalı Kaynak Uygulamalar</string>
-    <string name="submit_search_to_add">Eklemek için ara...</string>
+    <string name="submit_search_to_add">Eklemek için ara…</string>
     <string name="submit_repo_url">Depo URL\'si *</string>
-    <string name="submit_repo_placeholder">https://github.com/...</string>
+    <string name="submit_repo_placeholder">https://github.com/…</string>
     <string name="submit_fdroid_id">F-Droid Kimliği</string>
     <string name="submit_license">Lisans *</string>
     <string name="submit_license_placeholder">Lisans seçin</string>
@@ -95,7 +95,7 @@
     <string name="submit_link_solutions_desc">Veritabanımızda bulunan mevcut bir açık kaynaklı uygulamayı, kapalı kaynak bir uygulamaya bağlayın.</string>
     <string name="submit_target_app">Hedef Kapalı Kaynak Uygulama</string>
     <string name="submit_link_solutions_target">Bu açık kaynaklı çözümün yerini aldığı kapalı kaynak uygulamayı seçin.</string>
-    <string name="submit_select_target">Hedef uygulama seçin...</string>
+    <string name="submit_select_target">Hedef uygulama seçin…</string>
     <string name="submit_select_solutions">Bağlamak İstediğiniz Çözümleri Seçin</string>
     <string name="submit_search_solutions">Çözümleri arayın</string>
     <string name="submit_selected_solutions">Seçilmiş Çözümler:</string>
@@ -299,4 +299,6 @@
     <string name="details_suggest_alternative">Alternatif öner</string>
     <string name="alt_detail_report">Rapor</string>
     <string name="alt_detail_report_title">Rapor %1$s</string>
+    <string name="submit_web_submission_page">Web üzerinden gönderme sayfasını aç</string>
+    <string name="web_submission">Web Üzerinden Gönderme</string>
 </resources>
