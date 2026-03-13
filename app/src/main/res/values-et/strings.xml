@@ -299,4 +299,6 @@
     <string name="settings_language_spanish">Hispaania</string>
     <string name="settings_language_system">Süsteemi</string>
     <string name="settings_language_turkish">Türgi</string>
+    <string name="submit_web_submission_page">Esita veebilehekülje kaudu</string>
+    <string name="web_submission">Veebiesitus</string>
 </resources>
