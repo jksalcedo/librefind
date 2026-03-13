@@ -40,9 +40,11 @@ val appModule = module {
     single { Dispatchers.Main }
     single { Dispatchers.Default }
 
-    single { InventorySource(androidContext()) }
-    single { SafeSignatureDb() }
+    // Provide PreferencesManager first so it can be injected into other singletons
     single { PreferencesManager(androidContext()) }
+    // InventorySource now depends on PreferencesManager; inject it via Koin's `get()`
+    single { InventorySource(androidContext(), get()) }
+    single { SafeSignatureDb() }
 
     single { AppDatabase.getInstance(androidContext()) }
     single { get<AppDatabase>().ignoredAppDao() }
@@ -74,7 +76,17 @@ val networkModule = module {
 
 val repositoryModule = module {
     single<CacheRepository> { CacheRepositoryImpl(get(), get()) }
-    single<DeviceInventoryRepo> { DeviceInventoryRepoImpl(get(), get(), get(), get(), get(), get()) }
+    single<DeviceInventoryRepo> {
+        DeviceInventoryRepoImpl(
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get()
+        )
+    }
 }
 
 val useCaseModule = module {
@@ -97,5 +109,3 @@ val viewModelModule = module {
     viewModel { MyReportsViewModel(get(), get()) }
     viewModel { DiscoverViewModel(get()) }
 }
-
-
