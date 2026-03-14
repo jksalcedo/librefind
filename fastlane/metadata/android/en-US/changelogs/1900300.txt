@@ -1,0 +1,6 @@
+- FOSS apps now show similar apps in the same category
+- Added up/downvote on alternatives to rate replacement quality
+- Vote state is saved and restored when reopening the screen
+- Expanded and improved category list (64 categories)
+- Category is now required when submitting a FOSS alternative
+- Improved empty state messaging for uncategorized FOSS apps

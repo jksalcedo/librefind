@@ -82,6 +82,17 @@ interface AppRepository {
         value: Int // 1-5 star rating
     ): Result<Unit>
 
+    /**
+     * Cast a match vote on a target ↔ solution pairing.
+     * [vote] must be +1 (upvote) or -1 (downvote).
+     * Passing 0 removes an existing vote.
+     */
+    suspend fun castMatchVote(
+        targetPackage: String,
+        solutionPackage: String,
+        vote: Int
+    ): Result<Unit>
+
     suspend fun getMySubmissions(userId: String): List<Submission>
 
     suspend fun submitFeedback(
