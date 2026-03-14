@@ -36,14 +36,30 @@ val stageWeight = when (vStage) {
     else -> 0
 }
 
-val computedVersionCode = (vMajor * 10000000) +
+val suffix = if (vStage == "stable") "" else "-$vStage$vBuild"
+
+val computedVersionCode = versionProps.getProperty("VERSION_CODE")?.toInt() ?: ((vMajor * 10000000) +
         (vMinor * 100000) +
         (vPatch * 1000) +
         (stageWeight * 100) +
-        vBuild
+        vBuild)
 
-val suffix = if (vStage == "stable") "" else "-$vStage$vBuild"
-val computedVersionName = "$vMajor.$vMinor.$vPatch$suffix"
+val computedVersionName = versionProps.getProperty("VERSION_NAME") ?: "$vMajor.$vMinor.$vPatch$suffix"
+
+tasks.register("updateVersionProperties") {
+    doLast {
+        val calculatedCode = (vMajor * 10000000) +
+                (vMinor * 100000) +
+                (vPatch * 1000) +
+                (stageWeight * 100) +
+                vBuild
+        val calculatedName = "$vMajor.$vMinor.$vPatch$suffix"
+
+        versionProps.setProperty("VERSION_CODE", calculatedCode.toString())
+        versionProps.setProperty("VERSION_NAME", calculatedName)
+        versionProps.store(versionPropsFile.outputStream(), null)
+    }
+}
 
 configure<ApplicationExtension> {
     namespace = "com.jksalcedo.librefind"

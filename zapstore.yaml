@@ -1,6 +1,6 @@
 name: LibreFind
 package_name: com.jksalcedo.librefind
-summary: Discover and replace proprietary apps with FOSS alternatives 
+summary: Discover and replace proprietary apps with FOSS alternatives
 description: |
   LibreFind is a free and lightweight Android app that scans your device locally and queries our database to identify proprietary software and recommend Free and Open Source Software (FOSS) alternatives.
 
@@ -22,10 +22,10 @@ description: |
 
 license: MIT
 repository: https://github.com/jksalcedo/librefind
-tags: [utilities, privacy]
-icon: https://raw.githubusercontent.com/jksalcedo/librefind/main/fastlane/metadata/en-US/images/icon.png
+tags: [ utilities, privacy ]
+icon: https://raw.githubusercontent.com/jksalcedo/librefind/main/fastlane/metadata/android/en-US/images/icon.png
 images:
-  - https://raw.githubusercontent.com/jksalcedo/librefind/main/fastlane/metadata/en-US/images/phoneScreenshots/dashboard.jpg
-  - https://raw.githubusercontent.com/jksalcedo/librefind/main/fastlane/metadata/en-US/images/phoneScreenshots/alternative_list.jpg
-  - https://raw.githubusercontent.com/jksalcedo/librefind/main/fastlane/metadata/en-US/images/phoneScreenshots/submission.jpg
-  - https://raw.githubusercontent.com/jksalcedo/librefind/main/fastlane/metadata/en-US/images/phoneScreenshots/profile.jpg
+  - https://raw.githubusercontent.com/jksalcedo/librefind/main/fastlane/metadata/android/en-US/images/phoneScreenshots/dashboard.jpg
+  - https://raw.githubusercontent.com/jksalcedo/librefind/main/fastlane/metadata/android/en-US/images/phoneScreenshots/alternative_list.jpg
+  - https://raw.githubusercontent.com/jksalcedo/librefind/main/fastlane/metadata/android/en-US/images/phoneScreenshots/submission.jpg
+  - https://raw.githubusercontent.com/jksalcedo/librefind/main/fastlane/metadata/android/en-US/images/phoneScreenshots/profile.jpg
