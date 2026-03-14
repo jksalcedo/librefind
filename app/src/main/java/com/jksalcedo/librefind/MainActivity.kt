@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -46,6 +47,7 @@ class MainActivity : AppCompatActivity() {
                     currentRoute == Route.Dashboard.route || currentRoute == Route.Discover.route
 
                 Scaffold(
+                    contentWindowInsets = WindowInsets(0),
                     bottomBar = {
                         if (showBottomBar) {
                             NavigationBar {
