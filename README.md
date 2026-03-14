@@ -1,3 +1,13 @@
+
+> **Google has announced that, starting in 2026/2027, all apps on certified Android devices
+> will require the developer to submit personal identity details directly to Google.
+> Since the developers of this app do not agree to this requirement, this app will no longer 
+> work on certified Android devices after that time.**
+> https://keepandroidopen.org/
+
+
+
+
 <h1 align="center">
   <br>
     <img src="./fastlane/metadata/android/en-US/images/icon.png" alt="LibreFind icon" width="150" />
