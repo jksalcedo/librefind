@@ -281,7 +281,7 @@
     <string name="report_title_label">Pealkiri</string>
     <string name="report_title_placeholder">Lühike kokkuvõte probleemist</string>
     <string name="report_desc_label">Kirjeldus</string>
-    <string name="report_desc_placeholder">Kirjelda probleem või pakkumine täpsemalt...</string>
+    <string name="report_desc_placeholder">Kirjelda probleem või pakkumine täpsemalt…</string>
     <string name="report_priority_label">Prioriteet</string>
     <string name="report_submit_button">Esita teatust</string>
     <string name="details_no_suggested_alternatives">Selle rakenduse jaoks pole veel vabarakenduslike alternatiive pakutud.</string>
@@ -299,4 +299,6 @@
     <string name="settings_language_spanish">Hispaania</string>
     <string name="settings_language_system">Süsteemi</string>
     <string name="settings_language_turkish">Türgi</string>
+    <string name="submit_web_submission_page">Esita veebilehekülje kaudu</string>
+    <string name="web_submission">Veebiesitus</string>
 </resources>

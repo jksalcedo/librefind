@@ -190,7 +190,7 @@
     <string name="report_title_label">Titolo</string>
     <string name="report_title_placeholder">Breve descrizione del problema</string>
     <string name="report_desc_label">Descrizione</string>
-    <string name="report_desc_placeholder">Descrivi nel dettaglio il problema o il suggerimento...</string>
+    <string name="report_desc_placeholder">Descrivi nel dettaglio il problema o il suggerimento…</string>
     <string name="report_priority_label">Priorità</string>
     <string name="report_submit_button">Invia segnalazione</string>
     <string name="my_reports_title">Le mie segnalazioni</string>
