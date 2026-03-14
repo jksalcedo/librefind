@@ -19,8 +19,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.ThumbDown
+import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.Button
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.FilledTonalIconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -64,7 +68,7 @@ fun DetailsScreen(
         viewModel.loadAlternatives(packageName)
     }
 
-    val showFab = !state.isLoading && state.error == null && !state.isUnknown
+    val showFab = !state.isLoading && state.error == null && !state.isUnknown && !state.isFoss
 
     Scaffold(
         topBar = {
@@ -132,7 +136,7 @@ fun DetailsScreen(
                     }
                 }
 
-                state.alternatives.isEmpty() -> {
+                state.alternatives.isEmpty() && state.siblingAlternatives.isEmpty() -> {
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
@@ -155,8 +159,12 @@ fun DetailsScreen(
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = stringResource(
-                                if (state.isUnknown) R.string.details_not_in_db 
-                                else R.string.details_no_suggested_alternatives
+                                when {
+                                    state.isUnknown -> R.string.details_not_in_db
+                                    state.fossCategoryUnset -> R.string.details_foss_category_unset
+                                    state.isFoss -> R.string.details_no_siblings
+                                    else -> R.string.details_no_suggested_alternatives
+                                }
                             ),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -190,6 +198,7 @@ fun DetailsScreen(
                 }
 
                 else -> {
+                    val displayList = if (state.isFoss) state.siblingAlternatives else state.alternatives
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
                         contentPadding = PaddingValues(16.dp),
@@ -197,17 +206,24 @@ fun DetailsScreen(
                     ) {
                         item {
                             Text(
-                                text = stringResource(R.string.details_found_format, state.alternatives.size, if (state.alternatives.size > 1) "s" else ""),
+                                text = if (state.isFoss) {
+                                    stringResource(R.string.details_siblings_found_format, displayList.size, if (displayList.size > 1) "s" else "")
+                                } else {
+                                    stringResource(R.string.details_found_format, displayList.size, if (displayList.size > 1) "s" else "")
+                                },
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.SemiBold,
                                 modifier = Modifier.padding(bottom = 8.dp)
                             )
                         }
 
-                        items(state.alternatives) { alternative ->
+                        items(displayList) { alternative ->
                             AlternativeListItem(
                                 alternative = alternative,
-                                onClick = { onAlternativeClick(alternative.id) }
+                                onClick = { onAlternativeClick(alternative.id) },
+                                onMatchVote = if (!state.isFoss) { vote ->
+                                    viewModel.castMatchVote(alternative.packageName, vote)
+                                } else null
                             )
                         }
                     }
@@ -221,6 +237,7 @@ fun DetailsScreen(
 fun AlternativeListItem(
     alternative: Alternative,
     onClick: () -> Unit,
+    onMatchVote: ((vote: Int) -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -250,25 +267,72 @@ fun AlternativeListItem(
                     )
                 }
 
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        imageVector = Icons.Default.Star,
-                        contentDescription = null,
-                        modifier = Modifier.size(16.dp),
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = alternative.displayRating,
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                    if (alternative.ratingCount > 0) {
+                if (onMatchVote != null) {
+                    // Match-vote buttons: "Is this a good replacement?"
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        val upvoted = alternative.userMatchVote == 1
+                        val downvoted = alternative.userMatchVote == -1
+                        FilledTonalIconButton(
+                            onClick = { onMatchVote(1) },
+                            colors = IconButtonDefaults.filledTonalIconButtonColors(
+                                containerColor = if (upvoted) MaterialTheme.colorScheme.primary
+                                                else MaterialTheme.colorScheme.surfaceVariant,
+                                contentColor = if (upvoted) MaterialTheme.colorScheme.onPrimary
+                                               else MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.ThumbUp,
+                                contentDescription = stringResource(R.string.vote_upvote),
+                                modifier = Modifier.size(18.dp)
+                            )
+                        }
                         Text(
-                            text = " (${alternative.ratingCount})",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            text = alternative.matchScore.toString(),
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.SemiBold
                         )
+                        FilledTonalIconButton(
+                            onClick = { onMatchVote(-1) },
+                            colors = IconButtonDefaults.filledTonalIconButtonColors(
+                                containerColor = if (downvoted) MaterialTheme.colorScheme.error
+                                                else MaterialTheme.colorScheme.surfaceVariant,
+                                contentColor = if (downvoted) MaterialTheme.colorScheme.onError
+                                               else MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.ThumbDown,
+                                contentDescription = stringResource(R.string.vote_downvote),
+                                modifier = Modifier.size(18.dp)
+                            )
+                        }
+                    }
+                } else {
+                    // FOSS sibling context: show star rating (read-only)
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            imageVector = Icons.Default.Star,
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = alternative.displayRating,
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                        if (alternative.ratingCount > 0) {
+                            Text(
+                                text = " (${alternative.ratingCount})",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
                     }
                 }
             }
