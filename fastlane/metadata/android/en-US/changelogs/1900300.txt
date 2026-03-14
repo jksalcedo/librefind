@@ -1,8 +1,16 @@
-- FOSS apps now show similar apps in the same category
-- Added up/downvote on alternatives to rate replacement quality
-- Expanded and improved category list
-- Category is now required when submitting a FOSS alternative
-- Fixed submission type chips wrapping on long translated labels
-- Fixed extra padding below the list
-- Fixed apps' icons shape
-- Add system apps filter
+Added
+- Show similar FOSS apps in the same category
+- Added upvote/downvote system for rating alternative quality
+- Added system apps filter
+
+Improved
+- Expanded and improved app categories
+- Category now required when submitting a FOSS alternative
+
+Fixed
+- Submission type chips wrapping on long translated labels
+- Extra padding below the list
+- App icon shape inconsistencies
+
+Other
+- Minor internal improvements and fixes
