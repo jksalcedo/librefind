@@ -281,7 +281,7 @@
     <string name="report_title_label">Título</string>
     <string name="report_title_placeholder">Resumen del problema</string>
     <string name="report_desc_label">Descripción</string>
-    <string name="report_desc_placeholder">Describe el problema o la sugerencia en detalle...</string>
+    <string name="report_desc_placeholder">Describe el problema o la sugerencia en detalle…</string>
     <string name="report_priority_label">Prioridad</string>
     <string name="report_submit_button">Sugerir reporte</string>
 </resources>

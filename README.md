@@ -9,15 +9,19 @@
 <h4 align="center">Discover and replace proprietary apps with FOSS alternatives.</h4>
 
 <h4 align=center>
-<img alt="GitHub Release" src="https://img.shields.io/github/v/release/jksalcedo/librefind?include_prereleases&logo=github">
-<img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/jksalcedo/librefind/total">
-    <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/jksalcedo/librefind">
-    <img alt="GitHub License" src="https://img.shields.io/github/license/jksalcedo/librefind?logo=MIT">
-<a href="https://github.com/jksalcedo/librefind/actions/workflows/codeql.yml">
-  <img src="https://github.com/jksalcedo/librefind/actions/workflows/codeql.yml/badge.svg" alt="CodeQL Advanced">
-</a>    <img alt="GitHub Release Date" src="https://img.shields.io/github/release-date/jksalcedo/librefind">
-
+  <a href="https://developer.android.com">
+    <img src="https://img.shields.io/badge/Platform-Android-brighgtreen?logo=android" alt="Android Platform">
+  </a>
+  <img src="https://img.shields.io/badge/API-24%2B-3DDC84?logo=android&color=blue" alt="Minimum SDK">
+  <img alt="GitHub Release" src="https://img.shields.io/github/v/release/jksalcedo/librefind?include_prereleases&logo=github&label=Release&color=blue">
+  <img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/jksalcedo/librefind/total?label=APK%20Downloads&color=brightgreen">
+  <img alt="GitHub License" src="https://img.shields.io/github/license/jksalcedo/librefind?logo=MIT&label=License&color=blue">
+  <a href="https://github.com/jksalcedo/librefind/actions/workflows/codeql.yml">
+    <img src="https://github.com/jksalcedo/librefind/actions/workflows/codeql.yml/badge.svg" alt="CodeQL Advanced">
+  </a>
+  <img src="https://img.shields.io/github/last-commit/jksalcedo/librefind?color=blue" alt="Last Commit">
 </h4>
+
 <p align="center">
 <a href="https://apt.izzysoft.de/packages/com.jksalcedo.librefind">
   <img alt="Get it on IzzyOnDroid" src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" width="160">
@@ -85,7 +89,7 @@ Please join the Telegram channel for further discussions.
 ## ☕ Support
 
 LibreFind is a free and open-source project managed independently. Our goal is to promote digital
-privacy by making FOSS apps mainstream. Currently, LibreFind is trusted by **1,426 registered users
+privacy by making FOSS apps mainstream. Currently, LibreFind is trusted by **1,334 registered users 
 ** globally.
 
 While the app is free, **infrastructure and hosting servers** cost money to keep running 24/7.
