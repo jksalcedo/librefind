@@ -10,6 +10,7 @@ package com.jksalcedo.librefind.domain.model
  * @param installerId Package name of installer (e.g., "com.android.vending", "org.fdroid.fdroid")
  * @param icon app icon (can be null)
  * @param knownAlternatives Number of FOSS alternatives available
+ * @param isSystemPackage Flag indicating if the package is a system app (based on PackageManager flags)
  */
 data class AppItem(
     val packageName: String,
@@ -18,5 +19,6 @@ data class AppItem(
     val installerId: String?,
     val icon: Int? = null,
     val knownAlternatives: Int = 0,
-    val isUserReclassified: Boolean = false
+    val isUserReclassified: Boolean = false,
+    val isSystemPackage: Boolean = false
 )

@@ -13,7 +13,8 @@ import android.os.Build
  * Wraps Android PackageManager API to extract installed packages.
  */
 class InventorySource(
-    private val context: Context
+    private val context: Context,
+    private val preferencesManager: PreferencesManager
 ) {
     /**
      * Gets all user-installed apps
@@ -34,16 +35,18 @@ class InventorySource(
                 .map { it.activityInfo.packageName }
                 .toSet()
 
+            val hideSystemPackages = preferencesManager.shouldHideSystemPackages()
+
             pm.getInstalledPackages(PackageManager.GET_META_DATA)
                 .filter { app ->
                     val isSystem = (app.applicationInfo?.flags?.and(ApplicationInfo.FLAG_SYSTEM) != 0)
                     val isUpdatedSystem = (app.applicationInfo?.flags?.and(ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0)
-                    
-                    // Filter logic: 
-                    // 1. User apps (!isSystem)
-                    // 2. Updated System Apps (isUpdatedSystem)
-                    // 3. System apps that are launchable (launchablePackages.contains)
-                    !isSystem || isUpdatedSystem || launchablePackages.contains(app.packageName)
+
+                    if (hideSystemPackages) {
+                        !isSystem || isUpdatedSystem
+                    } else {
+                        !isSystem || isUpdatedSystem || launchablePackages.contains(app.packageName)
+                    }
                 }
         } catch (_: Exception) {
             emptyList()
