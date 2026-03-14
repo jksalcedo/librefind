@@ -1,3 +1,13 @@
+
+> **Google has announced that, starting in 2026/2027, all apps on certified Android devices
+> will require the developer to submit personal identity details directly to Google.
+> Since the developers of this app do not agree to this requirement, this app will no longer 
+> work on certified Android devices after that time.**
+> https://keepandroidopen.org/
+
+
+
+
 <h1 align="center">
   <br>
     <img src="./fastlane/metadata/android/en-US/images/icon.png" alt="LibreFind icon" width="150" />
@@ -57,7 +67,7 @@ queries our database to identify proprietary software and find FOSS alternatives
 
 - Scan installed apps to detect proprietary software
 - Get FOSS alternative recommendations
-- View sovereignty scores showing FOSS vs proprietary ratio
+- View sovereignty scores showing FOSS vs. proprietary ratio
 - Community-driven database
 
 ## Screenshots
@@ -74,6 +84,7 @@ queries our database to identify proprietary software and find FOSS alternatives
 - Vote on app recommendations
 - Help build a comprehensive alternative database
 
+You can contribute from within the app, or you can go to [librefind-submission.web.app](https://librefind-submission.web.app/) and use the web version.
   
 ---
 
