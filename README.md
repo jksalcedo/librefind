@@ -52,7 +52,7 @@ LibreFind is a free and lightweight Android app that scans your installed packag
 
 - Scan installed apps to detect proprietary software
 - Get FOSS alternative recommendations
-- View sovereignty scores showing FOSS vs proprietary ratio
+- View sovereignty scores showing FOSS vs. proprietary ratio
 - Community-driven database
 
 ## Screenshots
@@ -69,6 +69,7 @@ LibreFind is a free and lightweight Android app that scans your installed packag
 - Vote on app recommendations
 - Help build a comprehensive alternative database
 
+You can contribute from within the app, or you can go to [librefind-submission.web.app](https://librefind-submission.web.app/) and use the web version.
   
 ---
 
@@ -97,6 +98,8 @@ If you find this tool useful for reclaiming your digital privacy, please conside
     <img src="https://storage.ko-fi.com/cdn/kofi3.png?v=3" alt="Buy Me a Coffee at ko-fi.com" height="50">
   </a>
 </div>
+
+<!-- SUGGESTION: List some ways to support the project without paying -->
 
 ## Translations
 <a href="https://hosted.weblate.org/engage/librefind/">
