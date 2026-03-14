@@ -8,7 +8,7 @@ class GetAlternativeUseCase(
 ) {
     suspend operator fun invoke(packageName: String): List<Alternative> {
         return appRepository.getAlternatives(packageName)
-            .sortedByDescending { it.ratingAvg } // Changed rating to ratingAvg as per Alternative model
+            .sortedWith(compareByDescending<Alternative> { it.matchScore }.thenByDescending { it.ratingAvg })
     }
 }
 

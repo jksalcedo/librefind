@@ -294,6 +294,10 @@
     <string name="details_siblings_found_format">%1$d similar FOSS app%2$s in this category</string>
     <string name="details_foss_category_unset">This app hasn\'t been assigned a category yet. Similar apps can\'t be shown until it is.</string>
 
+    <!-- Match vote buttons -->
+    <string name="vote_upvote">Good replacement (upvote)</string>
+    <string name="vote_downvote">Poor replacement (downvote)</string>
+
     <!-- My Submissions Screen -->
     <string name="my_submissions_title">My Submissions</string>
     <string name="my_submissions_empty">No submissions found</string>
