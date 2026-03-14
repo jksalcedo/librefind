@@ -281,7 +281,7 @@
     <string name="report_title_label">Názov</string>
     <string name="report_title_placeholder">Stručný prehľad problému</string>
     <string name="report_desc_label">Opis</string>
-    <string name="report_desc_placeholder">Opíšte problém alebo návrh podrobne...</string>
+    <string name="report_desc_placeholder">Opíšte problém alebo návrh podrobne…</string>
     <string name="report_priority_label">Priorita</string>
     <string name="report_submit_button">Odoslať správu</string>
 </resources>

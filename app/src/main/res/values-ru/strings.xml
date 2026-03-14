@@ -241,7 +241,7 @@
     <string name="report_title_label">Название</string>
     <string name="report_title_placeholder">Краткий тезис проблемы</string>
     <string name="report_desc_label">Описание</string>
-    <string name="report_desc_placeholder">Подробно опишите проблему или предложение...</string>
+    <string name="report_desc_placeholder">Подробно опишите проблему или предложение…</string>
     <string name="report_priority_label">Приоритет</string>
     <string name="report_submit_button">Отправить жалобу</string>
     <string name="submit_target_proprietary">Целевые проприетарные приложения</string>
@@ -299,4 +299,6 @@
     <string name="settings_language_chinese_simplified">Китайский (упрощённый)</string>
     <string name="details_no_suggested_alternatives">Для этого приложения ещё не были предложены FOSS-альтернативы.</string>
     <string name="details_suggest_alternative">Предложить как альтернативу</string>
+    <string name="submit_web_submission_page">Предложить через сайт</string>
+    <string name="web_submission">Интернет-заявки</string>
 </resources>
