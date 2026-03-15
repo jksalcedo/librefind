@@ -1,6 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">LibreFind</string>
-
     <!-- Dashboard -->
     <string name="dashboard_search_hint">Search apps…</string>
     <string name="dashboard_close_search">Close search</string>
@@ -22,7 +22,6 @@
     <string name="dashboard_retry">Retry</string>
     <string name="dashboard_no_matching_apps">No matching apps</string>
     <string name="dashboard_no_apps_found">No apps found</string>
-
     <!-- Profile Dialog -->
     <string name="profile_dialog_title">Profile &amp; Settings</string>
     <string name="profile_unknown_username">Unknown Username</string>
@@ -37,7 +36,6 @@
     <string name="profile_not_signed_in_message">Please sign in to view your profile.</string>
     <string name="profile_fix_profile">Fix Profile</string>
     <string name="profile_sign_in">Sign In</string>
-
     <!-- Auth -->
     <string name="auth_create_account">Create Account</string>
     <string name="auth_sign_in">Sign In</string>
@@ -54,14 +52,12 @@
     <string name="auth_check_email_title">Check Your Email</string>
     <string name="auth_check_email_message">We\'ve sent a verification link to your email address. Please verify your email before signing in.</string>
     <string name="auth_go_to_sign_in">Go to Sign In</string>
-
     <!-- Profile Setup -->
     <string name="setup_title">Set Up Profile</string>
     <string name="setup_choose_username">Choose a Username</string>
     <string name="setup_username_desc">This will be shown with your submissions</string>
     <string name="setup_username_rules">Letters, numbers, underscore only</string>
     <string name="setup_continue">Continue</string>
-
     <!-- Submit Screen -->
     <string name="submit_title_new">Submit App</string>
     <string name="submit_title_edit">Edit Submission</string>
@@ -119,22 +115,21 @@
     <string name="submit_suggest_target">Suggest as target</string>
     <string name="submit_no_results">No results found.</string>
     <string name="submit_confirm">Confirm</string>
-
     <!-- Submit Field Help -->
     <string name="help_app_name_title">App Name</string>
     <string name="help_app_name_desc">The display name of the app as users know it (e.g. \"Signal\", \"Firefox\", \"VLC\").</string>
     <string name="help_app_name_tip">Use the official name from the app\'s website or store listing.</string>
     <string name="help_package_name_title">Package Name</string>
     <string name="help_package_name_desc">The unique technical identifier for the app (e.g. \"org.mozilla.firefox\"). This is NOT the display name.</string>
-    <string name="help_package_name_tip">Find it on F-Droid (listed on the app page), or on the Play Store URL: play.google.com/store/apps/details?id=&lt;package.name>. On your device: Settings → Apps → [App] → App info.</string>
+    <string name="help_package_name_tip">Find it on F-Droid (listed on the app page), or on the Play Store URL: play.google.com/store/apps/details?id=&lt;package.name&gt;. On your device: Settings → Apps → [App] → App info.</string>
     <string name="help_description_title">Description</string>
     <string name="help_description_desc">A brief summary of what the app does. Keep it to 1-3 sentences.</string>
     <string name="help_repo_url_title">Repository URL</string>
     <string name="help_repo_url_desc">The link to the app\'s public source code repository. This is required to verify the app is truly open source.</string>
-    <string name="help_repo_url_tip">Look for it on the app\'s website, F-Droid listing, or search \"&lt;app name> source code\" on GitHub/GitLab/Codeberg.</string>
+    <string name="help_repo_url_tip">Look for it on the app\'s website, F-Droid listing, or search \"&lt;app name&gt; source code\" on GitHub/GitLab/Codeberg.</string>
     <string name="help_fdroid_id_title">F-Droid ID</string>
     <string name="help_fdroid_id_desc">The package name as listed on F-Droid. Usually the same as the package name, but some apps use a different ID for F-Droid builds.</string>
-    <string name="help_fdroid_id_tip">Find it at f-droid.org — the ID is in the URL: f-droid.org/packages/&lt;fdroid.id>/</string>
+    <string name="help_fdroid_id_tip">Find it at f-droid.org — the ID is in the URL: f-droid.org/packages/&lt;fdroid.id&gt;/</string>
     <string name="help_license_title">License</string>
     <string name="help_license_desc">The open source license the app is released under (e.g. GPL-3.0-only, GPL-3.0-or-later, MIT, Apache-2.0). This is required for FOSS submissions.</string>
     <string name="help_license_tip">Check the LICENSE or COPYING file in the app\'s source code repository, or look at the F-Droid listing.</string>
@@ -143,7 +138,6 @@
     <string name="help_target_apps_tip">Select from the list of known proprietary apps. If the target isn\'t listed, you can suggest it as a new proprietary target first.</string>
     <string name="help_search_alternatives_title">Search Alternatives</string>
     <string name="help_search_alternatives_desc">Search for existing FOSS alternatives in our database to link to this proprietary app.</string>
-
     <!-- Settings Screen -->
     <string name="settings_title">Settings</string>
     <string name="settings_help">Help</string>
@@ -185,13 +179,19 @@
     <string name="settings_account_deleted_title">Account Deleted</string>
     <string name="settings_account_deleted_message">Your account has been successfully deleted.</string>
     <string name="settings_ok">OK</string>
+
+    <!-- New strings for system/vendor package filtering toggle -->
+    <string name="settings_hide_system_packages_title">System package filtering</string>
+    <string name="settings_hide_system_packages_label">Hide vendor/system packages</string>
+    <string name="settings_on">On</string>
+    <string name="settings_off">Off</string>
+
     <string name="settings_error">Error</string>
 
     <!-- Ignored Apps Screen -->
     <string name="ignored_apps_title">Ignored Apps</string>
     <string name="ignored_apps_empty">No ignored apps. \nLong-press any app in the list → tap Ignore.</string>
     <string name="ignored_apps_restore">Restore</string>
-
     <!-- Privacy Policy Screen -->
     <string name="privacy_title">Privacy Policy for LibreFind</string>
     <string name="privacy_last_updated">Last updated: February 10, 2026</string>
@@ -234,7 +234,6 @@
     <string name="privacy_section_8">8. Contact Us</string>
     <string name="privacy_section_8_desc">If you have any questions about this Privacy Policy, please contact us:</string>
     <string name="privacy_bullet_email">By email: jks.create@gmail.com</string>
-
     <!-- Alternative Detail Screen -->
     <string name="alt_detail_title_default">Details</string>
     <string name="alt_detail_open_fdroid">Open in F-Droid</string>
@@ -277,7 +276,6 @@
     <string name="alt_detail_report_broken_link">Broken Link</string>
     <string name="alt_detail_report_malware">Malware</string>
     <string name="alt_detail_report_other">Other</string>
-
     <!-- Details Screen -->
     <string name="details_title_format">%1$s alternatives</string>
     <string name="details_error_unknown">Unknown error</string>
@@ -290,6 +288,13 @@
     <string name="details_suggest_proprietary">Suggest as Proprietary</string>
     <string name="details_found_format">Found %1$d FOSS alternative%2$s</string>
     <string name="details_suggest_alternative">Suggest an alternative</string>
+    <string name="details_no_siblings">No other FOSS apps in the same category yet.</string>
+    <string name="details_siblings_found_format">%1$d similar FOSS app%2$s in this category</string>
+    <string name="details_foss_category_unset">This app hasn\'t been assigned a category yet. Similar apps can\'t be shown until it is.</string>
+
+    <!-- Match vote buttons -->
+    <string name="vote_upvote">Good replacement (upvote)</string>
+    <string name="vote_downvote">Poor replacement (downvote)</string>
 
     <!-- My Submissions Screen -->
     <string name="my_submissions_title">My Submissions</string>
@@ -298,19 +303,16 @@
     <string name="status_pending">Pending</string>
     <string name="status_approved">Approved</string>
     <string name="status_rejected">Rejected</string>
-
     <!-- Status Badge -->
     <string name="status_foss">FOSS</string>
     <string name="status_proprietary">PROPRIETARY</string>
     <string name="status_unknown">UNKNOWN</string>
     <string name="status_ignored">ignored</string>
-
     <!-- Common -->
     <string name="field_help_content_desc">Help for %1$s</string>
     <string name="tutorial_skip">Skip</string>
     <string name="tutorial_done">Done</string>
     <string name="tutorial_next">Next</string>
-
     <!-- My Reports Screen -->
     <string name="my_reports_title">My Reports</string>
     <string name="my_reports_empty">No reports found</string>
@@ -321,14 +323,13 @@
     <string name="report_status_wontfix">Won\'t Fix</string>
     <string name="report_status_duplicate">Duplicate</string>
     <string name="report_status_closed">Closed</string>
-
     <!-- Report Screen -->
     <string name="report_issue_title">Report Issue</string>
     <string name="report_type_label">Report Type</string>
     <string name="report_title_label">Title</string>
     <string name="report_title_placeholder">Brief summary of the issue</string>
     <string name="report_desc_label">Description</string>
-    <string name="report_desc_placeholder">Describe the issue or suggestion in detail...</string>
+    <string name="report_desc_placeholder">Describe the issue or suggestion in detail…</string>
     <string name="report_priority_label">Priority</string>
     <string name="report_submit_button">Submit Report</string>
     <string name="web_submission">Web Submission</string>

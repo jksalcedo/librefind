@@ -1,3 +1,13 @@
+
+> **Google has announced that, starting in 2026/2027, all apps on certified Android devices
+> will require the developer to submit personal identity details directly to Google.
+> Since the developers of this app do not agree to this requirement, this app will no longer 
+> work on certified Android devices after that time.**
+> https://keepandroidopen.org/
+
+
+
+
 <h1 align="center">
   <br>
     <img src="./fastlane/metadata/android/en-US/images/icon.png" alt="LibreFind icon" width="150" />
@@ -9,15 +19,19 @@
 <h4 align="center">Discover and replace proprietary apps with FOSS alternatives.</h4>
 
 <h4 align=center>
-<img alt="GitHub Release" src="https://img.shields.io/github/v/release/jksalcedo/librefind?include_prereleases&logo=github">
-<img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/jksalcedo/librefind/total">
-    <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/jksalcedo/librefind">
-    <img alt="GitHub License" src="https://img.shields.io/github/license/jksalcedo/librefind?logo=MIT">
-<a href="https://github.com/jksalcedo/librefind/actions/workflows/codeql.yml">
-  <img src="https://github.com/jksalcedo/librefind/actions/workflows/codeql.yml/badge.svg" alt="CodeQL Advanced">
-</a>    <img alt="GitHub Release Date" src="https://img.shields.io/github/release-date/jksalcedo/librefind">
-
+  <a href="https://developer.android.com">
+    <img src="https://img.shields.io/badge/Platform-Android-brighgtreen?logo=android" alt="Android Platform">
+  </a>
+  <img src="https://img.shields.io/badge/API-24%2B-3DDC84?logo=android&color=blue" alt="Minimum SDK">
+  <img alt="GitHub Release" src="https://img.shields.io/github/v/release/jksalcedo/librefind?include_prereleases&logo=github&label=Release&color=blue">
+  <img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/jksalcedo/librefind/total?label=APK%20Downloads&color=brightgreen">
+  <img alt="GitHub License" src="https://img.shields.io/github/license/jksalcedo/librefind?logo=MIT&label=License&color=blue">
+  <a href="https://github.com/jksalcedo/librefind/actions/workflows/codeql.yml">
+    <img src="https://github.com/jksalcedo/librefind/actions/workflows/codeql.yml/badge.svg" alt="CodeQL Advanced">
+  </a>
+  <img src="https://img.shields.io/github/last-commit/jksalcedo/librefind?color=blue" alt="Last Commit">
 </h4>
+
 <p align="center">
 <a href="https://apt.izzysoft.de/packages/com.jksalcedo.librefind">
   <img alt="Get it on IzzyOnDroid" src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" width="160">
@@ -28,11 +42,11 @@
     alt="Get it on F-Droid"
     width="160">
 </a>
- 
+
   <a href="https://github.com/jksalcedo/librefind/releases">
   <img src="https://github.com/SilentCoderHere/aihub/blob/main/fastlane/metadata/android/en-US/images/badge_github.png" width="160" alt="Get it on GitHub">
   </a>
-  
+
   <br>
 
   <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/jksalcedo/librefind">
@@ -46,21 +60,22 @@
 
 ## What is LibreFind?
 
-LibreFind is a free and lightweight Android app that scans your installed packages locally and queries our database to identify proprietary software and find FOSS alternatives.
+LibreFind is a free and lightweight Android app that scans your installed packages locally and
+queries our database to identify proprietary software and find FOSS alternatives.
 
 ### Core Features
 
 - Scan installed apps to detect proprietary software
 - Get FOSS alternative recommendations
-- View sovereignty scores showing FOSS vs proprietary ratio
+- View sovereignty scores showing FOSS vs. proprietary ratio
 - Community-driven database
 
 ## Screenshots
 
-| Dashboard                                                          | Alternative List                                                             | Submission                                                           | Profile                                                        |
-|--------------------------------------------------------------------|------------------------------------------------------------------------------|----------------------------------------------------------------------|----------------------------------------------------------------|
+| Dashboard                                                                           | Alternative List                                                                              | Submission                                                                            | Profile                                                                         |
+|-------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
 | ![Dashboard](fastlane/metadata/android/en-US/images/phoneScreenshots/dashboard.jpg) | ![Alternatives](fastlane/metadata/android/en-US/images/phoneScreenshots/alternative_list.jpg) | ![Submission](fastlane/metadata/android/en-US/images/phoneScreenshots/submission.jpg) | ![Profile](fastlane/metadata/android/en-US/images/phoneScreenshots/profile.jpg) |
-| Scan your apps and view sovereignty score                          | Browse FOSS alternatives                                                     | Contribute new alternatives                                          | Track your submissions                                         |
+| Scan your apps and view sovereignty score                                           | Browse FOSS alternatives                                                                      | Contribute new alternatives                                                           | Track your submissions                                                          |
 
 ### Community Contributions
 
@@ -69,6 +84,7 @@ LibreFind is a free and lightweight Android app that scans your installed packag
 - Vote on app recommendations
 - Help build a comprehensive alternative database
 
+You can contribute from within the app, or you can go to [librefind-submission.web.app](https://librefind-submission.web.app/) and use the web version.
   
 ---
 
@@ -83,11 +99,15 @@ Please join the Telegram channel for further discussions.
 
 ## ☕ Support
 
-LibreFind is a free and open-source project managed independently. Our goal is to promote digital privacy by making FOSS apps mainstream. Currently, LibreFind is trusted by **1,334 registered users** globally. 
+LibreFind is a free and open-source project managed independently. Our goal is to promote digital
+privacy by making FOSS apps mainstream. Currently, LibreFind is trusted by **1,334 registered users 
+** globally.
 
-While the app is free, **infrastructure and hosting servers** cost money to keep running 24/7. 
+While the app is free, **infrastructure and hosting servers** cost money to keep running 24/7.
 
-If you find this tool useful for reclaiming your digital privacy, please consider buying me a coffee. Your support goes directly toward:
+If you find this tool useful for reclaiming your digital privacy, please consider buying me a
+coffee. Your support goes directly toward:
+
 * Paying monthly server bills.
 * Keeping the database online and fast.
 * Development of new features.
@@ -98,12 +118,29 @@ If you find this tool useful for reclaiming your digital privacy, please conside
   </a>
 </div>
 
+## Contributing
+
+Can't donate? You can still make a real difference:
+
+- **Star the repo** — helps others discover LibreFind on GitHub
+- **Report bugs** — open an issue if something isn't working
+- **Suggest features** — share ideas through GitHub issues
+- **Test & give feedback** — usability and performance reports are valuable
+- **Translate** — help bring LibreFind to more languages
+  via [Weblate](https://hosted.weblate.org/engage/librefind/)
+- **Spread the word** — share with friends or on social media
+- **Contribute code** — fix bugs or add features via pull requests
+
+Every small contribution helps the project grow.
+
 ## Translations
+
 <a href="https://hosted.weblate.org/engage/librefind/">
 <img src="https://hosted.weblate.org/widget/librefind/android-strings/multi-auto.svg" alt="Translation status" />
 </a>
 
-LibreFind uses [Weblate](https://hosted.weblate.org/engage/librefind/) to manage translations. You can help translate LibreFind into your language!
+LibreFind uses [Weblate](https://hosted.weblate.org/engage/librefind/) to manage translations. You
+can help translate LibreFind into your language!
 
 ## Star History
 

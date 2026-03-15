@@ -1,4 +1,8 @@
+import com.android.build.api.artifact.SingleArtifact
+import com.android.build.api.dsl.ApplicationExtension
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
@@ -8,13 +12,23 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
-val versionMajor = 1
-val versionMinor = 0
-val versionPatch = 0
-val versionStage = "beta" // Change to "alpha", "beta", "rc", or "stable"
-val versionBuild = 19
+// Load the version.properties file
+val versionPropsFile: File = rootProject.file("version.properties")
+val versionProps = Properties()
+if (versionPropsFile.exists()) {
+    versionProps.load(FileInputStream(versionPropsFile))
+} else {
+    throw GradleException("version.properties file not found! Please create it in the project root.")
+}
 
-val stageWeight = when (versionStage.lowercase()) {
+// Safely parse the values
+val vMajor = versionProps.getProperty("VERSION_MAJOR", "0").toInt()
+val vMinor = versionProps.getProperty("VERSION_MINOR", "1").toInt()
+val vPatch = versionProps.getProperty("VERSION_PATCH", "0").toInt()
+val vStage = versionProps.getProperty("VERSION_STAGE", "beta").lowercase()
+val vBuild = versionProps.getProperty("VERSION_BUILD", "1").toInt()
+
+val stageWeight = when (vStage) {
     "alpha" -> 0
     "beta" -> 1
     "rc" -> 2
@@ -22,22 +36,32 @@ val stageWeight = when (versionStage.lowercase()) {
     else -> 0
 }
 
-val computedVersionCode = (versionMajor * 100000) +
-        (versionMinor * 1000) +
-        (versionPatch * 100) +
-        (stageWeight * 10) +
-        versionBuild
+val suffix = if (vStage == "stable") "" else "-$vStage$vBuild"
 
-// Construct the versionName dynamically
-// If stable, just output "1.0.0"
-// Otherwise, output "1.0.0-beta16" or "1.0.0-rc1"
-val mVersionName =
-    "$versionMajor.$versionMinor.$versionPatch-$versionStage${
-        if (versionStage.lowercase() == "stable") null else versionBuild
-    }"
+val computedVersionCode = versionProps.getProperty("VERSION_CODE")?.toInt() ?: ((vMajor * 10000000) +
+        (vMinor * 100000) +
+        (vPatch * 1000) +
+        (stageWeight * 100) +
+        vBuild)
 
+val computedVersionName = versionProps.getProperty("VERSION_NAME") ?: "$vMajor.$vMinor.$vPatch$suffix"
 
-configure<com.android.build.api.dsl.ApplicationExtension> {
+tasks.register("updateVersionProperties") {
+    doLast {
+        val calculatedCode = (vMajor * 10000000) +
+                (vMinor * 100000) +
+                (vPatch * 1000) +
+                (stageWeight * 100) +
+                vBuild
+        val calculatedName = "$vMajor.$vMinor.$vPatch$suffix"
+
+        versionProps.setProperty("VERSION_CODE", calculatedCode.toString())
+        versionProps.setProperty("VERSION_NAME", calculatedName)
+        versionProps.store(versionPropsFile.outputStream(), null)
+    }
+}
+
+configure<ApplicationExtension> {
     namespace = "com.jksalcedo.librefind"
     compileSdk = 36
 
@@ -46,7 +70,7 @@ configure<com.android.build.api.dsl.ApplicationExtension> {
         minSdk = 24
         targetSdk = 36
         versionCode = computedVersionCode
-        versionName = mVersionName
+        versionName = computedVersionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -104,11 +128,11 @@ kotlin {
 androidComponents {
     onVariants { variant ->
         val appName = "librefind"
-        val versionName = mVersionName
+        val versionName = computedVersionName
         val capitalizedName = variant.name.replaceFirstChar { it.titlecase() }
 
         tasks.register<Copy>("rename${capitalizedName}Apk") {
-            from(variant.artifacts.get(com.android.build.api.artifact.SingleArtifact.APK))
+            from(variant.artifacts.get(SingleArtifact.APK))
             into(layout.buildDirectory.dir("outputs/apk/${variant.name}"))
             rename(".*\\.apk", "$appName-v$versionName-${variant.name}.apk")
         }

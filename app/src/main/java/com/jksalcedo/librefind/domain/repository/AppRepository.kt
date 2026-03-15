@@ -82,6 +82,17 @@ interface AppRepository {
         value: Int // 1-5 star rating
     ): Result<Unit>
 
+    /**
+     * Cast a match vote on a target ↔ solution pairing.
+     * [vote] must be +1 (upvote) or -1 (downvote).
+     * Passing 0 removes an existing vote.
+     */
+    suspend fun castMatchVote(
+        targetPackage: String,
+        solutionPackage: String,
+        vote: Int
+    ): Result<Unit>
+
     suspend fun getMySubmissions(userId: String): List<Submission>
 
     suspend fun submitFeedback(
@@ -98,6 +109,13 @@ interface AppRepository {
     suspend fun searchProprietary(query: String, limit: Int = 20): List<Alternative>
 
     suspend fun getAlternativesCount(packageName: String): Int
+
+    /**
+     * Returns other FOSS apps in the same category as [packageName], excluding itself.
+     * Returns null if the app has no meaningful category set (i.e. "Other"),
+     * as opposed to an empty list which means the category is set but has no peers yet.
+     */
+    suspend fun getSiblingAlternatives(packageName: String): List<Alternative>?
 
     suspend fun getPendingSubmissionPackages(): Set<String>
 

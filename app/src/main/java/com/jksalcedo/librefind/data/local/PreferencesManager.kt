@@ -2,10 +2,13 @@ package com.jksalcedo.librefind.data.local
 
 import android.content.Context
 import android.content.SharedPreferences
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import java.util.UUID
 
 class PreferencesManager(private val context: Context) {
-    private val prefs: SharedPreferences = 
+    private val prefs: SharedPreferences =
         context.getSharedPreferences("librefind_prefs", Context.MODE_PRIVATE)
 
     fun hasSeenOnboarding(): Boolean {
@@ -43,7 +46,7 @@ class PreferencesManager(private val context: Context) {
     fun getOrCreateDeviceId(): String {
         val existing = prefs.getString(KEY_DEVICE_ID, null)
         if (existing != null) return existing
-        
+
         val newId = UUID.randomUUID().toString()
         prefs.edit().putString(KEY_DEVICE_ID, newId).apply()
         return newId
@@ -57,10 +60,43 @@ class PreferencesManager(private val context: Context) {
         }
     }
 
+    // --- System package filtering preferences ---
+    /**
+     * Returns whether system/vendor packages should be hidden from the UI.
+     *
+     * Default: true (on)
+     */
+    fun shouldHideSystemPackages(): Boolean {
+        return prefs.getBoolean(KEY_HIDE_SYSTEM_PACKAGES, true)
+    }
+
+    /**
+     * Persist user preference for hiding system/vendor packages.
+     */
+    fun setHideSystemPackages(enabled: Boolean) {
+        prefs.edit().putBoolean(KEY_HIDE_SYSTEM_PACKAGES, enabled).apply()
+    }
+
+    fun observeHideSystemPackages(): Flow<Boolean> = callbackFlow {
+        val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+            if (key == KEY_HIDE_SYSTEM_PACKAGES) {
+                trySend(shouldHideSystemPackages())
+            }
+        }
+        prefs.registerOnSharedPreferenceChangeListener(listener)
+        trySend(shouldHideSystemPackages())
+        awaitClose { prefs.unregisterOnSharedPreferenceChangeListener(listener) }
+    }
+
+
+
     companion object {
         private const val KEY_ONBOARDING_COMPLETE = "onboarding_complete"
         private const val KEY_LAST_VERSION = "last_seen_version"
         private const val KEY_TUTORIAL_COMPLETE = "tutorial_complete"
         private const val KEY_DEVICE_ID = "device_id"
+
+        // New keys for system package filtering
+        private const val KEY_HIDE_SYSTEM_PACKAGES = "hide_system_packages"
     }
 }
