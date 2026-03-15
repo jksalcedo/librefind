@@ -56,8 +56,9 @@ class DashboardViewModel(
                 combine(
                     refreshTrigger.onStart { emit(Unit) },
                     ignoredAppsRepository.getIgnoredPackageNames(),
-                    reclassifiedAppsRepository.getReclassifiedPackageNames()
-                ) { _, _, _ -> }.flatMapLatest {
+                    reclassifiedAppsRepository.getReclassifiedPackageNames(),
+                    preferencesManager.observeHideSystemPackages()
+                ) { _, _, _, _ -> }.flatMapLatest {
                     _state.update { it.copy(isLoading = true, error = null) }
                     scanInventoryUseCase()
                 },

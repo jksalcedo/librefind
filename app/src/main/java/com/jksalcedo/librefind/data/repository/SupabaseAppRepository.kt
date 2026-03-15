@@ -1,8 +1,10 @@
 package com.jksalcedo.librefind.data.repository
 
 import android.util.Log
+import com.jksalcedo.librefind.data.remote.model.AlternativeWithVoteDto
 import com.jksalcedo.librefind.data.remote.model.AppReport
 import com.jksalcedo.librefind.data.remote.model.AppScanStatsDto
+import com.jksalcedo.librefind.data.remote.model.MatchVoteDto
 import com.jksalcedo.librefind.data.remote.model.ProfileDto
 import com.jksalcedo.librefind.data.remote.model.SolutionDto
 import com.jksalcedo.librefind.data.remote.model.UserLinkingSubmissionsDto
@@ -91,28 +93,80 @@ class SupabaseAppRepository(
     }
 
     override suspend fun getAlternatives(packageName: String): List<Alternative> {
+        // Try the RPC first (includes match-vote aggregates).
+        // Falls back to direct query if the function isn't available yet.
+        return try {
+            val userId = supabase.auth.currentUserOrNull()?.id
+
+            @Serializable
+            data class GetAlternativesParams(
+                @SerialName("target_pkg") val targetPkg: String,
+                @SerialName("user_id") val userId: String?
+            )
+
+            val results = supabase.postgrest.rpc(
+                "get_alternatives_with_match_votes",
+                GetAlternativesParams(packageName, userId)
+            ).decodeList<AlternativeWithVoteDto>()
+
+            results.map { dto -> dto.toAlternative() }
+        } catch (rpcError: Exception) {
+            Log.w("SupabaseAppRepo", "get_alternatives_with_match_votes unavailable, falling back", rpcError)
+            getAlternativesDirect(packageName)
+        }
+    }
+
+    private suspend fun getAlternativesDirect(packageName: String): List<Alternative> {
         return try {
             val target = supabase.postgrest.from("targets")
                 .select(columns = Columns.list("alternatives")) {
-                    filter {
-                        eq("package_name", packageName)
-                    }
-                }.decodeSingleOrNull<TargetAlternativesDto>() ?: return emptyList()
+                    filter { eq("package_name", packageName) }
+                    limit(1)
+                }.decodeSingleOrNull<TargetAlternativesDto>()
 
-            if (target.alternatives.isNullOrEmpty()) return emptyList()
+            val altPackageNames = target?.alternatives.orEmpty()
+            if (altPackageNames.isEmpty()) return emptyList()
 
             val solutions = supabase.postgrest.from("solutions")
                 .select(
                     columns = Columns.list(
                         "package_name", "name", "license", "repo_url", "fdroid_id",
                         "icon_url", "description", "features", "pros", "cons",
-                        "rating_usability", "rating_privacy", "rating_features", "vote_count"
+                        "rating_usability", "rating_privacy", "rating_features",
+                        "vote_count", "category"
                     )
                 ) {
-                    filter {
-                        isIn("package_name", target.alternatives)
-                    }
+                    filter { isIn("package_name", altPackageNames) }
                 }.decodeList<SolutionDto>()
+
+            @Serializable
+            data class MatchVoteRowDto(
+                @SerialName("solution_package") val solutionPackage: String,
+                @SerialName("user_id") val userId: String,
+                val vote: Int
+            )
+
+            val allVotes: List<MatchVoteRowDto> = try {
+                supabase.postgrest.from("target_solution_votes")
+                    .select(columns = Columns.list("solution_package", "user_id", "vote")) {
+                        filter { eq("target_package", packageName) }
+                    }.decodeList()
+            } catch (_: Exception) {
+                emptyList()
+            }
+
+            val currentUserId = supabase.auth.currentUserOrNull()?.id
+
+            data class VoteAgg(val upvotes: Int, val downvotes: Int, val userVote: Int?)
+            val votesByPkg = allVotes
+                .groupBy { it.solutionPackage }
+                .mapValues { (_, rows) ->
+                    VoteAgg(
+                        upvotes = rows.count { it.vote == 1 },
+                        downvotes = rows.count { it.vote == -1 },
+                        userVote = rows.firstOrNull { it.userId == currentUserId }?.vote
+                    )
+                }
 
             solutions.map { dto ->
                 val usabilityRating = dto.ratingUsability ?: 0f
@@ -122,12 +176,11 @@ class SupabaseAppRepository(
 
                 val ratingAvg = if (rawRatingCount > 0) {
                     val sum = usabilityRating + privacyRating + featuresRating
-                    val nonZeroCount =
-                        listOf(usabilityRating, privacyRating, featuresRating).count { it > 0 }
+                    val nonZeroCount = listOf(usabilityRating, privacyRating, featuresRating).count { it > 0 }
                     if (nonZeroCount > 0) sum / nonZeroCount else 0f
                 } else 0f
 
-                val ratingCount = if (ratingAvg == 0f) 0 else rawRatingCount
+                val agg = votesByPkg[dto.packageName]
 
                 Alternative(
                     id = dto.packageName,
@@ -137,8 +190,13 @@ class SupabaseAppRepository(
                     repoUrl = dto.repoUrl ?: "",
                     fdroidId = dto.fdroidId ?: "",
                     iconUrl = dto.iconUrl,
+                    category = dto.category,
+                    matchUpvotes = agg?.upvotes ?: 0,
+                    matchDownvotes = agg?.downvotes ?: 0,
+                    matchScore = (agg?.upvotes ?: 0) - (agg?.downvotes ?: 0),
+                    userMatchVote = agg?.userVote,
                     ratingAvg = ratingAvg,
-                    ratingCount = ratingCount,
+                    ratingCount = if (ratingAvg == 0f) 0 else rawRatingCount,
                     usabilityRating = usabilityRating,
                     privacyRating = privacyRating,
                     featuresRating = featuresRating,
@@ -149,9 +207,48 @@ class SupabaseAppRepository(
                 )
             }
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.e("SupabaseAppRepo", "getAlternativesDirect failed", e)
             emptyList()
         }
+    }
+
+    private fun AlternativeWithVoteDto.toAlternative(): Alternative {
+        val usabilityRating = ratingUsability ?: 0f
+        val privacyRating = ratingPrivacy ?: 0f
+        val featuresRating = ratingFeatures ?: 0f
+        val rawRatingCount = voteCount ?: 0
+
+        val ratingAvg = if (rawRatingCount > 0) {
+            val sum = usabilityRating + privacyRating + featuresRating
+            val nonZeroCount = listOf(usabilityRating, privacyRating, featuresRating).count { it > 0 }
+            if (nonZeroCount > 0) sum / nonZeroCount else 0f
+        } else 0f
+
+        val ratingCount = if (ratingAvg == 0f) 0 else rawRatingCount
+
+        return Alternative(
+            id = packageName,
+            name = name,
+            packageName = packageName,
+            license = license,
+            repoUrl = repoUrl ?: "",
+            fdroidId = fdroidId ?: "",
+            iconUrl = iconUrl,
+            category = category,
+            matchScore = matchScore,
+            matchUpvotes = matchUpvotes,
+            matchDownvotes = matchDownvotes,
+            userMatchVote = userMatchVote,
+            ratingAvg = ratingAvg,
+            ratingCount = ratingCount,
+            usabilityRating = usabilityRating,
+            privacyRating = privacyRating,
+            featuresRating = featuresRating,
+            description = description,
+            features = features.orEmpty(),
+            pros = pros.orEmpty(),
+            cons = cons.orEmpty()
+        )
     }
 
     override suspend fun getAlternative(packageName: String): Alternative? {
@@ -161,7 +258,8 @@ class SupabaseAppRepository(
                     columns = Columns.list(
                         "package_name", "name", "license", "repo_url", "fdroid_id",
                         "icon_url", "description", "features", "pros", "cons",
-                        "rating_usability", "rating_privacy", "rating_features", "vote_count"
+                        "rating_usability", "rating_privacy", "rating_features", "vote_count",
+                        "category"
                     )
                 ) {
                     filter {
@@ -191,6 +289,7 @@ class SupabaseAppRepository(
                 repoUrl = dto.repoUrl ?: "",
                 fdroidId = dto.fdroidId ?: "",
                 iconUrl = dto.iconUrl,
+                category = dto.category,
                 ratingAvg = ratingAvg,
                 ratingCount = ratingCount,
                 usabilityRating = usabilityRating,
@@ -389,6 +488,37 @@ class SupabaseAppRepository(
         } catch (e: Exception) {
             Log.e("SupabaseAppRepo", "Update failed", e)
             throw e
+        }
+    }
+
+    override suspend fun castMatchVote(
+        targetPackage: String,
+        solutionPackage: String,
+        vote: Int
+    ): Result<Unit> = runCatching {
+        val userId = supabase.auth.currentUserOrNull()?.id
+            ?: throw IllegalStateException("Not logged in")
+
+        if (vote == 0) {
+            // Remove existing vote
+            supabase.postgrest.from("target_solution_votes").delete {
+                filter {
+                    eq("user_id", userId)
+                    eq("target_package", targetPackage)
+                    eq("solution_package", solutionPackage)
+                }
+            }
+        } else {
+            val matchVote = MatchVoteDto(
+                userId = userId,
+                targetPackage = targetPackage,
+                solutionPackage = solutionPackage,
+                vote = vote.coerceIn(-1, 1)
+            )
+            supabase.postgrest.from("target_solution_votes").upsert(matchVote) {
+                onConflict = "user_id,target_package,solution_package"
+                defaultToNull = false
+            }
         }
     }
 
@@ -779,6 +909,78 @@ class SupabaseAppRepository(
         } catch (e: Exception) {
             e.printStackTrace()
             0
+        }
+    }
+
+    override suspend fun getSiblingAlternatives(packageName: String): List<Alternative>? {
+        return try {
+            // 1. Look up this solution's category
+            @Serializable
+            data class CategoryDto(val category: String = "Other")
+
+            val categoryDto = supabase.postgrest.from("solutions")
+                .select(columns = Columns.list("category")) {
+                    filter { eq("package_name", packageName) }
+                    limit(1)
+                }.decodeSingleOrNull<CategoryDto>() ?: return null
+
+            // Return null (not empty) so callers can distinguish "category unset" from "no peers"
+            if (categoryDto.category == "Other") return null
+
+            // 2. Fetch all solutions in the same category, excluding self
+            val siblings = supabase.postgrest.from("solutions")
+                .select(
+                    columns = Columns.list(
+                        "package_name", "name", "license", "repo_url", "fdroid_id",
+                        "icon_url", "description", "features", "pros", "cons",
+                        "rating_usability", "rating_privacy", "rating_features", "vote_count",
+                        "category"
+                    )
+                ) {
+                    filter {
+                        eq("category", categoryDto.category)
+                        neq("package_name", packageName)
+                    }
+                }.decodeList<SolutionDto>()
+
+            siblings.map { dto ->
+                val usabilityRating = dto.ratingUsability ?: 0f
+                val privacyRating = dto.ratingPrivacy ?: 0f
+                val featuresRating = dto.ratingFeatures ?: 0f
+                val rawRatingCount = dto.voteCount ?: 0
+
+                val ratingAvg = if (rawRatingCount > 0) {
+                    val sum = usabilityRating + privacyRating + featuresRating
+                    val nonZeroCount =
+                        listOf(usabilityRating, privacyRating, featuresRating).count { it > 0 }
+                    if (nonZeroCount > 0) sum / nonZeroCount else 0f
+                } else 0f
+
+                val ratingCount = if (ratingAvg == 0f) 0 else rawRatingCount
+
+                Alternative(
+                    id = dto.packageName,
+                    name = dto.name,
+                    packageName = dto.packageName,
+                    license = dto.license,
+                    repoUrl = dto.repoUrl ?: "",
+                    fdroidId = dto.fdroidId ?: "",
+                    iconUrl = dto.iconUrl,
+                    category = dto.category,
+                    ratingAvg = ratingAvg,
+                    ratingCount = ratingCount,
+                    usabilityRating = usabilityRating,
+                    privacyRating = privacyRating,
+                    featuresRating = featuresRating,
+                    description = dto.description,
+                    features = dto.features.orEmpty(),
+                    pros = dto.pros.orEmpty(),
+                    cons = dto.cons.orEmpty()
+                )
+            }.sortedByDescending { it.ratingAvg }
+        } catch (e: Exception) {
+            Log.e("SupabaseAppRepo", "getSiblingAlternatives failed", e)
+            null
         }
     }
 

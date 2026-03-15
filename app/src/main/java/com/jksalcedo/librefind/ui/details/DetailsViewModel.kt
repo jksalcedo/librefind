@@ -33,7 +33,23 @@ class DetailsViewModel(
             }
 
             try {
-                val alternatives = getAlternativeUseCase(packageName)
+                val isFoss = cacheRepository.isSolutionCached(packageName) ||
+                        appRepository.isSolution(packageName)
+
+                val alternatives = if (!isFoss) {
+                    getAlternativeUseCase(packageName)
+                } else {
+                    emptyList()
+                }
+
+                val siblings = if (isFoss) {
+                    appRepository.getSiblingAlternatives(packageName)
+                } else {
+                    emptyList()
+                }
+                // null = category is "Other"/unset; emptyList = category set but no peers yet
+                val fossCategoryUnset = isFoss && siblings == null
+
                 val user = authRepository.getCurrentUser()
 
                 _state.update {
@@ -41,6 +57,9 @@ class DetailsViewModel(
                         isLoading = false,
                         packageName = packageName,
                         alternatives = alternatives,
+                        siblingAlternatives = siblings.orEmpty(),
+                        isFoss = isFoss,
+                        fossCategoryUnset = fossCategoryUnset,
                         isSignedIn = user != null,
                         error = null
                     )
@@ -62,11 +81,54 @@ class DetailsViewModel(
             if (user != null) {
                 appRepository.castVote(altId, "usability", stars)
                 _state.value.packageName.let { pkg ->
-                    if (pkg.isNotEmpty()) {
-                        loadAlternatives(pkg)
-                    }
+                    if (pkg.isNotEmpty()) loadAlternatives(pkg)
                 }
             }
+        }
+    }
+
+    fun castMatchVote(solutionPackage: String, vote: Int) {
+        viewModelScope.launch {
+            val user = authRepository.getCurrentUser() ?: return@launch
+            val targetPackage = _state.value.packageName
+            if (targetPackage.isBlank()) return@launch
+
+            // Optimistic update: flip if same vote (toggle off), otherwise apply
+            _state.update { s ->
+                s.copy(
+                    alternatives = s.alternatives.map { alt ->
+                        if (alt.packageName != solutionPackage) return@map alt
+                        val prev = alt.userMatchVote
+                        val newVote = if (prev == vote) 0 else vote
+                        val upDelta = when {
+                            newVote == 1 && prev != 1 -> 1
+                            newVote != 1 && prev == 1 -> -1
+                            else -> 0
+                        }
+                        val downDelta = when {
+                            newVote == -1 && prev != -1 -> 1
+                            newVote != -1 && prev == -1 -> -1
+                            else -> 0
+                        }
+                        alt.copy(
+                            userMatchVote = newVote.takeIf { it != 0 },
+                            matchUpvotes = alt.matchUpvotes + upDelta,
+                            matchDownvotes = alt.matchDownvotes + downDelta,
+                            matchScore = alt.matchScore + upDelta - downDelta
+                        )
+                    }
+                )
+            }
+
+            val actualVote = if (_state.value.alternatives
+                    .find { it.packageName == solutionPackage }?.userMatchVote == null
+            ) 0 else vote
+
+            appRepository.castMatchVote(targetPackage, solutionPackage, actualVote)
+                .onFailure {
+                    // Revert optimistic update on failure
+                    loadAlternatives(targetPackage)
+                }
         }
     }
 
@@ -103,6 +165,9 @@ data class DetailsState(
     val isLoading: Boolean = false,
     val packageName: String = "",
     val alternatives: List<Alternative> = emptyList(),
+    val siblingAlternatives: List<Alternative> = emptyList(),
+    val isFoss: Boolean = false,
+    val fossCategoryUnset: Boolean = false,
     val isSignedIn: Boolean = false,
     val error: String? = null,
     val isUnknown: Boolean = false

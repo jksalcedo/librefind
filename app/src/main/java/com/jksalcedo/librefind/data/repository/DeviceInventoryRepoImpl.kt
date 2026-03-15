@@ -1,8 +1,10 @@
 package com.jksalcedo.librefind.data.repository
 
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.util.Log
 import com.jksalcedo.librefind.data.local.InventorySource
+import com.jksalcedo.librefind.data.local.PreferencesManager
 import com.jksalcedo.librefind.data.local.SafeSignatureDb
 import com.jksalcedo.librefind.domain.model.AppItem
 import com.jksalcedo.librefind.domain.model.AppStatus
@@ -26,7 +28,8 @@ class DeviceInventoryRepoImpl(
     private val appRepository: AppRepository,
     private val ignoredAppsRepository: IgnoredAppsRepository,
     private val cacheRepository: CacheRepository,
-    private val reclassifiedAppsRepository: ReclassifiedAppsRepository
+    private val reclassifiedAppsRepository: ReclassifiedAppsRepository,
+    private val preferencesManager: PreferencesManager
 ) : DeviceInventoryRepo {
 
     companion object {
@@ -125,20 +128,56 @@ class DeviceInventoryRepoImpl(
         val installer = localSource.getInstaller(packageName)
         val icon = pkg.applicationInfo?.icon
 
+        // Use standard PackageManager flags to determine if it is a system app
+        val isSystem = (pkg.applicationInfo?.flags?.and(ApplicationInfo.FLAG_SYSTEM)) != 0
+        val isSystemPackage = isSystem
+
         if (packageName in ignoredApps) {
-            return createAppItem(packageName, label, AppStatus.IGNORED, installer, icon)
+            return createAppItem(
+                packageName,
+                label,
+                AppStatus.IGNORED,
+                installer,
+                icon,
+                isUserReclassified = false,
+                isSystemPackage = isSystemPackage
+            )
         }
 
         if (packageName in reclassifiedApps) {
-            return createAppItem(packageName, label, AppStatus.FOSS, installer, icon, isUserReclassified = true)
+            return createAppItem(
+                packageName,
+                label,
+                AppStatus.FOSS,
+                installer,
+                icon,
+                isUserReclassified = true,
+                isSystemPackage = isSystemPackage
+            )
         }
 
         if (installer in FOSS_INSTALLERS) {
-            return createAppItem(packageName, label, AppStatus.FOSS, installer, icon)
+            return createAppItem(
+                packageName,
+                label,
+                AppStatus.FOSS,
+                installer,
+                icon,
+                isUserReclassified = false,
+                isSystemPackage = isSystemPackage
+            )
         }
 
         if (signatureDb.isKnownFossApp(packageName)) {
-            return createAppItem(packageName, label, AppStatus.FOSS, installer, icon)
+            return createAppItem(
+                packageName,
+                label,
+                AppStatus.FOSS,
+                installer,
+                icon,
+                isUserReclassified = false,
+                isSystemPackage = isSystemPackage
+            )
         }
 
         val isKnownSolution = try {
@@ -148,7 +187,15 @@ class DeviceInventoryRepoImpl(
         }
 
         if (isKnownSolution) {
-            return createAppItem(packageName, label, AppStatus.FOSS, installer, icon)
+            return createAppItem(
+                packageName,
+                label,
+                AppStatus.FOSS,
+                installer,
+                icon,
+                isUserReclassified = false,
+                isSystemPackage = isSystemPackage
+            )
         }
 
         val isProprietary = try {
@@ -158,19 +205,51 @@ class DeviceInventoryRepoImpl(
         }
 
         if (isProprietary) {
-            return createAppItem(packageName, label, AppStatus.PROP, installer, icon)
+            return createAppItem(
+                packageName,
+                label,
+                AppStatus.PROP,
+                installer,
+                icon,
+                isUserReclassified = false,
+                isSystemPackage = isSystemPackage
+            )
         }
 
         if (installer in PROPRIETARY_INSTALLERS) {
-            return createAppItem(packageName, label, AppStatus.PROP, installer, icon)
+            return createAppItem(
+                packageName,
+                label,
+                AppStatus.PROP,
+                installer,
+                icon,
+                isUserReclassified = false,
+                isSystemPackage = isSystemPackage
+            )
         }
 
         // Only show PENDING if app isn't already classified
         if (packageName in pendingPackages) {
-            return createAppItem(packageName, label, AppStatus.PENDING, installer, icon)
+            return createAppItem(
+                packageName,
+                label,
+                AppStatus.PENDING,
+                installer,
+                icon,
+                isUserReclassified = false,
+                isSystemPackage = isSystemPackage
+            )
         }
 
-        return createAppItem(packageName, label, AppStatus.UNKN, installer, icon)
+        return createAppItem(
+            packageName,
+            label,
+            AppStatus.UNKN,
+            installer,
+            icon,
+            isUserReclassified = false,
+            isSystemPackage = isSystemPackage
+        )
     }
 
     private suspend fun createAppItem(
@@ -179,7 +258,8 @@ class DeviceInventoryRepoImpl(
         status: AppStatus,
         installer: String?,
         icon: Int?,
-        isUserReclassified: Boolean = false
+        isUserReclassified: Boolean = false,
+        isSystemPackage: Boolean = false
     ): AppItem {
         val alternativesCount = if (status == AppStatus.PROP) {
             try {
@@ -199,7 +279,8 @@ class DeviceInventoryRepoImpl(
             installerId = installer,
             knownAlternatives = alternativesCount,
             icon = icon,
-            isUserReclassified = isUserReclassified
+            isUserReclassified = isUserReclassified,
+            isSystemPackage = isSystemPackage
         )
     }
 

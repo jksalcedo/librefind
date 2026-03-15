@@ -160,12 +160,22 @@ fun SubmitContent(
     var category by remember { mutableStateOf("") }
     var showCategoryDropdown by remember { mutableStateOf(false) }
     val categories = listOf(
-        "Browser", "Email", "Messenger", "Social Media",
-        "Maps & Navigation", "Cloud Storage", "Notes", "Calendar",
-        "File Manager", "Music Player", "Video Player", "Photo Editor",
-        "Office Suite", "Keyboard", "Launcher", "Camera",
-        "Weather", "News Reader", "Password Manager", "VPN",
-        "App Store", "Fitness & Health", "Finance", "Utility", "Other"
+        "AI & Virtual Assistant", "App Store & Updater", "Bookmark", "Boot & Kernel",
+        "Browser", "Calculator", "Calendar & Agenda", "Camera",
+        "Cloud Storage & File Sync", "Connectivity", "Development", "DNS & Hosts",
+        "Draw", "Ebook Reader", "Education", "Email",
+        "File Encryption & Vault", "File Transfer", "Finance", "Food & Delivery",
+        "Forum", "Gallery", "Games", "Graphics",
+        "Habit Tracker", "Icon Pack", "Internet", "Keyboard & IME",
+        "Launcher", "Local Media Player", "Location & Navigation", "Messaging",
+        "Multimedia", "Music Practice Tool", "News", "Note",
+        "Online Media Player", "Pass Wallet", "Password & 2FA", "Phone & SMS",
+        "Podcast", "Public Transport", "Reading", "Recipe Manager",
+        "Root Management", "Security", "Shopping", "Social Network",
+        "Sports & Health", "Storage Management", "Streaming Service", "System",
+        "Task", "Text Editor", "Theming", "Time",
+        "Translation & Dictionary", "Unit Converter", "Voice & Video Chat", "VPN & Proxy",
+        "Wallpaper", "Weather", "Writing", "Other"
     )
 
     LaunchedEffect(uiState.loadedSubmission) {
@@ -293,7 +303,10 @@ fun SubmitContent(
                 style = MaterialTheme.typography.titleMedium
             )
 
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
                 FilterChip(
                     selected = type == SubmissionType.NEW_ALTERNATIVE,
                     onClick = { type = SubmissionType.NEW_ALTERNATIVE },
@@ -313,8 +326,8 @@ fun SubmitContent(
 
             HorizontalDivider()
 
-            // Category dropdown (proprietary apps only)
-            if (type == SubmissionType.NEW_PROPRIETARY) {
+            // Category dropdown (required for FOSS alternatives and proprietary apps)
+            if (type == SubmissionType.NEW_ALTERNATIVE || type == SubmissionType.NEW_PROPRIETARY) {
                 Box(modifier = Modifier.fillMaxWidth()) {
                     OutlinedTextField(
                         value = category,
@@ -1173,7 +1186,7 @@ fun SubmitContent(
                                     uiState.duplicateWarning == null &&
                                     uiState.packageNameError == null &&
                                     if (type == SubmissionType.NEW_ALTERNATIVE) {
-                                        description.isNotBlank() && repoUrl.isNotBlank() && license.isNotBlank() && uiState.repoUrlError == null
+                                        description.isNotBlank() && repoUrl.isNotBlank() && license.isNotBlank() && category.isNotBlank() && uiState.repoUrlError == null
                                     } else {
                                         true
                                     }

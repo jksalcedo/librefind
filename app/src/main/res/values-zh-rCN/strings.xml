@@ -270,7 +270,7 @@
     <string name="report_title_label">标题</string>
     <string name="report_title_placeholder">问题的简要摘要</string>
     <string name="report_desc_label">描述</string>
-    <string name="report_desc_placeholder">详细描述问题或建议...</string>
+    <string name="report_desc_placeholder">详细描述问题或建议…</string>
     <string name="report_priority_label">优先级</string>
     <string name="report_submit_button">提交报告</string>
     <string name="alt_detail_report">报告</string>
