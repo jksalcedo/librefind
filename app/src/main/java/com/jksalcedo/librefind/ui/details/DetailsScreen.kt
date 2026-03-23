@@ -23,6 +23,7 @@ import androidx.compose.material.icons.filled.ThumbDown
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.Button
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Card
@@ -60,6 +61,7 @@ fun DetailsScreen(
     onSuggestAsFoss: (appName: String, packageName: String) -> Unit = { _, _ -> },
     onSuggestAsProprietary: (appName: String, packageName: String) -> Unit = { _, _ -> },
     onAddAlternativeClick: (appName: String, packageName: String) -> Unit = { _, _ -> },
+    onSuggestCorrection: (packageName: String) -> Unit = {},
     viewModel: DetailsViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsState()
@@ -79,6 +81,14 @@ fun DetailsScreen(
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back"
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { onSuggestCorrection(packageName) }) {
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = stringResource(R.string.correction_title)
                         )
                     }
                 }
