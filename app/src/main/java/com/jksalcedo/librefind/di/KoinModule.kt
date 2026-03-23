@@ -17,6 +17,7 @@ import com.jksalcedo.librefind.domain.repository.ReclassifiedAppsRepository
 import com.jksalcedo.librefind.domain.usecase.GetAlternativeUseCase
 import com.jksalcedo.librefind.domain.usecase.ScanInventoryUseCase
 import com.jksalcedo.librefind.ui.auth.AuthViewModel
+import com.jksalcedo.librefind.ui.correction.SuggestCorrectionViewModel
 import com.jksalcedo.librefind.ui.dashboard.DashboardViewModel
 import com.jksalcedo.librefind.ui.details.AlternativeDetailViewModel
 import com.jksalcedo.librefind.ui.details.DetailsViewModel
@@ -108,4 +109,5 @@ val viewModelModule = module {
     viewModel { ReportViewModel(get(), get()) }
     viewModel { MyReportsViewModel(get(), get()) }
     viewModel { DiscoverViewModel(get()) }
+    viewModel { SuggestCorrectionViewModel(get()) }
 }

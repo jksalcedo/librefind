@@ -25,6 +25,7 @@ import com.jksalcedo.librefind.ui.discover.DiscoverScreen
 import com.jksalcedo.librefind.ui.mysubmissions.MySubmissionsScreen
 import com.jksalcedo.librefind.ui.reports.MyReportsScreen
 import com.jksalcedo.librefind.ui.reports.ReportScreen
+import com.jksalcedo.librefind.ui.correction.SuggestCorrectionScreen
 import com.jksalcedo.librefind.ui.settings.IgnoredAppsScreen
 import com.jksalcedo.librefind.ui.submit.SubmitScreen
 
@@ -45,7 +46,7 @@ fun NavGraph(
         composable(Route.Dashboard.route) {
             val authViewModel: AuthViewModel = koinViewModel()
             val authState by authViewModel.uiState.collectAsState()
-            
+
             DashboardScreen(
                 onAppClick = { appName, packageName ->
                     navController.navigate(Route.Details.createRoute(appName, packageName))
@@ -113,6 +114,13 @@ fun NavGraph(
                     } else {
                         navController.navigate(Route.Auth.route)
                     }
+                },
+                onSuggestCorrection = { pkg ->
+                    if (authState.isSignedIn) {
+                        navController.navigate(Route.SuggestCorrection.createRoute(pkg))
+                    } else {
+                        navController.navigate(Route.Auth.route)
+                    }
                 }
             )
         }
@@ -157,17 +165,17 @@ fun NavGraph(
         composable(
             route = Route.Submit.route,
             arguments = listOf(
-                navArgument("appName") { 
+                navArgument("appName") {
                     type = NavType.StringType
                     nullable = true
                     defaultValue = null
                 },
-                navArgument("packageName") { 
+                navArgument("packageName") {
                     type = NavType.StringType
                     nullable = true
                     defaultValue = null
                 },
-                navArgument("type") { 
+                navArgument("type") {
                     type = NavType.StringType
                     nullable = true
                     defaultValue = null
@@ -273,7 +281,18 @@ fun NavGraph(
                 onBackClick = { navController.navigateUp() }
             )
         }
+
+        composable(
+            route = Route.SuggestCorrection.route,
+            arguments = listOf(navArgument("packageName") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val packageName =
+                backStackEntry.arguments?.getString("packageName")?.let { Uri.decode(it) }
+                    ?: return@composable
+            SuggestCorrectionScreen(
+                packageName = packageName,
+                onBackClick = { navController.navigateUp() }
+            )
+        }
     }
 }
-
-

@@ -124,13 +124,19 @@ interface AppRepository {
         fossCount: Int,
         proprietaryCount: Int,
         unknownCount: Int,
-        pwaCount: Int = 0,
         appVersion: String? = null
     ): Result<Unit>
 
     suspend fun submitAppReport(
         packageName: String,
         issueType: String,
+        description: String
+    ): Result<Unit>
+
+    suspend fun submitCorrection(
+        packageName: String,
+        correctionType: String,
+        correctionValue: String,
         description: String
     ): Result<Unit>
 }
