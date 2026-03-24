@@ -41,9 +41,7 @@ val appModule = module {
     single { Dispatchers.Main }
     single { Dispatchers.Default }
 
-    // Provide PreferencesManager first so it can be injected into other singletons
     single { PreferencesManager(androidContext()) }
-    // InventorySource now depends on PreferencesManager; inject it via Koin's `get()`
     single { InventorySource(androidContext(), get()) }
     single { SafeSignatureDb() }
 
