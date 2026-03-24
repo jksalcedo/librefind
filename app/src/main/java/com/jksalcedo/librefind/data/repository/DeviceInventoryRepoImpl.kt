@@ -65,7 +65,7 @@ class DeviceInventoryRepoImpl(
     override suspend fun scanAndClassify(): Flow<List<AppItem>> = flow {
         val rawApps = localSource.getRawApps()
         val ignoredAppsList = ignoredAppsRepository.getIgnoredPackageNames().first()
-        val reclassifiedAppsList = reclassifiedAppsRepository.getReclassifiedPackageNames().first()
+        val reclassifiedAppsMap = reclassifiedAppsRepository.getReclassifiedApps().first()
 
         if (!cacheRepository.isCacheValid()) {
             try {
@@ -102,7 +102,7 @@ class DeviceInventoryRepoImpl(
                     classifyApp(
                         pkg = pkg,
                         ignoredApps = ignoredAppsList,
-                        reclassifiedApps = reclassifiedAppsList,
+                        reclassifiedApps = reclassifiedAppsMap,
                         proprietaryMap = proprietaryMap,
                         solutionsSet = solutionsSet,
                         pendingPackages = pendingPackages
@@ -118,7 +118,7 @@ class DeviceInventoryRepoImpl(
     private suspend fun classifyApp(
         pkg: PackageInfo,
         ignoredApps: List<String>,
-        reclassifiedApps: List<String>,
+        reclassifiedApps: Map<String, AppStatus>,
         proprietaryMap: Map<String, Boolean>,
         solutionsSet: Set<String>,
         pendingPackages: Set<String>
@@ -145,10 +145,11 @@ class DeviceInventoryRepoImpl(
         }
 
         if (packageName in reclassifiedApps) {
+            val status = reclassifiedApps[packageName] ?: AppStatus.FOSS
             return createAppItem(
                 packageName,
                 label,
-                AppStatus.FOSS,
+                status,
                 installer,
                 icon,
                 isUserReclassified = true,

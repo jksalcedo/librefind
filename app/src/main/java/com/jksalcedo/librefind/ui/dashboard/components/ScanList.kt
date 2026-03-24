@@ -87,7 +87,7 @@ fun ScanList(
     onAppClick: (String, String) -> Unit,
     onIgnoreClick: (String) -> Unit,
     onRestoreClick: (String) -> Unit,
-    onReclassifyClick: (String) -> Unit,
+    onReclassifyClick: (String, AppStatus) -> Unit,
     onUndoReclassifyClick: (String) -> Unit,
     onRefresh: () -> Unit,
     isRefreshing: Boolean,
@@ -121,7 +121,7 @@ fun ScanList(
                     onClick = { onAppClick(app.label, app.packageName) },
                     onIgnoreClick = { onIgnoreClick(app.packageName) },
                     onRestoreClick = { onRestoreClick(app.packageName) },
-                    onReclassifyClick = { onReclassifyClick(app.packageName) },
+                    onReclassifyClick = { status -> onReclassifyClick(app.packageName, status) },
                     onUndoReclassifyClick = { onUndoReclassifyClick(app.packageName) },
                     modifier = Modifier.animateItem()
                 )
@@ -137,7 +137,7 @@ fun AppRow(
     onClick: () -> Unit,
     onIgnoreClick: () -> Unit,
     onRestoreClick: () -> Unit,
-    onReclassifyClick: () -> Unit,
+    onReclassifyClick: (AppStatus) -> Unit,
     onUndoReclassifyClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -244,7 +244,17 @@ fun AppRow(
                         text = { Text("Mark as FOSS") },
                         onClick = {
                             showMenu = false
-                            onReclassifyClick()
+                            onReclassifyClick(AppStatus.FOSS)
+                        },
+                        leadingIcon = {
+                            Icon(Icons.Default.CheckCircle, contentDescription = null)
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { Text("Mark as PWA") },
+                        onClick = {
+                            showMenu = false
+                            onReclassifyClick(AppStatus.PWA)
                         },
                         leadingIcon = {
                             Icon(Icons.Default.CheckCircle, contentDescription = null)

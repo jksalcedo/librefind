@@ -81,6 +81,7 @@ data class AppScanStatsDto(
     @SerialName("foss_count") val fossCount: Int,
     @SerialName("proprietary_count") val proprietaryCount: Int,
     @SerialName("unknown_count") val unknownCount: Int,
+    @SerialName("pwa_count") val pwaCount: Int = 0,
     @SerialName("total_apps") val totalApps: Int,
     @SerialName("app_version") val appVersion: String? = null
 )

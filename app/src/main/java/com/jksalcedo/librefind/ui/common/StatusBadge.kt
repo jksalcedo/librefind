@@ -8,6 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jksalcedo.librefind.domain.model.AppStatus
@@ -37,6 +38,7 @@ fun StatusBadge(
         AppStatus.PROP -> PropRed
         AppStatus.UNKN -> UnknownGray
         AppStatus.PENDING -> PendingOrange
+        AppStatus.PWA -> Color(0xFF9C27B0)
         else -> IgnoredGray
     }
 
@@ -45,6 +47,7 @@ fun StatusBadge(
         AppStatus.PROP -> stringResource(R.string.status_proprietary)
         AppStatus.UNKN -> stringResource(R.string.status_unknown)
         AppStatus.PENDING -> stringResource(R.string.status_pending)
+        AppStatus.PWA -> stringResource(R.string.status_pwa)
         else -> stringResource(R.string.status_ignored)
     }
 

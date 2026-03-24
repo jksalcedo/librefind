@@ -29,6 +29,7 @@ enum class AppFilter {
     FOSS_ONLY,
     UNKNOWN_ONLY,
     PENDING_ONLY,
+    PWA_ONLY,
     IGNORED_ONLY
 }
 
@@ -56,7 +57,7 @@ class DashboardViewModel(
                 combine(
                     refreshTrigger.onStart { emit(Unit) },
                     ignoredAppsRepository.getIgnoredPackageNames(),
-                    reclassifiedAppsRepository.getReclassifiedPackageNames(),
+                    reclassifiedAppsRepository.getReclassifiedApps(),
                     preferencesManager.observeHideSystemPackages()
                 ) { _, _, _, _ -> }.flatMapLatest {
                     _state.update { it.copy(isLoading = true, error = null) }
@@ -87,6 +88,7 @@ class DashboardViewModel(
                                 AppFilter.FOSS_ONLY -> app.status == AppStatus.FOSS
                                 AppFilter.UNKNOWN_ONLY -> app.status == AppStatus.UNKN
                                 AppFilter.PENDING_ONLY -> app.status == AppStatus.PENDING
+                                AppFilter.PWA_ONLY -> app.status == AppStatus.PWA
                                 AppFilter.IGNORED_ONLY -> app.status == AppStatus.IGNORED
                             }
                         }
@@ -133,6 +135,7 @@ class DashboardViewModel(
             AppStatus.PROP -> AppFilter.PROP_ONLY
             AppStatus.UNKN -> AppFilter.UNKNOWN_ONLY
             AppStatus.PENDING -> AppFilter.PENDING_ONLY
+            AppStatus.PWA -> AppFilter.PWA_ONLY
             AppStatus.IGNORED -> AppFilter.IGNORED_ONLY
             null -> AppFilter.ALL
         }
@@ -148,6 +151,7 @@ class DashboardViewModel(
             AppFilter.PROP_NO_ALTERNATIVES -> AppStatus.PROP
             AppFilter.UNKNOWN_ONLY -> AppStatus.UNKN
             AppFilter.PENDING_ONLY -> AppStatus.PENDING
+            AppFilter.PWA_ONLY -> AppStatus.PWA
             AppFilter.IGNORED_ONLY -> AppStatus.IGNORED
             AppFilter.ALL -> null
         }
@@ -167,7 +171,13 @@ class DashboardViewModel(
 
     fun reclassifyAsFoss(packageName: String) {
         viewModelScope.launch {
-            reclassifiedAppsRepository.reclassifyAsFoss(packageName)
+            reclassifiedAppsRepository.reclassifyApp(packageName, AppStatus.FOSS)
+        }
+    }
+
+    fun reclassifyAsPwa(packageName: String) {
+        viewModelScope.launch {
+            reclassifiedAppsRepository.reclassifyApp(packageName, AppStatus.PWA)
         }
     }
 
@@ -184,6 +194,7 @@ class DashboardViewModel(
         val unknownCount = apps.count { it.status == AppStatus.UNKN }
         val ignoredCount = apps.count { it.status == AppStatus.IGNORED }
         val pendingCount = apps.count { it.status == AppStatus.PENDING }
+        val pwaCount = apps.count { it.status == AppStatus.PWA }
 
         return SovereigntyScore(
             totalApps = totalApps,
@@ -191,7 +202,8 @@ class DashboardViewModel(
             proprietaryCount = propCount,
             unknownCount = unknownCount,
             ignoredCount = ignoredCount,
-            pendingCount = pendingCount
+            pendingCount = pendingCount,
+            pwaCount = pwaCount
         )
     }
 
@@ -203,6 +215,7 @@ class DashboardViewModel(
                 fossCount = score.fossCount,
                 proprietaryCount = score.proprietaryCount,
                 unknownCount = score.unknownCount,
+                pwaCount = score.pwaCount,
                 appVersion = preferencesManager.getAppVersion()
             )
         }

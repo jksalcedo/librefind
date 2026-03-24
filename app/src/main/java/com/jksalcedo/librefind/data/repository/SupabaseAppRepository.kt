@@ -1127,6 +1127,7 @@ class SupabaseAppRepository(
         fossCount: Int,
         proprietaryCount: Int,
         unknownCount: Int,
+        pwaCount: Int,
         appVersion: String?
     ): Result<Unit> = runCatching {
         val userId = supabase.auth.currentUserOrNull()?.id
@@ -1137,7 +1138,8 @@ class SupabaseAppRepository(
             fossCount = fossCount,
             proprietaryCount = proprietaryCount,
             unknownCount = unknownCount,
-            totalApps = fossCount + proprietaryCount + unknownCount,
+            pwaCount = pwaCount,
+            totalApps = fossCount + proprietaryCount + unknownCount + pwaCount,
             appVersion = appVersion
         )
 
@@ -1166,4 +1168,3 @@ class SupabaseAppRepository(
         supabase.postgrest.from("app_reports").insert(report)
     }
 }
-

@@ -14,6 +14,6 @@ interface ReclassifiedAppDao {
     @Query("DELETE FROM reclassified_apps WHERE packageName = :packageName")
     suspend fun delete(packageName: String)
 
-    @Query("SELECT packageName FROM reclassified_apps")
-    fun getAllReclassifiedPackageNames(): Flow<List<String>>
+    @Query("SELECT * FROM reclassified_apps")
+    fun getAllReclassifiedApps(): Flow<List<ReclassifiedAppEntity>>
 }
