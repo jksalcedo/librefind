@@ -17,6 +17,7 @@ import com.jksalcedo.librefind.domain.repository.ReclassifiedAppsRepository
 import com.jksalcedo.librefind.domain.usecase.GetAlternativeUseCase
 import com.jksalcedo.librefind.domain.usecase.ScanInventoryUseCase
 import com.jksalcedo.librefind.ui.auth.AuthViewModel
+import com.jksalcedo.librefind.ui.correction.SuggestCorrectionViewModel
 import com.jksalcedo.librefind.ui.dashboard.DashboardViewModel
 import com.jksalcedo.librefind.ui.details.AlternativeDetailViewModel
 import com.jksalcedo.librefind.ui.details.DetailsViewModel
@@ -40,9 +41,7 @@ val appModule = module {
     single { Dispatchers.Main }
     single { Dispatchers.Default }
 
-    // Provide PreferencesManager first so it can be injected into other singletons
     single { PreferencesManager(androidContext()) }
-    // InventorySource now depends on PreferencesManager; inject it via Koin's `get()`
     single { InventorySource(androidContext(), get()) }
     single { SafeSignatureDb() }
 
@@ -108,4 +107,5 @@ val viewModelModule = module {
     viewModel { ReportViewModel(get(), get()) }
     viewModel { MyReportsViewModel(get(), get()) }
     viewModel { DiscoverViewModel(get()) }
+    viewModel { SuggestCorrectionViewModel(get()) }
 }

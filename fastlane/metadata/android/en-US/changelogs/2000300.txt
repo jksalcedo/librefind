@@ -1,0 +1,11 @@
+Added
+- Suggest corrections for app details (license, category, links)
+
+Improved
+- Database accuracy and reporting
+
+Fixed
+-
+
+Other
+-

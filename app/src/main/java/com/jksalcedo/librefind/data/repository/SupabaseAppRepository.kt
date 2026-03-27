@@ -1165,5 +1165,34 @@ class SupabaseAppRepository(
 
         supabase.postgrest.from("app_reports").insert(report)
     }
-}
 
+    override suspend fun submitCorrection(
+        packageName: String,
+        correctionType: String,
+        correctionValue: String,
+        description: String
+    ): Result<Unit> = runCatching {
+        val currentUser = supabase.auth.currentUserOrNull()
+            ?: throw IllegalStateException("Not logged in")
+
+        val correction = AppCorrectionDto(
+            userId = currentUser.id,
+            packageName = packageName,
+            correctionType = correctionType,
+            correctionValue = correctionValue,
+            description = description
+        )
+
+        supabase.postgrest.from("app_corrections").insert(correction)
+    }
+
+    @Serializable
+    private data class AppCorrectionDto(
+        @SerialName("user_id") val userId: String,
+        @SerialName("package_name") val packageName: String,
+        @SerialName("correction_type") val correctionType: String,
+        @SerialName("correction_value") val correctionValue: String,
+        @SerialName("description") val description: String,
+        @SerialName("status") val status: String = "PENDING"
+    )
+}

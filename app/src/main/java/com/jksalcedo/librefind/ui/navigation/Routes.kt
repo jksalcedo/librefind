@@ -42,4 +42,8 @@ sealed class Route(val route: String) {
     data object Report : Route("report")
     data object MyReports : Route("my_reports")
     data object PrivacyPolicy : Route("privacy_policy")
+
+    data object SuggestCorrection : Route("suggest_correction/{packageName}") {
+        fun createRoute(packageName: String) = "suggest_correction/${Uri.encode(packageName)}"
+    }
 }

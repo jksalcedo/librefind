@@ -132,4 +132,11 @@ interface AppRepository {
         issueType: String,
         description: String
     ): Result<Unit>
+
+    suspend fun submitCorrection(
+        packageName: String,
+        correctionType: String,
+        correctionValue: String,
+        description: String
+    ): Result<Unit>
 }
