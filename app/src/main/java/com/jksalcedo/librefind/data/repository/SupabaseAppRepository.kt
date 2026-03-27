@@ -111,7 +111,11 @@ class SupabaseAppRepository(
 
             results.map { dto -> dto.toAlternative() }
         } catch (rpcError: Exception) {
-            Log.w("SupabaseAppRepo", "get_alternatives_with_match_votes unavailable, falling back", rpcError)
+            Log.w(
+                "SupabaseAppRepo",
+                "get_alternatives_with_match_votes unavailable, falling back",
+                rpcError
+            )
             getAlternativesDirect(packageName)
         }
     }
@@ -158,6 +162,7 @@ class SupabaseAppRepository(
             val currentUserId = supabase.auth.currentUserOrNull()?.id
 
             data class VoteAgg(val upvotes: Int, val downvotes: Int, val userVote: Int?)
+
             val votesByPkg = allVotes
                 .groupBy { it.solutionPackage }
                 .mapValues { (_, rows) ->
@@ -176,7 +181,8 @@ class SupabaseAppRepository(
 
                 val ratingAvg = if (rawRatingCount > 0) {
                     val sum = usabilityRating + privacyRating + featuresRating
-                    val nonZeroCount = listOf(usabilityRating, privacyRating, featuresRating).count { it > 0 }
+                    val nonZeroCount =
+                        listOf(usabilityRating, privacyRating, featuresRating).count { it > 0 }
                     if (nonZeroCount > 0) sum / nonZeroCount else 0f
                 } else 0f
 
@@ -220,7 +226,8 @@ class SupabaseAppRepository(
 
         val ratingAvg = if (rawRatingCount > 0) {
             val sum = usabilityRating + privacyRating + featuresRating
-            val nonZeroCount = listOf(usabilityRating, privacyRating, featuresRating).count { it > 0 }
+            val nonZeroCount =
+                listOf(usabilityRating, privacyRating, featuresRating).count { it > 0 }
             if (nonZeroCount > 0) sum / nonZeroCount else 0f
         } else 0f
 
@@ -1127,6 +1134,7 @@ class SupabaseAppRepository(
         fossCount: Int,
         proprietaryCount: Int,
         unknownCount: Int,
+        pwaCount: Int,
         appVersion: String?
     ): Result<Unit> = runCatching {
         val userId = supabase.auth.currentUserOrNull()?.id
@@ -1146,6 +1154,9 @@ class SupabaseAppRepository(
             defaultToNull = false
         }
         Log.d("SupabaseAppRepo", "Scan stats submitted for device: $deviceId")
+
+        // ensure the lambda returns Unit explicitly
+        Unit
     }
 
     override suspend fun submitAppReport(
