@@ -59,6 +59,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.jksalcedo.librefind.R
 import com.jksalcedo.librefind.data.local.PreferencesManager
+import com.jksalcedo.librefind.domain.model.AppStatus
 import com.jksalcedo.librefind.ui.auth.AuthViewModel
 import com.jksalcedo.librefind.ui.common.TargetArea
 import com.jksalcedo.librefind.ui.common.TutorialOverlay
@@ -389,8 +390,18 @@ fun DashboardScreen(
                                 onAppClick = onAppClick,
                                 onIgnoreClick = { packageName -> viewModel.ignoreApp(packageName) },
                                 onRestoreClick = { packageName -> viewModel.restoreApp(packageName) },
-                                onReclassifyClick = { packageName -> viewModel.reclassifyAsFoss(packageName) },
-                                onUndoReclassifyClick = { packageName -> viewModel.undoReclassify(packageName) },
+                                onReclassifyClick = { packageName, status ->
+                                    if (status == AppStatus.PWA) {
+                                        viewModel.reclassifyAsPwa(packageName)
+                                    } else {
+                                        viewModel.reclassifyAsFoss(packageName)
+                                    }
+                                },
+                                onUndoReclassifyClick = { packageName ->
+                                    viewModel.undoReclassify(
+                                        packageName
+                                    )
+                                },
                                 onRefresh = { viewModel.scan() },
                                 isRefreshing = state.isLoading,
                                 modifier = Modifier.fillMaxSize(),

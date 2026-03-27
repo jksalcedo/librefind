@@ -1,114 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">LibreFind</string>
     <!-- Dashboard -->
-    <string name="dashboard_search_hint">Search apps…</string>
-    <string name="dashboard_close_search">Close search</string>
-    <string name="dashboard_search">Search</string>
+    <string name="dashboard_search_hint">Pretraži aplikacije…</string>
+    <string name="dashboard_close_search">Zatvori pretragu</string>
+    <string name="dashboard_search">Pretraži</string>
     <string name="dashboard_filter">Filter</string>
-    <string name="dashboard_filter_show_all">Show All</string>
-    <string name="dashboard_filter_all_proprietary">All Proprietary</string>
-    <string name="dashboard_filter_with_alternatives">With Alternatives</string>
-    <string name="dashboard_filter_no_alternatives">Without Alternatives</string>
-    <string name="dashboard_filter_foss_only">FOSS Only</string>
-    <string name="dashboard_filter_unknown_only">Unknown Only</string>
-    <string name="dashboard_filter_pending_only">Pending Only</string>
-    <string name="dashboard_filter_ignored_only">Ignored Only</string>
-    <string name="dashboard_profile">Profile</string>
-
-    <!-- Correction -->
-    <string name="correction_title">Suggest Correction</string>
-    <string name="correction_intro">Suggest a correction for %1$s. All suggestions are reviewed by moderators.</string>
-    <string name="correction_type_label">Correction Type</string>
-    <string name="correction_value_label">Correct Value</string>
-    <string name="correction_value_placeholder">e.g. GPLv3, Utility, https://example.com</string>
-    <string name="correction_description_label">Description / Reason</string>
-    <string name="correction_description_placeholder">Why is this correction needed? Provide sources if possible.</string>
-    <string name="correction_submit_button">Submit Correction</string>
-    <string name="back">Back</string>
-    <string name="dashboard_settings">Settings</string>
-    <string name="dashboard_submit_app">Submit App</string>
-    <string name="dashboard_error_title">Error</string>
-    <string name="dashboard_unknown_error">Unknown error</string>
-    <string name="dashboard_retry">Retry</string>
-    <string name="dashboard_no_matching_apps">No matching apps</string>
-    <string name="dashboard_no_apps_found">No apps found</string>
+    <string name="dashboard_filter_show_all">Prikaži sve</string>
+    <string name="dashboard_filter_all_proprietary">Sve Vlasničko</string>
+    <string name="dashboard_filter_with_alternatives">S Alternativama</string>
+    <string name="dashboard_filter_no_alternatives">Bez Alternativa</string>
+    <string name="dashboard_filter_foss_only">Samo FOSS</string>
+    <string name="dashboard_filter_unknown_only">Samo Nepoznato</string>
+    <string name="dashboard_filter_pending_only">Samo Na Čekanju</string>
+    <string name="dashboard_filter_ignored_only">Samo Ignorirane</string>
+    <string name="dashboard_profile">Profil</string>
+    <string name="dashboard_settings">Postavke</string>
+    <string name="dashboard_submit_app">Pošalji Aplikaciju</string>
+    <string name="dashboard_error_title">Pogreška</string>
+    <string name="dashboard_unknown_error">Nepoznata Pogreška</string>
+    <string name="dashboard_retry">Pokušaj ponovno</string>
+    <string name="dashboard_no_matching_apps">Nema odgovarajućih aplikacija</string>
+    <string name="dashboard_no_apps_found">Nije pronađena nijedna aplikacija</string>
     <!-- Profile Dialog -->
-    <string name="profile_dialog_title">Profile &amp; Settings</string>
-    <string name="profile_unknown_username">Unknown Username</string>
-    <string name="profile_no_email">No Email</string>
-    <string name="profile_ignored_apps">Ignored Apps</string>
-    <string name="profile_my_submissions">My Submissions</string>
-    <string name="profile_sign_out">Sign Out</string>
-    <string name="profile_close">Close</string>
-    <string name="profile_missing_title">Profile Missing</string>
-    <string name="profile_not_signed_in_title">Not Signed In</string>
-    <string name="profile_missing_message">Your profile could not be found. Please try signing out and back in, or contact support.</string>
-    <string name="profile_not_signed_in_message">Please sign in to view your profile.</string>
-    <string name="profile_fix_profile">Fix Profile</string>
-    <string name="profile_sign_in">Sign In</string>
+    <string name="profile_dialog_title">Profil &amp; Postavke</string>
+    <string name="profile_unknown_username">Nepoznato Korisničko Ime</string>
+    <string name="profile_no_email">Nema Email-a</string>
+    <string name="profile_ignored_apps">Ignorirane Aplikacije</string>
+    <string name="profile_my_submissions">Moje Predaje</string>
+    <string name="profile_sign_out">Odjava</string>
+    <string name="profile_close">Zatvori</string>
+    <string name="profile_missing_title">Nedostaje Profil</string>
+    <string name="profile_not_signed_in_title">Niste Prijavljeni</string>
+    <string name="profile_missing_message">Vaš profil nije pronađen. Pokušajte se odjaviti i ponovno prijaviti ili se obratite podršci.</string>
+    <string name="profile_not_signed_in_message">Molimo prijavite se kako biste vidjeli svoj profil.</string>
+    <string name="profile_fix_profile">Popravi Profil</string>
+    <string name="profile_sign_in">Prijava</string>
     <!-- Auth -->
-    <string name="auth_create_account">Create Account</string>
-    <string name="auth_sign_in">Sign In</string>
-    <string name="auth_subtitle">Submit FOSS alternatives</string>
-    <string name="auth_username">Username</string>
-    <string name="auth_email">Email</string>
-    <string name="auth_password">Password</string>
-    <string name="auth_hide_password">Hide password</string>
-    <string name="auth_show_password">Show password</string>
-    <string name="auth_or">OR</string>
-    <string name="auth_sign_in_github">Sign in with GitHub</string>
-    <string name="auth_already_have_account">Already have an account? Sign In</string>
-    <string name="auth_dont_have_account">Don\'t have an account? Sign Up</string>
-    <string name="auth_check_email_title">Check Your Email</string>
-    <string name="auth_check_email_message">We\'ve sent a verification link to your email address. Please verify your email before signing in.</string>
-    <string name="auth_go_to_sign_in">Go to Sign In</string>
+    <string name="auth_create_account">Napravite Račun</string>
+    <string name="auth_sign_in">Prijava</string>
+    <string name="auth_subtitle">Pošaljite FOSS alternative</string>
+    <string name="auth_username">Korisničko ime</string>
+    <string name="auth_email">E-pošta</string>
+    <string name="auth_password">Lozinka</string>
+    <string name="auth_hide_password">Sakrij lozinku</string>
+    <string name="auth_show_password">Prikaži lozinku</string>
+    <string name="auth_or">ILI</string>
+    <string name="auth_sign_in_github">Prijavite se putem GitHuba</string>
+    <string name="auth_already_have_account">Već imate račun? Prijavite se</string>
+    <string name="auth_dont_have_account">Nemate račun? Registrirajte se</string>
+    <string name="auth_check_email_title">Provjerite svoju e-poštu</string>
+    <string name="auth_check_email_message">Poslali smo vam poveznicu za potvrdu na vašu adresu e-pošte. Molimo vas da potvrdite svoju adresu e-pošte prije prijave.</string>
+    <string name="auth_go_to_sign_in">Idi na Prijavu</string>
     <!-- Profile Setup -->
-    <string name="setup_title">Set Up Profile</string>
-    <string name="setup_choose_username">Choose a Username</string>
-    <string name="setup_username_desc">This will be shown with your submissions</string>
-    <string name="setup_username_rules">Letters, numbers, underscore only</string>
-    <string name="setup_continue">Continue</string>
+    <string name="setup_title">Postavite Profil</string>
+    <string name="setup_choose_username">Odaberite korisničko ime</string>
+    <string name="setup_username_desc">Ovo će biti prikazano s vašim prijavama</string>
+    <string name="setup_username_rules">Samo slova, brojevi, podvlake</string>
+    <string name="setup_continue">Nastavi</string>
     <!-- Submit Screen -->
-    <string name="submit_title_new">Submit App</string>
-    <string name="submit_title_edit">Edit Submission</string>
-    <string name="submit_success_title">Submission Received!</string>
-    <string name="submit_update_title">Submission Updated!</string>
-    <string name="submit_success_message">Thanks! Your submission for \'%1$s\' has been received.</string>
-    <string name="submit_update_message">Your submission for \'%1$s\' has been updated.</string>
-    <string name="submit_done">Done</string>
-    <string name="submit_what_submitting">What are you submitting?</string>
-    <string name="submit_contribution_guide">Contribution Guide</string>
+    <string name="submit_title_new">Pošalji Zahtjev za Aplikaciju</string>
+    <string name="submit_title_edit">Uredi Zahtjev</string>
+    <string name="submit_success_title">Zahtjev Primljen!</string>
+    <string name="submit_update_title">Zahtjev Ažuriran!</string>
+    <string name="submit_success_message">Hvala! Vaš je zahtjev za \'%1$s\' primljen.</string>
+    <string name="submit_update_message">Vaš je zahtjev za \'%1$s\' ažuriran.</string>
+    <string name="submit_done">Gotovo</string>
+    <string name="submit_what_submitting">Šta zahtijevate?</string>
+    <string name="submit_contribution_guide">Vodič za doprinose</string>
     <string name="submit_web_submission_page">Open web submission page</string>
-    <string name="submit_type_foss">FOSS App</string>
-    <string name="submit_type_proprietary">Proprietary App</string>
-    <string name="submit_type_link">Link App</string>
-    <string name="submit_app_name">App Name *</string>
-    <string name="submit_package_name">Package Name *</string>
-    <string name="submit_package_placeholder">com.example.app</string>
-    <string name="submit_description">Description</string>
-    <string name="submit_description_required">Description *</string>
-    <string name="submit_add_alternatives">Add Alternatives (optional)</string>
-    <string name="submit_search_alternatives">Search for alternatives</string>
-    <string name="submit_search_placeholder">Search by app name or package…</string>
-    <string name="submit_selected_alternatives">Selected Alternatives:</string>
+    <string name="submit_type_foss">FOSS Aplikacija</string>
+    <string name="submit_type_proprietary">Vlasnička Aplikacija</string>
+    <string name="submit_type_link">Poveznica Aplikacije</string>
+    <string name="submit_app_name">Naziv Aplikacije *</string>
+    <string name="submit_package_name">Naziv Paketa *</string>
+    <string name="submit_package_placeholder">com.primjer.app</string>
+    <string name="submit_description">Opis</string>
+    <string name="submit_description_required">Opis *</string>
+    <string name="submit_add_alternatives">Dodaj Alternative (neobavezno)</string>
+    <string name="submit_search_alternatives">Potražite alternative</string>
+    <string name="submit_search_placeholder">Pretraživanje po nazivu aplikacije ili paketa…</string>
+    <string name="submit_selected_alternatives">Odabrane Alternative:</string>
     <string name="submit_alternative_details">Alternative Details</string>
-    <string name="submit_search_foss_optional">Search specific FOSS app (optional)</string>
-    <string name="submit_search_foss_placeholder">Search existing database…</string>
-    <string name="submit_linked_app">Linked to Existing App</string>
+    <string name="submit_search_foss_optional">Pretraži specifičnu FOSS aplikaciju (neobavezno)</string>
+    <string name="submit_search_foss_placeholder">Pretraži postojeću bazu podataka…</string>
+    <string name="submit_linked_app">Povezano s postojećom aplikacijom</string>
     <string name="submit_foss_requirements">License and Repository URL are required for FOSS alternatives</string>
     <string name="submit_target_proprietary">Target Proprietary Apps</string>
-    <string name="submit_search_to_add">Search to add…</string>
-    <string name="submit_repo_url">Repository URL *</string>
+    <string name="submit_search_to_add">Pretraživanje za dodavanje…</string>
+    <string name="submit_repo_url">URL repozitorija *</string>
     <string name="submit_repo_placeholder">https://github.com/…</string>
     <string name="submit_fdroid_id">F-Droid ID</string>
-    <string name="submit_license">License *</string>
-    <string name="submit_license_placeholder">Select a license</string>
+    <string name="submit_license">Licenca *</string>
+    <string name="submit_license_placeholder">Odaberi licencu</string>
     <string name="submit_custom_license">Custom License Name *</string>
     <string name="submit_custom_license_placeholder">e.g. My Custom License</string>
-    <string name="submit_select_license">Select License</string>
-    <string name="submit_other">Other</string>
-    <string name="submit_cancel">Cancel</string>
+    <string name="submit_select_license">Odaberi licencu</string>
+    <string name="submit_other">Ostalo</string>
+    <string name="submit_cancel">Otkaži</string>
     <string name="submit_link_solutions_title">Link Existing Solutions</string>
     <string name="submit_link_solutions_desc">Link an existing FOSS app to an existing proprietary app in our database.</string>
     <string name="submit_target_app">Target Proprietary App</string>
@@ -190,15 +178,12 @@
     <string name="settings_account_deleted_title">Account Deleted</string>
     <string name="settings_account_deleted_message">Your account has been successfully deleted.</string>
     <string name="settings_ok">OK</string>
-
     <!-- New strings for system/vendor package filtering toggle -->
     <string name="settings_hide_system_packages_title">System package filtering</string>
     <string name="settings_hide_system_packages_label">Hide vendor/system packages</string>
     <string name="settings_on">On</string>
     <string name="settings_off">Off</string>
-
     <string name="settings_error">Error</string>
-
     <!-- Ignored Apps Screen -->
     <string name="ignored_apps_title">Ignored Apps</string>
     <string name="ignored_apps_empty">No ignored apps. \nLong-press any app in the list → tap Ignore.</string>
@@ -302,11 +287,9 @@
     <string name="details_no_siblings">No other FOSS apps in the same category yet.</string>
     <string name="details_siblings_found_format">%1$d similar FOSS app%2$s in this category</string>
     <string name="details_foss_category_unset">This app hasn\'t been assigned a category yet. Similar apps can\'t be shown until it is.</string>
-
     <!-- Match vote buttons -->
     <string name="vote_upvote">Good replacement (upvote)</string>
     <string name="vote_downvote">Poor replacement (downvote)</string>
-
     <!-- My Submissions Screen -->
     <string name="my_submissions_title">My Submissions</string>
     <string name="my_submissions_empty">No submissions found</string>
@@ -344,5 +327,4 @@
     <string name="report_priority_label">Priority</string>
     <string name="report_submit_button">Submit Report</string>
     <string name="web_submission">Web Submission</string>
-    <string name="status_pwa">PWA</string>
 </resources>

@@ -93,7 +93,7 @@ fun SovereigntyGauge(
         Column(
             modifier = Modifier
                 .weight(1f)
-                .height(140.dp),
+                .height(170.dp),
             verticalArrangement = Arrangement.SpaceAround,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -157,6 +157,18 @@ fun SovereigntyGauge(
                     )
                 }
             )
+            StatItem(
+                label = "PWA",
+                count = score.pwaCount,
+                color = Color(0xFF9C27B0),
+                isActive = currentFilter == AppStatus.PWA,
+                onClick = {
+                    onFilterClick(
+                        if (currentFilter == AppStatus.PWA) null
+                        else AppStatus.PWA
+                    )
+                }
+            )
         }
     }
 }
@@ -198,6 +210,7 @@ private fun getAppStatusPercentage(score: SovereigntyScore, appStatus: AppStatus
         AppStatus.PROP -> score.proprietaryPercentage
         AppStatus.UNKN -> score.unknownPercentage
         AppStatus.PENDING -> score.pendingPercentage
+        AppStatus.PWA -> score.pwaPercentage
         AppStatus.IGNORED -> score.ignoredPercentage
         else -> score.fossPercentage
     }
@@ -210,6 +223,7 @@ private fun getAppStatusColor(level: SovereigntyLevel, appStatus: AppStatus?): C
         AppStatus.PROP -> CapturedOrange
         AppStatus.UNKN -> MaterialTheme.colorScheme.outline
         AppStatus.PENDING -> PendingOrange
+        AppStatus.PWA -> Color(0xFF9C27B0)
         AppStatus.IGNORED -> MaterialTheme.colorScheme.error
         else -> getLevelColor(level)
     }

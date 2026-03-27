@@ -1,0 +1,33 @@
+name: Sync Main to Dev
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  back-merge:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout dev branch
+        uses: actions/checkout@v4
+        with:
+          ref: dev
+          fetch-depth: 0 # Fetches all history
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge Main into Dev
+        run: |
+          # Fetch the latest from main
+          git fetch origin main
+          
+          # Merge main into the current branch (dev)
+          git merge origin/main --no-ff -m "chore: sync dev with release ${{ github.ref_name }}"
+          
+          # Push the updated dev branch back
+          git push origin dev

@@ -5,7 +5,8 @@ enum class AppStatus {
     PROP,
     UNKN,
     IGNORED,
-    PENDING;
+    PENDING,
+    PWA;
 
     val sortWeight: Int
         get() = when(this) {
@@ -13,6 +14,7 @@ enum class AppStatus {
             UNKN -> 2
             PENDING -> 3
             FOSS -> 4
-            IGNORED -> 5
+            PWA -> 5
+            IGNORED -> 6
         }
 }

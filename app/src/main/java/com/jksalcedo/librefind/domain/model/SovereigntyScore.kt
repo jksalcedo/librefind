@@ -8,6 +8,7 @@ package com.jksalcedo.librefind.domain.model
  * @param proprietaryCount Number of verified proprietary apps
  * @param unknownCount Number of unclassified apps
  * @param ignoredCount Number of ignored apps
+ * @param pwaCount Number of PWA apps
  */
 data class SovereigntyScore(
     val totalApps: Int,
@@ -15,7 +16,8 @@ data class SovereigntyScore(
     val proprietaryCount: Int,
     val unknownCount: Int,
     val ignoredCount: Int,
-    val pendingCount: Int = 0
+    val pendingCount: Int = 0,
+    val pwaCount: Int = 0
 ) {
     /**
      * Percentage of FOSS apps (0-100)
@@ -40,6 +42,12 @@ data class SovereigntyScore(
      */
     val pendingPercentage: Float
         get() = if (totalApps - ignoredCount > 0) (pendingCount.toFloat() / (totalApps - ignoredCount)) * 100 else 0f
+
+    /**
+     * Percentage of PWA apps (0-100)
+     */
+    val pwaPercentage: Float
+        get() = if (totalApps - ignoredCount > 0) (pwaCount.toFloat() / (totalApps - ignoredCount)) * 100 else 0f
 
     /**
      * Percentage of ignored apps (0 because ignored apps get ignored)
