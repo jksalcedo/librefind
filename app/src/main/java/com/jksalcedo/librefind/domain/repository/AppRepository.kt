@@ -124,6 +124,7 @@ interface AppRepository {
         fossCount: Int,
         proprietaryCount: Int,
         unknownCount: Int,
+        pwaCount: Int = 0,
         appVersion: String? = null
     ): Result<Unit>
 
