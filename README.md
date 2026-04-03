@@ -133,14 +133,20 @@ Can't donate? You can still make a real difference:
 
 Every small contribution helps the project grow.
 
-## Translations
+## 🌍 Translations
 
-<a href="https://hosted.weblate.org/engage/librefind/">
-<img src="https://hosted.weblate.org/widget/librefind/android-strings/multi-auto.svg" alt="Translation status" />
-</a>
+[![Crowdin](https://badges.crowdin.net/librefind/localized.svg)](https://crowdin.com/project/librefind)
 
-LibreFind uses [Weblate](https://hosted.weblate.org/engage/librefind/) to manage translations. You
-can help translate LibreFind into your language!
+LibreFind is a global project, and we aim to make FOSS discovery accessible to everyone. 
+
+**Current Status:** We are currently transitioning our localization workflow. While we plan to move to a **self-hosted Weblate instance** in the near future (generously hosted by [@ren7](https://github.com/ren7uk)), we are using **Crowdin** for all active translations in the interim.
+
+### How to contribute:
+1. Visit our [Crowdin Project Page](https://crowdin.com/project/librefind).
+2. Select your language.
+3. Start translating! 
+
+*Note: If your language isn't listed, feel free to open an issue or request it directly on Crowdin.*
 
 ## Star History
 
