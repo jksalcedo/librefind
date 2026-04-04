@@ -1,16 +1,17 @@
 package com.jksalcedo.librefind.data.local
 
-class SafeSignatureDb {
+class KnownFossPackages {
 
-    private val knownFossPackages = setOf(
-        // Well-known FOSS apps distributed via Play Store
+    val knownFossPackagesByName = setOf(
         "org.thoughtcrime.securesms",
         "org.mozilla.firefox",
         "org.telegram.messenger",
         "org.schabi.newpipe",
         "com.fsck.k9",
         "org.videolan.vlc",
+    )
 
+    private val aospSystemPackages = setOf(
         // AOSP system apps
         "com.android.settings",
         "com.android.dialer",
@@ -54,6 +55,8 @@ class SafeSignatureDb {
     )
 
     fun isKnownFossApp(packageName: String): Boolean {
-        return packageName in knownFossPackages
+        return packageName in knownFossPackagesByName
     }
+
+    fun isAospSystemPackageName(packageName: String) = packageName in aospSystemPackages
 }
