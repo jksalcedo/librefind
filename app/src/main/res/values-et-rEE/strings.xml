@@ -15,15 +15,15 @@
     <string name="dashboard_filter_ignored_only">Vaid need, mis on eiratud</string>
     <string name="dashboard_profile">Profiil</string>
     <!-- Correction -->
-    <string name="correction_title">Suggest Correction</string>
-    <string name="correction_intro">Suggest a correction for %1$s. All suggestions are reviewed by moderators.</string>
-    <string name="correction_type_label">Correction Type</string>
-    <string name="correction_value_label">Correct Value</string>
-    <string name="correction_value_placeholder">e.g. GPLv3, Utility, https://example.com</string>
-    <string name="correction_description_label">Description / Reason</string>
-    <string name="correction_description_placeholder">Why is this correction needed? Provide sources if possible.</string>
-    <string name="correction_submit_button">Submit Correction</string>
-    <string name="back">Back</string>
+    <string name="correction_title">Paku parandust</string>
+    <string name="correction_intro">Paku parandust %1$s jaoks. Kõik pakkumised on nähtavad moderaatoritele.</string>
+    <string name="correction_type_label">Paranduse tüüp</string>
+    <string name="correction_value_label">Õige tähendus</string>
+    <string name="correction_value_placeholder">nt. GPLv3, Utility, https://example.com</string>
+    <string name="correction_description_label">Kirjeldus / Põhjus</string>
+    <string name="correction_description_placeholder">Miks seda parandust on vaja? Lisa allikad kui võimalik.</string>
+    <string name="correction_submit_button">Esita parandust</string>
+    <string name="back">Tagasi</string>
     <string name="dashboard_settings">Seadistused</string>
     <string name="dashboard_submit_app">Esita rakendus</string>
     <string name="dashboard_error_title">Viga</string>
