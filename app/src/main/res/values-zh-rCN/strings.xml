@@ -14,6 +14,16 @@
     <string name="dashboard_filter_pending_only">仅限待处理</string>
     <string name="dashboard_filter_ignored_only">仅限已忽略</string>
     <string name="dashboard_profile">个人资料</string>
+    <!-- Correction -->
+    <string name="correction_title">Suggest Correction</string>
+    <string name="correction_intro">Suggest a correction for %1$s. All suggestions are reviewed by moderators.</string>
+    <string name="correction_type_label">Correction Type</string>
+    <string name="correction_value_label">Correct Value</string>
+    <string name="correction_value_placeholder">e.g. GPLv3, Utility, https://example.com</string>
+    <string name="correction_description_label">Description / Reason</string>
+    <string name="correction_description_placeholder">Why is this correction needed? Provide sources if possible.</string>
+    <string name="correction_submit_button">Submit Correction</string>
+    <string name="back">Back</string>
     <string name="dashboard_settings">设置</string>
     <string name="dashboard_submit_app">提交应用</string>
     <string name="dashboard_error_title">错误</string>
@@ -327,4 +337,5 @@
     <string name="report_priority_label">优先级</string>
     <string name="report_submit_button">提交报告</string>
     <string name="web_submission">Web Submission</string>
+    <string name="status_pwa">PWA</string>
 </resources>
