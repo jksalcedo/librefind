@@ -4,7 +4,7 @@ import com.google.gson.GsonBuilder
 import com.google.gson.Strictness
 import com.jksalcedo.librefind.data.local.AppDatabase
 import com.jksalcedo.librefind.data.local.InventorySource
-import com.jksalcedo.librefind.data.local.KnownFossPackages
+import com.jksalcedo.librefind.data.local.PackageNameHeuristicsDb
 import com.jksalcedo.librefind.data.local.PreferencesManager
 import com.jksalcedo.librefind.data.local.TrustedRomSignerDb
 import com.jksalcedo.librefind.data.repository.CacheRepositoryImpl
@@ -47,7 +47,7 @@ val appModule = module {
     single { PreferencesManager(androidContext()) }
     // InventorySource now depends on PreferencesManager; inject it via Koin's `get()`
     single { InventorySource(androidContext(), get()) }
-    single { KnownFossPackages() }
+    single { PackageNameHeuristicsDb() }
 
     single { AppDatabase.getInstance(androidContext()) }
     single { get<AppDatabase>().ignoredAppDao() }
