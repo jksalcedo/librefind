@@ -14,6 +14,16 @@
     <string name="dashboard_filter_pending_only">Sadece Beklemede Olan</string>
     <string name="dashboard_filter_ignored_only">Sadece Görmezden Gelinen</string>
     <string name="dashboard_profile">Profil</string>
+    <!-- Correction -->
+    <string name="correction_title">Suggest Correction</string>
+    <string name="correction_intro">Suggest a correction for %1$s. All suggestions are reviewed by moderators.</string>
+    <string name="correction_type_label">Correction Type</string>
+    <string name="correction_value_label">Correct Value</string>
+    <string name="correction_value_placeholder">e.g. GPLv3, Utility, https://example.com</string>
+    <string name="correction_description_label">Description / Reason</string>
+    <string name="correction_description_placeholder">Why is this correction needed? Provide sources if possible.</string>
+    <string name="correction_submit_button">Submit Correction</string>
+    <string name="back">Back</string>
     <string name="dashboard_settings">Ayarlar</string>
     <string name="dashboard_submit_app">Uygulama Gönder</string>
     <string name="dashboard_error_title">Hata</string>
@@ -327,4 +337,5 @@
     <string name="report_priority_label">Öncelik</string>
     <string name="report_submit_button">Rapor Gönder</string>
     <string name="web_submission">Web Üzerinden Gönderme</string>
+    <string name="status_pwa">PWA</string>
 </resources>
