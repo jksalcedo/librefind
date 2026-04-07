@@ -14,6 +14,16 @@
     <string name="dashboard_filter_pending_only">Pending Only</string>
     <string name="dashboard_filter_ignored_only">Ignored Only</string>
     <string name="dashboard_profile">Προφίλ</string>
+    <!-- Correction -->
+    <string name="correction_title">Suggest Correction</string>
+    <string name="correction_intro">Suggest a correction for %1$s. All suggestions are reviewed by moderators.</string>
+    <string name="correction_type_label">Correction Type</string>
+    <string name="correction_value_label">Correct Value</string>
+    <string name="correction_value_placeholder">e.g. GPLv3, Utility, https://example.com</string>
+    <string name="correction_description_label">Description / Reason</string>
+    <string name="correction_description_placeholder">Why is this correction needed? Provide sources if possible.</string>
+    <string name="correction_submit_button">Submit Correction</string>
+    <string name="back">Back</string>
     <string name="dashboard_settings">Ρυθμίσεις</string>
     <string name="dashboard_submit_app">Submit App</string>
     <string name="dashboard_error_title">Σφάλμα</string>
@@ -327,4 +337,5 @@
     <string name="report_priority_label">Priority</string>
     <string name="report_submit_button">Submit Report</string>
     <string name="web_submission">Web Submission</string>
+    <string name="status_pwa">PWA</string>
 </resources>

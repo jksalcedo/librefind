@@ -1,10 +1,10 @@
 package com.jksalcedo.librefind.data.local
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.content.Intent
 import android.os.Build
 
 /**
@@ -37,10 +37,21 @@ class InventorySource(
 
             val hideSystemPackages = preferencesManager.shouldHideSystemPackages()
 
-            pm.getInstalledPackages(PackageManager.GET_META_DATA)
+            // Flags including certificates
+            val flags = PackageManager.GET_META_DATA or
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        PackageManager.GET_SIGNING_CERTIFICATES
+                    } else {
+                        @Suppress("DEPRECATION")
+                        PackageManager.GET_SIGNATURES
+                    }
+
+            pm.getInstalledPackages(flags)
                 .filter { app ->
-                    val isSystem = (app.applicationInfo?.flags?.and(ApplicationInfo.FLAG_SYSTEM) != 0)
-                    val isUpdatedSystem = (app.applicationInfo?.flags?.and(ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0)
+                    val isSystem =
+                        (app.applicationInfo?.flags?.and(ApplicationInfo.FLAG_SYSTEM) != 0)
+                    val isUpdatedSystem =
+                        (app.applicationInfo?.flags?.and(ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0)
 
                     if (hideSystemPackages) {
                         !isSystem || isUpdatedSystem
