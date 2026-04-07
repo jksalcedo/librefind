@@ -77,13 +77,17 @@ jobs:
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           echo "version=${TAG#v}" >> "$GITHUB_OUTPUT"
 
+      - name: Prepare release asset
+        run: |
+          cp app/build/outputs/apk/release/app-release.apk "librefind-${{ steps.version.outputs.tag }}-release.apk"
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version.outputs.tag }}
-          name: "Release ${{ steps.version.outputs.tag }}"
+          name: "${{ steps.version.outputs.tag }}"
           generate_release_notes: true
           draft: false
-          files: app/build/outputs/apk/release/*.apk
+          files: librefind-${{ steps.version.outputs.tag }}-release.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
