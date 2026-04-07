@@ -1,0 +1,16 @@
+Added
+- System app signature verification against trusted ROM signers
+- Dedicated `app_feedback` database for user feedback migration
+- Stale cache fallback for improved reliability
+
+Improved
+- Accuracy of system app detection and FOSS classification
+- Refined AOSP/OEM package classification logic
+- Optimized FOSS heuristic database management
+
+Fixed
+- Incorrect FOSS identification for OEM-signed system apps (#246)
+- Desync in match voting toggle logic
+
+Other
+- Updated GitHub issue templates and CI/CD release naming
