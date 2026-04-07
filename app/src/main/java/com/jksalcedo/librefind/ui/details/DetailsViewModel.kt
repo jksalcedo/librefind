@@ -75,23 +75,13 @@ class DetailsViewModel(
         }
     }
 
-    fun rateAlternative(altId: String, stars: Int) {
-        viewModelScope.launch {
-            val user = authRepository.getCurrentUser()
-            if (user != null) {
-                appRepository.castVote(altId, "usability", stars)
-                _state.value.packageName.let { pkg ->
-                    if (pkg.isNotEmpty()) loadAlternatives(pkg)
-                }
-            }
-        }
-    }
-
     fun castMatchVote(solutionPackage: String, vote: Int) {
         viewModelScope.launch {
-            val user = authRepository.getCurrentUser() ?: return@launch
+            if (authRepository.getCurrentUser() == null) return@launch
             val targetPackage = _state.value.packageName
             if (targetPackage.isBlank()) return@launch
+
+            var newVoteToCast: Int? = null
 
             // Optimistic update: flip if same vote (toggle off), otherwise apply
             _state.update { s ->
@@ -100,14 +90,15 @@ class DetailsViewModel(
                         if (alt.packageName != solutionPackage) return@map alt
                         val prev = alt.userMatchVote
                         val newVote = if (prev == vote) 0 else vote
+                        newVoteToCast = newVote
                         val upDelta = when {
-                            newVote == 1 && prev != 1 -> 1
-                            newVote != 1 && prev == 1 -> -1
+                            newVote == 1 -> 1
+                            prev == 1 -> -1
                             else -> 0
                         }
                         val downDelta = when {
-                            newVote == -1 && prev != -1 -> 1
-                            newVote != -1 && prev == -1 -> -1
+                            newVote == -1 -> 1
+                            prev == -1 -> -1
                             else -> 0
                         }
                         alt.copy(
@@ -120,9 +111,7 @@ class DetailsViewModel(
                 )
             }
 
-            val actualVote = if (_state.value.alternatives
-                    .find { it.packageName == solutionPackage }?.userMatchVote == null
-            ) 0 else vote
+            val actualVote = newVoteToCast ?: return@launch
 
             appRepository.castMatchVote(targetPackage, solutionPackage, actualVote)
                 .onFailure {
