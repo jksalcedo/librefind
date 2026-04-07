@@ -1,15 +1,6 @@
 package com.jksalcedo.librefind.data.local
 
-class KnownFossPackages {
-
-    val knownFossPackagesByName = setOf(
-        "org.thoughtcrime.securesms",
-        "org.mozilla.firefox",
-        "org.telegram.messenger",
-        "org.schabi.newpipe",
-        "com.fsck.k9",
-        "org.videolan.vlc",
-    )
+class PackageNameHeuristicsDb {
 
     private val aospSystemPackages = setOf(
         // AOSP system apps
@@ -53,10 +44,6 @@ class KnownFossPackages {
         "com.android.networkstack",
         "com.android.wallpaperpicker"
     )
-
-    fun isKnownFossApp(packageName: String): Boolean {
-        return packageName in knownFossPackagesByName
-    }
 
     fun isAospSystemPackageName(packageName: String) = packageName in aospSystemPackages
 }
