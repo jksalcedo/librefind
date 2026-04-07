@@ -1,7 +1,9 @@
 package com.jksalcedo.librefind.data.repository
 
+import android.os.Build
 import android.util.Log
 import com.jksalcedo.librefind.data.remote.model.AlternativeWithVoteDto
+import com.jksalcedo.librefind.data.remote.model.AppFeedbackDto
 import com.jksalcedo.librefind.data.remote.model.AppReport
 import com.jksalcedo.librefind.data.remote.model.AppScanStatsDto
 import com.jksalcedo.librefind.data.remote.model.MatchVoteDto
@@ -27,10 +29,14 @@ import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.postgrest.query.Columns
 import io.github.jan.supabase.postgrest.query.Count
+import io.github.jan.supabase.postgrest.query.Order
 import io.github.jan.supabase.postgrest.rpc
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import java.text.SimpleDateFormat
 import java.time.Instant
+import java.util.Locale
+import java.util.TimeZone
 
 class SupabaseAppRepository(
     private val supabase: SupabaseClient
@@ -584,14 +590,15 @@ class SupabaseAppRepository(
         val userId =
             supabase.auth.currentUserOrNull()?.id ?: throw IllegalStateException("Not logged in")
 
-        val report = UserReportDto(
-            title = "Feedback: $packageName ($type)",
-            description = text,
-            reportType = "FEEDBACK",
-            priority = "LOW",
-            submitterId = userId
+        val feedback = AppFeedbackDto(
+            packageName = packageName,
+            feedbackType = type,
+            content = text,
+            submitterId = userId,
+            status = "PENDING"
         )
-        supabase.postgrest.from("user_reports").insert(report)
+
+        supabase.postgrest.from("app_feedback").insert(feedback)
     }
 
     override suspend fun getMySubmissions(userId: String): List<Submission> {
@@ -709,14 +716,14 @@ class SupabaseAppRepository(
 
     private fun parseTimestamp(isoString: String): Long {
         return try {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 Instant.parse(isoString).toEpochMilli()
             } else {
                 // Regex to truncate fractional seconds to 3 digits
                 val truncated = isoString.replace(Regex("(\\.\\d{3})\\d+"), "$1")
                 val format =
-                    java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX", java.util.Locale.US)
-                format.timeZone = java.util.TimeZone.getTimeZone("UTC")
+                    SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX", Locale.US)
+                format.timeZone = TimeZone.getTimeZone("UTC")
                 format.parse(truncated)?.time ?: System.currentTimeMillis()
             }
         } catch (e: Exception) {
@@ -1050,7 +1057,7 @@ class SupabaseAppRepository(
                     )
                 ) {
                     filter { eq("submitter_id", userId) }
-                    order("created_at", io.github.jan.supabase.postgrest.query.Order.DESCENDING)
+                    order("created_at", Order.DESCENDING)
                 }
 
             result.decodeList<UserReportWithProfileDto>().map { dto ->

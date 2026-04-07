@@ -4,8 +4,9 @@ import com.google.gson.GsonBuilder
 import com.google.gson.Strictness
 import com.jksalcedo.librefind.data.local.AppDatabase
 import com.jksalcedo.librefind.data.local.InventorySource
+import com.jksalcedo.librefind.data.local.PackageNameHeuristicsDb
 import com.jksalcedo.librefind.data.local.PreferencesManager
-import com.jksalcedo.librefind.data.local.SafeSignatureDb
+import com.jksalcedo.librefind.data.local.TrustedRomSignerDb
 import com.jksalcedo.librefind.data.repository.CacheRepositoryImpl
 import com.jksalcedo.librefind.data.repository.DeviceInventoryRepoImpl
 import com.jksalcedo.librefind.data.repository.IgnoredAppsRepositoryImpl
@@ -16,6 +17,8 @@ import com.jksalcedo.librefind.domain.repository.IgnoredAppsRepository
 import com.jksalcedo.librefind.domain.repository.ReclassifiedAppsRepository
 import com.jksalcedo.librefind.domain.usecase.GetAlternativeUseCase
 import com.jksalcedo.librefind.domain.usecase.ScanInventoryUseCase
+import com.jksalcedo.librefind.domain.usecase.SubmitProposalUseCase
+import com.jksalcedo.librefind.domain.usecase.UpdateSubmissionUseCase
 import com.jksalcedo.librefind.ui.auth.AuthViewModel
 import com.jksalcedo.librefind.ui.correction.SuggestCorrectionViewModel
 import com.jksalcedo.librefind.ui.dashboard.DashboardViewModel
@@ -43,7 +46,7 @@ val appModule = module {
 
     single { PreferencesManager(androidContext()) }
     single { InventorySource(androidContext(), get()) }
-    single { SafeSignatureDb() }
+    single { PackageNameHeuristicsDb() }
 
     single { AppDatabase.getInstance(androidContext()) }
     single { get<AppDatabase>().ignoredAppDao() }
@@ -91,8 +94,9 @@ val repositoryModule = module {
 val useCaseModule = module {
     single { GetAlternativeUseCase(get()) }
     single { ScanInventoryUseCase(get()) }
-    single { com.jksalcedo.librefind.domain.usecase.SubmitProposalUseCase(get()) }
-    single { com.jksalcedo.librefind.domain.usecase.UpdateSubmissionUseCase(get()) }
+    single { SubmitProposalUseCase(get()) }
+    single { UpdateSubmissionUseCase(get()) }
+    single { TrustedRomSignerDb() }
 }
 
 val viewModelModule = module {

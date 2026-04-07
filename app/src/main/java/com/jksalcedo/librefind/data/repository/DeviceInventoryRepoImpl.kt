@@ -2,10 +2,11 @@ package com.jksalcedo.librefind.data.repository
 
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
+import android.os.Build
 import android.util.Log
 import com.jksalcedo.librefind.data.local.InventorySource
-import com.jksalcedo.librefind.data.local.PreferencesManager
-import com.jksalcedo.librefind.data.local.SafeSignatureDb
+import com.jksalcedo.librefind.data.local.PackageNameHeuristicsDb
+import com.jksalcedo.librefind.data.local.TrustedRomSignerDb
 import com.jksalcedo.librefind.domain.model.AppItem
 import com.jksalcedo.librefind.domain.model.AppStatus
 import com.jksalcedo.librefind.domain.repository.AppRepository
@@ -13,6 +14,7 @@ import com.jksalcedo.librefind.domain.repository.CacheRepository
 import com.jksalcedo.librefind.domain.repository.DeviceInventoryRepo
 import com.jksalcedo.librefind.domain.repository.IgnoredAppsRepository
 import com.jksalcedo.librefind.domain.repository.ReclassifiedAppsRepository
+import com.jksalcedo.librefind.util.SignerUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -21,15 +23,16 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import java.util.Locale
 
 class DeviceInventoryRepoImpl(
     private val localSource: InventorySource,
-    private val signatureDb: SafeSignatureDb,
+    private val signatureDb: PackageNameHeuristicsDb,
     private val appRepository: AppRepository,
     private val ignoredAppsRepository: IgnoredAppsRepository,
     private val cacheRepository: CacheRepository,
     private val reclassifiedAppsRepository: ReclassifiedAppsRepository,
-    private val preferencesManager: PreferencesManager
+    private val trustedRomSignerDb: TrustedRomSignerDb
 ) : DeviceInventoryRepo {
 
     companion object {
@@ -60,6 +63,16 @@ class DeviceInventoryRepoImpl(
             "com.indus.appstore",
             "com.apkupdater"
         )
+
+        private val OEM_BRANDS = setOf(
+            "xiaomi", "redmi", "poco",
+            "samsung",
+            "oppo", "oneplus", "realme",
+            "vivo", "iqoo",
+            "huawei", "honor",
+            "lenovo", "motorola",
+            "meizu", "zte", "nubia"
+        )
     }
 
     override suspend fun scanAndClassify(): Flow<List<AppItem>> = flow {
@@ -67,17 +80,26 @@ class DeviceInventoryRepoImpl(
         val ignoredAppsList = ignoredAppsRepository.getIgnoredPackageNames().first()
         val reclassifiedAppsMap = reclassifiedAppsRepository.getReclassifiedApps().first()
 
-        if (!cacheRepository.isCacheValid()) {
+        val cacheFresh = cacheRepository.isCacheValid()
+        var usingStaleCache = false
+
+        if (!cacheFresh) {
             try {
                 cacheRepository.refreshCache()
             } catch (e: Exception) {
-                Log.w(TAG, "Cache refresh failed, using remote fallback", e)
+                val hasCache = cacheRepository.hasAnyCache()
+                if (hasCache) {
+                    usingStaleCache = true
+                    Log.w(TAG, "Offline/stale mode: using existing cache", e)
+                } else {
+                    Log.w(TAG, "No cache available; continuing with limited classification", e)
+                }
             }
         }
 
         val packageNames = rawApps.map { it.packageName }
 
-        // Bulk lookups — all done upfront, no per-app network calls
+        // Bulk lookups
         val proprietaryMap = try {
             appRepository.areProprietary(packageNames)
         } catch (_: Exception) {
@@ -129,8 +151,10 @@ class DeviceInventoryRepoImpl(
         val icon = pkg.applicationInfo?.icon
 
         // Use standard PackageManager flags to determine if it is a system app
-        val isSystem = (pkg.applicationInfo?.flags?.and(ApplicationInfo.FLAG_SYSTEM)) != 0
-        val isSystemPackage = isSystem
+        val flags = pkg.applicationInfo?.flags ?: 0
+        val isSystem =
+            (flags and ApplicationInfo.FLAG_SYSTEM) != 0 ||
+                    (flags and ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0
 
         if (packageName in ignoredApps) {
             return createAppItem(
@@ -140,7 +164,7 @@ class DeviceInventoryRepoImpl(
                 installer,
                 icon,
                 isUserReclassified = false,
-                isSystemPackage = isSystemPackage
+                isSystemPackage = isSystem
             )
         }
 
@@ -153,7 +177,46 @@ class DeviceInventoryRepoImpl(
                 installer,
                 icon,
                 isUserReclassified = true,
-                isSystemPackage = isSystemPackage
+                isSystemPackage = isSystem
+            )
+        }
+
+        val isAospName = signatureDb.isAospSystemPackageName(packageName)
+        if (isAospName) {
+            // Non-system app pretending to be com.android.* > suspicious
+            if (!isSystem) {
+                return createAppItem(
+                    packageName, label, AppStatus.PROP, installer, icon,
+                    isUserReclassified = false, isSystemPackage = isSystem
+                )
+            }
+
+            val digests = SignerUtils.signerSha256Digests(pkg)
+            val trusted = trustedRomSignerDb.isTrustedSigner(digests)
+
+            if (trusted) {
+                return createAppItem(
+                    packageName, label, AppStatus.FOSS, installer, icon,
+                    isUserReclassified = false, isSystemPackage = isSystem
+                )
+            }
+
+            // Fallback when signer DB is incomplete
+            // OEM ROM + AOSP-name system app > likely proprietary fork
+            //  otherwise > pending for review
+            val brand = Build.BRAND.orEmpty().lowercase(Locale.US)
+            val manufacturer = Build.MANUFACTURER.orEmpty().lowercase(Locale.US)
+            val fingerprint = Build.FINGERPRINT.orEmpty().lowercase(Locale.US)
+
+            val isLikelyOemRom = OEM_BRANDS.any { oem ->
+                brand.contains(oem) || manufacturer.contains(oem) || fingerprint.contains(oem)
+            }
+
+            val status = if (isLikelyOemRom) AppStatus.PROP else AppStatus.PENDING
+
+            return createAppItem(
+                packageName, label, status, installer, icon,
+                isUserReclassified = false, isSystemPackage = isSystem
             )
         }
 
@@ -165,19 +228,7 @@ class DeviceInventoryRepoImpl(
                 installer,
                 icon,
                 isUserReclassified = false,
-                isSystemPackage = isSystemPackage
-            )
-        }
-
-        if (signatureDb.isKnownFossApp(packageName)) {
-            return createAppItem(
-                packageName,
-                label,
-                AppStatus.FOSS,
-                installer,
-                icon,
-                isUserReclassified = false,
-                isSystemPackage = isSystemPackage
+                isSystemPackage = isSystem
             )
         }
 
@@ -195,7 +246,7 @@ class DeviceInventoryRepoImpl(
                 installer,
                 icon,
                 isUserReclassified = false,
-                isSystemPackage = isSystemPackage
+                isSystemPackage = isSystem
             )
         }
 
@@ -213,7 +264,7 @@ class DeviceInventoryRepoImpl(
                 installer,
                 icon,
                 isUserReclassified = false,
-                isSystemPackage = isSystemPackage
+                isSystemPackage = isSystem
             )
         }
 
@@ -225,7 +276,7 @@ class DeviceInventoryRepoImpl(
                 installer,
                 icon,
                 isUserReclassified = false,
-                isSystemPackage = isSystemPackage
+                isSystemPackage = isSystem
             )
         }
 
@@ -238,7 +289,7 @@ class DeviceInventoryRepoImpl(
                 installer,
                 icon,
                 isUserReclassified = false,
-                isSystemPackage = isSystemPackage
+                isSystemPackage = isSystem
             )
         }
 
@@ -249,7 +300,7 @@ class DeviceInventoryRepoImpl(
             installer,
             icon,
             isUserReclassified = false,
-            isSystemPackage = isSystemPackage
+            isSystemPackage = isSystem
         )
     }
 

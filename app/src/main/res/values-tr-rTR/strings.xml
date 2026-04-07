@@ -15,15 +15,15 @@
     <string name="dashboard_filter_ignored_only">Sadece Görmezden Gelinen</string>
     <string name="dashboard_profile">Profil</string>
     <!-- Correction -->
-    <string name="correction_title">Suggest Correction</string>
-    <string name="correction_intro">Suggest a correction for %1$s. All suggestions are reviewed by moderators.</string>
-    <string name="correction_type_label">Correction Type</string>
-    <string name="correction_value_label">Correct Value</string>
-    <string name="correction_value_placeholder">e.g. GPLv3, Utility, https://example.com</string>
-    <string name="correction_description_label">Description / Reason</string>
-    <string name="correction_description_placeholder">Why is this correction needed? Provide sources if possible.</string>
-    <string name="correction_submit_button">Submit Correction</string>
-    <string name="back">Back</string>
+    <string name="correction_title">Düzeltme Öner</string>
+    <string name="correction_intro">%1$s için bir düzeltme önerin. Tüm öneriler moderatörler tarafından incelenir.</string>
+    <string name="correction_type_label">Düzeltme Türü</string>
+    <string name="correction_value_label">Doğru Değer</string>
+    <string name="correction_value_placeholder">örnek: GPLv3, Utility, https://example.com</string>
+    <string name="correction_description_label">Açıklama / Sebep</string>
+    <string name="correction_description_placeholder">Bu düzeltme neden gerekli? Mümkünse kaynak gösterin.</string>
+    <string name="correction_submit_button">Düzeltmeyi Gönder</string>
+    <string name="back">Geri</string>
     <string name="dashboard_settings">Ayarlar</string>
     <string name="dashboard_submit_app">Uygulama Gönder</string>
     <string name="dashboard_error_title">Hata</string>
@@ -189,10 +189,10 @@
     <string name="settings_account_deleted_message">Hesabınız başarıyla silindi.</string>
     <string name="settings_ok">Tamam</string>
     <!-- New strings for system/vendor package filtering toggle -->
-    <string name="settings_hide_system_packages_title">System package filtering</string>
-    <string name="settings_hide_system_packages_label">Hide vendor/system packages</string>
-    <string name="settings_on">On</string>
-    <string name="settings_off">Off</string>
+    <string name="settings_hide_system_packages_title">Sistem paketi filtreleme</string>
+    <string name="settings_hide_system_packages_label">Satıcı/sistem paketlerini gizle</string>
+    <string name="settings_on">Açık</string>
+    <string name="settings_off">Kapalı</string>
     <string name="settings_error">Hata</string>
     <!-- Ignored Apps Screen -->
     <string name="ignored_apps_title">Göz Ardı Edilen Uygulamalar</string>
@@ -294,12 +294,12 @@
     <string name="details_suggest_proprietary">Kapalı Kaynak Olarak Gönder</string>
     <string name="details_found_format">%1$d Açık Kaynak Alternatif Bulundu%2$s</string>
     <string name="details_suggest_alternative">Alternatif öner</string>
-    <string name="details_no_siblings">No other FOSS apps in the same category yet.</string>
-    <string name="details_siblings_found_format">%1$d similar FOSS app%2$s in this category</string>
-    <string name="details_foss_category_unset">This app hasn\'t been assigned a category yet. Similar apps can\'t be shown until it is.</string>
+    <string name="details_no_siblings">Aynı kategoride henüz başka açık kaynaklı yazılım uygulaması yok.</string>
+    <string name="details_siblings_found_format">%1$d uygulamasının bu kategoride benzer bir FOSS uygulaması %2$s</string>
+    <string name="details_foss_category_unset">Bu uygulamaya henüz bir kategori atanmadı. Atanana kadar benzer uygulamalar gösterilemez.</string>
     <!-- Match vote buttons -->
-    <string name="vote_upvote">Good replacement (upvote)</string>
-    <string name="vote_downvote">Poor replacement (downvote)</string>
+    <string name="vote_upvote">İyi bir alternatif (oy verin)</string>
+    <string name="vote_downvote">Kötü bir alternatif (olumsuz oy)</string>
     <!-- My Submissions Screen -->
     <string name="my_submissions_title">Gönderilerim</string>
     <string name="my_submissions_empty">Gönderi bulunamadı</string>
