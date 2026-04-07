@@ -65,7 +65,7 @@ class CacheRepositoryImpl(
     }
 
     override suspend fun isCacheValid(): Boolean = withContext(Dispatchers.IO) {
-        val lastUpdated = appCacheDao.getTargetsLastUpdated() ?: return@withContext false
+        val lastUpdated = getCacheLastUpdated() ?: return@withContext false
         val age = System.currentTimeMillis() - lastUpdated
         val isValid = age < CACHE_TTL_MS
         Log.d(TAG, "Cache age: ${age / 1000 / 60}min, valid: $isValid")
@@ -92,6 +92,20 @@ class CacheRepositoryImpl(
             appCacheDao.clearTargets()
             appCacheDao.clearSolutions()
             Log.d(TAG, "Cache cleared")
+        }
+    }
+
+    override suspend fun hasAnyCache(): Boolean = withContext(Dispatchers.IO) {
+        appCacheDao.getTotalCachedRows() > 0
+    }
+
+    override suspend fun getCacheLastUpdated(): Long? = withContext(Dispatchers.IO) {
+        val t = appCacheDao.getTargetsLastUpdated()
+        val s = appCacheDao.getSolutionsLastUpdated()
+        when {
+            t == null -> s
+            s == null -> t
+            else -> maxOf(t, s)
         }
     }
 }

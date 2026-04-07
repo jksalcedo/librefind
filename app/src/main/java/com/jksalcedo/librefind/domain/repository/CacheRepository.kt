@@ -7,4 +7,7 @@ interface CacheRepository {
     suspend fun isSolutionCached(packageName: String): Boolean
     suspend fun getAlternativesCount(packageName: String): Int?
     suspend fun clearCache()
+
+    suspend fun hasAnyCache(): Boolean
+    suspend fun getCacheLastUpdated(): Long?
 }
