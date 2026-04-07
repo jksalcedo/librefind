@@ -137,3 +137,14 @@ data class AlternativeWithVoteDto(
     @SerialName("match_score") val matchScore: Int = 0,
     @SerialName("user_match_vote") val userMatchVote: Int? = null
 )
+
+@Serializable
+data class AppFeedbackDto(
+    val id: String? = null,
+    @SerialName("package_name") val packageName: String,
+    @SerialName("feedback_type") val feedbackType: String,
+    val content: String,
+    @SerialName("submitter_id") val submitterId: String,
+    val status: String,
+    @SerialName("rejection_reason") val rejectionReason: String? = null
+)
