@@ -80,11 +80,20 @@ class DeviceInventoryRepoImpl(
         val ignoredAppsList = ignoredAppsRepository.getIgnoredPackageNames().first()
         val reclassifiedAppsList = reclassifiedAppsRepository.getReclassifiedPackageNames().first()
 
-        if (!cacheRepository.isCacheValid()) {
+        val cacheFresh = cacheRepository.isCacheValid()
+        var usingStaleCache = false
+
+        if (!cacheFresh) {
             try {
                 cacheRepository.refreshCache()
             } catch (e: Exception) {
-                Log.w(TAG, "Cache refresh failed, using remote fallback", e)
+                val hasCache = cacheRepository.hasAnyCache()
+                if (hasCache) {
+                    usingStaleCache = true
+                    Log.w(TAG, "Offline/stale mode: using existing cache", e)
+                } else {
+                    Log.w(TAG, "No cache available; continuing with limited classification", e)
+                }
             }
         }
 
@@ -142,7 +151,10 @@ class DeviceInventoryRepoImpl(
         val icon = pkg.applicationInfo?.icon
 
         // Use standard PackageManager flags to determine if it is a system app
-        val isSystem = (pkg.applicationInfo?.flags?.and(ApplicationInfo.FLAG_SYSTEM)) != 0
+        val flags = pkg.applicationInfo?.flags ?: 0
+        val isSystem =
+            (flags and ApplicationInfo.FLAG_SYSTEM) != 0 ||
+                    (flags and ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0
 
         if (packageName in ignoredApps) {
             return createAppItem(
