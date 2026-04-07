@@ -2,9 +2,10 @@ package com.jksalcedo.librefind.data.repository
 
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
+import android.os.Build
 import android.util.Log
 import com.jksalcedo.librefind.data.local.InventorySource
-import com.jksalcedo.librefind.data.local.KnownFossPackages
+import com.jksalcedo.librefind.data.local.PackageNameHeuristicsDb
 import com.jksalcedo.librefind.data.local.TrustedRomSignerDb
 import com.jksalcedo.librefind.domain.model.AppItem
 import com.jksalcedo.librefind.domain.model.AppStatus
@@ -22,10 +23,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import java.util.Locale
 
 class DeviceInventoryRepoImpl(
     private val localSource: InventorySource,
-    private val signatureDb: KnownFossPackages,
+    private val signatureDb: PackageNameHeuristicsDb,
     private val appRepository: AppRepository,
     private val ignoredAppsRepository: IgnoredAppsRepository,
     private val cacheRepository: CacheRepository,
@@ -60,6 +62,16 @@ class DeviceInventoryRepoImpl(
             "com.tomclaw.appsend",
             "com.indus.appstore",
             "com.apkupdater"
+        )
+
+        private val OEM_BRANDS = setOf(
+            "xiaomi", "redmi", "poco",
+            "samsung",
+            "oppo", "oneplus", "realme",
+            "vivo", "iqoo",
+            "huawei", "honor",
+            "lenovo", "motorola",
+            "meizu", "zte", "nubia"
         )
     }
 
@@ -158,30 +170,40 @@ class DeviceInventoryRepoImpl(
 
         val isAospName = signatureDb.isAospSystemPackageName(packageName)
         if (isAospName) {
-            val digests = SignerUtils.signerSha256Digests(pkg)
-            val trusted = trustedRomSignerDb.isTrustedSigner(digests)
-
-            if (!trusted) {
-                // Force PROP, even if installed from F-Droid, etc.
+            // Non-system app pretending to be com.android.* > suspicious
+            if (!isSystem) {
                 return createAppItem(
-                    packageName,
-                    label,
-                    AppStatus.PROP,
-                    installer,
-                    icon,
-                    isUserReclassified = false,
-                    isSystemPackage = isSystem
+                    packageName, label, AppStatus.PROP, installer, icon,
+                    isUserReclassified = false, isSystemPackage = isSystem
                 )
             }
 
+            val digests = SignerUtils.signerSha256Digests(pkg)
+            val trusted = trustedRomSignerDb.isTrustedSigner(digests)
+
+            if (trusted) {
+                return createAppItem(
+                    packageName, label, AppStatus.FOSS, installer, icon,
+                    isUserReclassified = false, isSystemPackage = isSystem
+                )
+            }
+
+            // Fallback when signer DB is incomplete
+            // OEM ROM + AOSP-name system app > likely proprietary fork
+            //  otherwise > pending for review
+            val brand = Build.BRAND.orEmpty().lowercase(Locale.US)
+            val manufacturer = Build.MANUFACTURER.orEmpty().lowercase(Locale.US)
+            val fingerprint = Build.FINGERPRINT.orEmpty().lowercase(Locale.US)
+
+            val isLikelyOemRom = OEM_BRANDS.any { oem ->
+                brand.contains(oem) || manufacturer.contains(oem) || fingerprint.contains(oem)
+            }
+
+            val status = if (isLikelyOemRom) AppStatus.PROP else AppStatus.PENDING
+
             return createAppItem(
-                packageName,
-                label,
-                AppStatus.FOSS,
-                installer,
-                icon,
-                isUserReclassified = false,
-                isSystemPackage = isSystem
+                packageName, label, status, installer, icon,
+                isUserReclassified = false, isSystemPackage = isSystem
             )
         }
 
@@ -194,41 +216,6 @@ class DeviceInventoryRepoImpl(
                 icon,
                 isUserReclassified = false,
                 isSystemPackage = isSystem
-            )
-        }
-
-        if (signatureDb.isKnownFossApp(packageName)) {
-            return createAppItem(
-                packageName,
-                label,
-                AppStatus.FOSS,
-                installer,
-                icon,
-                isUserReclassified = false,
-                isSystemPackage = isSystem
-            )
-        }
-
-        if (signatureDb.isAospSystemPackageName(packageName)) {
-            //only apply this rule to system apps
-            if (isSystem) {
-                val digests = SignerUtils.signerSha256Digests(pkg)
-                val trusted = trustedRomSignerDb.isTrustedSigner(digests)
-
-                return createAppItem(
-                    packageName,
-                    label,
-                    if (trusted) AppStatus.FOSS else AppStatus.PROP,
-                    installer,
-                    icon,
-                    isUserReclassified = false,
-                    isSystemPackage = isSystem
-                )
-            }
-            // If it's not a system app but uses com.android.* package name, treat as PROP
-            return createAppItem(
-                packageName, label, AppStatus.PROP, installer, icon,
-                isUserReclassified = false, isSystemPackage = isSystem
             )
         }
 
