@@ -166,6 +166,12 @@ dependencies {
     implementation(libs.androidx.compose.foundation)
     ksp(libs.room.compiler)
 
+    // DataStore
+    implementation(libs.androidx.datastore.preferences)
+
+    // WorkManager
+    implementation(libs.androidx.work.runtime.ktx)
+
     // Retrofit & OkHttp (Networking)
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
