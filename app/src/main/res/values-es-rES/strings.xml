@@ -15,15 +15,15 @@
     <string name="dashboard_filter_ignored_only">Solo ignorado</string>
     <string name="dashboard_profile">Perfil</string>
     <!-- Correction -->
-    <string name="correction_title">Suggest Correction</string>
-    <string name="correction_intro">Suggest a correction for %1$s. All suggestions are reviewed by moderators.</string>
-    <string name="correction_type_label">Correction Type</string>
-    <string name="correction_value_label">Correct Value</string>
-    <string name="correction_value_placeholder">e.g. GPLv3, Utility, https://example.com</string>
-    <string name="correction_description_label">Description / Reason</string>
-    <string name="correction_description_placeholder">Why is this correction needed? Provide sources if possible.</string>
-    <string name="correction_submit_button">Submit Correction</string>
-    <string name="back">Back</string>
+    <string name="correction_title">Sugerir Corrección</string>
+    <string name="correction_intro">Sugerir una corrección para %1$s. Todas las sugerencias son revisadas por moderadores.</string>
+    <string name="correction_type_label">Tipo de Corrección</string>
+    <string name="correction_value_label">Valor de Corrección</string>
+    <string name="correction_value_placeholder">ejemplo: GPLv3, Utilidad, https://example.com</string>
+    <string name="correction_description_label">Descripción / Razón</string>
+    <string name="correction_description_placeholder">¿Por qué es necesaria esta corrección? Proporcione fuentes si es posible.</string>
+    <string name="correction_submit_button">Enviar Corrección</string>
+    <string name="back">Atrás</string>
     <string name="dashboard_settings">Ajustes</string>
     <string name="dashboard_submit_app">Sugerir app</string>
     <string name="dashboard_error_title">Error</string>
@@ -50,8 +50,8 @@
     <string name="auth_sign_in">Iniciar sesión</string>
     <string name="auth_subtitle">Sugerir alternativas FOSS</string>
     <string name="auth_username">Nombre de usuario</string>
-    <string name="auth_email">Email</string>
-    <string name="auth_password">Password</string>
+    <string name="auth_email">Correo Electrónico</string>
+    <string name="auth_password">Contraseña</string>
     <string name="auth_hide_password">Ocultar contraseña</string>
     <string name="auth_show_password">Mostrar contraseña</string>
     <string name="auth_or">O</string>
@@ -77,7 +77,7 @@
     <string name="submit_done">Hecho</string>
     <string name="submit_what_submitting">Que estas sugiriendo?</string>
     <string name="submit_contribution_guide">Guía de contribución</string>
-    <string name="submit_web_submission_page">Open web submission page</string>
+    <string name="submit_web_submission_page">Abrir página de envío web</string>
     <string name="submit_type_foss">App FOSS</string>
     <string name="submit_type_proprietary">App propietaria</string>
     <string name="submit_type_link">Vincular app</string>
@@ -161,19 +161,19 @@
     <string name="settings_view_github">Ver en GitHub</string>
     <string name="settings_donate">Donar a LibreFind</string>
     <string name="settings_privacy_policy">Política de privacidad</string>
-    <string name="settings_language">Language</string>
-    <string name="settings_language_system">System Default</string>
-    <string name="settings_language_english">English</string>
-    <string name="settings_language_arabic">Arabic</string>
-    <string name="settings_language_german">German</string>
-    <string name="settings_language_greek">Greek</string>
-    <string name="settings_language_spanish">Spanish</string>
-    <string name="settings_language_estonian">Estonian</string>
-    <string name="settings_language_french">French</string>
-    <string name="settings_language_italian">Italian</string>
-    <string name="settings_language_polish">Polish</string>
-    <string name="settings_language_turkish">Turkish</string>
-    <string name="settings_language_chinese_simplified">Simplified Chinese</string>
+    <string name="settings_language">Idioma</string>
+    <string name="settings_language_system">Predeterminado del Sistema</string>
+    <string name="settings_language_english">Inglés</string>
+    <string name="settings_language_arabic">Árabe</string>
+    <string name="settings_language_german">Alemán</string>
+    <string name="settings_language_greek">Griego</string>
+    <string name="settings_language_spanish">Español</string>
+    <string name="settings_language_estonian">Estonio</string>
+    <string name="settings_language_french">Francés</string>
+    <string name="settings_language_italian">Italiano</string>
+    <string name="settings_language_polish">Polaco</string>
+    <string name="settings_language_turkish">Turco</string>
+    <string name="settings_language_chinese_simplified">Chino Simplificado</string>
     <string name="settings_cache_management">Gestionar caché</string>
     <string name="settings_cache_size">Tamaño de la caché de íconos</string>
     <string name="settings_clear">Limpiar</string>
@@ -187,12 +187,12 @@
     <string name="settings_delete">Borrar</string>
     <string name="settings_account_deleted_title">Cuenta borrada</string>
     <string name="settings_account_deleted_message">Tu cuenta se borró exitosamente.</string>
-    <string name="settings_ok">OK</string>
+    <string name="settings_ok">Entendido</string>
     <!-- New strings for system/vendor package filtering toggle -->
-    <string name="settings_hide_system_packages_title">System package filtering</string>
-    <string name="settings_hide_system_packages_label">Hide vendor/system packages</string>
-    <string name="settings_on">On</string>
-    <string name="settings_off">Off</string>
+    <string name="settings_hide_system_packages_title">Filtrado de paquete del sistema</string>
+    <string name="settings_hide_system_packages_label">Ocultar paquetes de proveedor/sistema</string>
+    <string name="settings_on">Encendido</string>
+    <string name="settings_off">Apagado</string>
     <string name="settings_error">Error</string>
     <!-- Ignored Apps Screen -->
     <string name="ignored_apps_title">Apps ignoradas</string>
@@ -260,13 +260,13 @@
     <string name="alt_detail_your_ratings">Tus calificaciones</string>
     <string name="alt_detail_description">Descripción</string>
     <string name="alt_detail_features_list">Funciones</string>
-    <string name="alt_detail_pros">Pros</string>
+    <string name="alt_detail_pros">Ventajas</string>
     <string name="alt_detail_no_pros">No pros todavía</string>
     <string name="alt_detail_cons">Contras</string>
     <string name="alt_detail_no_cons">Ningún contra todavía</string>
     <string name="alt_detail_add_pro">Añadir un pro</string>
     <string name="alt_detail_add_con">Añadir un contra</string>
-    <string name="alt_detail_pro">Pro</string>
+    <string name="alt_detail_pro">Ventaja</string>
     <string name="alt_detail_con">Contra</string>
     <string name="alt_detail_feedback_label">Tu feedback</string>
     <string name="alt_detail_submit">Sugerir</string>
@@ -288,18 +288,18 @@
     <string name="details_retry">Reintentar</string>
     <string name="details_no_alternatives">No se encontraron alternativas</string>
     <string name="details_not_in_db">Esta app no esta en nuestra base de datos todavía.</string>
-    <string name="details_no_suggested_alternatives">No FOSS alternatives have been suggested for this app yet.</string>
+    <string name="details_no_suggested_alternatives">Aún no se ha sugerido una alternativa FOSS para esta app.</string>
     <string name="details_help_categorize">Ayudanos a categorizar esta app:</string>
     <string name="details_suggest_foss">Sugerir como FOSS</string>
     <string name="details_suggest_proprietary">Sugerir como Propietaria</string>
     <string name="details_found_format">Se encontró %1$d alternativa FOSS %2$s</string>
-    <string name="details_suggest_alternative">Suggest an alternative</string>
-    <string name="details_no_siblings">No other FOSS apps in the same category yet.</string>
-    <string name="details_siblings_found_format">%1$d similar FOSS app%2$s in this category</string>
-    <string name="details_foss_category_unset">This app hasn\'t been assigned a category yet. Similar apps can\'t be shown until it is.</string>
+    <string name="details_suggest_alternative">Sugerir una alternativa</string>
+    <string name="details_no_siblings">No hay otra aplicación FOSS en la misma categoría aun.</string>
+    <string name="details_siblings_found_format">%1$d app%2$s FOSS similares en esta categoría</string>
+    <string name="details_foss_category_unset">A esta aplicación aún no se le ha asignado una categoría. No se pueden mostrar aplicaciones similares hasta que lo esté.</string>
     <!-- Match vote buttons -->
-    <string name="vote_upvote">Good replacement (upvote)</string>
-    <string name="vote_downvote">Poor replacement (downvote)</string>
+    <string name="vote_upvote">Buen reemplazo (voto positivo)</string>
+    <string name="vote_downvote">Mal reemplazo (voto negativo)</string>
     <!-- My Submissions Screen -->
     <string name="my_submissions_title">Mis sugerencias</string>
     <string name="my_submissions_empty">No se encontraron sugerencias</string>
@@ -336,6 +336,6 @@
     <string name="report_desc_placeholder">Describe el problema o la sugerencia en detalle…</string>
     <string name="report_priority_label">Prioridad</string>
     <string name="report_submit_button">Sugerir reporte</string>
-    <string name="web_submission">Web Submission</string>
+    <string name="web_submission">Envío web</string>
     <string name="status_pwa">PWA</string>
 </resources>
