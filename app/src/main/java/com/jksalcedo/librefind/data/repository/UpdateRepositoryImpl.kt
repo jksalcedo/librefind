@@ -2,9 +2,10 @@ package com.jksalcedo.librefind.data.repository
 
 import android.app.DownloadManager
 import android.content.Context
-import android.net.Uri
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Environment
-import com.jksalcedo.librefind.BuildConfig
+import androidx.core.net.toUri
 import com.jksalcedo.librefind.data.remote.UpdateApiService
 import com.jksalcedo.librefind.domain.model.AppUpdate
 import com.jksalcedo.librefind.domain.repository.UpdateRepository
@@ -20,7 +21,18 @@ class UpdateRepositoryImpl(
         runCatching {
             val release = updateApiService.getLatestRelease()
             val latestVersion = release.tagName.removePrefix("v")
-            val currentVersion = BuildConfig.VERSION_NAME
+            val currentVersion = try {
+                val pm = context.packageManager
+                val pkg = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    pm.getPackageInfo(context.packageName, PackageManager.PackageInfoFlags.of(0))
+                } else {
+                    @Suppress("DEPRECATION")
+                    pm.getPackageInfo(context.packageName, 0)
+                }
+                pkg.versionName ?: "unknown"
+            } catch (_: Exception) {
+                "unknown"
+            }
 
             val apkAsset = release.assets.find { it.name.endsWith(".apk") }
                 ?: throw Exception("No APK found in the latest release")
@@ -36,7 +48,7 @@ class UpdateRepositoryImpl(
     }
 
     override fun downloadUpdate(url: String, fileName: String): Long {
-        val request = DownloadManager.Request(Uri.parse(url))
+        val request = DownloadManager.Request(url.toUri())
             .setTitle("LibreFind Update")
             .setDescription("Downloading latest version of LibreFind")
             .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
@@ -60,7 +72,7 @@ class UpdateRepositoryImpl(
             if (l > c) return true
             if (l < c) return false
         }
-        
+
         // If versions are same, check for suffix (e.g. beta11 vs stable/nothing)
         // For development/simplicity, if they are exactly equal, no update.
         return false
