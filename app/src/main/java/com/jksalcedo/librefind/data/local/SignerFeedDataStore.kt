@@ -15,8 +15,11 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 
 class SignerFeedDataStore(private val context: Context, private val gson: Gson) {
 
-    private val FEED_JSON_KEY = stringPreferencesKey("feed_json")
-    private val ETAG_KEY = stringPreferencesKey("etag")
+    companion object {
+        private val FEED_JSON_KEY = stringPreferencesKey("feed_json")
+        private val ETAG_KEY = stringPreferencesKey("etag")
+
+    }
 
     val feedFlow: Flow<RemoteSignerFeed?> = context.dataStore.data.map { preferences ->
         val json = preferences[FEED_JSON_KEY]
