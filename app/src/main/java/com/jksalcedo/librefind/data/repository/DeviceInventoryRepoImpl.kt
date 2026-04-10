@@ -73,6 +73,11 @@ class DeviceInventoryRepoImpl(
             "lenovo", "motorola",
             "meizu", "zte", "nubia"
         )
+
+        private fun isLikelyRomNamespace(packageName: String, prefixes: List<String>): Boolean {
+            val p = packageName.lowercase(Locale.US)
+            return prefixes.any { prefix -> p.startsWith(prefix) }
+        }
     }
 
     override suspend fun scanAndClassify(): Flow<List<AppItem>> = flow {
@@ -80,8 +85,12 @@ class DeviceInventoryRepoImpl(
         val ignoredAppsList = ignoredAppsRepository.getIgnoredPackageNames().first()
         val reclassifiedAppsMap = reclassifiedAppsRepository.getReclassifiedApps().first()
 
+        val platformSigners = trustedRomSignerDb.platformSigners.first()
+        val romAppSigners = trustedRomSignerDb.romAppSigners.first()
+        val romPrefixes = trustedRomSignerDb.romPrefixes.first()
+
         val cacheFresh = cacheRepository.isCacheValid()
-        var usingStaleCache = false
+//        var usingStaleCache = false
 
         if (!cacheFresh) {
             try {
@@ -89,7 +98,7 @@ class DeviceInventoryRepoImpl(
             } catch (e: Exception) {
                 val hasCache = cacheRepository.hasAnyCache()
                 if (hasCache) {
-                    usingStaleCache = true
+//                    usingStaleCache = true
                     Log.w(TAG, "Offline/stale mode: using existing cache", e)
                 } else {
                     Log.w(TAG, "No cache available; continuing with limited classification", e)
@@ -127,7 +136,10 @@ class DeviceInventoryRepoImpl(
                         reclassifiedApps = reclassifiedAppsMap,
                         proprietaryMap = proprietaryMap,
                         solutionsSet = solutionsSet,
-                        pendingPackages = pendingPackages
+                        pendingPackages = pendingPackages,
+                        platformSigners = platformSigners,
+                        romAppSigners = romAppSigners,
+                        romPrefixes = romPrefixes
                     )
                 }
             }.awaitAll()
@@ -143,7 +155,10 @@ class DeviceInventoryRepoImpl(
         reclassifiedApps: Map<String, AppStatus>,
         proprietaryMap: Map<String, Boolean>,
         solutionsSet: Set<String>,
-        pendingPackages: Set<String>
+        pendingPackages: Set<String>,
+        platformSigners: Set<String>,
+        romAppSigners: Set<String>,
+        romPrefixes: List<String>
     ): AppItem {
         val packageName = pkg.packageName
         val label = localSource.getAppLabel(packageName)
@@ -192,7 +207,7 @@ class DeviceInventoryRepoImpl(
             }
 
             val digests = SignerUtils.signerSha256Digests(pkg)
-            val trusted = trustedRomSignerDb.isTrustedSigner(digests)
+            val trusted = digests.any { it.lowercase() in platformSigners }
 
             if (trusted) {
                 return createAppItem(
@@ -220,16 +235,14 @@ class DeviceInventoryRepoImpl(
             )
         }
 
-        if (installer in FOSS_INSTALLERS) {
-            return createAppItem(
-                packageName,
-                label,
-                AppStatus.FOSS,
-                installer,
-                icon,
-                isUserReclassified = false,
-                isSystemPackage = isSystem
-            )
+        if (isSystem && isLikelyRomNamespace(packageName, romPrefixes)) {
+            val digests = SignerUtils.signerSha256Digests(pkg)
+            if (digests.any { it.lowercase() in romAppSigners }) {
+                return createAppItem(
+                    packageName, label, AppStatus.FOSS, installer, icon,
+                    isUserReclassified = false, isSystemPackage = true
+                )
+            }
         }
 
         val isKnownSolution = try {
@@ -261,6 +274,18 @@ class DeviceInventoryRepoImpl(
                 packageName,
                 label,
                 AppStatus.PROP,
+                installer,
+                icon,
+                isUserReclassified = false,
+                isSystemPackage = isSystem
+            )
+        }
+
+        if (installer in FOSS_INSTALLERS) {
+            return createAppItem(
+                packageName,
+                label,
+                AppStatus.FOSS,
                 installer,
                 icon,
                 isUserReclassified = false,

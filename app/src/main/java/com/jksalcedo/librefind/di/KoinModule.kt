@@ -47,6 +47,7 @@ val appModule = module {
     single { PreferencesManager(androidContext()) }
     single { InventorySource(androidContext(), get()) }
     single { PackageNameHeuristicsDb() }
+    single { com.jksalcedo.librefind.data.local.SignerFeedDataStore(androidContext(), get()) }
 
     single { AppDatabase.getInstance(androidContext()) }
     single { get<AppDatabase>().ignoredAppDao() }
@@ -58,26 +59,37 @@ val appModule = module {
 
 val networkModule = module {
     single {
-        GsonBuilder()
-            .setStrictness(Strictness.LENIENT)
+        com.google.gson.GsonBuilder()
+            .setStrictness(com.google.gson.Strictness.LENIENT)
             .create()
     }
 
     single {
-        val loggingInterceptor = HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
+        val loggingInterceptor = okhttp3.logging.HttpLoggingInterceptor().apply {
+            level = okhttp3.logging.HttpLoggingInterceptor.Level.BODY
         }
-        OkHttpClient.Builder()
+        okhttp3.OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
-            .connectTimeout(30L, TimeUnit.SECONDS)
-            .readTimeout(30L, TimeUnit.SECONDS)
-            .writeTimeout(30L, TimeUnit.SECONDS)
+            .connectTimeout(30L, java.util.concurrent.TimeUnit.SECONDS)
+            .readTimeout(30L, java.util.concurrent.TimeUnit.SECONDS)
+            .writeTimeout(30L, java.util.concurrent.TimeUnit.SECONDS)
             .build()
     }
+
+    single {
+        retrofit2.Retrofit.Builder()
+            .baseUrl("https://raw.githubusercontent.com/")
+            .client(get())
+            .addConverterFactory(retrofit2.converter.gson.GsonConverterFactory.create(get()))
+            .build()
+    }
+
+    single { get<retrofit2.Retrofit>().create(com.jksalcedo.librefind.data.remote.SignerApiService::class.java) }
 }
 
 val repositoryModule = module {
     single<CacheRepository> { CacheRepositoryImpl(get(), get()) }
+    single { TrustedRomSignerDb(get(), get()) }
     single<DeviceInventoryRepo> {
         DeviceInventoryRepoImpl(
             get(),
@@ -96,7 +108,6 @@ val useCaseModule = module {
     single { ScanInventoryUseCase(get()) }
     single { SubmitProposalUseCase(get()) }
     single { UpdateSubmissionUseCase(get()) }
-    single { TrustedRomSignerDb() }
 }
 
 val viewModelModule = module {

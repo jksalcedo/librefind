@@ -1,0 +1,41 @@
+{
+  "version": 2,
+  "updated_at": "2026-04-09T00:00:00Z",
+  "notes": "Trusted signer feed for LibreFind. SHA-256 digests must be lowercase hex of cert bytes.",
+  "platform_signers": [
+    "a8318efeeb2f37bd9020aebb576dd952654792f12adc3e5b54fad268ed719825",
+    "c45d15cc0ebf9b91fe03246ad16377fe494a2448802aadc7af632c3197c7e0dc",
+    "04a4b3425f57c3669a73cd2710c7cbf00d222b6d1202dc474e475e5eb47d5c4c",
+    "d70e106dfa5f730bf098f4570e7ec80b803e31f33e5678cb5de45d0605d4f692",
+    "13ebdd59c1dac288652a0d401c8c50516ce0ae98308f05393a2608117e39b8fb",
+    "c98da0e614208f08795f855373d5e4b84f093e3f72f8a48b74d6009a57e6994f",
+    "98c014edd7047cd667fc0a335759d2534f599a0739dd38c03dc39da0d7408e00",
+    "f81ed1f9ee104ad80fed5d9ff5560a859464fae708dc575d6f9508846c06bc1a",
+    "171315f9395eed79ed0a3d197d2d1c5ad2b80191a071c894da9227cad803d6ea",
+    "a125e0344ddaf1325d7784d0ead4f568520db552e3dae814e8d867f42deb08c7",
+    "d12a13415e8e3fffdcd814f39d6c47127fce59a645d90892f7d45ffa0864531d",
+    "0c62856b6fd42391f6a205338b771ae3a8049cc7cd15f6f068600431dbc99104",
+    "6be3e57d3d8e0b3ba5e3ad865bf9d654bdb2472e02774c68bee4058f5b398c01"
+  ],
+  "rom_app_signers": [
+    "035d404701c6d5648fd32fa9f199be75be76c819fab149e40996c87d015f57c9",
+    "13eb13912637fce93694905057cdc06f7232c8fea6f42d0782d03a10935ea325"
+  ],
+  "rom_prefixes": [
+    "com.lineageos.",
+    "org.lineageos.",
+    "org.voltageos.",
+    "app.grapheneos.",
+    "com.crdroid.",
+    "org.evolutionx.",
+    "org.aicp.",
+    "org.pixelexperience.",
+    "org.derpfest.",
+    "org.projectelixir.",
+    "com.risingos.",
+    "org.havoc.",
+    "org.arrowos.",
+    "org.superioros.",
+    "org.blissroms."
+  ]
+}
