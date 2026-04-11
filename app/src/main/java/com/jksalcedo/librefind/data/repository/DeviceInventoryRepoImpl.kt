@@ -73,6 +73,13 @@ class DeviceInventoryRepoImpl(
             "lenovo", "motorola",
             "meizu", "zte", "nubia"
         )
+
+        private fun isLikelyRomNamespace(packageName: String, prefixes: List<String>): Boolean {
+            val p = packageName.lowercase(Locale.US)
+            return prefixes.any { prefix -> p.startsWith(prefix) }
+        }
+
+        private fun normalizeDigest(value: String): String = value.trim().lowercase(Locale.US)
     }
 
     override suspend fun scanAndClassify(): Flow<List<AppItem>> = flow {
@@ -80,8 +87,12 @@ class DeviceInventoryRepoImpl(
         val ignoredAppsList = ignoredAppsRepository.getIgnoredPackageNames().first()
         val reclassifiedAppsMap = reclassifiedAppsRepository.getReclassifiedApps().first()
 
+        val platformSigners = trustedRomSignerDb.platformSigners.first()
+        val romAppSigners = trustedRomSignerDb.romAppSigners.first()
+        val romPrefixes = trustedRomSignerDb.romPrefixes.first()
+
         val cacheFresh = cacheRepository.isCacheValid()
-        var usingStaleCache = false
+        var isOfflineOrStaleMode = false
 
         if (!cacheFresh) {
             try {
@@ -89,7 +100,7 @@ class DeviceInventoryRepoImpl(
             } catch (e: Exception) {
                 val hasCache = cacheRepository.hasAnyCache()
                 if (hasCache) {
-                    usingStaleCache = true
+                    isOfflineOrStaleMode = true
                     Log.w(TAG, "Offline/stale mode: using existing cache", e)
                 } else {
                     Log.w(TAG, "No cache available; continuing with limited classification", e)
@@ -127,7 +138,11 @@ class DeviceInventoryRepoImpl(
                         reclassifiedApps = reclassifiedAppsMap,
                         proprietaryMap = proprietaryMap,
                         solutionsSet = solutionsSet,
-                        pendingPackages = pendingPackages
+                        pendingPackages = pendingPackages,
+                        platformSigners = platformSigners,
+                        romAppSigners = romAppSigners,
+                        romPrefixes = romPrefixes,
+                        isOfflineOrStaleMode = isOfflineOrStaleMode
                     )
                 }
             }.awaitAll()
@@ -143,7 +158,11 @@ class DeviceInventoryRepoImpl(
         reclassifiedApps: Map<String, AppStatus>,
         proprietaryMap: Map<String, Boolean>,
         solutionsSet: Set<String>,
-        pendingPackages: Set<String>
+        pendingPackages: Set<String>,
+        platformSigners: Set<String>,
+        romAppSigners: Set<String>,
+        romPrefixes: List<String>,
+        isOfflineOrStaleMode: Boolean
     ): AppItem {
         val packageName = pkg.packageName
         val label = localSource.getAppLabel(packageName)
@@ -191,10 +210,12 @@ class DeviceInventoryRepoImpl(
                 )
             }
 
-            val digests = SignerUtils.signerSha256Digests(pkg)
-            val trusted = trustedRomSignerDb.isTrustedSigner(digests)
+            val normalizedDigests =
+                SignerUtils.signerSha256Digests(pkg).map(::normalizeDigest).toSet()
+            val trustedPlatform = normalizedDigests.any { it in platformSigners }
+            val trustedRomApp = normalizedDigests.any { it in romAppSigners }
 
-            if (trusted) {
+            if (trustedPlatform || trustedRomApp) {
                 return createAppItem(
                     packageName, label, AppStatus.FOSS, installer, icon,
                     isUserReclassified = false, isSystemPackage = isSystem
@@ -212,7 +233,24 @@ class DeviceInventoryRepoImpl(
                 brand.contains(oem) || manufacturer.contains(oem) || fingerprint.contains(oem)
             }
 
-            val status = if (isLikelyOemRom) AppStatus.PROP else AppStatus.PENDING
+            val hasIndependentPropSignal =
+                (proprietaryMap[packageName] == true) || (installer in PROPRIETARY_INSTALLERS)
+
+            val hasExplicitCacheHit = try {
+                cacheRepository.isTargetCached(packageName)
+            } catch (_: Exception) {
+                false
+            }
+
+            val status = when {
+                hasIndependentPropSignal -> {
+                    if (isOfflineOrStaleMode && !hasExplicitCacheHit) AppStatus.PENDING
+                    else AppStatus.PROP
+                }
+
+                isLikelyOemRom -> AppStatus.PENDING
+                else -> AppStatus.PENDING
+            }
 
             return createAppItem(
                 packageName, label, status, installer, icon,
@@ -220,16 +258,14 @@ class DeviceInventoryRepoImpl(
             )
         }
 
-        if (installer in FOSS_INSTALLERS) {
-            return createAppItem(
-                packageName,
-                label,
-                AppStatus.FOSS,
-                installer,
-                icon,
-                isUserReclassified = false,
-                isSystemPackage = isSystem
-            )
+        if (isSystem && isLikelyRomNamespace(packageName, romPrefixes)) {
+            val digests = SignerUtils.signerSha256Digests(pkg)
+            if (digests.any { it.lowercase() in romAppSigners }) {
+                return createAppItem(
+                    packageName, label, AppStatus.FOSS, installer, icon,
+                    isUserReclassified = false, isSystemPackage = true
+                )
+            }
         }
 
         val isKnownSolution = try {
@@ -261,6 +297,18 @@ class DeviceInventoryRepoImpl(
                 packageName,
                 label,
                 AppStatus.PROP,
+                installer,
+                icon,
+                isUserReclassified = false,
+                isSystemPackage = isSystem
+            )
+        }
+
+        if (installer in FOSS_INSTALLERS) {
+            return createAppItem(
+                packageName,
+                label,
+                AppStatus.FOSS,
                 installer,
                 icon,
                 isUserReclassified = false,

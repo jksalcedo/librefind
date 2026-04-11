@@ -166,6 +166,12 @@ dependencies {
     implementation(libs.androidx.compose.foundation)
     ksp(libs.room.compiler)
 
+    // DataStore
+    implementation(libs.androidx.datastore.preferences)
+
+    // WorkManager
+    implementation(libs.androidx.work.runtime.ktx)
+
     // Retrofit & OkHttp (Networking)
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
@@ -194,6 +200,8 @@ dependencies {
 
     // Testing
     testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
