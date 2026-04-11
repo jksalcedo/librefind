@@ -401,6 +401,12 @@ class SupabaseAppRepository(
         category: String
     ): Result<Unit> = runCatching {
         try {
+            // Final repository-level check to prevent race conditions
+            val duplicateStatus = checkDuplicateApp(alternativePackage)
+            if (duplicateStatus != DuplicateStatus.NONE) {
+                return@runCatching Unit // SILENT FAILURE or we could throw an exception, but Unit is safe.
+            }
+
             val submission = UserSubmissionDto(
                 appName = appName,
                 appPackage = alternativePackage,
@@ -428,6 +434,22 @@ class SupabaseAppRepository(
         submitterId: String
     ): Result<Unit> = runCatching {
         try {
+            // Check for existing pending linking for this package
+            val existing = supabase.postgrest.from("user_linking_submissions")
+                .select(columns = Columns.list("id")) {
+                    filter {
+                        eq("proprietary_package", proprietaryPackage)
+                        eq("status", "PENDING")
+                    }
+                    limit(1)
+                }.countOrNull() ?: 0
+
+            if (existing > 0) {
+                // If a pending linking already exists, we might still want to allow it if alternatives are different,
+                // but for now let's just prevent spamming the same target app.
+                return@runCatching Unit
+            }
+
             val submission = UserLinkingSubmissionsDto(
                 proprietaryPackage = proprietaryPackage,
                 alternatives = alternatives,
@@ -787,7 +809,7 @@ class SupabaseAppRepository(
                     count(Count.EXACT)
                     filter {
                         eq("app_package", packageName)
-                        eq("status", "PENDING")
+                        neq("status", "REJECTED")
                     }
                     limit(1)
                 }.countOrNull() ?: 0
