@@ -30,7 +30,8 @@ data class SettingsState(
     val deleteAccountError: String? = null,
     val updateCheckStatus: UpdateCheckStatus = UpdateCheckStatus.IDLE,
     val latestUpdate: AppUpdate? = null,
-    val updateError: String? = null
+    val updateError: String? = null,
+    val isLoggedIn: Boolean = false
 )
 
 class SettingsViewModel(
@@ -44,6 +45,15 @@ class SettingsViewModel(
 
     init {
         calculateCacheSize()
+        observeAuthState()
+    }
+
+    private fun observeAuthState() {
+        viewModelScope.launch {
+            authRepository.currentUser.collect { user ->
+                _state.update { it.copy(isLoggedIn = user != null) }
+            }
+        }
     }
 
     fun calculateCacheSize() {
