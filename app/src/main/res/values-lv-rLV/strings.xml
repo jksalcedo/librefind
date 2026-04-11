@@ -9,7 +9,7 @@
     <string name="dashboard_filter_all_proprietary">All Proprietary</string>
     <string name="dashboard_filter_with_alternatives">With Alternatives</string>
     <string name="dashboard_filter_no_alternatives">Without Alternatives</string>
-    <string name="dashboard_filter_foss_only">Tikai FOSS - atvērtā pirmkoda programmatūru</string>
+    <string name="dashboard_filter_foss_only">Tikai FOSS - atvērtā pirmkoda bezmaksas programmatūras lietotnes</string>
     <string name="dashboard_filter_unknown_only">Unknown Only</string>
     <string name="dashboard_filter_pending_only">Pending Only</string>
     <string name="dashboard_filter_ignored_only">Ignored Only</string>
@@ -23,17 +23,17 @@
     <string name="correction_description_label">Description / Reason</string>
     <string name="correction_description_placeholder">Why is this correction needed? Provide sources if possible.</string>
     <string name="correction_submit_button">Submit Correction</string>
-    <string name="back">Back</string>
+    <string name="back">Atpakaļ</string>
     <string name="dashboard_settings">Iestatījumi</string>
     <string name="dashboard_submit_app">Submit App</string>
-    <string name="dashboard_error_title">Kļūda</string>
-    <string name="dashboard_unknown_error">Unknown error</string>
-    <string name="dashboard_retry">Mēģināt vēlreiz</string>
+    <string name="dashboard_error_title">@string/settings_error</string>
+    <string name="dashboard_unknown_error">@string/details_error_unknown</string>
+    <string name="dashboard_retry">@string/details_retry</string>
     <string name="dashboard_no_matching_apps">No matching apps</string>
     <string name="dashboard_no_apps_found">No apps found</string>
     <!-- Profile Dialog -->
     <string name="profile_dialog_title">Profile &amp; Settings</string>
-    <string name="profile_unknown_username">Unknown Username</string>
+    <string name="profile_unknown_username">Nezināms lietotājvārds</string>
     <string name="profile_no_email">No Email</string>
     <string name="profile_ignored_apps">Ignored Apps</string>
     <string name="profile_my_submissions">My Submissions</string>
@@ -46,7 +46,7 @@
     <string name="profile_fix_profile">Fix Profile</string>
     <string name="profile_sign_in">Sign In</string>
     <!-- Auth -->
-    <string name="auth_create_account">Create Account</string>
+    <string name="auth_create_account">Izveidot kontu</string>
     <string name="auth_sign_in">Sign In</string>
     <string name="auth_subtitle">Submit FOSS alternatives</string>
     <string name="auth_username">Lietotājvārds</string>
@@ -153,14 +153,14 @@
     <string name="settings_reset_tutorial">Reset Tutorial</string>
     <string name="settings_feedback">Atsauksmes un kopiena</string>
     <string name="settings_report_issue">Ziņot problēmu / Ieteikums</string>
-    <string name="settings_my_reports">Mani ziņojumi</string>
+    <string name="settings_my_reports">@string/my_reports_title</string>
     <string name="settings_github_issues">GitHub Issues</string>
-    <string name="settings_join_community">Join Community</string>
+    <string name="settings_join_community">Pievienoties kopienai</string>
     <string name="settings_about">Par lietotni</string>
     <string name="settings_version">Versija</string>
     <string name="settings_view_github">View on GitHub</string>
-    <string name="settings_donate">Donate to LibreFind</string>
-    <string name="settings_privacy_policy">Privacy Policy</string>
+    <string name="settings_donate">Ziedot LibreFind</string>
+    <string name="settings_privacy_policy">Konfidencialitātes politika</string>
     <string name="settings_language">Valoda</string>
     <string name="settings_language_system">System Default</string>
     <string name="settings_language_english">Angļu</string>
@@ -175,18 +175,18 @@
     <string name="settings_language_turkish">Turku</string>
     <string name="settings_language_chinese_simplified">Ķīniešu (vienkāršotā)</string>
     <string name="settings_cache_management">Kešatmiņas pārvaldība</string>
-    <string name="settings_cache_size">Icon Cache Size</string>
+    <string name="settings_cache_size">Ikonu kešatmiņas izmērs</string>
     <string name="settings_clear">Notīrīt</string>
     <string name="settings_account">Konts</string>
     <string name="settings_delete_account">Dzēst kontu</string>
-    <string name="settings_clear_cache_title">Clear Icon Cache?</string>
+    <string name="settings_clear_cache_title">Vai tiešām vēlaties notīrīt ikonu kešatmiņu?</string>
     <string name="settings_clear_cache_message">This will remove all cached app icons. They will be reloaded when you scroll through the dashboard.</string>
-    <string name="settings_cancel">Atcelt</string>
-    <string name="settings_delete_account_title">Vai tiešām dzēst kontu?</string>
-    <string name="settings_delete_account_message">Are you sure you want to delete your account? This action cannot be undone and will permanently remove all your data.</string>
+    <string name="settings_cancel">@string/submit_cancel</string>
+    <string name="settings_delete_account_title">Vai tiešām vēlaties dzēst kontu?</string>
+    <string name="settings_delete_account_message">Vai tiešām vēlaties dzēst savu kontu? Šo darbību nevar atsaukt, un tā neatgriezeniski dzēsīs visus jūsu datus.</string>
     <string name="settings_delete">Dzēst</string>
     <string name="settings_account_deleted_title">Konts dzēsts</string>
-    <string name="settings_account_deleted_message">Your account has been successfully deleted.</string>
+    <string name="settings_account_deleted_message">Jūsu konts veiksmīgi dzēsts.</string>
     <string name="settings_ok">Labi</string>
     <!-- New strings for system/vendor package filtering toggle -->
     <string name="settings_hide_system_packages_title">System package filtering</string>
@@ -208,9 +208,9 @@
     <string name="privacy_subsection_1a">A. Device &amp; Usage Data (Anonymous)</string>
     <string name="privacy_subsection_1a_desc">When you scan your device, we collect the following anonymized data to generate your sovereignty score:</string>
     <string name="privacy_bullet_device_id">Device ID: A randomly generated unique identifier (UUID) stored locally on your device. This allows us to sync your preferences without tracking your real identity.</string>
-    <string name="privacy_bullet_app_stats">App Statistics: The total count of installed apps, count of FOSS (Free and Open Source Software) apps, count of proprietary apps, and count of unknown/unclassified apps.</string>
+    <string name="privacy_bullet_app_stats">Lietotņu statistika: kopējais uzstādīto lietotņu skaits, FOSS (atvērtā pirmkoda bezmaksas programmatūras lietotne) lietotņu skaits, patentēto lietotņu skaits un nezināmo/neklasificēto lietotņu skaits.</string>
     <string name="privacy_note_app_names">Note: We send your installed app package names to our servers solely for classification purposes (determining FOSS vs. proprietary status). We do not store or log these package names beyond what is necessary for the query.</string>
-    <string name="privacy_bullet_app_version">App Version: The version of LibreFind you are using.</string>
+    <string name="privacy_bullet_app_version">Lietotnes versija: jūsu izmantotā LibreFind versija.</string>
     <string name="privacy_subsection_1b">B. Account Data (Optional)</string>
     <string name="privacy_subsection_1b_desc">If you choose to create an account to contribute alternatives or sync data, we collect:</string>
     <string name="privacy_bullet_user_email">Username &amp; Email: To identify you and prevent spam.</string>
@@ -270,17 +270,17 @@
     <string name="alt_detail_con">Mīnuss</string>
     <string name="alt_detail_feedback_label">Jūsu atsauksmes</string>
     <string name="alt_detail_submit">Iesniegt</string>
-    <string name="alt_detail_cancel">Atcelt</string>
+    <string name="alt_detail_cancel">@string/submit_cancel</string>
     <string name="alt_detail_report">Ziņot</string>
     <string name="alt_detail_report_title">Ziņot par %1$s</string>
     <string name="alt_detail_report_prompt">Kas vainas šim ieteikumam?</string>
     <string name="alt_detail_report_details">Sīkāka informācija (pēc izvēles)</string>
     <string name="alt_detail_report_success">Ziņojums iesniegts</string>
     <string name="alt_detail_report_error">Neizdevās iesniegt ziņojumu</string>
-    <string name="alt_detail_report_not_foss">Nav FOSS - atvērtā pirmkoda programmatūra</string>
-    <string name="alt_detail_report_unrelated">Neatbilst</string>
+    <string name="alt_detail_report_not_foss">Nav FOSS - atvērtā pirmkoda bezmaksas programmatūras lietotne</string>
+    <string name="alt_detail_report_unrelated">Nesaistīts</string>
     <string name="alt_detail_report_broken_link">Bojāta saite</string>
-    <string name="alt_detail_report_malware">Ļaunprogrammatūra</string>
+    <string name="alt_detail_report_malware">Vīruss</string>
     <string name="alt_detail_report_other">Cits</string>
     <!-- Details Screen -->
     <string name="details_title_format">%1$s alternatives</string>
@@ -308,15 +308,15 @@
     <string name="status_approved">Apstiprināts</string>
     <string name="status_rejected">Noraidīts</string>
     <!-- Status Badge -->
-    <string name="status_foss">FOSS - atvērtā pirmkoda programmatūra</string>
-    <string name="status_proprietary">PROPRIETARY</string>
+    <string name="status_foss">FOSS — atvērtā pirmkoda bezmaksas programmatūras lietotne</string>
+    <string name="status_proprietary">PATENTĒTS</string>
     <string name="status_unknown">NEZINĀMS</string>
     <string name="status_ignored">ignorēts</string>
     <!-- Common -->
     <string name="field_help_content_desc">Help for %1$s</string>
     <string name="tutorial_skip">Izlaist</string>
     <string name="tutorial_done">Done</string>
-    <string name="tutorial_next">Next</string>
+    <string name="tutorial_next">Tālāk</string>
     <!-- My Reports Screen -->
     <string name="my_reports_title">Mani ziņojumi</string>
     <string name="my_reports_empty">Nav neviena ziņojuma</string>
@@ -325,7 +325,7 @@
     <string name="report_status_in_progress">Tiek risināts</string>
     <string name="report_status_resolved">Atrisināts</string>
     <string name="report_status_wontfix">Nelabos</string>
-    <string name="report_status_duplicate">Dublēta, jau esoša</string>
+    <string name="report_status_duplicate">Dublēts, jau esošs</string>
     <string name="report_status_closed">Aizvērts</string>
     <!-- Report Screen -->
     <string name="report_issue_title">Ziņot problēmu</string>
@@ -337,5 +337,5 @@
     <string name="report_priority_label">Prioritāte</string>
     <string name="report_submit_button">Iesniegt ziņojumu</string>
     <string name="web_submission">Web Submission</string>
-    <string name="status_pwa">PWA</string>
+    <string name="status_pwa">PWA — progresīvā tīmekļa lietotne</string>
 </resources>
