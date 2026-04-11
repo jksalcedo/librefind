@@ -219,6 +219,9 @@ fun SettingsScreen(
         onDeleteAccountConfirm = { viewModel.deleteAccount() },
         onDeleteAccountDismiss = { viewModel.hideDeleteAccountConfirmation() },
         onDeleteAccountErrorDismiss = { viewModel.clearDeleteAccountError() },
+        onClearClassificationRequest = { viewModel.showClearClassificationConfirmation() },
+        onClearClassificationConfirm = { viewModel.clearClassificationCache() },
+        onClearClassificationDismiss = { viewModel.hideClearClassificationConfirmation() },
         onAccountDeletedDismiss = onBackClick,
         onCheckForUpdates = { viewModel.checkForUpdates() },
         onDownloadUpdate = { viewModel.downloadUpdate() },
@@ -240,6 +243,9 @@ fun SettingsContent(
     onClearCacheRequest: () -> Unit,
     onClearCacheConfirm: () -> Unit,
     onClearCacheDismiss: () -> Unit,
+    onClearClassificationRequest: () -> Unit,
+    onClearClassificationConfirm: () -> Unit,
+    onClearClassificationDismiss: () -> Unit,
     onDeleteAccountRequest: () -> Unit,
     onDeleteAccountConfirm: () -> Unit,
     onDeleteAccountDismiss: () -> Unit,
@@ -281,6 +287,10 @@ fun SettingsContent(
             CacheRowModern(
                 state = state,
                 onClearCacheRequest = onClearCacheRequest
+            )
+            ClassificationCacheRow(
+                state = state,
+                onClearRequest = onClearClassificationRequest
             )
             HorizontalDivider()
 
@@ -378,6 +388,11 @@ fun SettingsContent(
         onConfirm = onClearCacheConfirm,
         onDismiss = onClearCacheDismiss
     )
+    ClearClassificationCacheDialog(
+        state = state,
+        onConfirm = onClearClassificationConfirm,
+        onDismiss = onClearClassificationDismiss
+    )
     DeleteAccountDialog(
         state = state,
         onConfirm = onDeleteAccountConfirm,
@@ -390,6 +405,52 @@ fun SettingsContent(
         state = state,
         onDownload = onDownloadUpdate,
         onDismiss = onResetUpdateStatus
+    )
+}
+
+@Composable
+private fun ClassificationCacheRow(
+    state: SettingsState,
+    onClearRequest: () -> Unit
+) {
+    SettingsRow(
+        icon = Icons.Default.Refresh,
+        title = "Classification Cache",
+        subtitle = "${state.classificationCacheCount} apps cached",
+        trailingText = if (state.isClearingClassification) "Clearing..." else null,
+        onClick = {
+            if (!state.isClearingClassification) onClearRequest()
+        }
+    )
+}
+
+@Composable
+private fun ClearClassificationCacheDialog(
+    state: SettingsState,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    if (!state.showClearClassificationConfirmation) return
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Clear Classification Cache?") },
+        text = { Text("This will clear cached classification results. They will be re-fetched on the next scan.") },
+        confirmButton = {
+            TextButton(
+                onClick = onConfirm,
+                colors = ButtonDefaults.textButtonColors(
+                    contentColor = MaterialTheme.colorScheme.error
+                )
+            ) {
+                Text(stringResource(R.string.settings_clear))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.settings_cancel))
+            }
+        }
     )
 }
 
