@@ -25,7 +25,7 @@
     <string name="correction_submit_button">Submit Correction</string>
     <string name="back">Back</string>
     <string name="dashboard_settings">Ustawienia</string>
-    <string name="dashboard_submit_app">Dodaj aplikację</string>
+    <string name="dashboard_submit_app">Zgłoś aplikację</string>
     <string name="dashboard_error_title">Błąd</string>
     <string name="dashboard_unknown_error">Nieznany błąd</string>
     <string name="dashboard_retry">Ponów</string>
@@ -129,7 +129,7 @@
     <string name="help_app_name_desc">Wyświetlana nazwa aplikacji, jaką znają użytkownicy (np.: \"Signal\", \"Firefox\", \"VLC\").</string>
     <string name="help_app_name_tip">Użyj oficjalnej nazwy ze strony aplikacji lub sklepu.</string>
     <string name="help_package_name_title">Nazwa pakietu</string>
-    <string name="help_package_name_desc">Unikalny identyfikator aplikacji (np.: \"org.mozilla.firefox\"). To NIE jest nazwa wyświetlana.</string>
+    <string name="help_package_name_desc">Unikalny identyfikator techniczny aplikacji (np.: \"org.mozilla.firefox\"). To NIE JEST nazwa wyświetlana.</string>
     <string name="help_package_name_tip">Znajdź to na F-droid (na stronie aplikacji), albo w Sklepie Play po URL: play.google.com/store/apps/details?id=&lt;package.name&gt;. Na urządzeniu: Ustawienia → Aplikacje → [Aplikacja] → Informacje o aplikacji.</string>
     <string name="help_description_title">Opis</string>
     <string name="help_description_desc">Krótkie podsumowanie co robi aplikacja. Zmieść się w 1-3 zdaniach.</string>
