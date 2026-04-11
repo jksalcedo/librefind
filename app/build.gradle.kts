@@ -36,7 +36,7 @@ val stageWeight = when (vStage) {
     else -> 0
 }
 
-val suffix = if (vStage == "stable") "" else "-$vStage$vBuild"
+val suffix = if (vStage == "stable") "" else "-$vStage.$vBuild"
 
 val computedVersionCode = versionProps.getProperty("VERSION_CODE")?.toInt() ?: ((vMajor * 10000000) +
         (vMinor * 100000) +

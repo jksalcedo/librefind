@@ -142,6 +142,8 @@ class SubmitViewModel(
         proprietaryPackages: String = "",
         category: String = ""
     ) {
+        if (_uiState.value.isLoading) return
+
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)
 
@@ -163,10 +165,23 @@ class SubmitViewModel(
                 return@launch
             }
 
-            if (_uiState.value.duplicateWarning != null) {
-                _uiState.value =
-                    _uiState.value.copy(isLoading = false, error = "Duplicate submission")
-                return@launch
+            // Final duplicate check right before submission
+            if (type != SubmissionType.LINKING && !(_uiState.value.isEditing)) {
+                val duplicateStatus = appRepository.checkDuplicateApp(packageName)
+                if (duplicateStatus != DuplicateStatus.NONE) {
+                    val warning = when (duplicateStatus) {
+                        DuplicateStatus.APPROVED_SOLUTION -> "This app is already an approved FOSS app."
+                        DuplicateStatus.APPROVED_TARGET -> "This app is already an approved proprietary target."
+                        DuplicateStatus.PENDING -> "This app is already pending review."
+                        else -> "Duplicate submission."
+                    }
+                    _uiState.value = _uiState.value.copy(
+                        isLoading = false,
+                        duplicateWarning = warning,
+                        error = "Duplicate submission"
+                    )
+                    return@launch
+                }
             }
 
             val result =

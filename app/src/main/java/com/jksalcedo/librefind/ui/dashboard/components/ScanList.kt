@@ -30,6 +30,7 @@ import androidx.compose.material.icons.filled.Undo
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -84,7 +85,9 @@ object AppIconCache {
 @Composable
 fun ScanList(
     apps: List<AppItem>,
+    selectedPackageNames: Set<String>,
     onAppClick: (String, String) -> Unit,
+    onLongClick: (String) -> Unit,
     onIgnoreClick: (String) -> Unit,
     onRestoreClick: (String) -> Unit,
     onReclassifyClick: (String, AppStatus) -> Unit,
@@ -118,7 +121,16 @@ fun ScanList(
             ) { app ->
                 AppRow(
                     app = app,
-                    onClick = { onAppClick(app.label, app.packageName) },
+                    isSelected = selectedPackageNames.contains(app.packageName),
+                    isSelectionMode = selectedPackageNames.isNotEmpty(),
+                    onClick = {
+                        if (selectedPackageNames.isNotEmpty()) {
+                            onLongClick(app.packageName)
+                        } else {
+                            onAppClick(app.label, app.packageName)
+                        }
+                    },
+                    onLongClick = { onLongClick(app.packageName) },
                     onIgnoreClick = { onIgnoreClick(app.packageName) },
                     onRestoreClick = { onRestoreClick(app.packageName) },
                     onReclassifyClick = { status -> onReclassifyClick(app.packageName, status) },
@@ -134,7 +146,10 @@ fun ScanList(
 @Composable
 fun AppRow(
     app: AppItem,
+    isSelected: Boolean,
+    isSelectionMode: Boolean,
     onClick: () -> Unit,
+    onLongClick: () -> Unit,
     onIgnoreClick: () -> Unit,
     onRestoreClick: () -> Unit,
     onReclassifyClick: (AppStatus) -> Unit,
@@ -148,9 +163,12 @@ fun AppRow(
             .fillMaxWidth()
             .combinedClickable(
                 onClick = onClick,
-                onLongClick = { showMenu = true }
+                onLongClick = onLongClick
             ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = if (isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface
+        )
     ) {
         Row(
             modifier = Modifier
@@ -159,6 +177,13 @@ fun AppRow(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
+            if (isSelectionMode) {
+                Checkbox(
+                    checked = isSelected,
+                    onCheckedChange = { onClick() },
+                    modifier = Modifier.padding(end = 8.dp)
+                )
+            }
             AppIconAsync(
                 packageName = app.packageName,
                 modifier = Modifier.size(40.dp)

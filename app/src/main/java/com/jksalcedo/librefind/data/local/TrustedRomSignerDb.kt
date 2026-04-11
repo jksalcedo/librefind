@@ -65,9 +65,19 @@ class TrustedRomSignerDb(
 
     suspend fun refreshFeed() {
         try {
-            val url = "https://raw.githubusercontent.com/jksalcedo/librefind/main/signers.json"
-            val feed = apiService.getSignerFeed(url)
-            dataStore.saveFeed(feed)
+            val url = "https://raw.githubusercontent.com/jksalcedo/librefind/dev/signers.json"
+            val currentEtag = dataStore.getEtag()
+            val response = apiService.getSignerFeed(url, currentEtag)
+
+            if (response.isSuccessful) {
+                val feed = response.body()
+                if (feed != null) {
+                    val newEtag = response.headers()["ETag"]
+                    dataStore.saveFeed(feed, newEtag)
+                }
+            } else if (response.code() == 304) {
+                // current data is already up to date
+            }
         } catch (e: Exception) {
             // Fallback to bundled is automatic via Flows
             e.printStackTrace()

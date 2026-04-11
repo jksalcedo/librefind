@@ -76,6 +76,11 @@ jobs:
           TAG="${GITHUB_REF#refs/tags/}"
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           echo "version=${TAG#v}" >> "$GITHUB_OUTPUT"
+          if [[ "$TAG" == *"beta"* || "$TAG" == *"alpha"* || "$TAG" == *"rc"* ]]; then
+            echo "prerelease=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "prerelease=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Prepare release asset
         run: |
@@ -88,6 +93,7 @@ jobs:
           name: "${{ steps.version.outputs.tag }}"
           generate_release_notes: true
           draft: false
+          prerelease: ${{ steps.version.outputs.prerelease == 'true' }}
           files: librefind-${{ steps.version.outputs.tag }}-release.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
