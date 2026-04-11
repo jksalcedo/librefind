@@ -9,6 +9,7 @@ import androidx.core.net.toUri
 import com.jksalcedo.librefind.data.remote.UpdateApiService
 import com.jksalcedo.librefind.domain.model.AppUpdate
 import com.jksalcedo.librefind.domain.repository.UpdateRepository
+import com.jksalcedo.librefind.util.VersionUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -42,7 +43,7 @@ class UpdateRepositoryImpl(
                 changelog = release.body,
                 downloadUrl = apkAsset.downloadUrl,
                 fileName = apkAsset.name,
-                isUpdateAvailable = isNewerVersion(latestVersion, currentVersion)
+                isUpdateAvailable = VersionUtils.isNewerVersion(latestVersion, currentVersion)
             )
         }
     }
@@ -58,23 +59,5 @@ class UpdateRepositoryImpl(
 
         val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         return downloadManager.enqueue(request)
-    }
-
-    private fun isNewerVersion(latest: String, current: String): Boolean {
-        // Simple semantic versioning comparison
-        val latestParts = latest.split("-")[0].split(".").mapNotNull { it.toIntOrNull() }
-        val currentParts = current.split("-")[0].split(".").mapNotNull { it.toIntOrNull() }
-
-        val size = maxOf(latestParts.size, currentParts.size)
-        for (i in 0 until size) {
-            val l = latestParts.getOrElse(i) { 0 }
-            val c = currentParts.getOrElse(i) { 0 }
-            if (l > c) return true
-            if (l < c) return false
-        }
-
-        // If versions are same, check for suffix (e.g. beta11 vs stable/nothing)
-        // For development/simplicity, if they are exactly equal, no update.
-        return false
     }
 }
