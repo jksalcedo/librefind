@@ -1,0 +1,12 @@
+0.22.0-beta.1
+
+Added
+- Remote signer feed for dynamic signature verification updates
+- System app signature verification against trusted ROM signers
+- Simple unit tests for core logic
+- Auto-updater: Check for and install the latest versions directly from GitHub
+- Multi-selection and bulk actions for app management
+
+Improved
+- Accuracy of system app detection and FOSS classification
+- Refined AOSP/OEM package classification logic
