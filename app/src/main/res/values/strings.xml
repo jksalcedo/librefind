@@ -199,6 +199,16 @@
 
     <string name="settings_error">Error</string>
 
+    <!-- Auto-Updater -->
+    <string name="settings_check_updates">Check for Updates</string>
+    <string name="settings_checking_updates">Checking for updates…</string>
+    <string name="settings_up_to_date">App is up to date</string>
+    <string name="settings_update_available_title">Update Available</string>
+    <string name="settings_update_available_message">A new version (%1$s) of LibreFind is available. Would you like to download and install it?</string>
+    <string name="settings_download_install">Download &amp; Install</string>
+    <string name="settings_update_error">Failed to check for updates: %1$s</string>
+    <string name="settings_changelog_title">What\'s New</string>
+
     <!-- Ignored Apps Screen -->
     <string name="ignored_apps_title">Ignored Apps</string>
     <string name="ignored_apps_empty">No ignored apps. \nLong-press any app in the list → tap Ignore.</string>

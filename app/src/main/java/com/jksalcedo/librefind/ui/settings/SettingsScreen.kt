@@ -5,6 +5,7 @@ import android.os.Build
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -167,7 +168,10 @@ fun SettingsScreen(
         onDeleteAccountConfirm = { viewModel.deleteAccount() },
         onDeleteAccountDismiss = { viewModel.hideDeleteAccountConfirmation() },
         onDeleteAccountErrorDismiss = { viewModel.clearDeleteAccountError() },
-        onAccountDeletedDismiss = onBackClick
+        onAccountDeletedDismiss = onBackClick,
+        onCheckForUpdates = { viewModel.checkForUpdates() },
+        onDownloadUpdate = { viewModel.downloadUpdate() },
+        onResetUpdateStatus = { viewModel.resetUpdateStatus() }
     )
 }
 
@@ -191,7 +195,11 @@ fun SettingsContent(
     onDeleteAccountConfirm: () -> Unit,
     onDeleteAccountDismiss: () -> Unit,
     onDeleteAccountErrorDismiss: () -> Unit,
-    onAccountDeletedDismiss: () -> Unit
+    onAccountDeletedDismiss: () -> Unit,
+    // Update Actions
+    onCheckForUpdates: () -> Unit,
+    onDownloadUpdate: () -> Unit,
+    onResetUpdateStatus: () -> Unit
 ) {
 
     Scaffold(
@@ -275,6 +283,12 @@ fun SettingsContent(
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 SettingsLinkButton(
+                    icon = Icons.Default.Refresh,
+                    label = stringResource(R.string.settings_check_updates),
+                    onClick = onCheckForUpdates
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                SettingsLinkButton(
                     icon = Icons.Default.Info,
                     label = stringResource(R.string.settings_view_github),
                     onClick = { onOpenUri("https://github.com/jksalcedo/librefind") }
@@ -345,6 +359,13 @@ fun SettingsContent(
     )
     AccountDeletedDialog(state = state, onDismiss = onAccountDeletedDismiss)
     DeleteAccountErrorDialog(state = state, onDismiss = onDeleteAccountErrorDismiss)
+
+    // Update Dialogs
+    UpdateDialogs(
+        state = state,
+        onDownload = onDownloadUpdate,
+        onDismiss = onResetUpdateStatus
+    )
 }
 
 // ─────────────────────────────────────────────
@@ -657,6 +678,95 @@ private fun DeleteAccountErrorDialog(
     )
 }
 
+@Composable
+private fun UpdateDialogs(
+    state: SettingsState,
+    onDownload: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    when (state.updateCheckStatus) {
+        UpdateCheckStatus.CHECKING -> {
+            AlertDialog(
+                onDismissRequest = { /* Don't dismiss while checking */ },
+                title = { Text(stringResource(R.string.settings_checking_updates)) },
+                text = {
+                    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator()
+                    }
+                },
+                confirmButton = {}
+            )
+        }
+        UpdateCheckStatus.UPDATE_AVAILABLE -> {
+            val update = state.latestUpdate ?: return
+            AlertDialog(
+                onDismissRequest = onDismiss,
+                title = { Text(stringResource(R.string.settings_update_available_title)) },
+                text = {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(300.dp)
+                            .verticalScroll(rememberScrollState())
+                    ) {
+                        Text(
+                            text = stringResource(R.string.settings_update_available_message, update.version),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                        if (update.changelog.isNotBlank()) {
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text(
+                                text = stringResource(R.string.settings_changelog_title),
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = update.changelog,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                    }
+                },
+                confirmButton = {
+                    Button(onClick = onDownload) {
+                        Text(stringResource(R.string.settings_download_install))
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = onDismiss) {
+                        Text(stringResource(R.string.settings_cancel))
+                    }
+                }
+            )
+        }
+        UpdateCheckStatus.UP_TO_DATE -> {
+            AlertDialog(
+                onDismissRequest = onDismiss,
+                title = { Text(stringResource(R.string.settings_up_to_date)) },
+                confirmButton = {
+                    TextButton(onClick = onDismiss) {
+                        Text(stringResource(R.string.settings_ok))
+                    }
+                }
+            )
+        }
+        UpdateCheckStatus.ERROR -> {
+            AlertDialog(
+                onDismissRequest = onDismiss,
+                title = { Text(stringResource(R.string.settings_error)) },
+                text = { Text(state.updateError ?: stringResource(R.string.settings_update_error, "Unknown error")) },
+                confirmButton = {
+                    TextButton(onClick = onDismiss) {
+                        Text(stringResource(R.string.settings_ok))
+                    }
+                }
+            )
+        }
+        else -> {}
+    }
+}
+
 @Preview
 @Composable
 fun SettingsScreenPreview() {
@@ -676,6 +786,9 @@ fun SettingsScreenPreview() {
         onDeleteAccountConfirm = {},
         onDeleteAccountDismiss = {},
         onDeleteAccountErrorDismiss = {},
-        onAccountDeletedDismiss = {}
+        onAccountDeletedDismiss = {},
+        onCheckForUpdates = {},
+        onDownloadUpdate = {},
+        onResetUpdateStatus = {}
     )
 }

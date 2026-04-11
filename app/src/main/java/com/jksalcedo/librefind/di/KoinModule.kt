@@ -7,14 +7,17 @@ import com.jksalcedo.librefind.data.local.InventorySource
 import com.jksalcedo.librefind.data.local.PackageNameHeuristicsDb
 import com.jksalcedo.librefind.data.local.PreferencesManager
 import com.jksalcedo.librefind.data.local.TrustedRomSignerDb
+import com.jksalcedo.librefind.data.remote.UpdateApiService
 import com.jksalcedo.librefind.data.repository.CacheRepositoryImpl
 import com.jksalcedo.librefind.data.repository.DeviceInventoryRepoImpl
 import com.jksalcedo.librefind.data.repository.IgnoredAppsRepositoryImpl
 import com.jksalcedo.librefind.data.repository.ReclassifiedAppsRepositoryImpl
+import com.jksalcedo.librefind.data.repository.UpdateRepositoryImpl
 import com.jksalcedo.librefind.domain.repository.CacheRepository
 import com.jksalcedo.librefind.domain.repository.DeviceInventoryRepo
 import com.jksalcedo.librefind.domain.repository.IgnoredAppsRepository
 import com.jksalcedo.librefind.domain.repository.ReclassifiedAppsRepository
+import com.jksalcedo.librefind.domain.repository.UpdateRepository
 import com.jksalcedo.librefind.domain.usecase.GetAlternativeUseCase
 import com.jksalcedo.librefind.domain.usecase.ScanInventoryUseCase
 import com.jksalcedo.librefind.domain.usecase.SubmitProposalUseCase
@@ -85,11 +88,21 @@ val networkModule = module {
     }
 
     single { get<retrofit2.Retrofit>().create(com.jksalcedo.librefind.data.remote.SignerApiService::class.java) }
+
+    single {
+        val retrofit = retrofit2.Retrofit.Builder()
+            .baseUrl("https://api.github.com/")
+            .client(get())
+            .addConverterFactory(retrofit2.converter.gson.GsonConverterFactory.create(get()))
+            .build()
+        retrofit.create(UpdateApiService::class.java)
+    }
 }
 
 val repositoryModule = module {
     single<CacheRepository> { CacheRepositoryImpl(get(), get()) }
     single { TrustedRomSignerDb(get(), get()) }
+    single<UpdateRepository> { UpdateRepositoryImpl(androidContext(), get()) }
     single<DeviceInventoryRepo> {
         DeviceInventoryRepoImpl(
             get(),
@@ -118,7 +131,7 @@ val viewModelModule = module {
     viewModel { SubmitViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { MySubmissionsViewModel(get(), get()) }
     viewModel { IgnoredAppsViewModel(get(), get()) }
-    viewModel { SettingsViewModel(get(), get()) }
+    viewModel { SettingsViewModel(get(), get(), get()) }
     viewModel { ReportViewModel(get(), get()) }
     viewModel { MyReportsViewModel(get(), get()) }
     viewModel { DiscoverViewModel(get()) }
