@@ -160,7 +160,7 @@
     <string name="settings_version">Version</string>
     <string name="settings_view_github">Voir sur GitHub</string>
     <string name="settings_donate">Donation pour LibreFind</string>
-    <string name="settings_privacy_policy">Privacy Policy</string>
+    <string name="settings_privacy_policy">Politique de confidentialité</string>
     <string name="settings_language">Langue</string>
     <string name="settings_language_system">System Default</string>
     <string name="settings_language_english">Anglais</string>
@@ -174,13 +174,13 @@
     <string name="settings_language_polish">Polonais</string>
     <string name="settings_language_turkish">Turc</string>
     <string name="settings_language_chinese_simplified">Chinois simplifié</string>
-    <string name="settings_cache_management">Cache Management</string>
-    <string name="settings_cache_size">Icon Cache Size</string>
+    <string name="settings_cache_management">Gestion du cache</string>
+    <string name="settings_cache_size">Taille du cache des icônes</string>
     <string name="settings_clear">Effacer</string>
     <string name="settings_account">Compte</string>
     <string name="settings_delete_account">Supprimer mon compte</string>
-    <string name="settings_clear_cache_title">Clear Icon Cache?</string>
-    <string name="settings_clear_cache_message">This will remove all cached app icons. They will be reloaded when you scroll through the dashboard.</string>
+    <string name="settings_clear_cache_title">Vider le cache des icônes ?</string>
+    <string name="settings_clear_cache_message">Cela supprimera toutes les icônes d’application mises en cache. Elles seront rechargées lorsque vous ferez défiler le tableau de bord.</string>
     <string name="settings_cancel">Annuler</string>
     <string name="settings_delete_account_title">Supprimer mon compte ?</string>
     <string name="settings_delete_account_message">Are you sure you want to delete your account? This action cannot be undone and will permanently remove all your data.</string>
@@ -195,7 +195,7 @@
     <string name="settings_off">Off</string>
     <string name="settings_error">Erreur</string>
     <!-- Ignored Apps Screen -->
-    <string name="ignored_apps_title">Ignored Apps</string>
+    <string name="ignored_apps_title">Applications ignorées</string>
     <string name="ignored_apps_empty">No ignored apps. \nLong-press any app in the list → tap Ignore.</string>
     <string name="ignored_apps_restore">Restore</string>
     <!-- Privacy Policy Screen -->
@@ -286,7 +286,7 @@
     <string name="details_title_format">%1$s alternatives</string>
     <string name="details_error_unknown">Erreur inconnue</string>
     <string name="details_retry">Réessayer</string>
-    <string name="details_no_alternatives">Pas d\'alternatives trouvé</string>
+    <string name="details_no_alternatives">Aucune alternative trouvée</string>
     <string name="details_not_in_db">This app is not in our database yet.</string>
     <string name="details_no_suggested_alternatives">No FOSS alternatives have been suggested for this app yet.</string>
     <string name="details_help_categorize">Help us categorize this app:</string>
