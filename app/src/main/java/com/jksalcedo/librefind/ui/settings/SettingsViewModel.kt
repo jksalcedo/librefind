@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.jksalcedo.librefind.data.local.PreferencesManager
 import com.jksalcedo.librefind.domain.model.AppUpdate
 import com.jksalcedo.librefind.domain.repository.AuthRepository
+import com.jksalcedo.librefind.domain.repository.CacheRepository
 import com.jksalcedo.librefind.domain.repository.UpdateRepository
 import com.jksalcedo.librefind.ui.dashboard.components.AppIconCache
 import kotlinx.coroutines.Dispatchers
