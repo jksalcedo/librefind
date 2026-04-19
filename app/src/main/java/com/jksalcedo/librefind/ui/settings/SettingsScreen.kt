@@ -827,6 +827,9 @@ fun SettingsScreenPreview() {
         onAccountDeletedDismiss = {},
         onCheckForUpdates = {},
         onDownloadUpdate = {},
-        onResetUpdateStatus = {}
+        onResetUpdateStatus = {},
+        onClearClassificationRequest = {},
+        onClearClassificationConfirm = {},
+        onClearClassificationDismiss = {}
     )
 }

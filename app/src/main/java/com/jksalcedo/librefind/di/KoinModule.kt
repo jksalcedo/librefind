@@ -6,7 +6,9 @@ import com.jksalcedo.librefind.data.local.AppDatabase
 import com.jksalcedo.librefind.data.local.InventorySource
 import com.jksalcedo.librefind.data.local.PackageNameHeuristicsDb
 import com.jksalcedo.librefind.data.local.PreferencesManager
+import com.jksalcedo.librefind.data.local.SignerFeedDataStore
 import com.jksalcedo.librefind.data.local.TrustedRomSignerDb
+import com.jksalcedo.librefind.data.remote.SignerApiService
 import com.jksalcedo.librefind.data.remote.UpdateApiService
 import com.jksalcedo.librefind.data.repository.CacheRepositoryImpl
 import com.jksalcedo.librefind.data.repository.DeviceInventoryRepoImpl
@@ -40,6 +42,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 val appModule = module {
@@ -50,7 +54,7 @@ val appModule = module {
     single { PreferencesManager(androidContext()) }
     single { InventorySource(androidContext(), get()) }
     single { PackageNameHeuristicsDb() }
-    single { com.jksalcedo.librefind.data.local.SignerFeedDataStore(androidContext(), get()) }
+    single { SignerFeedDataStore(androidContext(), get()) }
 
     single { AppDatabase.getInstance(androidContext()) }
     single { get<AppDatabase>().ignoredAppDao() }
@@ -62,38 +66,38 @@ val appModule = module {
 
 val networkModule = module {
     single {
-        com.google.gson.GsonBuilder()
-            .setStrictness(com.google.gson.Strictness.LENIENT)
+        GsonBuilder()
+            .setStrictness(Strictness.LENIENT)
             .create()
     }
 
     single {
-        val loggingInterceptor = okhttp3.logging.HttpLoggingInterceptor().apply {
-            level = okhttp3.logging.HttpLoggingInterceptor.Level.BODY
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
         }
-        okhttp3.OkHttpClient.Builder()
+        OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
-            .connectTimeout(30L, java.util.concurrent.TimeUnit.SECONDS)
-            .readTimeout(30L, java.util.concurrent.TimeUnit.SECONDS)
-            .writeTimeout(30L, java.util.concurrent.TimeUnit.SECONDS)
+            .connectTimeout(30L, TimeUnit.SECONDS)
+            .readTimeout(30L, TimeUnit.SECONDS)
+            .writeTimeout(30L, TimeUnit.SECONDS)
             .build()
     }
 
     single {
-        retrofit2.Retrofit.Builder()
+        Retrofit.Builder()
             .baseUrl("https://raw.githubusercontent.com/")
             .client(get())
-            .addConverterFactory(retrofit2.converter.gson.GsonConverterFactory.create(get()))
+            .addConverterFactory(GsonConverterFactory.create(get()))
             .build()
     }
 
-    single { get<retrofit2.Retrofit>().create(com.jksalcedo.librefind.data.remote.SignerApiService::class.java) }
+    single { get<Retrofit>().create(SignerApiService::class.java) }
 
     single {
-        val retrofit = retrofit2.Retrofit.Builder()
+        val retrofit = Retrofit.Builder()
             .baseUrl("https://api.github.com/")
             .client(get())
-            .addConverterFactory(retrofit2.converter.gson.GsonConverterFactory.create(get()))
+            .addConverterFactory(GsonConverterFactory.create(get()))
             .build()
         retrofit.create(UpdateApiService::class.java)
     }
@@ -131,7 +135,11 @@ val viewModelModule = module {
     viewModel { SubmitViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { MySubmissionsViewModel(get(), get()) }
     viewModel { IgnoredAppsViewModel(get(), get()) }
-    viewModel { SettingsViewModel(get(), get(), get()) }
+    viewModel {
+        SettingsViewModel(
+            get(), get(), get(), get()
+        )
+    }
     viewModel { ReportViewModel(get(), get()) }
     viewModel { MyReportsViewModel(get(), get()) }
     viewModel { DiscoverViewModel(get()) }
