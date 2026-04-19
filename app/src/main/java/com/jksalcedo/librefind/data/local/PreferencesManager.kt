@@ -90,6 +90,35 @@ class PreferencesManager(private val context: Context) {
 
 
 
+    /**
+     * Returns whether pre-release updates should be included in update checks.
+     *
+     * Default: false (off)
+     */
+    fun shouldIncludePrereleases(): Boolean {
+        return prefs.getBoolean(KEY_INCLUDE_PRERELEASES, false)
+    }
+
+    /**
+     * Persist user preference for including pre-release updates.
+     */
+    fun setIncludePrereleases(enabled: Boolean) {
+        prefs.edit().putBoolean(KEY_INCLUDE_PRERELEASES, enabled).apply()
+    }
+
+    fun observeIncludePrereleases(): Flow<Boolean> = callbackFlow {
+        val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+            if (key == KEY_INCLUDE_PRERELEASES) {
+                trySend(shouldIncludePrereleases())
+            }
+        }
+        prefs.registerOnSharedPreferenceChangeListener(listener)
+        trySend(shouldIncludePrereleases())
+        awaitClose { prefs.unregisterOnSharedPreferenceChangeListener(listener) }
+    }
+
+
+
     companion object {
         private const val KEY_ONBOARDING_COMPLETE = "onboarding_complete"
         private const val KEY_LAST_VERSION = "last_seen_version"
@@ -98,5 +127,8 @@ class PreferencesManager(private val context: Context) {
 
         // New keys for system package filtering
         private const val KEY_HIDE_SYSTEM_PACKAGES = "hide_system_packages"
+
+        // New key for pre-release updates
+        private const val KEY_INCLUDE_PRERELEASES = "include_prereleases"
     }
 }

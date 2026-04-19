@@ -31,7 +31,7 @@ data class SettingsState(
     val updateCheckStatus: UpdateCheckStatus = UpdateCheckStatus.IDLE,
     val latestUpdate: AppUpdate? = null,
     val updateError: String? = null,
-    val isLoggedIn: Boolean = false
+    val includePrereleases: Boolean = false
 )
 
 class SettingsViewModel(
@@ -45,15 +45,19 @@ class SettingsViewModel(
 
     init {
         calculateCacheSize()
-        observeAuthState()
+        observePreferences()
     }
 
-    private fun observeAuthState() {
+    private fun observePreferences() {
         viewModelScope.launch {
-            authRepository.currentUser.collect { user ->
-                _state.update { it.copy(isLoggedIn = user != null) }
+            preferencesManager.observeIncludePrereleases().collect { enabled ->
+                _state.update { it.copy(includePrereleases = enabled) }
             }
         }
+    }
+
+    fun setIncludePrereleases(enabled: Boolean) {
+        preferencesManager.setIncludePrereleases(enabled)
     }
 
     fun calculateCacheSize() {

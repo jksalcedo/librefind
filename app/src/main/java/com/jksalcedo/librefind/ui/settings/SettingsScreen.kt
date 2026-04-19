@@ -2,8 +2,9 @@ package com.jksalcedo.librefind.ui.settings
 
 import android.content.pm.PackageManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,15 +31,15 @@ import androidx.compose.material.icons.filled.VolunteerActivism
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -55,127 +56,75 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.os.LocaleListCompat
 import com.jksalcedo.librefind.R
 import com.jksalcedo.librefind.data.local.PreferencesManager
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
-@Composable
-private fun SettingsGroupTitle(
-    title: String,
-    modifier: Modifier = Modifier
-) {
-    Text(
-        text = title,
-        style = MaterialTheme.typography.titleSmall,
-        color = MaterialTheme.colorScheme.primary,
-        fontWeight = FontWeight.SemiBold,
-        modifier = modifier.padding(top = 12.dp, bottom = 6.dp)
-    )
-}
+// ──────────────────────────────────
+// Reusable section card composable
+// ──────────────────────────────────
 
 @Composable
-private fun SettingsRow(
-    icon: ImageVector,
+private fun SettingsSection(
     title: String,
-    subtitle: String? = null,
-    trailingText: String? = null,
-    showChevron: Boolean = true,
-    onClick: (() -> Unit)? = null,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
 ) {
-    val clickableModifier = if (onClick != null) {
-        modifier.clickable(onClick = onClick)
-    } else {
-        modifier
-    }
-
-    Row(
-        modifier = clickableModifier
-            .fillMaxWidth()
-            .padding(horizontal = 4.dp, vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
         )
-        Spacer(modifier = Modifier.width(14.dp))
-
-        Column(modifier = Modifier.weight(1f)) {
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
             )
-            if (!subtitle.isNullOrBlank()) {
-                Spacer(modifier = Modifier.height(2.dp))
-                Text(
-                    text = subtitle,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-        }
-
-        if (!trailingText.isNullOrBlank()) {
-            Text(
-                text = trailingText,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-        }
-
-        if (showChevron) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.outline
-            )
+            Spacer(modifier = Modifier.height(8.dp))
+            HorizontalDivider()
+            Spacer(modifier = Modifier.height(12.dp))
+            content()
         }
     }
 }
 
 @Composable
-private fun SettingsToggleRow(
-    title: String,
-    checked: Boolean,
-    onToggle: (Boolean) -> Unit,
-    subtitle: String? = null,
+private fun SettingsLinkButton(
+    icon: ImageVector,
+    label: String,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { onToggle(!checked) }
-            .padding(horizontal = 4.dp, vertical = 12.dp),
+            .height(42.dp)
+            .clickable(
+                interactionSource = null,
+                indication = LocalIndication.current,
+                onClick = onClick
+            ),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.bodyLarge
-            )
-            if (!subtitle.isNullOrBlank()) {
-                Spacer(modifier = Modifier.height(2.dp))
-                Text(
-                    text = subtitle,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-        }
-
-        Switch(
-            checked = checked,
-            onCheckedChange = onToggle
+        Icon(icon, contentDescription = null)
+        Spacer(modifier = Modifier.width(12.dp))
+        Text(
+            label,
+            textAlign = TextAlign.Start
         )
     }
+
 }
+
+// ───────────────────────
+// Main Settings Screen
+// ───────────────────────
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -237,20 +186,21 @@ fun SettingsContent(
     onPrivacyPolicyClick: () -> Unit,
     onResetTutorial: () -> Unit,
     onOpenUri: (String) -> Unit,
+    // Cache Actions
     onClearCacheRequest: () -> Unit,
     onClearCacheConfirm: () -> Unit,
     onClearCacheDismiss: () -> Unit,
+    // Account Actions
     onDeleteAccountRequest: () -> Unit,
     onDeleteAccountConfirm: () -> Unit,
     onDeleteAccountDismiss: () -> Unit,
     onDeleteAccountErrorDismiss: () -> Unit,
     onAccountDeletedDismiss: () -> Unit,
+    // Update Actions
     onCheckForUpdates: () -> Unit,
     onDownloadUpdate: () -> Unit,
     onResetUpdateStatus: () -> Unit
 ) {
-    val preferencesManager: PreferencesManager = koinInject()
-    var hideSystem by remember { mutableStateOf(preferencesManager.shouldHideSystemPackages()) }
 
     Scaffold(
         topBar = {
@@ -258,7 +208,7 @@ fun SettingsContent(
                 title = { Text(stringResource(R.string.settings_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
                     }
                 }
             )
@@ -269,106 +219,130 @@ fun SettingsContent(
                 .fillMaxSize()
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 20.dp, vertical = 12.dp)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Language
-            SettingsGroupTitle(stringResource(R.string.settings_language))
-            LanguageRowModern()
-            HorizontalDivider()
+            // Language Selection
+            LanguageSection()
 
-            // Cache
-            SettingsGroupTitle(stringResource(R.string.settings_cache_management))
-            CacheRowModern(
-                state = state,
-                onClearCacheRequest = onClearCacheRequest
-            )
-            HorizontalDivider()
+            // Cache Management
+            CacheManagementSection(state = state, onClearCacheRequest = onClearCacheRequest)
 
-            // Feedback & Community
-            SettingsGroupTitle(stringResource(R.string.settings_feedback))
-            SettingsRow(
-                icon = Icons.Default.Feedback,
-                title = stringResource(R.string.settings_report_issue),
-                onClick = onReportClick
-            )
-            SettingsRow(
-                icon = Icons.Default.History,
-                title = stringResource(R.string.settings_my_reports),
-                onClick = onMyReportsClick
-            )
-            SettingsRow(
-                icon = Icons.Default.BugReport,
-                title = stringResource(R.string.settings_github_issues),
-                onClick = { onOpenUri("https://github.com/jksalcedo/librefind/issues") }
-            )
-            SettingsRow(
-                icon = Icons.Default.Group,
-                title = stringResource(R.string.settings_join_community),
-                onClick = { onOpenUri("https://t.me/librefind") }
-            )
-            HorizontalDivider()
-
-            // Help
-            SettingsGroupTitle(stringResource(R.string.settings_help))
-            SettingsRow(
-                icon = Icons.Default.Refresh,
-                title = stringResource(R.string.settings_reset_tutorial),
-                onClick = onResetTutorial
-            )
-            HorizontalDivider()
-
-            // About
-            SettingsGroupTitle(stringResource(R.string.settings_about))
-            SettingsRow(
-                icon = Icons.Default.Info,
-                title = stringResource(R.string.settings_version),
-                trailingText = version,
-                showChevron = false,
-                onClick = null
-            )
-            SettingsRow(
-                icon = Icons.Default.Refresh,
-                title = stringResource(R.string.settings_check_updates),
-                onClick = onCheckForUpdates
-            )
-            SettingsRow(
-                icon = Icons.Default.Info,
-                title = stringResource(R.string.settings_view_github),
-                onClick = { onOpenUri("https://github.com/jksalcedo/librefind") }
-            )
-            SettingsRow(
-                icon = Icons.Default.VolunteerActivism,
-                title = stringResource(R.string.settings_donate),
-                onClick = { onOpenUri("https://ko-fi.com/jksalcedo") }
-            )
-            SettingsRow(
-                icon = Icons.Default.PrivacyTip,
-                title = stringResource(R.string.settings_privacy_policy),
-                onClick = onPrivacyPolicyClick
-            )
-            HorizontalDivider()
-
-            // System packages toggle
-            SettingsGroupTitle(stringResource(R.string.settings_hide_system_packages_title))
-            SettingsToggleRow(
-                title = stringResource(R.string.settings_hide_system_packages_label),
-                checked = hideSystem,
-                onToggle = { newValue ->
-                    hideSystem = newValue
-                    preferencesManager.setHideSystemPackages(newValue)
-                }
-            )
-            HorizontalDivider()
-
-            // Account
-            if (state.isLoggedIn) {
-                SettingsGroupTitle(stringResource(R.string.settings_account))
-                SettingsRow(
-                    icon = Icons.Default.Delete,
-                    title = stringResource(R.string.settings_delete_account),
-                    onClick = onDeleteAccountRequest
+            //  Feedback & Community
+            SettingsSection(title = stringResource(R.string.settings_feedback)) {
+                SettingsLinkButton(
+                    icon = Icons.Default.Feedback,
+                    label = stringResource(R.string.settings_report_issue),
+                    onClick = onReportClick
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                SettingsLinkButton(
+                    icon = Icons.Default.History,
+                    label = stringResource(R.string.settings_my_reports),
+                    onClick = onMyReportsClick
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                SettingsLinkButton(
+                    icon = Icons.Default.BugReport,
+                    label = stringResource(R.string.settings_github_issues),
+                    onClick = { onOpenUri("https://github.com/jksalcedo/librefind/issues") }
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                SettingsLinkButton(
+                    icon = Icons.Default.Group,
+                    label = stringResource(R.string.settings_join_community),
+                    onClick = { onOpenUri("https://t.me/librefind") }
                 )
             }
+
+            //  Help
+            SettingsSection(title = stringResource(R.string.settings_help)) {
+                SettingsLinkButton(
+                    icon = Icons.Default.Refresh,
+                    label = stringResource(R.string.settings_reset_tutorial),
+                    onClick = onResetTutorial
+                )
+            }
+
+            //  About
+            SettingsSection(title = stringResource(R.string.settings_about)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        stringResource(R.string.settings_version),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                    Text(
+                        text = version,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                SettingsLinkButton(
+                    icon = Icons.Default.Refresh,
+                    label = stringResource(R.string.settings_check_updates),
+                    onClick = onCheckForUpdates
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                SettingsLinkButton(
+                    icon = Icons.Default.Info,
+                    label = stringResource(R.string.settings_view_github),
+                    onClick = { onOpenUri("https://github.com/jksalcedo/librefind") }
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                SettingsLinkButton(
+                    icon = Icons.Default.VolunteerActivism,
+                    label = stringResource(R.string.settings_donate),
+                    onClick = { onOpenUri("https://ko-fi.com/jksalcedo") }
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                SettingsLinkButton(
+                    icon = Icons.Default.PrivacyTip,
+                    label = stringResource(R.string.settings_privacy_policy),
+                    onClick = onPrivacyPolicyClick
+                )
+            }
+
+            // 5. Account
+            SettingsSection(title = stringResource(R.string.settings_hide_system_packages_title)) {
+                // Obtain preferences manager from Koin for this section
+                val preferencesManager: PreferencesManager = koinInject()
+                val hideSystem = remember { mutableStateOf(preferencesManager.shouldHideSystemPackages()) }
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable(
+                            interactionSource = null,
+                            indication = LocalIndication.current,
+                            onClick = {
+                                // Toggle preference and update local state
+                                val new = !hideSystem.value
+                                hideSystem.value = new
+                                preferencesManager.setHideSystemPackages(new)
+                            }
+                        )
+                        .padding(vertical = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(R.string.settings_hide_system_packages_label),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                    Text(
+                        text = if (hideSystem.value) stringResource(R.string.settings_on) else stringResource(R.string.settings_off),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+
+            AccountSection(onDeleteAccountRequest = onDeleteAccountRequest)
         }
     }
 
@@ -386,6 +360,7 @@ fun SettingsContent(
     AccountDeletedDialog(state = state, onDismiss = onAccountDeletedDismiss)
     DeleteAccountErrorDialog(state = state, onDismiss = onDeleteAccountErrorDismiss)
 
+    // Update Dialogs
     UpdateDialogs(
         state = state,
         onDownload = onDownloadUpdate,
@@ -393,28 +368,19 @@ fun SettingsContent(
     )
 }
 
+// ─────────────────────────────────────────────
+// Section composables
+// ─────────────────────────────────────────────
+
 @Composable
-private fun LanguageRowModern() {
+private fun LanguageSection() {
+    LocalContext.current
     var showDialog by remember { mutableStateOf(false) }
 
     val currentLocale = remember {
-        AppCompatDelegate.getApplicationLocales()
-            .getFirstMatch(
-                arrayOf(
-                    "en",
-                    "ar",
-                    "de",
-                    "el",
-                    "es",
-                    "et",
-                    "fr",
-                    "it",
-                    "pl",
-                    "tr",
-                    "zh-rCN"
-                )
-            )
-            ?.language ?: ""
+        androidx.appcompat.app.AppCompatDelegate.getApplicationLocales().getFirstMatch(
+            arrayOf("en", "ar", "de", "el", "es", "et", "fr", "it", "pl", "tr", "zh-rCN")
+        )?.language ?: ""
     }
 
     val currentLanguageLabel = when (currentLocale) {
@@ -432,12 +398,26 @@ private fun LanguageRowModern() {
         else -> stringResource(R.string.settings_language_system)
     }
 
-    SettingsRow(
-        icon = Icons.Default.Info,
-        title = stringResource(R.string.settings_language),
-        trailingText = currentLanguageLabel,
-        onClick = { showDialog = true }
-    )
+    SettingsSection(title = stringResource(R.string.settings_language)) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { showDialog = true }
+                .padding(vertical = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = currentLanguageLabel,
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
 
     if (showDialog) {
         LanguageSelectionDialog(
@@ -446,11 +426,11 @@ private fun LanguageRowModern() {
             onLanguageSelected = { tag ->
                 showDialog = false
                 val localeList = if (tag.isEmpty()) {
-                    LocaleListCompat.getEmptyLocaleList()
+                    androidx.core.os.LocaleListCompat.getEmptyLocaleList()
                 } else {
-                    LocaleListCompat.forLanguageTags(tag)
+                    androidx.core.os.LocaleListCompat.forLanguageTags(tag)
                 }
-                AppCompatDelegate.setApplicationLocales(localeList)
+                androidx.appcompat.app.AppCompatDelegate.setApplicationLocales(localeList)
             }
         )
     }
@@ -488,8 +468,7 @@ private fun LanguageSelectionDialog(
                     .verticalScroll(rememberScrollState())
             ) {
                 languages.forEach { (tag, label) ->
-                    val isSelected =
-                        tag == currentLocale || (tag.isEmpty() && currentLocale.isEmpty())
+                    val isSelected = tag == currentLocale || (tag.isEmpty() && currentLocale.isEmpty())
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -497,7 +476,7 @@ private fun LanguageSelectionDialog(
                             .padding(vertical = 12.dp, horizontal = 8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        RadioButton(
+                        androidx.compose.material3.RadioButton(
                             selected = isSelected,
                             onClick = { onLanguageSelected(tag) }
                         )
@@ -519,21 +498,73 @@ private fun LanguageSelectionDialog(
     )
 }
 
+
 @Composable
-private fun CacheRowModern(
+private fun CacheManagementSection(
     state: SettingsState,
     onClearCacheRequest: () -> Unit
 ) {
-    SettingsRow(
-        icon = Icons.Default.Delete,
-        title = stringResource(R.string.settings_cache_size),
-        subtitle = state.cacheSizeMB,
-        trailingText = if (state.isClearing) stringResource(R.string.settings_clearing) else null,
-        onClick = {
-            if (!state.isClearing) onClearCacheRequest()
+    SettingsSection(title = stringResource(R.string.settings_cache_management)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column {
+                Text(
+                    stringResource(R.string.settings_cache_size),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                Text(
+                    text = state.cacheSizeMB,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            Button(
+                onClick = onClearCacheRequest,
+                enabled = !state.isClearing,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.error
+                )
+            ) {
+                if (state.isClearing) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.width(16.dp),
+                        strokeWidth = 2.dp
+                    )
+                } else {
+                    Icon(Icons.Default.Delete, contentDescription = null)
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(stringResource(R.string.settings_clear))
+                }
+            }
         }
-    )
+    }
 }
+
+@Composable
+private fun AccountSection(
+    onDeleteAccountRequest: () -> Unit
+) {
+    SettingsSection(title = stringResource(R.string.settings_account)) {
+        Button(
+            onClick = onDeleteAccountRequest,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.error
+            ),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Icon(Icons.Default.Delete, contentDescription = null)
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(stringResource(R.string.settings_delete_account))
+        }
+    }
+}
+
+// ─────────────────────────────────────────────
+// Dialog composables
+// ─────────────────────────────────────────────
 
 @Composable
 private fun ClearCacheDialog(
@@ -546,7 +577,9 @@ private fun ClearCacheDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.settings_clear_cache_title)) },
-        text = { Text(stringResource(R.string.settings_clear_cache_message)) },
+        text = {
+            Text(stringResource(R.string.settings_clear_cache_message))
+        },
         confirmButton = {
             TextButton(
                 onClick = onConfirm,
@@ -576,7 +609,9 @@ private fun DeleteAccountDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.settings_delete_account_title)) },
-        text = { Text(stringResource(R.string.settings_delete_account_message)) },
+        text = {
+            Text(stringResource(R.string.settings_delete_account_message))
+        },
         confirmButton = {
             TextButton(
                 onClick = onConfirm,
@@ -613,7 +648,7 @@ private fun AccountDeletedDialog(
     if (!state.isAccountDeleted) return
 
     AlertDialog(
-        onDismissRequest = {},
+        onDismissRequest = { /* Block dismiss — force user to tap OK */ },
         title = { Text(stringResource(R.string.settings_account_deleted_title)) },
         text = { Text(stringResource(R.string.settings_account_deleted_message)) },
         confirmButton = {
@@ -652,7 +687,7 @@ private fun UpdateDialogs(
     when (state.updateCheckStatus) {
         UpdateCheckStatus.CHECKING -> {
             AlertDialog(
-                onDismissRequest = {},
+                onDismissRequest = { /* Don't dismiss while checking */ },
                 title = { Text(stringResource(R.string.settings_checking_updates)) },
                 text = {
                     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
@@ -662,7 +697,6 @@ private fun UpdateDialogs(
                 confirmButton = {}
             )
         }
-
         UpdateCheckStatus.UPDATE_AVAILABLE -> {
             val update = state.latestUpdate ?: return
             AlertDialog(
@@ -676,10 +710,7 @@ private fun UpdateDialogs(
                             .verticalScroll(rememberScrollState())
                     ) {
                         Text(
-                            text = stringResource(
-                                R.string.settings_update_available_message,
-                                update.version
-                            ),
+                            text = stringResource(R.string.settings_update_available_message, update.version),
                             style = MaterialTheme.typography.bodyLarge
                         )
                         if (update.changelog.isNotBlank()) {
@@ -709,7 +740,6 @@ private fun UpdateDialogs(
                 }
             )
         }
-
         UpdateCheckStatus.UP_TO_DATE -> {
             AlertDialog(
                 onDismissRequest = onDismiss,
@@ -721,17 +751,11 @@ private fun UpdateDialogs(
                 }
             )
         }
-
         UpdateCheckStatus.ERROR -> {
             AlertDialog(
                 onDismissRequest = onDismiss,
                 title = { Text(stringResource(R.string.settings_error)) },
-                text = {
-                    Text(
-                        state.updateError
-                            ?: stringResource(R.string.settings_update_error, "Unknown error")
-                    )
-                },
+                text = { Text(state.updateError ?: stringResource(R.string.settings_update_error, "Unknown error")) },
                 confirmButton = {
                     TextButton(onClick = onDismiss) {
                         Text(stringResource(R.string.settings_ok))
@@ -739,8 +763,7 @@ private fun UpdateDialogs(
                 }
             )
         }
-
-        else -> Unit
+        else -> {}
     }
 }
 

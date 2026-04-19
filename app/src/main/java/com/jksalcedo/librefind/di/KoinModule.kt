@@ -102,7 +102,7 @@ val networkModule = module {
 val repositoryModule = module {
     single<CacheRepository> { CacheRepositoryImpl(get(), get()) }
     single { TrustedRomSignerDb(get(), get()) }
-    single<UpdateRepository> { UpdateRepositoryImpl(androidContext(), get()) }
+    single<UpdateRepository> { UpdateRepositoryImpl(androidContext(), get(), get()) }
     single<DeviceInventoryRepo> {
         DeviceInventoryRepoImpl(
             get(),

@@ -208,6 +208,9 @@
     <string name="settings_download_install">Download &amp; Install</string>
     <string name="settings_update_error">Failed to check for updates: %1$s</string>
     <string name="settings_changelog_title">What\'s New</string>
+    <string name="settings_include_prereleases_title">Experimental Updates</string>
+    <string name="settings_include_prereleases_label">Include pre-releases</string>
+    <string name="settings_include_prereleases_desc">Receive updates for alpha, beta, and RC versions.</string>
 
     <!-- Ignored Apps Screen -->
     <string name="ignored_apps_title">Ignored Apps</string>
