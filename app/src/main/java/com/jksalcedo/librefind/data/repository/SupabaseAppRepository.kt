@@ -667,73 +667,132 @@ class SupabaseAppRepository(
                         filter { eq("submitter_id", userId) }
                     }.decodeList<UserLinkingSubmissionWithProfileDto>()
 
-            val standardList = standardDtos.map { dto ->
-                Submission(
-                    id = dto.id ?: "",
-                    type = dto.submissionType?.let {
-                        try {
-                            SubmissionType.valueOf(it)
-                        } catch (_: Exception) {
-                            null
-                        }
-                    } ?: if (!dto.license.isNullOrBlank() || !dto.repoUrl.isNullOrBlank())
-                        SubmissionType.NEW_ALTERNATIVE
-                    else
-                        SubmissionType.NEW_PROPRIETARY,
-                    proprietaryPackages = dto.proprietaryPackage ?: "",
-                    submittedApp = SubmittedApp(
-                        name = dto.appName,
-                        packageName = dto.appPackage,
-                        description = dto.description,
-                        repoUrl = dto.repoUrl ?: "",
-                        fdroidId = dto.fdroidId ?: "",
-                        license = dto.license ?: ""
-                    ),
-                    submitterUid = dto.submitterId,
-                    submitterUsername = dto.profile?.username ?: "Unknown",
-                    // Parse created_at timestamp or use current time if missing
-                    submittedAt = dto.createdAt?.let { parseTimestamp(it) }
-                        ?: System.currentTimeMillis(),
-                    status = try {
-                        SubmissionStatus.valueOf(dto.status)
-                    } catch (_: Exception) {
-                        SubmissionStatus.PENDING
-                    },
-                    rejectionReason = dto.rejectionReason
-                )
-            }
-
-            val linkingList = linkingDtos.map { dto ->
-                Submission(
-                    id = dto.id ?: "",
-                    type = SubmissionType.LINKING,
-                    proprietaryPackages = dto.proprietaryPackage,
-                    submittedApp = SubmittedApp(
-                        // format the name in the UI based on the type.
-                        name = "Link ${dto.alternatives.size} Alternatives",
-                        packageName = dto.proprietaryPackage,
-                        description = "Linking request for ${dto.proprietaryPackage}"
-                    ),
-                    submitterUid = dto.submitterId,
-                    submitterUsername = dto.profile?.username ?: "Unknown",
-                    submittedAt = dto.createdAt?.let { parseTimestamp(it) }
-                        ?: System.currentTimeMillis(),
-                    status = try {
-                        SubmissionStatus.valueOf(dto.status)
-                    } catch (_: Exception) {
-                        SubmissionStatus.PENDING
-                    },
-                    rejectionReason = dto.rejectionReason,
-                    linkedAlternatives = dto.alternatives
-                )
-            }
-
-            (standardList + linkingList).sortedByDescending { it.submittedAt }
+            mapDtosToSubmissions(standardDtos, linkingDtos)
 
         } catch (e: Exception) {
             e.printStackTrace()
             emptyList()
         }
+    }
+
+    override suspend fun getAllPendingSubmissions(): List<Submission> {
+        return try {
+            // 1. Fetch standard pending submissions
+            val standardDtos =
+                supabase.postgrest.from("user_submissions")
+                    .select(
+                        columns = Columns.list(
+                            "id",
+                            "app_name",
+                            "app_package",
+                            "description",
+                            "proprietary_package",
+                            "repo_url",
+                            "fdroid_id",
+                            "license",
+                            "submission_type",
+                            "status",
+                            "submitter_id",
+                            "rejection_reason",
+                            "created_at",
+                            "profiles(id, username)"
+                        )
+                    ) {
+                        filter { eq("status", "PENDING") }
+                    }.decodeList<UserSubmissionWithProfileDto>()
+
+            // 2. Fetch linking pending submissions
+            val linkingDtos =
+                supabase.postgrest.from("user_linking_submissions")
+                    .select(
+                        columns = Columns.list(
+                            "id",
+                            "proprietary_package",
+                            "alternatives",
+                            "status",
+                            "submitter_id",
+                            "rejection_reason",
+                            "created_at",
+                            "profiles(id, username)"
+                        )
+                    ) {
+                        filter { eq("status", "PENDING") }
+                    }.decodeList<UserLinkingSubmissionWithProfileDto>()
+
+            mapDtosToSubmissions(standardDtos, linkingDtos)
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList()
+        }
+    }
+
+    private fun mapDtosToSubmissions(
+        standardDtos: List<UserSubmissionWithProfileDto>,
+        linkingDtos: List<UserLinkingSubmissionWithProfileDto>
+    ): List<Submission> {
+        val standardList = standardDtos.map { dto ->
+            Submission(
+                id = dto.id ?: "",
+                type = dto.submissionType?.let {
+                    try {
+                        SubmissionType.valueOf(it)
+                    } catch (_: Exception) {
+                        null
+                    }
+                } ?: if (!dto.license.isNullOrBlank() || !dto.repoUrl.isNullOrBlank())
+                    SubmissionType.NEW_ALTERNATIVE
+                else
+                    SubmissionType.NEW_PROPRIETARY,
+                proprietaryPackages = dto.proprietaryPackage ?: "",
+                submittedApp = SubmittedApp(
+                    name = dto.appName,
+                    packageName = dto.appPackage,
+                    description = dto.description,
+                    repoUrl = dto.repoUrl ?: "",
+                    fdroidId = dto.fdroidId ?: "",
+                    license = dto.license ?: ""
+                ),
+                submitterUid = dto.submitterId,
+                submitterUsername = dto.profile?.username ?: "Unknown",
+                // Parse created_at timestamp or use current time if missing
+                submittedAt = dto.createdAt?.let { parseTimestamp(it) }
+                    ?: System.currentTimeMillis(),
+                status = try {
+                    SubmissionStatus.valueOf(dto.status)
+                } catch (_: Exception) {
+                    SubmissionStatus.PENDING
+                },
+                rejectionReason = dto.rejectionReason
+            )
+        }
+
+        val linkingList = linkingDtos.map { dto ->
+            Submission(
+                id = dto.id ?: "",
+                type = SubmissionType.LINKING,
+                proprietaryPackages = dto.proprietaryPackage,
+                submittedApp = SubmittedApp(
+                    // format the name in the UI based on the type.
+                    name = "Link ${dto.alternatives.size} Alternatives",
+                    packageName = dto.proprietaryPackage,
+                    description = "Linking request for ${dto.proprietaryPackage}"
+                ),
+                submitterUid = dto.submitterId,
+                submitterUsername = dto.profile?.username ?: "Unknown",
+                submittedAt = dto.createdAt?.let { parseTimestamp(it) }
+                    ?: System.currentTimeMillis(),
+                status = try {
+                    SubmissionStatus.valueOf(dto.status)
+                } catch (_: Exception) {
+                    SubmissionStatus.PENDING
+                },
+                rejectionReason = dto.rejectionReason,
+                linkedAlternatives = dto.alternatives
+            )
+        }
+
+        return (standardList + linkingList).sortedByDescending { it.submittedAt }
     }
 
     private fun parseTimestamp(isoString: String): Long {

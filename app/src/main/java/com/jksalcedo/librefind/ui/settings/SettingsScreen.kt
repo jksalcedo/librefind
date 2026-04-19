@@ -198,6 +198,7 @@ fun SettingsScreen(
     onReportClick: () -> Unit = {},
     onMyReportsClick: () -> Unit = {},
     onPrivacyPolicyClick: () -> Unit = {},
+    onBrowsePendingSubmissions: () -> Unit = {},
     viewModel: SettingsViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsState()
@@ -224,6 +225,7 @@ fun SettingsScreen(
         onReportClick = onReportClick,
         onMyReportsClick = onMyReportsClick,
         onPrivacyPolicyClick = onPrivacyPolicyClick,
+        onBrowsePendingSubmissions = onBrowsePendingSubmissions,
         onResetTutorial = { preferencesManager.resetTutorial() },
         onOpenUri = { uriHandler.openUri(it) },
         onClearCacheRequest = { viewModel.showClearConfirmation() },
@@ -253,6 +255,7 @@ fun SettingsContent(
     onReportClick: () -> Unit,
     onMyReportsClick: () -> Unit,
     onPrivacyPolicyClick: () -> Unit,
+    onBrowsePendingSubmissions: () -> Unit,
     onResetTutorial: () -> Unit,
     onOpenUri: (String) -> Unit,
     // Cache Actions
@@ -295,6 +298,16 @@ fun SettingsContent(
         ) {
             // Language Selection
             LanguageSection()
+            HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+
+            // Community Moderation
+            PreferenceCategory(stringResource(R.string.settings_community_title))
+            PreferenceItem(
+                title = stringResource(R.string.settings_browse_pending_title),
+                subtitle = stringResource(R.string.settings_browse_pending_desc),
+                icon = Icons.Default.Group,
+                onClick = onBrowsePendingSubmissions
+            )
             HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
             // Appearance & Behavior
@@ -825,6 +838,7 @@ fun SettingsScreenPreview() {
         onReportClick = {},
         onMyReportsClick = {},
         onPrivacyPolicyClick = {},
+        onBrowsePendingSubmissions = {},
         onResetTutorial = {},
         onOpenUri = {},
         onClearCacheRequest = {},

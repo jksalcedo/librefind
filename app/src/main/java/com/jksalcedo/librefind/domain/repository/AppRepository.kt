@@ -94,6 +94,7 @@ interface AppRepository {
     ): Result<Unit>
 
     suspend fun getMySubmissions(userId: String): List<Submission>
+    suspend fun getAllPendingSubmissions(): List<Submission>
 
     suspend fun submitFeedback(
         packageName: String,

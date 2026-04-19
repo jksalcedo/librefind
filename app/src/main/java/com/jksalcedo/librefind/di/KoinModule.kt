@@ -134,6 +134,7 @@ val viewModelModule = module {
     viewModel { AuthViewModel(get()) }
     viewModel { SubmitViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { MySubmissionsViewModel(get(), get()) }
+    viewModel { CommunitySubmissionsViewModel(get()) }
     viewModel { IgnoredAppsViewModel(get(), get()) }
     viewModel {
         SettingsViewModel(
