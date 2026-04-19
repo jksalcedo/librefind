@@ -32,7 +32,7 @@
     <string name="dashboard_no_matching_apps">Sobivaid rakendusi pole</string>
     <string name="dashboard_no_apps_found">Rakendusi ei leidu</string>
     <!-- Profile Dialog -->
-    <string name="profile_dialog_title">Profiil ja seadistused</string>
+    <string name="profile_dialog_title">Profiil &amp; seadistused</string>
     <string name="profile_unknown_username">Tundmatu kasutajanimi</string>
     <string name="profile_no_email">Pole E-posti</string>
     <string name="profile_ignored_apps">Eiratud Rakendused</string>

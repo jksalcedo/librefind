@@ -9,7 +9,7 @@
     <string name="dashboard_filter_all_proprietary">All Proprietary</string>
     <string name="dashboard_filter_with_alternatives">With Alternatives</string>
     <string name="dashboard_filter_no_alternatives">Without Alternatives</string>
-    <string name="dashboard_filter_foss_only">Tikai FOSS - atvērtā pirmkoda bezmaksas programmatūras lietotnes</string>
+    <string name="dashboard_filter_foss_only">Tikai atvērtā pirmkoda bezmaksas programmatūras (FOSS) lietotnes</string>
     <string name="dashboard_filter_unknown_only">Unknown Only</string>
     <string name="dashboard_filter_pending_only">Pending Only</string>
     <string name="dashboard_filter_ignored_only">Ignored Only</string>
@@ -32,7 +32,7 @@
     <string name="dashboard_no_matching_apps">No matching apps</string>
     <string name="dashboard_no_apps_found">No apps found</string>
     <!-- Profile Dialog -->
-    <string name="profile_dialog_title">Profile &amp; Settings</string>
+    <string name="profile_dialog_title">Profils un iestatījumi</string>
     <string name="profile_unknown_username">Nezināms lietotājvārds</string>
     <string name="profile_no_email">No Email</string>
     <string name="profile_ignored_apps">Ignored Apps</string>
@@ -48,21 +48,21 @@
     <!-- Auth -->
     <string name="auth_create_account">Izveidot kontu</string>
     <string name="auth_sign_in">Sign In</string>
-    <string name="auth_subtitle">Submit FOSS alternatives</string>
+    <string name="auth_subtitle">Iesniegt atvērtā pirmkoda bezmaksas programmatūras (FOSS) alternatīvas</string>
     <string name="auth_username">Lietotājvārds</string>
     <string name="auth_email">E-pasts</string>
     <string name="auth_password">Parole</string>
-    <string name="auth_hide_password">Hide password</string>
-    <string name="auth_show_password">Show password</string>
+    <string name="auth_hide_password">Slēpt paroli</string>
+    <string name="auth_show_password">Rādīt paroli</string>
     <string name="auth_or">VAI</string>
     <string name="auth_sign_in_github">Sign in with GitHub</string>
-    <string name="auth_already_have_account">Already have an account? Sign In</string>
-    <string name="auth_dont_have_account">Don\'t have an account? Sign Up</string>
-    <string name="auth_check_email_title">Check Your Email</string>
+    <string name="auth_already_have_account">Jums jau ir konts? Ieiet</string>
+    <string name="auth_dont_have_account">Jums vēl nav konta? Izveidot kontu</string>
+    <string name="auth_check_email_title">Pārbaudiet savu e-pastu</string>
     <string name="auth_check_email_message">We\'ve sent a verification link to your email address. Please verify your email before signing in.</string>
     <string name="auth_go_to_sign_in">Go to Sign In</string>
     <!-- Profile Setup -->
-    <string name="setup_title">Set Up Profile</string>
+    <string name="setup_title">Iestatīt profilu</string>
     <string name="setup_choose_username">Choose a Username</string>
     <string name="setup_username_desc">This will be shown with your submissions</string>
     <string name="setup_username_rules">Letters, numbers, underscore only</string>
@@ -78,7 +78,7 @@
     <string name="submit_what_submitting">What are you submitting?</string>
     <string name="submit_contribution_guide">Contribution Guide</string>
     <string name="submit_web_submission_page">Open web submission page</string>
-    <string name="submit_type_foss">FOSS App</string>
+    <string name="submit_type_foss">@string/status_foss</string>
     <string name="submit_type_proprietary">Proprietary App</string>
     <string name="submit_type_link">Link App</string>
     <string name="submit_app_name">Lietotnes nosaukums *</string>
@@ -136,7 +136,7 @@
     <string name="help_repo_url_title">Repository URL</string>
     <string name="help_repo_url_desc">The link to the app\'s public source code repository. This is required to verify the app is truly open source.</string>
     <string name="help_repo_url_tip">Look for it on the app\'s website, F-Droid listing, or search \"&lt;app name&gt; source code\" on GitHub/GitLab/Codeberg.</string>
-    <string name="help_fdroid_id_title">F-Droid ID</string>
+    <string name="help_fdroid_id_title">@string/submit_fdroid_id</string>
     <string name="help_fdroid_id_desc">The package name as listed on F-Droid. Usually the same as the package name, but some apps use a different ID for F-Droid builds.</string>
     <string name="help_fdroid_id_tip">Find it at f-droid.org — the ID is in the URL: f-droid.org/packages/&lt;fdroid.id&gt;/</string>
     <string name="help_license_title">Licence</string>
@@ -158,7 +158,7 @@
     <string name="settings_join_community">Pievienoties kopienai</string>
     <string name="settings_about">Par lietotni</string>
     <string name="settings_version">Versija</string>
-    <string name="settings_view_github">View on GitHub</string>
+    <string name="settings_view_github">Skatīt GitHub</string>
     <string name="settings_donate">Ziedot LibreFind</string>
     <string name="settings_privacy_policy">Konfidencialitātes politika</string>
     <string name="settings_language">Valoda</string>
@@ -191,8 +191,8 @@
     <!-- New strings for system/vendor package filtering toggle -->
     <string name="settings_hide_system_packages_title">System package filtering</string>
     <string name="settings_hide_system_packages_label">Hide vendor/system packages</string>
-    <string name="settings_on">On</string>
-    <string name="settings_off">Off</string>
+    <string name="settings_on">Ieslēgts</string>
+    <string name="settings_off">Izslēgts</string>
     <string name="settings_error">Kļūda</string>
     <!-- Ignored Apps Screen -->
     <string name="ignored_apps_title">Ignored Apps</string>
@@ -200,10 +200,10 @@
     <string name="ignored_apps_restore">Atjaunot</string>
     <!-- Privacy Policy Screen -->
     <string name="privacy_title">Privacy Policy for LibreFind</string>
-    <string name="privacy_last_updated">Last updated: February 10, 2026</string>
+    <string name="privacy_last_updated">Atjaunināta: 2026. gada 10. februārī</string>
     <string name="privacy_intro">This Privacy Policy describes how LibreFind (\"we\", \"us\", or \"our\") collects, uses, and discloses your information when you use our mobile application (the \"Service\").</string>
     <string name="privacy_agreement">By using the Service, you agree to the collection and use of information in accordance with this policy.</string>
-    <string name="privacy_section_1">1. Information We Collect</string>
+    <string name="privacy_section_1">1. Kādu informāciju mēs apkopojam</string>
     <string name="privacy_section_1_desc">We collect the minimum amount of data necessary to provide our services.</string>
     <string name="privacy_subsection_1a">A. Device &amp; Usage Data (Anonymous)</string>
     <string name="privacy_subsection_1a_desc">When you scan your device, we collect the following anonymized data to generate your sovereignty score:</string>
@@ -216,13 +216,13 @@
     <string name="privacy_bullet_user_email">Username &amp; Email: To identify you and prevent spam.</string>
     <string name="privacy_bullet_password">Password: Securely hashed by our authentication provider. We never have access to your plaintext password.</string>
     <string name="privacy_bullet_submissions">User Submissions: Any alternative app suggestions or votes you submit to the community database.</string>
-    <string name="privacy_section_2">2. How We Use Your Information</string>
+    <string name="privacy_section_2">2. Kā mēs izmantojam jūsu datus</string>
     <string name="privacy_section_2_desc">We use the collected data for the following purposes:</string>
     <string name="privacy_bullet_provide_service">To Provide the Service: Calculating your \"Sovereignty Score\" and syncing your preferences across devices.</string>
     <string name="privacy_bullet_improve_service">To Improve Our Service: Your submissions help us identify proprietary apps that need FOSS alternatives.</string>
     <string name="privacy_bullet_security">Security &amp; Authentication: Your email and password are used strictly to secure your account.</string>
-    <string name="privacy_bullet_community">Community Features: To prevent vote manipulation (spam) on app recommendations.</string>
-    <string name="privacy_section_3">3. Third-Party Services</string>
+    <string name="privacy_bullet_community">Kopienas funkcijas: Lai novērstu novērtējumu manipulācijas (spam) lietotnes ieteikumos.</string>
+    <string name="privacy_section_3">3. Trešo pušu pakalpojumi</string>
     <string name="privacy_section_3_desc">We use trusted third-party services to operate our infrastructure. We do not sell your data. We do not share your data with third parties for advertising purposes.</string>
     <string name="privacy_subsection_supabase">Supabase</string>
     <string name="privacy_subsection_supabase_desc">We use Supabase as our backend database and authentication provider.</string>
@@ -233,7 +233,7 @@
     <string name="privacy_section_5">5. Data Retention and Deletion</string>
     <string name="privacy_bullet_retention">Retention: We retain account data as long as your account is active.</string>
     <string name="privacy_bullet_deletion">Deletion: You have the right to delete your account at any time. You can request data deletion by contacting us or using the \"Delete Account\" option within the app settings. Upon deletion, all associated account data will be removed from our servers.</string>
-    <string name="privacy_section_6">6. Children\'s Privacy</string>
+    <string name="privacy_section_6">6. Bērnu konfidencialitāte</string>
     <string name="privacy_section_6_desc">This Service is not directed to anyone under the age of 13. We do not knowingly collect personal information from children under 13. If we discover that a child under 13 has provided us with personal information, we will promptly delete it.</string>
     <string name="privacy_section_7">7. Changes to This Privacy Policy</string>
     <string name="privacy_section_7_desc">We may update this Privacy Policy from time to time. We will notify you of any changes by updating the \"Last updated\" date at the top of this policy. You are advised to review this Privacy Policy periodically for any changes.</string>
@@ -247,23 +247,23 @@
     <string name="alt_detail_open_website">Atvērt vietni</string>
     <string name="alt_detail_view_source">Skatīt pirmkodu</string>
     <string name="alt_detail_copy_package">Copy Package Name</string>
-    <string name="alt_detail_not_found">Alternative not found</string>
+    <string name="alt_detail_not_found">Alternatīva nav atrasta</string>
     <string name="alt_detail_ratings_title">Vērtējumi</string>
     <string name="alt_detail_privacy">Konfidencialitāte</string>
     <string name="alt_detail_privacy_desc">Respects your data</string>
     <string name="alt_detail_usability">Lietošanas ērtums</string>
     <string name="alt_detail_usability_desc">Easy to use</string>
     <string name="alt_detail_features">Funkcionalitāte</string>
-    <string name="alt_detail_feature_parity">Feature Parity</string>
+    <string name="alt_detail_feature_parity">Līdzvērtīga funkcionalitāte</string>
     <string name="alt_detail_features_desc">Pilnvērtīga alternatīva</string>
-    <string name="alt_detail_rate_app">Rate this app</string>
+    <string name="alt_detail_rate_app">Novērtēt šo lietotni</string>
     <string name="alt_detail_your_ratings">Jūsu vērtējumi</string>
     <string name="alt_detail_description">Apraksts</string>
-    <string name="alt_detail_features_list">Funkcionalitāte</string>
+    <string name="alt_detail_features_list">@string/alt_detail_features</string>
     <string name="alt_detail_pros">Plusi</string>
-    <string name="alt_detail_no_pros">No pros yet</string>
+    <string name="alt_detail_no_pros">Vēl nav iesniegts neviens pluss</string>
     <string name="alt_detail_cons">Mīnusi</string>
-    <string name="alt_detail_no_cons">No cons yet</string>
+    <string name="alt_detail_no_cons">Vēl nav iesniegts neviens mīnuss</string>
     <string name="alt_detail_add_pro">Pievienot plusu</string>
     <string name="alt_detail_add_con">Pievienot mīnusu</string>
     <string name="alt_detail_pro">Plus</string>
@@ -277,19 +277,19 @@
     <string name="alt_detail_report_details">Sīkāka informācija (pēc izvēles)</string>
     <string name="alt_detail_report_success">Ziņojums iesniegts</string>
     <string name="alt_detail_report_error">Neizdevās iesniegt ziņojumu</string>
-    <string name="alt_detail_report_not_foss">Nav FOSS - atvērtā pirmkoda bezmaksas programmatūras lietotne</string>
+    <string name="alt_detail_report_not_foss">Nav atvērtā pirmkoda bezmaksas programmatūras (FOSS) lietotne</string>
     <string name="alt_detail_report_unrelated">Nesaistīts</string>
     <string name="alt_detail_report_broken_link">Bojāta saite</string>
     <string name="alt_detail_report_malware">Vīruss</string>
     <string name="alt_detail_report_other">Cits</string>
     <!-- Details Screen -->
-    <string name="details_title_format">%1$s alternatives</string>
+    <string name="details_title_format">%1$s alternatīvas</string>
     <string name="details_error_unknown">Nezināma kļūda</string>
     <string name="details_retry">Mēģināt vēlreiz</string>
-    <string name="details_no_alternatives">No alternatives found</string>
-    <string name="details_not_in_db">This app is not in our database yet.</string>
+    <string name="details_no_alternatives">Nav atrasta neviena alternatīva</string>
+    <string name="details_not_in_db">Šī lietotne vēl nav mūsu datubāzē.</string>
     <string name="details_no_suggested_alternatives">No FOSS alternatives have been suggested for this app yet.</string>
-    <string name="details_help_categorize">Help us categorize this app:</string>
+    <string name="details_help_categorize">Palīdziet mums klasificēt šo lietotni:</string>
     <string name="details_suggest_foss">Suggest as FOSS</string>
     <string name="details_suggest_proprietary">Suggest as Proprietary</string>
     <string name="details_found_format">Found %1$d FOSS alternative%2$s</string>
@@ -298,8 +298,8 @@
     <string name="details_siblings_found_format">%1$d similar FOSS app%2$s in this category</string>
     <string name="details_foss_category_unset">This app hasn\'t been assigned a category yet. Similar apps can\'t be shown until it is.</string>
     <!-- Match vote buttons -->
-    <string name="vote_upvote">Good replacement (upvote)</string>
-    <string name="vote_downvote">Poor replacement (downvote)</string>
+    <string name="vote_upvote">Laba alternatīva (balsot \"Par\")</string>
+    <string name="vote_downvote">Slikta alternatīva (balsot \"Pret\")</string>
     <!-- My Submissions Screen -->
     <string name="my_submissions_title">My Submissions</string>
     <string name="my_submissions_empty">No submissions found</string>
@@ -308,7 +308,7 @@
     <string name="status_approved">Apstiprināts</string>
     <string name="status_rejected">Noraidīts</string>
     <!-- Status Badge -->
-    <string name="status_foss">FOSS — atvērtā pirmkoda bezmaksas programmatūras lietotne</string>
+    <string name="status_foss">Atvērtā pirmkoda bezmaksas programmatūras (FOSS) lietotne</string>
     <string name="status_proprietary">PATENTĒTS</string>
     <string name="status_unknown">NEZINĀMS</string>
     <string name="status_ignored">ignorēts</string>
