@@ -2,9 +2,7 @@ package com.jksalcedo.librefind.ui.settings
 
 import android.content.pm.PackageManager
 import android.os.Build
-import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -25,14 +24,13 @@ import androidx.compose.material.icons.filled.Feedback
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.PrivacyTip
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.VolunteerActivism
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -40,6 +38,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -56,7 +55,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jksalcedo.librefind.R
@@ -64,62 +62,129 @@ import com.jksalcedo.librefind.data.local.PreferencesManager
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
-// ──────────────────────────────────
-// Reusable section card composable
-// ──────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────
+// Reusable Modern Preference Composables (Standard Android Settings Style)
+// ─────────────────────────────────────────────────────────────────────────
 
 @Composable
-private fun SettingsSection(
+fun PreferenceCategory(title: String) {
+    Text(
+        text = title,
+        style = MaterialTheme.typography.labelLarge,
+        color = MaterialTheme.colorScheme.primary,
+        fontWeight = FontWeight.Bold,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 16.dp, top = 24.dp, end = 16.dp, bottom = 8.dp)
+    )
+}
+
+@Composable
+fun PreferenceItem(
     title: String,
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
+    subtitle: String? = null,
+    icon: ImageVector? = null,
+    onClick: (() -> Unit)? = null,
+    trailingContent: (@Composable () -> Unit)? = null
 ) {
-    Card(
-        modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-        )
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        if (icon != null) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.size(24.dp)
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+        } else {
+            // Indent items without icons to align with icon-bearing items
+            Spacer(modifier = Modifier.width(40.dp))
+        }
+
+        Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurface
             )
-            Spacer(modifier = Modifier.height(8.dp))
-            HorizontalDivider()
-            Spacer(modifier = Modifier.height(12.dp))
-            content()
+            if (subtitle != null) {
+                Text(
+                    text = subtitle,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+
+        if (trailingContent != null) {
+            Spacer(modifier = Modifier.width(8.dp))
+            trailingContent()
         }
     }
 }
 
 @Composable
-private fun SettingsLinkButton(
-    icon: ImageVector,
-    label: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
+fun PreferenceSwitch(
+    title: String,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    subtitle: String? = null,
+    icon: ImageVector? = null
 ) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(42.dp)
-            .clickable(
-                interactionSource = null,
-                indication = LocalIndication.current,
-                onClick = onClick
-            ),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(icon, contentDescription = null)
-        Spacer(modifier = Modifier.width(12.dp))
-        Text(
-            label,
-            textAlign = TextAlign.Start
-        )
-    }
+    PreferenceItem(
+        title = title,
+        subtitle = subtitle,
+        icon = icon,
+        onClick = { onCheckedChange(!checked) },
+        trailingContent = {
+            Switch(checked = checked, onCheckedChange = onCheckedChange)
+        }
+    )
+}
 
+@Composable
+fun PreferenceAction(
+    title: String,
+    actionLabel: String,
+    onClick: () -> Unit,
+    isLoading: Boolean = false,
+    subtitle: String? = null,
+    icon: ImageVector? = null,
+    isDestructive: Boolean = false
+) {
+    PreferenceItem(
+        title = title,
+        subtitle = subtitle,
+        icon = icon,
+        trailingContent = {
+            Button(
+                onClick = onClick,
+                enabled = !isLoading,
+                colors = if (isDestructive) {
+                    ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                } else {
+                    ButtonDefaults.buttonColors()
+                }
+            ) {
+                if (isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(16.dp),
+                        strokeWidth = 2.dp,
+                        color = if (isDestructive) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimary
+                    )
+                } else {
+                    Text(actionLabel)
+                }
+            }
+        }
+    )
 }
 
 // ───────────────────────
@@ -164,17 +229,18 @@ fun SettingsScreen(
         onClearCacheRequest = { viewModel.showClearConfirmation() },
         onClearCacheConfirm = { viewModel.clearCache() },
         onClearCacheDismiss = { viewModel.hideClearConfirmation() },
+        onClearClassificationRequest = { viewModel.showClearClassificationConfirmation() },
+        onClearClassificationConfirm = { viewModel.clearClassificationCache() },
+        onClearClassificationDismiss = { viewModel.hideClearClassificationConfirmation() },
         onDeleteAccountRequest = { viewModel.showDeleteAccountConfirmation() },
         onDeleteAccountConfirm = { viewModel.deleteAccount() },
         onDeleteAccountDismiss = { viewModel.hideDeleteAccountConfirmation() },
         onDeleteAccountErrorDismiss = { viewModel.clearDeleteAccountError() },
-        onClearClassificationRequest = { viewModel.showClearClassificationConfirmation() },
-        onClearClassificationConfirm = { viewModel.clearClassificationCache() },
-        onClearClassificationDismiss = { viewModel.hideClearClassificationConfirmation() },
         onAccountDeletedDismiss = onBackClick,
         onCheckForUpdates = { viewModel.checkForUpdates() },
         onDownloadUpdate = { viewModel.downloadUpdate() },
-        onResetUpdateStatus = { viewModel.resetUpdateStatus() }
+        onResetUpdateStatus = { viewModel.resetUpdateStatus() },
+        onSetIncludePrereleases = { viewModel.setIncludePrereleases(it) }
     )
 }
 
@@ -193,10 +259,10 @@ fun SettingsContent(
     onClearCacheRequest: () -> Unit,
     onClearCacheConfirm: () -> Unit,
     onClearCacheDismiss: () -> Unit,
-    // Account Actions
     onClearClassificationRequest: () -> Unit,
     onClearClassificationConfirm: () -> Unit,
     onClearClassificationDismiss: () -> Unit,
+    // Account Actions
     onDeleteAccountRequest: () -> Unit,
     onDeleteAccountConfirm: () -> Unit,
     onDeleteAccountDismiss: () -> Unit,
@@ -205,7 +271,8 @@ fun SettingsContent(
     // Update Actions
     onCheckForUpdates: () -> Unit,
     onDownloadUpdate: () -> Unit,
-    onResetUpdateStatus: () -> Unit
+    onResetUpdateStatus: () -> Unit,
+    onSetIncludePrereleases: (Boolean) -> Unit
 ) {
 
     Scaffold(
@@ -225,147 +292,126 @@ fun SettingsContent(
                 .fillMaxSize()
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Language
-            SettingsGroupTitle(stringResource(R.string.settings_language))
-            LanguageRowModern()
-            HorizontalDivider()
+            // Language Selection
+            LanguageSection()
+            HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
-            // Cache
-            SettingsGroupTitle(stringResource(R.string.settings_cache_management))
-            CacheRowModern(
-                state = state,
-                onClearCacheRequest = onClearCacheRequest
+            // Appearance & Behavior
+            PreferenceCategory(stringResource(R.string.settings_hide_system_packages_title))
+            val preferencesManager: PreferencesManager = koinInject()
+            var hideSystem by remember { mutableStateOf(preferencesManager.shouldHideSystemPackages()) }
+
+            PreferenceSwitch(
+                title = stringResource(R.string.settings_hide_system_packages_label),
+                checked = hideSystem,
+                onCheckedChange = {
+                    hideSystem = it
+                    preferencesManager.setHideSystemPackages(it)
+                }
             )
-            ClassificationCacheRow(
-                state = state,
-                onClearRequest = onClearClassificationRequest
+            HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+
+            // Cache Management
+            PreferenceCategory(stringResource(R.string.settings_cache_management))
+            PreferenceAction(
+                title = stringResource(R.string.settings_cache_size),
+                subtitle = state.cacheSizeMB,
+                actionLabel = stringResource(R.string.settings_clear),
+                onClick = onClearCacheRequest,
+                isLoading = state.isClearing,
+                isDestructive = true,
+                icon = Icons.Default.Delete
             )
-            HorizontalDivider()
+            PreferenceAction(
+                title = "Classification Cache",
+                subtitle = "${state.classificationCacheCount} apps cached",
+                actionLabel = stringResource(R.string.settings_clear),
+                onClick = onClearClassificationRequest,
+                isLoading = state.isClearingClassification,
+                isDestructive = true,
+                icon = Icons.Default.Delete
+            )
+            HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
             // Feedback & Community
-            SettingsGroupTitle(stringResource(R.string.settings_feedback))
-            SettingsRow(
-                icon = Icons.Default.Feedback,
+            PreferenceCategory(stringResource(R.string.settings_feedback))
+            PreferenceItem(
                 title = stringResource(R.string.settings_report_issue),
+                icon = Icons.Default.Feedback,
                 onClick = onReportClick
             )
-            SettingsRow(
-                icon = Icons.Default.History,
+            PreferenceItem(
                 title = stringResource(R.string.settings_my_reports),
+                icon = Icons.Default.History,
                 onClick = onMyReportsClick
             )
-            SettingsRow(
-                icon = Icons.Default.BugReport,
+            PreferenceItem(
                 title = stringResource(R.string.settings_github_issues),
+                icon = Icons.Default.BugReport,
                 onClick = { onOpenUri("https://github.com/jksalcedo/librefind/issues") }
             )
-            SettingsRow(
-                icon = Icons.Default.Group,
+            PreferenceItem(
                 title = stringResource(R.string.settings_join_community),
+                icon = Icons.Default.Group,
                 onClick = { onOpenUri("https://t.me/librefind") }
             )
-            HorizontalDivider()
+            HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
             // Help
-            SettingsGroupTitle(stringResource(R.string.settings_help))
-            SettingsRow(
-                icon = Icons.Default.Refresh,
+            PreferenceCategory(stringResource(R.string.settings_help))
+            PreferenceItem(
                 title = stringResource(R.string.settings_reset_tutorial),
+                icon = Icons.Default.Refresh,
                 onClick = onResetTutorial
             )
-            HorizontalDivider()
+            HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
-            //  Help
-            SettingsSection(title = stringResource(R.string.settings_help)) {
-                SettingsLinkButton(
-                    icon = Icons.Default.Refresh,
-                    label = stringResource(R.string.settings_reset_tutorial),
-                    onClick = onResetTutorial
+            // About
+            PreferenceCategory(stringResource(R.string.settings_about))
+            PreferenceItem(
+                title = stringResource(R.string.settings_version),
+                subtitle = version,
+                icon = Icons.Default.Info
+            )
+            PreferenceItem(
+                title = stringResource(R.string.settings_check_updates),
+                icon = Icons.Default.Refresh,
+                onClick = onCheckForUpdates
+            )
+            PreferenceSwitch(
+                title = stringResource(R.string.settings_include_prereleases_label),
+                subtitle = stringResource(R.string.settings_include_prereleases_desc),
+                checked = state.includePrereleases,
+                onCheckedChange = onSetIncludePrereleases
+            )
+            PreferenceItem(
+                title = stringResource(R.string.settings_view_github),
+                icon = Icons.Default.Info,
+                onClick = { onOpenUri("https://github.com/jksalcedo/librefind") }
+            )
+            PreferenceItem(
+                title = stringResource(R.string.settings_donate),
+                icon = Icons.Default.VolunteerActivism,
+                onClick = { onOpenUri("https://ko-fi.com/jksalcedo") }
+            )
+            PreferenceItem(
+                title = stringResource(R.string.settings_privacy_policy),
+                icon = Icons.Default.PrivacyTip,
+                onClick = onPrivacyPolicyClick
+            )
+            HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+
+            // Account
+            if (state.isLoggedIn) {
+                PreferenceCategory(stringResource(R.string.settings_account))
+                PreferenceItem(
+                    title = stringResource(R.string.settings_delete_account),
+                    icon = Icons.Default.Delete,
+                    onClick = onDeleteAccountRequest,
+                    modifier = Modifier.padding(bottom = 32.dp)
                 )
             }
-
-            //  About
-            SettingsSection(title = stringResource(R.string.settings_about)) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        stringResource(R.string.settings_version),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                    Text(
-                        text = version,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-                Spacer(modifier = Modifier.height(8.dp))
-                SettingsLinkButton(
-                    icon = Icons.Default.Refresh,
-                    label = stringResource(R.string.settings_check_updates),
-                    onClick = onCheckForUpdates
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                SettingsLinkButton(
-                    icon = Icons.Default.Info,
-                    label = stringResource(R.string.settings_view_github),
-                    onClick = { onOpenUri("https://github.com/jksalcedo/librefind") }
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                SettingsLinkButton(
-                    icon = Icons.Default.VolunteerActivism,
-                    label = stringResource(R.string.settings_donate),
-                    onClick = { onOpenUri("https://ko-fi.com/jksalcedo") }
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                SettingsLinkButton(
-                    icon = Icons.Default.PrivacyTip,
-                    label = stringResource(R.string.settings_privacy_policy),
-                    onClick = onPrivacyPolicyClick
-                )
-            }
-
-            // 5. Account
-            SettingsSection(title = stringResource(R.string.settings_hide_system_packages_title)) {
-                // Obtain preferences manager from Koin for this section
-                val preferencesManager: PreferencesManager = koinInject()
-                val hideSystem = remember { mutableStateOf(preferencesManager.shouldHideSystemPackages()) }
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable(
-                            interactionSource = null,
-                            indication = LocalIndication.current,
-                            onClick = {
-                                // Toggle preference and update local state
-                                val new = !hideSystem.value
-                                hideSystem.value = new
-                                preferencesManager.setHideSystemPackages(new)
-                            }
-                        )
-                        .padding(vertical = 8.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = stringResource(R.string.settings_hide_system_packages_label),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                    Text(
-                        text = if (hideSystem.value) stringResource(R.string.settings_on) else stringResource(R.string.settings_off),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
-
-            AccountSection(onDeleteAccountRequest = onDeleteAccountRequest)
         }
     }
 
@@ -401,53 +447,7 @@ fun SettingsContent(
 // ─────────────────────────────────────────────
 
 @Composable
-private fun ClassificationCacheRow(
-    state: SettingsState,
-    onClearRequest: () -> Unit
-) {
-    SettingsRow(
-        icon = Icons.Default.Refresh,
-        title = "Classification Cache",
-        subtitle = "${state.classificationCacheCount} apps cached",
-        trailingText = if (state.isClearingClassification) "Clearing..." else null,
-        onClick = {
-            if (!state.isClearingClassification) onClearRequest()
-        }
-    )
-}
-
-@Composable
-private fun ClearClassificationCacheDialog(
-    state: SettingsState,
-    onConfirm: () -> Unit,
-    onDismiss: () -> Unit
-) {
-    if (!state.showClearClassificationConfirmation) return
-
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text("Clear Classification Cache?") },
-        text = { Text("This will clear cached classification results. They will be re-fetched on the next scan.") },
-        confirmButton = {
-            TextButton(
-                onClick = onConfirm,
-                colors = ButtonDefaults.textButtonColors(
-                    contentColor = MaterialTheme.colorScheme.error
-                )
-            ) {
-                Text(stringResource(R.string.settings_clear))
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.settings_cancel))
-            }
-        }
-    )
-}
-
-@Composable
-private fun LanguageRowModern() {
+private fun LanguageSection() {
     var showDialog by remember { mutableStateOf(false) }
 
     val currentLocale = remember {
@@ -471,26 +471,20 @@ private fun LanguageRowModern() {
         else -> stringResource(R.string.settings_language_system)
     }
 
-    SettingsSection(title = stringResource(R.string.settings_language)) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { showDialog = true }
-                .padding(vertical = 8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = currentLanguageLabel,
-                style = MaterialTheme.typography.bodyLarge
-            )
+    PreferenceItem(
+        title = stringResource(R.string.settings_language),
+        subtitle = currentLanguageLabel,
+        icon = Icons.Default.Language,
+        onClick = { showDialog = true },
+        trailingContent = {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.size(20.dp)
             )
         }
-    }
+    )
 
     if (showDialog) {
         LanguageSelectionDialog(
@@ -541,7 +535,8 @@ private fun LanguageSelectionDialog(
                     .verticalScroll(rememberScrollState())
             ) {
                 languages.forEach { (tag, label) ->
-                    val isSelected = tag == currentLocale || (tag.isEmpty() && currentLocale.isEmpty())
+                    val isSelected =
+                        tag == currentLocale || (tag.isEmpty() && currentLocale.isEmpty())
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -571,70 +566,6 @@ private fun LanguageSelectionDialog(
     )
 }
 
-
-@Composable
-private fun CacheManagementSection(
-    state: SettingsState,
-    onClearCacheRequest: () -> Unit
-) {
-    SettingsSection(title = stringResource(R.string.settings_cache_management)) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column {
-                Text(
-                    stringResource(R.string.settings_cache_size),
-                    style = MaterialTheme.typography.bodyLarge
-                )
-                Text(
-                    text = state.cacheSizeMB,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-            Button(
-                onClick = onClearCacheRequest,
-                enabled = !state.isClearing,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.error
-                )
-            ) {
-                if (state.isClearing) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.width(16.dp),
-                        strokeWidth = 2.dp
-                    )
-                } else {
-                    Icon(Icons.Default.Delete, contentDescription = null)
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(stringResource(R.string.settings_clear))
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun AccountSection(
-    onDeleteAccountRequest: () -> Unit
-) {
-    SettingsSection(title = stringResource(R.string.settings_account)) {
-        Button(
-            onClick = onDeleteAccountRequest,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.error
-            ),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Icon(Icons.Default.Delete, contentDescription = null)
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(stringResource(R.string.settings_delete_account))
-        }
-    }
-}
-
 // ─────────────────────────────────────────────
 // Dialog composables
 // ─────────────────────────────────────────────
@@ -653,6 +584,36 @@ private fun ClearCacheDialog(
         text = {
             Text(stringResource(R.string.settings_clear_cache_message))
         },
+        confirmButton = {
+            TextButton(
+                onClick = onConfirm,
+                colors = ButtonDefaults.textButtonColors(
+                    contentColor = MaterialTheme.colorScheme.error
+                )
+            ) {
+                Text(stringResource(R.string.settings_clear))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.settings_cancel))
+            }
+        }
+    )
+}
+
+@Composable
+private fun ClearClassificationCacheDialog(
+    state: SettingsState,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    if (!state.showClearClassificationConfirmation) return
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Clear Classification Cache?") },
+        text = { Text("This will clear cached classification results. They will be re-fetched on the next scan.") },
         confirmButton = {
             TextButton(
                 onClick = onConfirm,
@@ -770,6 +731,7 @@ private fun UpdateDialogs(
                 confirmButton = {}
             )
         }
+
         UpdateCheckStatus.UPDATE_AVAILABLE -> {
             val update = state.latestUpdate ?: return
             AlertDialog(
@@ -783,7 +745,10 @@ private fun UpdateDialogs(
                             .verticalScroll(rememberScrollState())
                     ) {
                         Text(
-                            text = stringResource(R.string.settings_update_available_message, update.version),
+                            text = stringResource(
+                                R.string.settings_update_available_message,
+                                update.version
+                            ),
                             style = MaterialTheme.typography.bodyLarge
                         )
                         if (update.changelog.isNotBlank()) {
@@ -813,6 +778,7 @@ private fun UpdateDialogs(
                 }
             )
         }
+
         UpdateCheckStatus.UP_TO_DATE -> {
             AlertDialog(
                 onDismissRequest = onDismiss,
@@ -824,11 +790,19 @@ private fun UpdateDialogs(
                 }
             )
         }
+
         UpdateCheckStatus.ERROR -> {
             AlertDialog(
                 onDismissRequest = onDismiss,
                 title = { Text(stringResource(R.string.settings_error)) },
-                text = { Text(state.updateError ?: stringResource(R.string.settings_update_error, "Unknown error")) },
+                text = {
+                    Text(
+                        state.updateError ?: stringResource(
+                            R.string.settings_update_error,
+                            "Unknown error"
+                        )
+                    )
+                },
                 confirmButton = {
                     TextButton(onClick = onDismiss) {
                         Text(stringResource(R.string.settings_ok))
@@ -836,6 +810,7 @@ private fun UpdateDialogs(
                 }
             )
         }
+
         else -> {}
     }
 }
@@ -855,6 +830,9 @@ fun SettingsScreenPreview() {
         onClearCacheRequest = {},
         onClearCacheConfirm = {},
         onClearCacheDismiss = {},
+        onClearClassificationRequest = {},
+        onClearClassificationConfirm = {},
+        onClearClassificationDismiss = {},
         onDeleteAccountRequest = {},
         onDeleteAccountConfirm = {},
         onDeleteAccountDismiss = {},
@@ -863,8 +841,6 @@ fun SettingsScreenPreview() {
         onCheckForUpdates = {},
         onDownloadUpdate = {},
         onResetUpdateStatus = {},
-        onClearClassificationRequest = {},
-        onClearClassificationConfirm = {},
-        onClearClassificationDismiss = {}
+        onSetIncludePrereleases = {}
     )
 }

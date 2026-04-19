@@ -35,7 +35,8 @@ data class SettingsState(
     val updateCheckStatus: UpdateCheckStatus = UpdateCheckStatus.IDLE,
     val latestUpdate: AppUpdate? = null,
     val updateError: String? = null,
-    val includePrereleases: Boolean = false
+    val includePrereleases: Boolean = false,
+    val isLoggedIn: Boolean = false
 )
 
 class SettingsViewModel(
@@ -53,6 +54,14 @@ class SettingsViewModel(
         observePreferences()
         calculateClassificationCacheCount()
         observeAuthState()
+    }
+
+    private fun observeAuthState() {
+        viewModelScope.launch {
+            authRepository.currentUser.collect { user ->
+                _state.update { it.copy(isLoggedIn = user != null) }
+            }
+        }
     }
 
     private fun observePreferences() {
