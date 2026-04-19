@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Environment
 import androidx.core.net.toUri
+import com.jksalcedo.librefind.data.local.PreferencesManager
 import com.jksalcedo.librefind.data.remote.UpdateApiService
 import com.jksalcedo.librefind.domain.model.AppUpdate
 import com.jksalcedo.librefind.domain.repository.UpdateRepository
@@ -15,13 +16,20 @@ import kotlinx.coroutines.withContext
 
 class UpdateRepositoryImpl(
     private val context: Context,
-    private val updateApiService: UpdateApiService
+    private val updateApiService: UpdateApiService,
+    private val preferencesManager: PreferencesManager
 ) : UpdateRepository {
 
     override suspend fun checkForUpdate(): Result<AppUpdate> = withContext(Dispatchers.IO) {
         runCatching {
-            val release = updateApiService.getLatestRelease()
-            val latestVersion = release.tagName.removePrefix("v")
+            val releases = updateApiService.getReleases()
+            val includePrereleases = preferencesManager.shouldIncludePrereleases()
+            
+            val latestRelease = releases.firstOrNull { 
+                includePrereleases || !it.isPrerelease 
+            } ?: throw Exception("No suitable release found")
+
+            val latestVersion = latestRelease.tagName.removePrefix("v")
             val currentVersion = try {
                 val pm = context.packageManager
                 val pkg = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -35,12 +43,12 @@ class UpdateRepositoryImpl(
                 "unknown"
             }
 
-            val apkAsset = release.assets.find { it.name.endsWith(".apk") }
-                ?: throw Exception("No APK found in the latest release")
+            val apkAsset = latestRelease.assets.find { it.name.endsWith(".apk") }
+                ?: throw Exception("No APK found in the selected release")
 
             AppUpdate(
                 version = latestVersion,
-                changelog = release.body,
+                changelog = latestRelease.body,
                 downloadUrl = apkAsset.downloadUrl,
                 fileName = apkAsset.name,
                 isUpdateAvailable = VersionUtils.isNewerVersion(latestVersion, currentVersion)
