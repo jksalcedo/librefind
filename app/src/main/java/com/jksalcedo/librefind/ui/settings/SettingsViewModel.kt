@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.jksalcedo.librefind.data.local.PreferencesManager
 import com.jksalcedo.librefind.domain.model.AppUpdate
 import com.jksalcedo.librefind.domain.repository.AuthRepository
+import com.jksalcedo.librefind.domain.repository.CacheRepository
 import com.jksalcedo.librefind.domain.repository.UpdateRepository
 import com.jksalcedo.librefind.ui.dashboard.components.AppIconCache
 import kotlinx.coroutines.Dispatchers
@@ -22,8 +23,11 @@ enum class UpdateCheckStatus {
 
 data class SettingsState(
     val cacheSizeMB: String = "0.0 MB",
+    val classificationCacheCount: Int = 0,
     val isClearing: Boolean = false,
+    val isClearingClassification: Boolean = false,
     val showClearConfirmation: Boolean = false,
+    val showClearClassificationConfirmation: Boolean = false,
     val showDeleteAccountConfirmation: Boolean = false,
     val isDeletingAccount: Boolean = false,
     val isAccountDeleted: Boolean = false,
@@ -37,7 +41,8 @@ data class SettingsState(
 class SettingsViewModel(
     private val preferencesManager: PreferencesManager,
     private val authRepository: AuthRepository,
-    private val updateRepository: UpdateRepository
+    private val updateRepository: UpdateRepository,
+    private val cacheRepository: CacheRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(SettingsState())
@@ -46,6 +51,8 @@ class SettingsViewModel(
     init {
         calculateCacheSize()
         observePreferences()
+        calculateClassificationCacheCount()
+        observeAuthState()
     }
 
     private fun observePreferences() {
@@ -78,6 +85,13 @@ class SettingsViewModel(
         }
     }
 
+    fun calculateClassificationCacheCount() {
+        viewModelScope.launch {
+            val count = cacheRepository.getTotalCachedItems()
+            _state.update { it.copy(classificationCacheCount = count) }
+        }
+    }
+
     fun showClearConfirmation() {
         _state.update { it.copy(showClearConfirmation = true) }
     }
@@ -94,6 +108,23 @@ class SettingsViewModel(
             }
             calculateCacheSize()
             _state.update { it.copy(isClearing = false) }
+        }
+    }
+
+    fun showClearClassificationConfirmation() {
+        _state.update { it.copy(showClearClassificationConfirmation = true) }
+    }
+
+    fun hideClearClassificationConfirmation() {
+        _state.update { it.copy(showClearClassificationConfirmation = false) }
+    }
+
+    fun clearClassificationCache() {
+        viewModelScope.launch {
+            _state.update { it.copy(isClearingClassification = true, showClearClassificationConfirmation = false) }
+            cacheRepository.clearCache()
+            calculateClassificationCacheCount()
+            _state.update { it.copy(isClearingClassification = false) }
         }
     }
 

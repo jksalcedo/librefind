@@ -1,5 +1,5 @@
 [versions]
-agp = "9.0.1"
+agp = "9.1.1"
 koinAndroid = "4.1.1"
 koinAndroidxCompose = "4.1.1"
 kotlin = "2.3.10"

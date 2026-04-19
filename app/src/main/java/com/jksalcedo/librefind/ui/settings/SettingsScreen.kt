@@ -168,6 +168,9 @@ fun SettingsScreen(
         onDeleteAccountConfirm = { viewModel.deleteAccount() },
         onDeleteAccountDismiss = { viewModel.hideDeleteAccountConfirmation() },
         onDeleteAccountErrorDismiss = { viewModel.clearDeleteAccountError() },
+        onClearClassificationRequest = { viewModel.showClearClassificationConfirmation() },
+        onClearClassificationConfirm = { viewModel.clearClassificationCache() },
+        onClearClassificationDismiss = { viewModel.hideClearClassificationConfirmation() },
         onAccountDeletedDismiss = onBackClick,
         onCheckForUpdates = { viewModel.checkForUpdates() },
         onDownloadUpdate = { viewModel.downloadUpdate() },
@@ -191,6 +194,9 @@ fun SettingsContent(
     onClearCacheConfirm: () -> Unit,
     onClearCacheDismiss: () -> Unit,
     // Account Actions
+    onClearClassificationRequest: () -> Unit,
+    onClearClassificationConfirm: () -> Unit,
+    onClearClassificationDismiss: () -> Unit,
     onDeleteAccountRequest: () -> Unit,
     onDeleteAccountConfirm: () -> Unit,
     onDeleteAccountDismiss: () -> Unit,
@@ -222,38 +228,55 @@ fun SettingsContent(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Language Selection
-            LanguageSection()
+            // Language
+            SettingsGroupTitle(stringResource(R.string.settings_language))
+            LanguageRowModern()
+            HorizontalDivider()
 
-            // Cache Management
-            CacheManagementSection(state = state, onClearCacheRequest = onClearCacheRequest)
+            // Cache
+            SettingsGroupTitle(stringResource(R.string.settings_cache_management))
+            CacheRowModern(
+                state = state,
+                onClearCacheRequest = onClearCacheRequest
+            )
+            ClassificationCacheRow(
+                state = state,
+                onClearRequest = onClearClassificationRequest
+            )
+            HorizontalDivider()
 
-            //  Feedback & Community
-            SettingsSection(title = stringResource(R.string.settings_feedback)) {
-                SettingsLinkButton(
-                    icon = Icons.Default.Feedback,
-                    label = stringResource(R.string.settings_report_issue),
-                    onClick = onReportClick
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                SettingsLinkButton(
-                    icon = Icons.Default.History,
-                    label = stringResource(R.string.settings_my_reports),
-                    onClick = onMyReportsClick
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                SettingsLinkButton(
-                    icon = Icons.Default.BugReport,
-                    label = stringResource(R.string.settings_github_issues),
-                    onClick = { onOpenUri("https://github.com/jksalcedo/librefind/issues") }
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                SettingsLinkButton(
-                    icon = Icons.Default.Group,
-                    label = stringResource(R.string.settings_join_community),
-                    onClick = { onOpenUri("https://t.me/librefind") }
-                )
-            }
+            // Feedback & Community
+            SettingsGroupTitle(stringResource(R.string.settings_feedback))
+            SettingsRow(
+                icon = Icons.Default.Feedback,
+                title = stringResource(R.string.settings_report_issue),
+                onClick = onReportClick
+            )
+            SettingsRow(
+                icon = Icons.Default.History,
+                title = stringResource(R.string.settings_my_reports),
+                onClick = onMyReportsClick
+            )
+            SettingsRow(
+                icon = Icons.Default.BugReport,
+                title = stringResource(R.string.settings_github_issues),
+                onClick = { onOpenUri("https://github.com/jksalcedo/librefind/issues") }
+            )
+            SettingsRow(
+                icon = Icons.Default.Group,
+                title = stringResource(R.string.settings_join_community),
+                onClick = { onOpenUri("https://t.me/librefind") }
+            )
+            HorizontalDivider()
+
+            // Help
+            SettingsGroupTitle(stringResource(R.string.settings_help))
+            SettingsRow(
+                icon = Icons.Default.Refresh,
+                title = stringResource(R.string.settings_reset_tutorial),
+                onClick = onResetTutorial
+            )
+            HorizontalDivider()
 
             //  Help
             SettingsSection(title = stringResource(R.string.settings_help)) {
@@ -352,6 +375,11 @@ fun SettingsContent(
         onConfirm = onClearCacheConfirm,
         onDismiss = onClearCacheDismiss
     )
+    ClearClassificationCacheDialog(
+        state = state,
+        onConfirm = onClearClassificationConfirm,
+        onDismiss = onClearClassificationDismiss
+    )
     DeleteAccountDialog(
         state = state,
         onConfirm = onDeleteAccountConfirm,
@@ -373,8 +401,53 @@ fun SettingsContent(
 // ─────────────────────────────────────────────
 
 @Composable
-private fun LanguageSection() {
-    LocalContext.current
+private fun ClassificationCacheRow(
+    state: SettingsState,
+    onClearRequest: () -> Unit
+) {
+    SettingsRow(
+        icon = Icons.Default.Refresh,
+        title = "Classification Cache",
+        subtitle = "${state.classificationCacheCount} apps cached",
+        trailingText = if (state.isClearingClassification) "Clearing..." else null,
+        onClick = {
+            if (!state.isClearingClassification) onClearRequest()
+        }
+    )
+}
+
+@Composable
+private fun ClearClassificationCacheDialog(
+    state: SettingsState,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    if (!state.showClearClassificationConfirmation) return
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Clear Classification Cache?") },
+        text = { Text("This will clear cached classification results. They will be re-fetched on the next scan.") },
+        confirmButton = {
+            TextButton(
+                onClick = onConfirm,
+                colors = ButtonDefaults.textButtonColors(
+                    contentColor = MaterialTheme.colorScheme.error
+                )
+            ) {
+                Text(stringResource(R.string.settings_clear))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.settings_cancel))
+            }
+        }
+    )
+}
+
+@Composable
+private fun LanguageRowModern() {
     var showDialog by remember { mutableStateOf(false) }
 
     val currentLocale = remember {
@@ -789,6 +862,9 @@ fun SettingsScreenPreview() {
         onAccountDeletedDismiss = {},
         onCheckForUpdates = {},
         onDownloadUpdate = {},
-        onResetUpdateStatus = {}
+        onResetUpdateStatus = {},
+        onClearClassificationRequest = {},
+        onClearClassificationConfirm = {},
+        onClearClassificationDismiss = {}
     )
 }
