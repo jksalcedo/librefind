@@ -5,6 +5,7 @@ import android.net.Uri
 sealed class Route(val route: String) {
     data object Dashboard : Route("dashboard")
     data object Discover : Route("discover")
+    data object Community : Route("community")
     data object Details : Route("details/{appName}/{packageName}") {
         fun createRoute(appName: String, packageName: String) =
             "details/${Uri.encode(appName)}/${Uri.encode(packageName)}"
@@ -30,7 +31,13 @@ sealed class Route(val route: String) {
             if (packageName != null) params.add("packageName=${Uri.encode(packageName)}")
             if (type != null) params.add("type=${Uri.encode(type)}")
             if (submissionId != null) params.add("submissionId=${Uri.encode(submissionId)}")
-            if (proprietaryTarget != null) params.add("proprietaryTarget=${Uri.encode(proprietaryTarget)}")
+            if (proprietaryTarget != null) params.add(
+                "proprietaryTarget=${
+                    Uri.encode(
+                        proprietaryTarget
+                    )
+                }"
+            )
 
             return if (params.isEmpty()) "submit" else "submit?${params.joinToString("&")}"
         }
