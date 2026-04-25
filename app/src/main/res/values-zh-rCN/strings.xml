@@ -191,7 +191,7 @@
     <!-- New strings for system/vendor package filtering toggle -->
     <string name="settings_hide_system_packages_title">System package filtering</string>
     <string name="settings_hide_system_packages_label">Hide vendor/system packages</string>
-    <string name="settings_on">On</string>
+    <string name="settings_on">不</string>
     <string name="settings_off">Off</string>
     <string name="settings_error">错误</string>
     <!-- Ignored Apps Screen -->
