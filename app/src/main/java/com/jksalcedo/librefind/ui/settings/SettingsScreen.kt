@@ -20,6 +20,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Feedback
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.History
@@ -197,6 +198,7 @@ fun SettingsScreen(
     onBackClick: () -> Unit,
     onReportClick: () -> Unit = {},
     onMyReportsClick: () -> Unit = {},
+    onCommunityClick: () -> Unit = {},
     onPrivacyPolicyClick: () -> Unit = {},
     viewModel: SettingsViewModel = koinViewModel()
 ) {
@@ -223,6 +225,7 @@ fun SettingsScreen(
         onBackClick = onBackClick,
         onReportClick = onReportClick,
         onMyReportsClick = onMyReportsClick,
+        onCommunityClick = onCommunityClick,
         onPrivacyPolicyClick = onPrivacyPolicyClick,
         onResetTutorial = { preferencesManager.resetTutorial() },
         onOpenUri = { uriHandler.openUri(it) },
@@ -252,6 +255,7 @@ fun SettingsContent(
     onBackClick: () -> Unit,
     onReportClick: () -> Unit,
     onMyReportsClick: () -> Unit,
+    onCommunityClick: () -> Unit,
     onPrivacyPolicyClick: () -> Unit,
     onResetTutorial: () -> Unit,
     onOpenUri: (String) -> Unit,
@@ -355,6 +359,16 @@ fun SettingsContent(
                 title = stringResource(R.string.settings_join_community),
                 icon = Icons.Default.Group,
                 onClick = { onOpenUri("https://t.me/librefind") }
+            )
+            HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+
+            // Community Moderation
+            PreferenceCategory(stringResource(R.string.settings_community_title))
+            PreferenceItem(
+                title = stringResource(R.string.settings_browse_pending_title),
+                subtitle = stringResource(R.string.settings_browse_pending_desc),
+                icon = Icons.Default.Edit,
+                onClick = onCommunityClick
             )
             HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
@@ -824,6 +838,7 @@ fun SettingsScreenPreview() {
         onBackClick = {},
         onReportClick = {},
         onMyReportsClick = {},
+        onCommunityClick = {},
         onPrivacyPolicyClick = {},
         onResetTutorial = {},
         onOpenUri = {},

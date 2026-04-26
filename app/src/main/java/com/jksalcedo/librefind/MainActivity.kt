@@ -22,9 +22,12 @@ import androidx.navigation.compose.rememberNavController
 import com.jksalcedo.librefind.ui.navigation.NavGraph
 import com.jksalcedo.librefind.ui.navigation.Route
 import com.jksalcedo.librefind.ui.theme.LibreFindTheme
+import com.jksalcedo.librefind.ui.auth.AuthViewModel
+import androidx.compose.runtime.collectAsState
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.handleDeeplinks
 import org.koin.android.ext.android.inject
+import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,9 +43,11 @@ class MainActivity : AppCompatActivity() {
                 val navController = rememberNavController()
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
+                val authViewModel: AuthViewModel = koinViewModel()
+                val authState by authViewModel.uiState.collectAsState()
 
                 val showBottomBar =
-                    currentRoute == Route.Dashboard.route || currentRoute == Route.Discover.route
+                    currentRoute == Route.Dashboard.route || currentRoute == Route.Discover.route || currentRoute == Route.Community.route
 
                 Scaffold(
                     contentWindowInsets = WindowInsets(0),
@@ -96,9 +101,15 @@ class MainActivity : AppCompatActivity() {
                                     selected = currentRoute == Route.Community.route,
                                     onClick = {
                                         if (currentRoute != Route.Community.route) {
-                                            navController.navigate(Route.Community.route) {
-                                                popUpTo(Route.Dashboard.route) { inclusive = false }
-                                                launchSingleTop = true
+                                            if (authState.isSignedIn) {
+                                                navController.navigate(Route.Community.route) {
+                                                    popUpTo(Route.Dashboard.route) {
+                                                        inclusive = false
+                                                    }
+                                                    launchSingleTop = true
+                                                }
+                                            } else {
+                                                navController.navigate(Route.Auth.route)
                                             }
                                         }
                                     }

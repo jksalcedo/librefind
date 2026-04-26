@@ -21,7 +21,9 @@ class UpdateSubmissionUseCase(
         fdroidId: String,
         license: String,
         alternatives: List<String> = emptyList(),
-        category: String = ""
+        category: String = "",
+        originalSubmitterId: String? = null,
+        contributors: List<String>? = null
     ): Result<Unit> {
         if (id.isBlank() || alternativeId.isBlank()) {
             return Result.failure(IllegalArgumentException("Missing required fields"))
@@ -37,7 +39,9 @@ class UpdateSubmissionUseCase(
             fdroidId = fdroidId,
             license = license,
             alternatives = alternatives,
-            category = category
+            category = category,
+            originalSubmitterId = originalSubmitterId,
+            contributors = contributors
         )
     }
 }

@@ -17,6 +17,7 @@ import androidx.compose.runtime.getValue
 import com.jksalcedo.librefind.ui.auth.AuthScreen
 import com.jksalcedo.librefind.ui.auth.AuthViewModel
 import com.jksalcedo.librefind.ui.auth.ProfileSetupScreen
+import com.jksalcedo.librefind.ui.community.CommunitySubmissionsScreen
 import com.jksalcedo.librefind.ui.dashboard.DashboardScreen
 import org.koin.androidx.compose.koinViewModel
 import com.jksalcedo.librefind.ui.details.AlternativeDetailScreen
@@ -253,6 +254,9 @@ fun NavGraph(
                         navController.navigate(Route.Auth.route)
                     }
                 },
+                onCommunityClick = {
+                    navController.navigate(Route.Community.route)
+                },
                 onPrivacyPolicyClick = {
                     navController.navigate(Route.PrivacyPolicy.route)
                 }
@@ -279,6 +283,30 @@ fun NavGraph(
         composable(Route.MyReports.route) {
             MyReportsScreen(
                 onBackClick = { navController.navigateUp() }
+            )
+        }
+
+        composable(Route.Community.route) {
+            CommunitySubmissionsScreen(
+                onBackClick = { navController.navigateUp() },
+                onSubmissionClick = { submissionId ->
+                    navController.navigate(Route.SubmissionDetail.createRoute(submissionId))
+                }
+            )
+        }
+
+        composable(
+            route = Route.SubmissionDetail.route,
+            arguments = listOf(navArgument("submissionId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val submissionId = backStackEntry.arguments?.getString("submissionId")?.let { Uri.decode(it) }
+                ?: return@composable
+            com.jksalcedo.librefind.ui.community.SubmissionDetailScreen(
+                submissionId = submissionId,
+                onBackClick = { navController.navigateUp() },
+                onEditClick = { id ->
+                    navController.navigate(Route.Submit.createRoute(submissionId = id))
+                }
             )
         }
 

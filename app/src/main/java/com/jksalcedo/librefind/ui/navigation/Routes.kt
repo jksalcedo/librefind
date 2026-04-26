@@ -6,6 +6,9 @@ sealed class Route(val route: String) {
     data object Dashboard : Route("dashboard")
     data object Discover : Route("discover")
     data object Community : Route("community")
+    data object SubmissionDetail : Route("submission_detail/{submissionId}") {
+        fun createRoute(submissionId: String) = "submission_detail/${Uri.encode(submissionId)}"
+    }
     data object Details : Route("details/{appName}/{packageName}") {
         fun createRoute(appName: String, packageName: String) =
             "details/${Uri.encode(appName)}/${Uri.encode(packageName)}"

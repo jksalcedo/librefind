@@ -366,4 +366,9 @@
     <string name="settings_browse_pending_desc">Help moderate community contributions.</string>
     <string name="community_submissions_title">Pending Submissions</string>
     <string name="community_submissions_empty">No pending submissions found.</string>
+    <string name="action_approve">Approve</string>
+    <string name="action_reject">Reject</string>
+    <string name="reject_reason_title">Reject Submission</string>
+    <string name="reject_reason_label">Reason for rejection</string>
+    <string name="community_suggest_correction">Suggest Correction</string>
 </resources>

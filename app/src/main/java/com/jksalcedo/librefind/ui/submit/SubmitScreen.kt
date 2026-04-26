@@ -62,6 +62,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jksalcedo.librefind.R
 import com.jksalcedo.librefind.domain.model.Alternative
 import com.jksalcedo.librefind.domain.model.SubmissionType
@@ -114,6 +115,7 @@ fun SubmitScreen(
         onSelectFossApp = viewModel::selectFossApp,
         onClearLinkedApp = viewModel::clearLinkedApp,
         onValidateRepoUrl = viewModel::validateRepoUrl,
+        onUpdateSelectedAlternatives = viewModel::onUpdateSelectedAlternatives,
         onSubmit = viewModel::submit,
     )
 }
@@ -140,6 +142,7 @@ fun SubmitContent(
     onSelectFossApp: (Alternative) -> Unit,
     onClearLinkedApp: () -> Unit,
     onValidateRepoUrl: (String) -> Unit,
+    onUpdateSelectedAlternatives: (Set<String>) -> Unit,
     onSubmit: (SubmissionType, String, String, String, String, String, String, String, String) -> Unit
 ) {
     val isPrefilled = prefilledAppName != null && prefilledPackageName != null
@@ -192,6 +195,12 @@ fun SubmitContent(
                         .toSet()
             }
 
+            if (sub.type == SubmissionType.LINKING) {
+                // Ensure alternatives are pre-filled as selected
+                onUpdateSelectedAlternatives(sub.linkedAlternatives.toSet())
+            }
+
+            category = sub.category ?: ""
             repoUrl = sub.submittedApp.repoUrl
             fdroidId = sub.submittedApp.fdroidId
             license = sub.submittedApp.license
@@ -255,9 +264,11 @@ fun SubmitContent(
             TopAppBar(
                 title = {
                     Text(
-                        if (uiState.isEditing) stringResource(R.string.submit_title_edit) else stringResource(
-                            R.string.submit_title_new
-                        )
+                        when {
+                            uiState.isCommunityEdit -> stringResource(R.string.community_suggest_correction)
+                            uiState.isEditing -> stringResource(R.string.submit_title_edit)
+                            else -> stringResource(R.string.submit_title_new)
+                        }
                     )
                 },
                 navigationIcon = {
@@ -1425,6 +1436,7 @@ fun SubmitScreenPreview() {
         onValidateRepoUrl = {},
         onSubmit = { _, _, _, _, _, _, _, _, _ -> },
         prefilledProprietaryTarget = null,
-        onAddTargets = {}
+        onAddTargets = {},
+        onUpdateSelectedAlternatives = {}
     )
 }

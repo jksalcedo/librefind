@@ -35,6 +35,7 @@ data class SubmitUiState(
     val solutionSearchResults: List<Alternative> = emptyList(),
     val selectedAlternatives: Set<String> = emptySet(),
     val isEditing: Boolean = false,
+    val isCommunityEdit: Boolean = false,
     val editingSubmissionId: String? = null,
     val loadedSubmission: Submission? = null,
     // FOSS Search
@@ -111,16 +112,24 @@ class SubmitViewModel(
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
             val user = authRepository.getCurrentUser() ?: return@launch
-            val submissions = appRepository.getMySubmissions(user.uid)
-            val submission = submissions.find { it.id == id }
+            
+            // First check my submissions
+            val mySubmissions = appRepository.getMySubmissions(user.uid)
+            var submission = mySubmissions.find { it.id == id }
+            var isCommunityEdit = false
+
+            // If not found, check all pending submissions
+            if (submission == null) {
+                val allPending = appRepository.getAllPendingSubmissions()
+                submission = allPending.find { it.id == id }
+                isCommunityEdit = submission != null
+            }
 
             if (submission != null) {
-                // Pre-fill state
-                //val isProprietary = submission.type == SubmissionType.NEW_PROPRIETARY
-
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
                     isEditing = true,
+                    isCommunityEdit = isCommunityEdit,
                     editingSubmissionId = id,
                     loadedSubmission = submission
                 )
@@ -229,7 +238,9 @@ class SubmitViewModel(
                         fdroidId = fdroidId,
                         license = license,
                         alternatives = _uiState.value.selectedAlternatives.toList(),
-                        category = category
+                        category = category,
+                        originalSubmitterId = _uiState.value.loadedSubmission?.submitterUid,
+                        contributors = _uiState.value.loadedSubmission?.contributors
                     )
                 } else {
                     submitProposalUseCase(
@@ -442,6 +453,10 @@ class SubmitViewModel(
     fun addAlternative(packageName: String) {
         val current = _uiState.value.selectedAlternatives
         _uiState.value = _uiState.value.copy(selectedAlternatives = current + packageName)
+    }
+
+    fun onUpdateSelectedAlternatives(alternatives: Set<String>) {
+        _uiState.value = _uiState.value.copy(selectedAlternatives = alternatives)
     }
 
     fun removeAlternative(packageName: String) {

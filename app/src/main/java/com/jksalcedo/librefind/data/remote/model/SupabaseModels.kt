@@ -39,7 +39,10 @@ data class UserSubmissionDto(
     @SerialName("submitter_id") val submitterId: String,
     @SerialName("created_at") val createdAt: String? = null,
     @SerialName("rejection_reason") val rejectionReason: String? = null,
-    val category: String? = null
+    val category: String? = null,
+    @SerialName("last_edited_by") val lastEditedBy: String? = null,
+    @SerialName("last_edited_at") val lastEditedAt: String? = null,
+    val contributors: List<String>? = null
 )
 
 @Serializable
@@ -94,7 +97,10 @@ data class UserLinkingSubmissionsDto(
     @SerialName("submitter_id") val submitterId: String,
     val status: String = "PENDING",
     @SerialName("rejection_reason") val rejectionReason: String? = null,
-    @SerialName("created_at") val createdAt: String? = null
+    @SerialName("created_at") val createdAt: String? = null,
+    @SerialName("last_edited_by") val lastEditedBy: String? = null,
+    @SerialName("last_edited_at") val lastEditedAt: String? = null,
+    val contributors: List<String>? = null
 )
 
 @Serializable

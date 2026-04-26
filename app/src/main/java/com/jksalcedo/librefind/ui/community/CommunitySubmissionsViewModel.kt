@@ -38,4 +38,28 @@ class CommunitySubmissionsViewModel(
             }
         }
     }
+
+    fun approveSubmission(submission: Submission) {
+        viewModelScope.launch {
+            appRepository.approveSubmission(submission.id, submission.type)
+                .onSuccess {
+                    loadSubmissions()
+                }
+                .onFailure { e ->
+                    _uiState.update { it.copy(error = e.message ?: "Failed to approve submission") }
+                }
+        }
+    }
+
+    fun rejectSubmission(submission: Submission, reason: String) {
+        viewModelScope.launch {
+            appRepository.rejectSubmission(submission.id, submission.type, reason)
+                .onSuccess {
+                    loadSubmissions()
+                }
+                .onFailure { e ->
+                    _uiState.update { it.copy(error = e.message ?: "Failed to reject submission") }
+                }
+        }
+    }
 }

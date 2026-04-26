@@ -332,7 +332,7 @@ class SupabaseAppRepository(
                 .map { it.packageName }
         } catch (e: Exception) {
             e.printStackTrace()
-            emptyList()
+            throw e
         }
     }
 
@@ -473,9 +473,29 @@ class SupabaseAppRepository(
         fdroidId: String,
         license: String,
         alternatives: List<String>,
-        category: String
+        category: String,
+        originalSubmitterId: String?,
+        contributors: List<String>?
     ): Result<Unit> = runCatching {
         try {
+            val currentUserId = supabase.auth.currentUserOrNull()?.id
+                ?: throw IllegalStateException("Not logged in")
+
+            val isCommunityEdit = originalSubmitterId != null && originalSubmitterId != currentUserId
+
+            val newContributors = if (isCommunityEdit) {
+                val currentList = contributors ?: emptyList()
+                if (!currentList.contains(currentUserId)) {
+                    currentList + currentUserId
+                } else {
+                    currentList
+                }
+            } else {
+                contributors
+            }
+
+            val finalSubmitterId = originalSubmitterId ?: currentUserId
+
             val updateData = UserSubmissionDto(
                 appName = appName,
                 appPackage = alternativePackage,
@@ -485,11 +505,22 @@ class SupabaseAppRepository(
                 fdroidId = fdroidId.ifBlank { null },
                 license = license.ifBlank { null },
                 alternatives = alternatives.ifEmpty { null },
-                submitterId = supabase.auth.currentUserOrNull()?.id
-                    ?: throw IllegalStateException("Not logged in"),
+                submitterId = finalSubmitterId,
                 status = "PENDING",
                 rejectionReason = null,
-                category = category.ifBlank { null }
+                category = category.ifBlank { null },
+                lastEditedBy = if (isCommunityEdit) currentUserId else null,
+                lastEditedAt = if (isCommunityEdit) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        java.time.Instant.now().toString()
+                    } else {
+                        // Very basic ISO 8601 string for older APIs if necessary, or just null/server-side defaults
+                        // but actually we can just pass null and let Supabase triggers handle it,
+                        // or format it manually. Let's rely on server triggers if possible, or just send current time.
+                        null
+                    }
+                } else null,
+                contributors = newContributors?.ifEmpty { null }
             )
 
             val result = supabase.postgrest.from("user_submissions").update(updateData) {
@@ -643,6 +674,8 @@ class SupabaseAppRepository(
                             "submitter_id",
                             "rejection_reason",
                             "created_at",
+                            "category",
+                            "alternatives",
                             "profiles(id, username)"
                         )
                     ) {
@@ -671,7 +704,7 @@ class SupabaseAppRepository(
 
         } catch (e: Exception) {
             e.printStackTrace()
-            emptyList()
+            throw e
         }
     }
 
@@ -695,6 +728,8 @@ class SupabaseAppRepository(
                             "submitter_id",
                             "rejection_reason",
                             "created_at",
+                            "category",
+                            "alternatives",
                             "profiles(id, username)"
                         )
                     ) {
@@ -723,7 +758,7 @@ class SupabaseAppRepository(
 
         } catch (e: Exception) {
             e.printStackTrace()
-            emptyList()
+            throw e
         }
     }
 
@@ -763,7 +798,12 @@ class SupabaseAppRepository(
                 } catch (_: Exception) {
                     SubmissionStatus.PENDING
                 },
-                rejectionReason = dto.rejectionReason
+                rejectionReason = dto.rejectionReason,
+                category = dto.category,
+                linkedAlternatives = dto.alternatives ?: emptyList(),
+                lastEditedBy = dto.lastEditedBy,
+                lastEditedAt = dto.lastEditedAt?.let { parseTimestamp(it) },
+                contributors = dto.contributors ?: emptyList()
             )
         }
 
@@ -788,7 +828,10 @@ class SupabaseAppRepository(
                     SubmissionStatus.PENDING
                 },
                 rejectionReason = dto.rejectionReason,
-                linkedAlternatives = dto.alternatives
+                linkedAlternatives = dto.alternatives,
+                lastEditedBy = dto.lastEditedBy,
+                lastEditedAt = dto.lastEditedAt?.let { parseTimestamp(it) },
+                contributors = dto.contributors ?: emptyList()
             )
         }
 
@@ -1094,6 +1137,11 @@ class SupabaseAppRepository(
         @SerialName("submitter_id") val submitterId: String,
         @SerialName("rejection_reason") val rejectionReason: String? = null,
         @SerialName("created_at") val createdAt: String? = null,
+        @SerialName("last_edited_by") val lastEditedBy: String? = null,
+        @SerialName("last_edited_at") val lastEditedAt: String? = null,
+        val contributors: List<String>? = null,
+        val category: String? = null,
+        val alternatives: List<String>? = null,
         @SerialName("profiles") val profile: ProfileDto? = null
     )
 
@@ -1106,6 +1154,9 @@ class SupabaseAppRepository(
         @SerialName("submitter_id") val submitterId: String,
         @SerialName("rejection_reason") val rejectionReason: String? = null,
         @SerialName("created_at") val createdAt: String? = null,
+        @SerialName("last_edited_by") val lastEditedBy: String? = null,
+        @SerialName("last_edited_at") val lastEditedAt: String? = null,
+        val contributors: List<String>? = null,
         @SerialName("profiles") val profile: ProfileDto? = null
     )
 
@@ -1168,7 +1219,7 @@ class SupabaseAppRepository(
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            emptyList()
+            throw e
         }
     }
 
@@ -1202,6 +1253,20 @@ class SupabaseAppRepository(
             packages
         } catch (_: Exception) {
             emptySet()
+        }
+    }
+
+    override suspend fun approveSubmission(id: String, type: SubmissionType): Result<Unit> = runCatching {
+        val table = if (type == SubmissionType.LINKING) "user_linking_submissions" else "user_submissions"
+        supabase.postgrest.from(table).update(mapOf("status" to "APPROVED")) {
+            filter { eq("id", id) }
+        }
+    }
+
+    override suspend fun rejectSubmission(id: String, type: SubmissionType, reason: String): Result<Unit> = runCatching {
+        val table = if (type == SubmissionType.LINKING) "user_linking_submissions" else "user_submissions"
+        supabase.postgrest.from(table).update(mapOf("status" to "REJECTED", "rejection_reason" to reason)) {
+            filter { eq("id", id) }
         }
     }
 
