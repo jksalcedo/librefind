@@ -15,7 +15,7 @@
     <string name="dashboard_filter_ignored_only">仅限已忽略</string>
     <string name="dashboard_profile">个人资料</string>
     <!-- Correction -->
-    <string name="correction_title">Suggest Correction</string>
+    <string name="correction_title">建议更正</string>
     <string name="correction_intro">Suggest a correction for %1$s. All suggestions are reviewed by moderators.</string>
     <string name="correction_type_label">Correction Type</string>
     <string name="correction_value_label">Correct Value</string>
@@ -337,5 +337,5 @@
     <string name="report_priority_label">优先级</string>
     <string name="report_submit_button">提交报告</string>
     <string name="web_submission">Web Submission</string>
-    <string name="status_pwa">PWA</string>
+    <string name="status_pwa">渐进式 Web 应用</string>
 </resources>
