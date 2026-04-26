@@ -676,7 +676,7 @@ class SupabaseAppRepository(
                             "created_at",
                             "category",
                             "alternatives",
-                            "profiles(id, username)"
+                            "profiles!submitter_id(id, username)"
                         )
                     ) {
                         filter { eq("submitter_id", userId) }
@@ -694,7 +694,7 @@ class SupabaseAppRepository(
                             "submitter_id",
                             "rejection_reason",
                             "created_at",
-                            "profiles(id, username)"
+                            "profiles!submitter_id(id, username)"
                         )
                     ) {
                         filter { eq("submitter_id", userId) }
@@ -730,7 +730,7 @@ class SupabaseAppRepository(
                             "created_at",
                             "category",
                             "alternatives",
-                            "profiles(id, username)"
+                            "profiles!submitter_id(id, username)"
                         )
                     ) {
                         filter { eq("status", "PENDING") }
@@ -748,7 +748,7 @@ class SupabaseAppRepository(
                             "submitter_id",
                             "rejection_reason",
                             "created_at",
-                            "profiles(id, username)"
+                            "profiles!submitter_id(id, username)"
                         )
                     ) {
                         filter { eq("status", "PENDING") }
@@ -1185,7 +1185,7 @@ class SupabaseAppRepository(
                         "id", "title", "description", "report_type",
                         "status", "priority", "submitter_id",
                         "admin_response", "resolved_at", "created_at",
-                        "profiles(id, username)"
+                        "profiles!submitter_id(id, username)"
                     )
                 ) {
                     filter { eq("submitter_id", userId) }
