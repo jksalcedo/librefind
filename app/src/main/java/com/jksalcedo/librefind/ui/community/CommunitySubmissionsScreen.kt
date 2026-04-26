@@ -14,6 +14,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -24,11 +26,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,6 +55,31 @@ fun CommunitySubmissionsScreen(
     viewModel: CommunitySubmissionsViewModel = koinViewModel()
 ) {
     val state by viewModel.uiState.collectAsState()
+
+    val filteredSubmissions by remember(state.submissions, state.searchQuery) {
+        derivedStateOf {
+            if (state.searchQuery.isBlank()) {
+                state.submissions
+            } else {
+                state.submissions.filter { submission ->
+                    submission.submittedApp.name.contains(state.searchQuery, ignoreCase = true) ||
+                            submission.submittedApp.packageName.contains(
+                                state.searchQuery,
+                                ignoreCase = true
+                            ) ||
+                            submission.submitterUsername.contains(
+                                state.searchQuery,
+                                ignoreCase = true
+                            ) ||
+                            submission.proprietaryPackages.contains(
+                                state.searchQuery,
+                                ignoreCase = true
+                            )
+                }
+            }
+        }
+    }
+
     var submissionToReject by remember { mutableStateOf<Submission?>(null) }
     var rejectionReason by remember { mutableStateOf("") }
 
@@ -112,6 +141,31 @@ fun CommunitySubmissionsScreen(
                     }
                 }
             )
+        },
+        bottomBar = {
+            Surface(
+                tonalElevation = 3.dp,
+                shadowElevation = 8.dp
+            ) {
+                OutlinedTextField(
+                    value = state.searchQuery,
+                    onValueChange = viewModel::updateSearchQuery,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(12.dp),
+                    placeholder = { Text(stringResource(R.string.dashboard_search_hint)) },
+                    leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                    trailingIcon = {
+                        if (state.searchQuery.isNotEmpty()) {
+                            IconButton(onClick = { viewModel.updateSearchQuery("") }) {
+                                Icon(Icons.Default.Close, contentDescription = "Clear")
+                            }
+                        }
+                    },
+                    shape = MaterialTheme.shapes.medium,
+                    singleLine = true
+                )
+            }
         }
     ) { innerPadding ->
         Box(
@@ -134,9 +188,12 @@ fun CommunitySubmissionsScreen(
                     )
                 }
 
-                state.submissions.isEmpty() -> {
+                filteredSubmissions.isEmpty() -> {
                     Text(
-                        text = stringResource(R.string.community_submissions_empty),
+                        text = if (state.searchQuery.isEmpty())
+                            stringResource(R.string.community_submissions_empty)
+                        else
+                            stringResource(R.string.submit_no_results),
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.align(Alignment.Center)
                     )
@@ -145,10 +202,15 @@ fun CommunitySubmissionsScreen(
                 else -> {
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
-                        contentPadding = androidx.compose.foundation.layout.PaddingValues(16.dp),
+                        contentPadding = androidx.compose.foundation.layout.PaddingValues(
+                            start = 16.dp,
+                            top = 16.dp,
+                            end = 16.dp,
+                            bottom = 16.dp
+                        ),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        items(state.submissions) { submission ->
+                        items(filteredSubmissions) { submission ->
                             CommunitySubmissionItem(
                                 submission = submission,
                                 onClick = { onSubmissionClick(submission.id) }

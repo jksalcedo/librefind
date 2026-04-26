@@ -13,7 +13,8 @@ import kotlinx.coroutines.launch
 data class CommunitySubmissionsState(
     val submissions: List<Submission> = emptyList(),
     val isLoading: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
+    val searchQuery: String = ""
 )
 
 class CommunitySubmissionsViewModel(
@@ -37,6 +38,10 @@ class CommunitySubmissionsViewModel(
                 _uiState.update { it.copy(isLoading = false, error = e.message ?: "Failed to load submissions") }
             }
         }
+    }
+
+    fun updateSearchQuery(query: String) {
+        _uiState.update { it.copy(searchQuery = query) }
     }
 
     fun approveSubmission(submission: Submission) {
