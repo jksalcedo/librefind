@@ -475,7 +475,8 @@ class SupabaseAppRepository(
         alternatives: List<String>,
         category: String,
         originalSubmitterId: String?,
-        contributors: List<String>?
+        contributors: List<String>?,
+        submissionType: SubmissionType?
     ): Result<Unit> = runCatching {
         try {
             val currentUserId = supabase.auth.currentUserOrNull()?.id
@@ -505,6 +506,7 @@ class SupabaseAppRepository(
                 fdroidId = fdroidId.ifBlank { null },
                 license = license.ifBlank { null },
                 alternatives = alternatives.ifEmpty { null },
+                submissionType = submissionType?.name,
                 submitterId = finalSubmitterId,
                 status = "PENDING",
                 rejectionReason = null,
@@ -676,6 +678,9 @@ class SupabaseAppRepository(
                             "created_at",
                             "category",
                             "alternatives",
+                            "last_edited_by",
+                            "last_edited_at",
+                            "contributors",
                             "profiles!submitter_id(id, username)"
                         )
                     ) {
@@ -694,6 +699,9 @@ class SupabaseAppRepository(
                             "submitter_id",
                             "rejection_reason",
                             "created_at",
+                            "last_edited_by",
+                            "last_edited_at",
+                            "contributors",
                             "profiles!submitter_id(id, username)"
                         )
                     ) {
@@ -730,6 +738,9 @@ class SupabaseAppRepository(
                             "created_at",
                             "category",
                             "alternatives",
+                            "last_edited_by",
+                            "last_edited_at",
+                            "contributors",
                             "profiles!submitter_id(id, username)"
                         )
                     ) {
@@ -748,6 +759,9 @@ class SupabaseAppRepository(
                             "submitter_id",
                             "rejection_reason",
                             "created_at",
+                            "last_edited_by",
+                            "last_edited_at",
+                            "contributors",
                             "profiles!submitter_id(id, username)"
                         )
                     ) {

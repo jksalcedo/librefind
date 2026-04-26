@@ -240,7 +240,8 @@ class SubmitViewModel(
                         alternatives = _uiState.value.selectedAlternatives.toList(),
                         category = category,
                         originalSubmitterId = _uiState.value.loadedSubmission?.submitterUid,
-                        contributors = _uiState.value.loadedSubmission?.contributors
+                        contributors = _uiState.value.loadedSubmission?.contributors,
+                        submissionType = type
                     )
                 } else {
                     submitProposalUseCase(

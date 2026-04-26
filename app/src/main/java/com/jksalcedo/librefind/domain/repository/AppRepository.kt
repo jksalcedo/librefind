@@ -74,9 +74,10 @@ interface AppRepository {
         license: String,
         alternatives: List<String>,
         category: String,
-        originalSubmitterId: String? = null,
-        contributors: List<String>? = null
-    ): Result<Unit>
+        originalSubmitterId: String?,
+        contributors: List<String>?,
+        submissionType: SubmissionType? = null
+        ): Result<Unit>
 
     suspend fun castVote(
         packageName: String,
