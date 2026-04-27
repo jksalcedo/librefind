@@ -20,7 +20,6 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -61,6 +60,7 @@ import com.jksalcedo.librefind.R
 import com.jksalcedo.librefind.data.local.PreferencesManager
 import com.jksalcedo.librefind.domain.model.AppStatus
 import com.jksalcedo.librefind.ui.auth.AuthViewModel
+import com.jksalcedo.librefind.ui.common.FullScreenLoading
 import com.jksalcedo.librefind.ui.common.TargetArea
 import com.jksalcedo.librefind.ui.common.TutorialOverlay
 import com.jksalcedo.librefind.ui.common.TutorialStep
@@ -387,9 +387,7 @@ fun DashboardScreen(
             ) {
                 when {
                     state.isLoading -> {
-                        CircularProgressIndicator(
-                            modifier = Modifier.align(Alignment.Center)
-                        )
+                        FullScreenLoading()
                     }
 
                     state.error != null -> {

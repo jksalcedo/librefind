@@ -498,6 +498,7 @@ class SupabaseAppRepository(
             val finalSubmitterId = originalSubmitterId ?: currentUserId
 
             val updateData = UserSubmissionDto(
+                id = id,
                 appName = appName,
                 appPackage = alternativePackage,
                 description = description,
@@ -516,43 +517,18 @@ class SupabaseAppRepository(
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         java.time.Instant.now().toString()
                     } else {
-                        // Very basic ISO 8601 string for older APIs if necessary, or just null/server-side defaults
-                        // but actually we can just pass null and let Supabase triggers handle it,
-                        // or format it manually. Let's rely on server triggers if possible, or just send current time.
                         null
                     }
                 } else null,
                 contributors = newContributors?.ifEmpty { null }
             )
 
-            val result = supabase.postgrest.from("user_submissions").update(updateData) {
-                filter {
-                    eq("id", id)
-                }
-                select() // Return updated rows to check count
+            // Use upsert to handle both update and potentially missing records (though ID should exist)
+            // Filtering by ID ensures we target the specific submission.
+            supabase.postgrest.from("user_submissions").upsert(updateData) {
+                onConflict = "id"
             }
-
-            val updated = result.decodeList<UserSubmissionDto>()
-
-            if (updated.isEmpty()) {
-                // Fallback: Insert as new submission
-                supabase.postgrest.from("user_submissions").insert(updateData)
-                Log.d("SupabaseAppRepo", "Fallback insertion successful (0 rows updated)")
-            } else {
-                // Check if status was actually updated to PENDING
-                val newStatus = updated.first().status
-                if (newStatus != "PENDING") {
-                    Log.w(
-                        "SupabaseAppRepo",
-                        "Update succeeded but status is still $newStatus. RLS/Trigger prevented status change. Falling back to INSERT."
-                    )
-                    // Fallback: Insert as new submission
-                    supabase.postgrest.from("user_submissions").insert(updateData)
-                    Log.d("SupabaseAppRepo", "Fallback insertion successful (Status check failed)")
-                } else {
-                    Log.d("SupabaseAppRepo", "Update successful and status is PENDING")
-                }
-            }
+            Log.d("SupabaseAppRepo", "Update/Upsert successful for ID: $id")
         } catch (e: Exception) {
             Log.e("SupabaseAppRepo", "Update failed", e)
             throw e
@@ -1156,7 +1132,7 @@ class SupabaseAppRepository(
         val contributors: List<String>? = null,
         val category: String? = null,
         val alternatives: List<String>? = null,
-        @SerialName("profiles") val profile: ProfileDto? = null
+        @SerialName("profiles!submitter_id") val profile: ProfileDto? = null
     )
 
     @Serializable
@@ -1171,7 +1147,7 @@ class SupabaseAppRepository(
         @SerialName("last_edited_by") val lastEditedBy: String? = null,
         @SerialName("last_edited_at") val lastEditedAt: String? = null,
         val contributors: List<String>? = null,
-        @SerialName("profiles") val profile: ProfileDto? = null
+        @SerialName("profiles!submitter_id") val profile: ProfileDto? = null
     )
 
     override suspend fun submitReport(
@@ -1249,7 +1225,7 @@ class SupabaseAppRepository(
         @SerialName("admin_response") val adminResponse: String? = null,
         @SerialName("resolved_at") val resolvedAt: String? = null,
         @SerialName("created_at") val createdAt: String? = null,
-        @SerialName("profiles") val profile: ProfileDto? = null
+        @SerialName("profiles!submitter_id") val profile: ProfileDto? = null
     )
 
     override suspend fun getPendingSubmissionPackages(): Set<String> {

@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jksalcedo.librefind.domain.model.Submission
+import com.jksalcedo.librefind.ui.common.FullScreenLoading
 import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -42,6 +43,11 @@ fun SubmissionDetailScreen(
             )
         }
     ) { padding ->
+        if (state.isLoading) {
+            FullScreenLoading()
+            return@Scaffold
+        }
+
         if (submission == null) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text("Submission not found or already processed.")

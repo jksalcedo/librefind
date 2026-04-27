@@ -19,7 +19,6 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -45,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.jksalcedo.librefind.R
 import com.jksalcedo.librefind.domain.model.Submission
+import com.jksalcedo.librefind.ui.common.FullScreenLoading
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -63,18 +63,9 @@ fun CommunitySubmissionsScreen(
             } else {
                 state.submissions.filter { submission ->
                     submission.submittedApp.name.contains(state.searchQuery, ignoreCase = true) ||
-                            submission.submittedApp.packageName.contains(
-                                state.searchQuery,
-                                ignoreCase = true
-                            ) ||
-                            submission.submitterUsername.contains(
-                                state.searchQuery,
-                                ignoreCase = true
-                            ) ||
-                            submission.proprietaryPackages.contains(
-                                state.searchQuery,
-                                ignoreCase = true
-                            )
+                            submission.submittedApp.packageName.contains(state.searchQuery, ignoreCase = true) ||
+                            submission.submitterUsername.contains(state.searchQuery, ignoreCase = true) ||
+                            submission.proprietaryPackages.contains(state.searchQuery, ignoreCase = true)
                 }
             }
         }
@@ -175,9 +166,7 @@ fun CommunitySubmissionsScreen(
         ) {
             when {
                 state.isLoading -> {
-                    CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.Center)
-                    )
+                    FullScreenLoading()
                 }
 
                 state.error != null -> {

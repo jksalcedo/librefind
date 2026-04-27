@@ -31,13 +31,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.jksalcedo.librefind.R
 import com.jksalcedo.librefind.domain.model.Report
 import com.jksalcedo.librefind.domain.model.ReportStatus
 import org.koin.androidx.compose.koinViewModel
-import androidx.compose.ui.res.stringResource
-import com.jksalcedo.librefind.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,6 +68,7 @@ fun MyReportsScreen(
                 state.isLoading -> {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
+
                 state.error != null -> {
                     Text(
                         text = state.error ?: stringResource(R.string.details_error_unknown),
@@ -75,6 +76,7 @@ fun MyReportsScreen(
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
+
                 state.reports.isEmpty() -> {
                     Text(
                         text = stringResource(R.string.my_reports_empty),
@@ -82,6 +84,7 @@ fun MyReportsScreen(
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
+
                 else -> {
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
@@ -172,26 +175,31 @@ fun ReportStatusBadge(status: ReportStatus) {
             Color(0xFF2E7D32),
             stringResource(R.string.report_status_open)
         )
+
         ReportStatus.IN_PROGRESS -> Triple(
             MaterialTheme.colorScheme.surface,
             Color(0xFF1565C0),
             stringResource(R.string.report_status_in_progress)
         )
+
         ReportStatus.RESOLVED -> Triple(
             MaterialTheme.colorScheme.surface,
             Color(0xFF6A1B9A),
             stringResource(R.string.report_status_resolved)
         )
+
         ReportStatus.WONTFIX -> Triple(
             MaterialTheme.colorScheme.surface,
             Color(0xFF757575),
             stringResource(R.string.report_status_wontfix)
         )
+
         ReportStatus.DUPLICATE -> Triple(
             MaterialTheme.colorScheme.surface,
             Color(0xFF757575),
             stringResource(R.string.report_status_duplicate)
         )
+
         ReportStatus.CLOSED -> Triple(
             MaterialTheme.colorScheme.surface,
             Color(0xFFC62828),

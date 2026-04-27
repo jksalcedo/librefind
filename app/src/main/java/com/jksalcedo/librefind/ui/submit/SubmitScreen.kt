@@ -28,7 +28,6 @@ import androidx.compose.material.icons.filled.LinkOff
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FilterChip
@@ -67,6 +66,7 @@ import com.jksalcedo.librefind.R
 import com.jksalcedo.librefind.domain.model.Alternative
 import com.jksalcedo.librefind.domain.model.SubmissionType
 import com.jksalcedo.librefind.ui.common.FieldWithHelp
+import com.jksalcedo.librefind.ui.common.LibreFindLoadingIndicator
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -1206,10 +1206,7 @@ fun SubmitContent(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 if (uiState.isLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(20.dp),
-                        strokeWidth = 2.dp
-                    )
+                    LibreFindLoadingIndicator(size = 20)
                 } else {
                     Text(
                         if (uiState.isEditing) stringResource(R.string.submit_update_button) else stringResource(

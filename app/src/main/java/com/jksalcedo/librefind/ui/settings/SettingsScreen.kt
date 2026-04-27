@@ -32,7 +32,7 @@ import androidx.compose.material.icons.filled.VolunteerActivism
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
+import com.jksalcedo.librefind.ui.common.LibreFindLoadingIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -175,11 +175,7 @@ fun PreferenceAction(
                 }
             ) {
                 if (isLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(16.dp),
-                        strokeWidth = 2.dp,
-                        color = if (isDestructive) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimary
-                    )
+                    LibreFindLoadingIndicator(size = 32)
                 } else {
                     Text(actionLabel)
                 }
@@ -669,10 +665,7 @@ private fun DeleteAccountDialog(
                 enabled = !state.isDeletingAccount
             ) {
                 if (state.isDeletingAccount) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.width(16.dp),
-                        strokeWidth = 2.dp
-                    )
+                    LibreFindLoadingIndicator(size = 40)
                 } else {
                     Text(stringResource(R.string.settings_delete))
                 }
@@ -739,7 +732,7 @@ private fun UpdateDialogs(
                 title = { Text(stringResource(R.string.settings_checking_updates)) },
                 text = {
                     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator()
+                        LibreFindLoadingIndicator()
                     }
                 },
                 confirmButton = {}
