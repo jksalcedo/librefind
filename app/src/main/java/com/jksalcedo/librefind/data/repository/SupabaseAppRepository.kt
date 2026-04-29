@@ -496,37 +496,69 @@ class SupabaseAppRepository(
             }
 
             val finalSubmitterId = originalSubmitterId ?: currentUserId
+            
+            val lastEditedByVal = if (isCommunityEdit) currentUserId else null
+            val lastEditedAtVal = if (isCommunityEdit) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    java.time.Instant.now().toString()
+                } else {
+                    null
+                }
+            } else null
+            
+            val contributorsVal = newContributors?.ifEmpty { null }
 
-            val updateData = UserSubmissionDto(
-                id = id,
-                appName = appName,
-                appPackage = alternativePackage,
-                description = description,
-                proprietaryPackage = proprietaryPackage.ifBlank { null },
-                repoUrl = repoUrl.ifBlank { null },
-                fdroidId = fdroidId.ifBlank { null },
-                license = license.ifBlank { null },
-                alternatives = alternatives.ifEmpty { null },
-                submissionType = submissionType?.name,
-                submitterId = finalSubmitterId,
-                status = "PENDING",
-                rejectionReason = null,
-                category = category.ifBlank { null },
-                lastEditedBy = if (isCommunityEdit) currentUserId else null,
-                lastEditedAt = if (isCommunityEdit) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        java.time.Instant.now().toString()
-                    } else {
-                        null
-                    }
-                } else null,
-                contributors = newContributors?.ifEmpty { null }
-            )
+            if (submissionType == SubmissionType.LINKING) {
+                val updateData = UserLinkingSubmissionsDto(
+                    id = id,
+                    proprietaryPackage = proprietaryPackage,
+                    alternatives = alternatives,
+                    submitterId = finalSubmitterId,
+                    status = "PENDING",
+                    rejectionReason = null,
+                    lastEditedBy = lastEditedByVal,
+                    lastEditedAt = lastEditedAtVal,
+                    contributors = contributorsVal
+                )
+                val result = supabase.postgrest.from("user_linking_submissions").update(updateData) {
+                    filter { eq("id", id) }
+                    select()
+                }
+                val updated = result.decodeList<UserLinkingSubmissionsDto>()
+                if (updated.isEmpty()) {
+                    supabase.postgrest.from("user_linking_submissions").insert(updateData.copy(id = null))
+                }
+            } else {
+                val updateData = UserSubmissionDto(
+                    id = id,
+                    appName = appName,
+                    appPackage = alternativePackage,
+                    description = description,
+                    proprietaryPackage = proprietaryPackage.ifBlank { null },
+                    repoUrl = repoUrl.ifBlank { null },
+                    fdroidId = fdroidId.ifBlank { null },
+                    license = license.ifBlank { null },
+                    alternatives = alternatives.ifEmpty { null },
+                    submissionType = submissionType?.name,
+                    submitterId = finalSubmitterId,
+                    status = "PENDING",
+                    rejectionReason = null,
+                    category = category.ifBlank { null },
+                    lastEditedBy = lastEditedByVal,
+                    lastEditedAt = lastEditedAtVal,
+                    contributors = contributorsVal
+                )
 
-            // Use upsert to handle both update and potentially missing records (though ID should exist)
-            // Filtering by ID ensures we target the specific submission.
-            supabase.postgrest.from("user_submissions").upsert(updateData) {
-                onConflict = "id"
+                val result = supabase.postgrest.from("user_submissions").update(updateData) {
+                    filter { eq("id", id) }
+                    select()
+                }
+                
+                val updated = result.decodeList<UserSubmissionDto>()
+                if (updated.isEmpty()) {
+                    // Fallback: Insert as new submission (proposal)
+                    supabase.postgrest.from("user_submissions").insert(updateData.copy(id = null))
+                }
             }
             Log.d("SupabaseAppRepo", "Update/Upsert successful for ID: $id")
         } catch (e: Exception) {
@@ -657,7 +689,7 @@ class SupabaseAppRepository(
                             "last_edited_by",
                             "last_edited_at",
                             "contributors",
-                            "profiles!submitter_id(id, username)"
+                            "profiles(id, username)"
                         )
                     ) {
                         filter { eq("submitter_id", userId) }
@@ -678,7 +710,7 @@ class SupabaseAppRepository(
                             "last_edited_by",
                             "last_edited_at",
                             "contributors",
-                            "profiles!submitter_id(id, username)"
+                            "profiles(id, username)"
                         )
                     ) {
                         filter { eq("submitter_id", userId) }
@@ -717,7 +749,7 @@ class SupabaseAppRepository(
                             "last_edited_by",
                             "last_edited_at",
                             "contributors",
-                            "profiles!submitter_id(id, username)"
+                            "profiles(id, username)"
                         )
                     ) {
                         filter { eq("status", "PENDING") }
@@ -738,7 +770,7 @@ class SupabaseAppRepository(
                             "last_edited_by",
                             "last_edited_at",
                             "contributors",
-                            "profiles!submitter_id(id, username)"
+                            "profiles(id, username)"
                         )
                     ) {
                         filter { eq("status", "PENDING") }

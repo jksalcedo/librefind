@@ -13,11 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jksalcedo.librefind.domain.model.Submission
-import com.jksalcedo.librefind.ui.common.FullScreenLoading
 import org.koin.androidx.compose.koinViewModel
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,7 +25,6 @@ fun SubmissionDetailScreen(
 ) {
     val state by viewModel.uiState.collectAsState()
     val submission = state.submissions.find { it.id == submissionId }
-    val dateFormatter = remember { SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault()) }
 
     Scaffold(
         topBar = {
@@ -43,11 +38,6 @@ fun SubmissionDetailScreen(
             )
         }
     ) { padding ->
-        if (state.isLoading) {
-            FullScreenLoading()
-            return@Scaffold
-        }
-
         if (submission == null) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text("Submission not found or already processed.")
@@ -66,22 +56,11 @@ fun SubmissionDetailScreen(
             // Header Info
             Card(modifier = Modifier.fillMaxWidth(), elevation = CardDefaults.cardElevation(2.dp)) {
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "Type: ${submission.type.name.replace("_", " ")}",
-                            style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                        Text(
-                            text = dateFormatter.format(Date(submission.submittedAt)),
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
+                    Text(
+                        text = "Type: ${submission.type.name.replace("_", " ")}",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
                     Text(
                         text = submission.submittedApp.name,
                         style = MaterialTheme.typography.headlineSmall,
@@ -92,29 +71,11 @@ fun SubmissionDetailScreen(
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
-                    
                     if (submission.lastEditedBy != null) {
-                        HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
                         Text(
                             text = "Last Edited by User: ${submission.lastEditedBy}",
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.secondary
-                        )
-                        submission.lastEditedAt?.let {
-                            Text(
-                                text = "Edited at: ${dateFormatter.format(Date(it))}",
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                    }
-
-                    if (submission.contributors.isNotEmpty()) {
-                        Text(
-                            text = "Contributors: ${submission.contributors.size}",
-                            style = MaterialTheme.typography.labelSmall,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(top = 4.dp)
                         )
                     }
                 }

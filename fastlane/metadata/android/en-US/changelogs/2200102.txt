@@ -1,7 +1,3 @@
-- Added support for community-driven moderation: users can now browse and interact with all pending app submissions.
 - Users can now suggest corrections or updates to pending submissions.
 - Added support for pre-release updates (alpha, beta, RC) in the auto-updater.
-- Added a toggle in Settings to opt-in to experimental updates.
-- Modernized Settings screen with a clean, list-based layout.
-- Fixed unresolved reference 'onUpdateSelectedAlternatives' in submission screen.
-- Enhanced Community Pending Apps details with contributor counts and edit timestamps.
+- Added support for pre-release updates (alpha, beta, RC) in the auto-updater.

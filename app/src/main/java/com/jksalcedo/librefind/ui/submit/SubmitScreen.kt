@@ -196,7 +196,15 @@ fun SubmitContent(
             }
 
             if (sub.type == SubmissionType.LINKING) {
-                // Ensure alternatives are pre-filled as selected
+                // proprietaryPackages in the model contains the target app package for LINKING type
+                val targets = sub.proprietaryPackages.split(",").map { it.trim() }.filter { it.isNotEmpty() }.toSet()
+                if (targets.isNotEmpty()) {
+                    onAddTargets(targets)
+                }
+            }
+
+            // Ensure alternatives (FOSS apps) are pre-filled as selected for all types
+            if (sub.linkedAlternatives.isNotEmpty()) {
                 onUpdateSelectedAlternatives(sub.linkedAlternatives.toSet())
             }
 
@@ -1176,6 +1184,12 @@ fun SubmitContent(
 
             Button(
                 onClick = {
+                    val finalProprietaryPackages = if (type == SubmissionType.LINKING) {
+                        uiState.linkTargetPackages.joinToString(", ")
+                    } else {
+                        selectedProprietaryPackages.joinToString(", ")
+                    }
+
                     onSubmit(
                         type,
                         appName,
@@ -1184,7 +1198,7 @@ fun SubmitContent(
                         repoUrl,
                         fdroidId,
                         license,
-                        selectedProprietaryPackages.joinToString(", "),
+                        finalProprietaryPackages,
                         category
                     )
                 },
