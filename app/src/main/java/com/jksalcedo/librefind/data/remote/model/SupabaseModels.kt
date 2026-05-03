@@ -1,5 +1,6 @@
 package com.jksalcedo.librefind.data.remote.model
 
+import com.jksalcedo.librefind.domain.model.SubmissionType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -35,6 +36,7 @@ data class UserSubmissionDto(
     val license: String? = null,
     val alternatives: List<String>? = null,
     @SerialName("submission_type") val submissionType: String? = null,
+    val type: String? = null,
     val status: String = "PENDING",
     @SerialName("submitter_id") val submitterId: String,
     @SerialName("created_at") val createdAt: String? = null,
@@ -100,6 +102,7 @@ data class UserLinkingSubmissionsDto(
     @SerialName("created_at") val createdAt: String? = null,
     @SerialName("last_edited_by") val lastEditedBy: String? = null,
     @SerialName("last_edited_at") val lastEditedAt: String? = null,
+    @SerialName("submission_type") val submissionType: SubmissionType? = null,
     val contributors: List<String>? = null
 )
 
