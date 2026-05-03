@@ -14,7 +14,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
@@ -37,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import com.jksalcedo.librefind.R
 import com.jksalcedo.librefind.domain.model.ReportPriority
 import com.jksalcedo.librefind.domain.model.ReportType
+import com.jksalcedo.librefind.ui.common.LibreFindLoadingIndicator
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -145,10 +145,7 @@ fun ReportScreen(
                 enabled = !state.isLoading && state.title.isNotBlank() && state.description.isNotBlank()
             ) {
                 if (state.isLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.height(20.dp),
-                        color = MaterialTheme.colorScheme.onPrimary
-                    )
+                    LibreFindLoadingIndicator(size = 20)
                 } else {
                     Text(stringResource(R.string.report_submit_button))
                 }

@@ -20,7 +20,6 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -61,6 +60,7 @@ import com.jksalcedo.librefind.R
 import com.jksalcedo.librefind.data.local.PreferencesManager
 import com.jksalcedo.librefind.domain.model.AppStatus
 import com.jksalcedo.librefind.ui.auth.AuthViewModel
+import com.jksalcedo.librefind.ui.common.FullScreenLoading
 import com.jksalcedo.librefind.ui.common.TargetArea
 import com.jksalcedo.librefind.ui.common.TutorialOverlay
 import com.jksalcedo.librefind.ui.common.TutorialStep
@@ -115,7 +115,12 @@ fun DashboardScreen(
             topBar = {
                 TopAppBar(
                     title = {
-                        if (isSearchActive) {
+                        if (state.isSelectionMode) {
+                            Text(
+                                text = "${state.selectedPackageNames.size} selected",
+                                fontWeight = FontWeight.Bold
+                            )
+                        } else if (isSearchActive) {
                             TextField(
                                 value = state.searchQuery,
                                 onValueChange = { viewModel.updateSearchQuery(it) },
@@ -138,8 +143,68 @@ fun DashboardScreen(
                             )
                         }
                     },
+                    navigationIcon = {
+                        if (state.isSelectionMode) {
+                            IconButton(onClick = { viewModel.clearSelection() }) {
+                                Icon(Icons.Default.Close, contentDescription = "Clear selection")
+                            }
+                        }
+                    },
                     actions = {
-                        if (isSearchActive) {
+                        if (state.isSelectionMode) {
+                            var showSelectionMenu by remember { mutableStateOf(false) }
+                            Box {
+                                IconButton(onClick = { showSelectionMenu = true }) {
+                                    Icon(painter = painterResource(R.drawable.ic_filter), contentDescription = "Selection Actions")
+                                }
+                                DropdownMenu(
+                                    expanded = showSelectionMenu,
+                                    onDismissRequest = { showSelectionMenu = false }
+                                ) {
+                                    DropdownMenuItem(
+                                        text = { Text("Ignore selected") },
+                                        onClick = {
+                                            viewModel.ignoreSelected()
+                                            showSelectionMenu = false
+                                        },
+                                        leadingIcon = { Icon(Icons.Default.VisibilityOff, contentDescription = null) }
+                                    )
+                                    DropdownMenuItem(
+                                        text = { Text("Restore selected") },
+                                        onClick = {
+                                            viewModel.restoreSelected()
+                                            showSelectionMenu = false
+                                        },
+                                        leadingIcon = { Icon(painter = painterResource(R.drawable.ic_home), contentDescription = null) }
+                                    )
+                                    HorizontalDivider()
+                                    DropdownMenuItem(
+                                        text = { Text("Mark selected as FOSS") },
+                                        onClick = {
+                                            viewModel.reclassifySelected(AppStatus.FOSS)
+                                            showSelectionMenu = false
+                                        },
+                                        leadingIcon = { Icon(Icons.Default.Check, contentDescription = null) }
+                                    )
+                                    DropdownMenuItem(
+                                        text = { Text("Mark selected as PWA") },
+                                        onClick = {
+                                            viewModel.reclassifySelected(AppStatus.PWA)
+                                            showSelectionMenu = false
+                                        },
+                                        leadingIcon = { Icon(Icons.Default.Check, contentDescription = null) }
+                                    )
+                                    DropdownMenuItem(
+                                        text = { Text("Undo reclassification") },
+                                        onClick = {
+                                            viewModel.undoReclassifySelected()
+                                            showSelectionMenu = false
+                                        },
+                                        leadingIcon = { Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = null) }
+                                    )
+                                }
+                            }
+                        } else if (isSearchActive) {
                             IconButton(onClick = {
                                 isSearchActive = false
                                 viewModel.updateSearchQuery("")
@@ -322,9 +387,7 @@ fun DashboardScreen(
             ) {
                 when {
                     state.isLoading -> {
-                        CircularProgressIndicator(
-                            modifier = Modifier.align(Alignment.Center)
-                        )
+                        FullScreenLoading()
                     }
 
                     state.error != null -> {
@@ -387,7 +450,9 @@ fun DashboardScreen(
                         } else {
                             ScanList(
                                 apps = state.apps,
+                                selectedPackageNames = state.selectedPackageNames,
                                 onAppClick = onAppClick,
+                                onLongClick = { packageName -> viewModel.toggleSelection(packageName) },
                                 onIgnoreClick = { packageName -> viewModel.ignoreApp(packageName) },
                                 onRestoreClick = { packageName -> viewModel.restoreApp(packageName) },
                                 onReclassifyClick = { packageName, status ->

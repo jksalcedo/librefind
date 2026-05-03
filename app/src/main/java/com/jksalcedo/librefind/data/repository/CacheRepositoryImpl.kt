@@ -99,6 +99,10 @@ class CacheRepositoryImpl(
         appCacheDao.getTotalCachedRows() > 0
     }
 
+    override suspend fun getTotalCachedItems(): Int = withContext(Dispatchers.IO) {
+        appCacheDao.getTotalCachedRows()
+    }
+
     override suspend fun getCacheLastUpdated(): Long? = withContext(Dispatchers.IO) {
         val t = appCacheDao.getTargetsLastUpdated()
         val s = appCacheDao.getSolutionsLastUpdated()

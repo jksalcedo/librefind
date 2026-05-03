@@ -163,9 +163,27 @@ class DashboardViewModel(
         }
     }
 
+    fun ignoreSelected() {
+        val selected = _state.value.selectedPackageNames
+        if (selected.isEmpty()) return
+        viewModelScope.launch {
+            selected.forEach { ignoredAppsRepository.ignoreApp(it) }
+            clearSelection()
+        }
+    }
+
     fun restoreApp(packageName: String) {
         viewModelScope.launch {
             ignoredAppsRepository.restoreApp(packageName)
+        }
+    }
+
+    fun restoreSelected() {
+        val selected = _state.value.selectedPackageNames
+        if (selected.isEmpty()) return
+        viewModelScope.launch {
+            selected.forEach { ignoredAppsRepository.restoreApp(it) }
+            clearSelection()
         }
     }
 
@@ -181,10 +199,44 @@ class DashboardViewModel(
         }
     }
 
+    fun reclassifySelected(status: AppStatus) {
+        val selected = _state.value.selectedPackageNames
+        if (selected.isEmpty()) return
+        viewModelScope.launch {
+            selected.forEach { reclassifiedAppsRepository.reclassifyApp(it, status) }
+            clearSelection()
+        }
+    }
+
     fun undoReclassify(packageName: String) {
         viewModelScope.launch {
             reclassifiedAppsRepository.undoReclassify(packageName)
         }
+    }
+
+    fun undoReclassifySelected() {
+        val selected = _state.value.selectedPackageNames
+        if (selected.isEmpty()) return
+        viewModelScope.launch {
+            selected.forEach { reclassifiedAppsRepository.undoReclassify(it) }
+            clearSelection()
+        }
+    }
+
+    fun toggleSelection(packageName: String) {
+        _state.update { currentState ->
+            val newSelected = currentState.selectedPackageNames.toMutableSet()
+            if (newSelected.contains(packageName)) {
+                newSelected.remove(packageName)
+            } else {
+                newSelected.add(packageName)
+            }
+            currentState.copy(selectedPackageNames = newSelected)
+        }
+    }
+
+    fun clearSelection() {
+        _state.update { it.copy(selectedPackageNames = emptySet()) }
     }
 
     private fun calculateScore(apps: List<AppItem>): SovereigntyScore {
@@ -229,5 +281,8 @@ data class DashboardState(
     val searchQuery: String = "",
     val statusFilter: AppStatus? = null,
     val appFilter: AppFilter = AppFilter.ALL,
-    val error: String? = null
-)
+    val error: String? = null,
+    val selectedPackageNames: Set<String> = emptySet()
+) {
+    val isSelectionMode: Boolean get() = selectedPackageNames.isNotEmpty()
+}

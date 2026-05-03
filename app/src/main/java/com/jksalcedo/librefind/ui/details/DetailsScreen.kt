@@ -28,7 +28,6 @@ import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -50,6 +49,7 @@ import com.jksalcedo.librefind.domain.model.Alternative
 import org.koin.androidx.compose.koinViewModel
 import androidx.compose.ui.res.stringResource
 import com.jksalcedo.librefind.R
+import com.jksalcedo.librefind.ui.common.FullScreenLoading
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -114,9 +114,7 @@ fun DetailsScreen(
         ) {
             when {
                 state.isLoading -> {
-                    CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.Center)
-                    )
+                    FullScreenLoading()
                 }
 
                 state.error != null -> {

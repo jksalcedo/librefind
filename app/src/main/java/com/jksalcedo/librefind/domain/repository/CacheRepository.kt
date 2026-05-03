@@ -10,4 +10,5 @@ interface CacheRepository {
 
     suspend fun hasAnyCache(): Boolean
     suspend fun getCacheLastUpdated(): Long?
+    suspend fun getTotalCachedItems(): Int
 }

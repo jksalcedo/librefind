@@ -1,9 +1,10 @@
 package com.jksalcedo.librefind
 
+
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
@@ -21,12 +22,12 @@ import androidx.navigation.compose.rememberNavController
 import com.jksalcedo.librefind.ui.navigation.NavGraph
 import com.jksalcedo.librefind.ui.navigation.Route
 import com.jksalcedo.librefind.ui.theme.LibreFindTheme
+import com.jksalcedo.librefind.ui.auth.AuthViewModel
+import androidx.compose.runtime.collectAsState
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.handleDeeplinks
 import org.koin.android.ext.android.inject
-
-
-import androidx.appcompat.app.AppCompatActivity
+import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -42,9 +43,11 @@ class MainActivity : AppCompatActivity() {
                 val navController = rememberNavController()
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
+                val authViewModel: AuthViewModel = koinViewModel()
+                val authState by authViewModel.uiState.collectAsState()
 
                 val showBottomBar =
-                    currentRoute == Route.Dashboard.route || currentRoute == Route.Discover.route
+                    currentRoute == Route.Dashboard.route || currentRoute == Route.Discover.route || currentRoute == Route.Community.route
 
                 Scaffold(
                     contentWindowInsets = WindowInsets(0),
@@ -83,6 +86,30 @@ class MainActivity : AppCompatActivity() {
                                             navController.navigate(Route.Discover.route) {
                                                 popUpTo(Route.Dashboard.route) { inclusive = false }
                                                 launchSingleTop = true
+                                            }
+                                        }
+                                    }
+                                )
+                                NavigationBarItem(
+                                    icon = {
+                                        Icon(
+                                            painter = painterResource(R.drawable.ic_world),
+                                            contentDescription = "Community"
+                                        )
+                                    },
+                                    label = { Text("Community") },
+                                    selected = currentRoute == Route.Community.route,
+                                    onClick = {
+                                        if (currentRoute != Route.Community.route) {
+                                            if (authState.isSignedIn) {
+                                                navController.navigate(Route.Community.route) {
+                                                    popUpTo(Route.Dashboard.route) {
+                                                        inclusive = false
+                                                    }
+                                                    launchSingleTop = true
+                                                }
+                                            } else {
+                                                navController.navigate(Route.Auth.route)
                                             }
                                         }
                                     }

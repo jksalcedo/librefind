@@ -28,7 +28,6 @@ import androidx.compose.material.icons.filled.LinkOff
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FilterChip
@@ -62,10 +61,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jksalcedo.librefind.R
 import com.jksalcedo.librefind.domain.model.Alternative
 import com.jksalcedo.librefind.domain.model.SubmissionType
 import com.jksalcedo.librefind.ui.common.FieldWithHelp
+import com.jksalcedo.librefind.ui.common.LibreFindLoadingIndicator
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -114,6 +115,7 @@ fun SubmitScreen(
         onSelectFossApp = viewModel::selectFossApp,
         onClearLinkedApp = viewModel::clearLinkedApp,
         onValidateRepoUrl = viewModel::validateRepoUrl,
+        onUpdateSelectedAlternatives = viewModel::onUpdateSelectedAlternatives,
         onSubmit = viewModel::submit,
     )
 }
@@ -140,6 +142,7 @@ fun SubmitContent(
     onSelectFossApp: (Alternative) -> Unit,
     onClearLinkedApp: () -> Unit,
     onValidateRepoUrl: (String) -> Unit,
+    onUpdateSelectedAlternatives: (Set<String>) -> Unit,
     onSubmit: (SubmissionType, String, String, String, String, String, String, String, String) -> Unit
 ) {
     val isPrefilled = prefilledAppName != null && prefilledPackageName != null
@@ -192,6 +195,20 @@ fun SubmitContent(
                         .toSet()
             }
 
+            if (sub.type == SubmissionType.LINKING) {
+                // proprietaryPackages in the model contains the target app package for LINKING type
+                val targets = sub.proprietaryPackages.split(",").map { it.trim() }.filter { it.isNotEmpty() }.toSet()
+                if (targets.isNotEmpty()) {
+                    onAddTargets(targets)
+                }
+            }
+
+            // Ensure alternatives (FOSS apps) are pre-filled as selected for all types
+            if (sub.linkedAlternatives.isNotEmpty()) {
+                onUpdateSelectedAlternatives(sub.linkedAlternatives.toSet())
+            }
+
+            category = sub.category ?: ""
             repoUrl = sub.submittedApp.repoUrl
             fdroidId = sub.submittedApp.fdroidId
             license = sub.submittedApp.license
@@ -255,9 +272,11 @@ fun SubmitContent(
             TopAppBar(
                 title = {
                     Text(
-                        if (uiState.isEditing) stringResource(R.string.submit_title_edit) else stringResource(
-                            R.string.submit_title_new
-                        )
+                        when {
+                            uiState.isCommunityEdit -> stringResource(R.string.community_suggest_correction)
+                            uiState.isEditing -> stringResource(R.string.submit_title_edit)
+                            else -> stringResource(R.string.submit_title_new)
+                        }
                     )
                 },
                 navigationIcon = {
@@ -1165,6 +1184,12 @@ fun SubmitContent(
 
             Button(
                 onClick = {
+                    val finalProprietaryPackages = if (type == SubmissionType.LINKING) {
+                        uiState.linkTargetPackages.joinToString(", ")
+                    } else {
+                        selectedProprietaryPackages.joinToString(", ")
+                    }
+
                     onSubmit(
                         type,
                         appName,
@@ -1173,7 +1198,7 @@ fun SubmitContent(
                         repoUrl,
                         fdroidId,
                         license,
-                        selectedProprietaryPackages.joinToString(", "),
+                        finalProprietaryPackages,
                         category
                     )
                 },
@@ -1195,10 +1220,7 @@ fun SubmitContent(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 if (uiState.isLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(20.dp),
-                        strokeWidth = 2.dp
-                    )
+                    LibreFindLoadingIndicator(size = 20)
                 } else {
                     Text(
                         if (uiState.isEditing) stringResource(R.string.submit_update_button) else stringResource(
@@ -1425,6 +1447,7 @@ fun SubmitScreenPreview() {
         onValidateRepoUrl = {},
         onSubmit = { _, _, _, _, _, _, _, _, _ -> },
         prefilledProprietaryTarget = null,
-        onAddTargets = {}
+        onAddTargets = {},
+        onUpdateSelectedAlternatives = {}
     )
 }

@@ -9,6 +9,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.google.gson.Gson
 import com.jksalcedo.librefind.data.remote.model.RemoteSignerFeed
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "signer_feed")
@@ -45,9 +46,5 @@ class SignerFeedDataStore(private val context: Context, private val gson: Gson) 
 
     suspend fun getEtag(): String? = context.dataStore.data.map { preferences ->
         preferences[ETAG_KEY]
-    }.let { flow ->
-        // This is a bit of a hack to get the current value from flow
-        // In a real repo, we'd use firstOrNull() or similar
-        null // Simplified for now, will improve if needed
-    }
+    }.firstOrNull()
 }
