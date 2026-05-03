@@ -15,14 +15,14 @@
     <string name="dashboard_filter_ignored_only">Ignorées seulement</string>
     <string name="dashboard_profile">Profil</string>
     <!-- Correction -->
-    <string name="correction_title">Suggest Correction</string>
-    <string name="correction_intro">Suggest a correction for %1$s. All suggestions are reviewed by moderators.</string>
-    <string name="correction_type_label">Correction Type</string>
-    <string name="correction_value_label">Correct Value</string>
-    <string name="correction_value_placeholder">e.g. GPLv3, Utility, https://example.com</string>
-    <string name="correction_description_label">Description / Reason</string>
-    <string name="correction_description_placeholder">Why is this correction needed? Provide sources if possible.</string>
-    <string name="correction_submit_button">Submit Correction</string>
+    <string name="correction_title">Suggérer une correction</string>
+    <string name="correction_intro">Suggérez une correction pour %1$s. Toutes les suggestions sont examinées par des modérateurs.</string>
+    <string name="correction_type_label">Type de correction</string>
+    <string name="correction_value_label">Valeur correcte</string>
+    <string name="correction_value_placeholder">ex. GPLv3, Utility, https://example.com</string>
+    <string name="correction_description_label">Description / Raison</string>
+    <string name="correction_description_placeholder">Pourquoi cette correction est-elle nécessaire ? Fournissez les sources si possible.</string>
+    <string name="correction_submit_button">Soumettre la correction</string>
     <string name="back">Back</string>
     <string name="dashboard_settings">Paramètres</string>
     <string name="dashboard_submit_app">Soumettre une appli</string>
@@ -160,9 +160,9 @@
     <string name="settings_version">Version</string>
     <string name="settings_view_github">Voir sur GitHub</string>
     <string name="settings_donate">Donation pour LibreFind</string>
-    <string name="settings_privacy_policy">Privacy Policy</string>
+    <string name="settings_privacy_policy">Politique de confidentialité</string>
     <string name="settings_language">Langue</string>
-    <string name="settings_language_system">System Default</string>
+    <string name="settings_language_system">Par défaut</string>
     <string name="settings_language_english">Anglais</string>
     <string name="settings_language_arabic">Arabe</string>
     <string name="settings_language_german">Allemand</string>
@@ -174,13 +174,13 @@
     <string name="settings_language_polish">Polonais</string>
     <string name="settings_language_turkish">Turc</string>
     <string name="settings_language_chinese_simplified">Chinois simplifié</string>
-    <string name="settings_cache_management">Cache Management</string>
-    <string name="settings_cache_size">Icon Cache Size</string>
+    <string name="settings_cache_management">Gestion du cache</string>
+    <string name="settings_cache_size">Taille du cache des icônes</string>
     <string name="settings_clear">Effacer</string>
     <string name="settings_account">Compte</string>
     <string name="settings_delete_account">Supprimer mon compte</string>
-    <string name="settings_clear_cache_title">Clear Icon Cache?</string>
-    <string name="settings_clear_cache_message">This will remove all cached app icons. They will be reloaded when you scroll through the dashboard.</string>
+    <string name="settings_clear_cache_title">Vider le cache des icônes ?</string>
+    <string name="settings_clear_cache_message">Cela supprimera toutes les icônes d’application mises en cache. Elles seront rechargées lorsque vous ferez défiler le tableau de bord.</string>
     <string name="settings_cancel">Annuler</string>
     <string name="settings_delete_account_title">Supprimer mon compte ?</string>
     <string name="settings_delete_account_message">Are you sure you want to delete your account? This action cannot be undone and will permanently remove all your data.</string>
@@ -195,7 +195,7 @@
     <string name="settings_off">Off</string>
     <string name="settings_error">Erreur</string>
     <!-- Ignored Apps Screen -->
-    <string name="ignored_apps_title">Ignored Apps</string>
+    <string name="ignored_apps_title">Applications ignorées</string>
     <string name="ignored_apps_empty">No ignored apps. \nLong-press any app in the list → tap Ignore.</string>
     <string name="ignored_apps_restore">Restore</string>
     <!-- Privacy Policy Screen -->
@@ -261,13 +261,13 @@
     <string name="alt_detail_description">Description</string>
     <string name="alt_detail_features_list">Fonctionnalités</string>
     <string name="alt_detail_pros">Avantages</string>
-    <string name="alt_detail_no_pros">Pas d\'avantages pour le moment</string>
-    <string name="alt_detail_cons">Désavantages</string>
-    <string name="alt_detail_no_cons">Pas de désavantages pour le moment</string>
+    <string name="alt_detail_no_pros">Aucun avantage pour le moment</string>
+    <string name="alt_detail_cons">Inconvénients</string>
+    <string name="alt_detail_no_cons">Aucun inconvénient pour le moment</string>
     <string name="alt_detail_add_pro">Ajouter un avantage</string>
-    <string name="alt_detail_add_con">Ajouter un désavantage</string>
+    <string name="alt_detail_add_con">Ajouter un inconvénient</string>
     <string name="alt_detail_pro">Avantage</string>
-    <string name="alt_detail_con">Désavantage</string>
+    <string name="alt_detail_con">Inconvénient</string>
     <string name="alt_detail_feedback_label">Vos commentaires</string>
     <string name="alt_detail_submit">Envoyer</string>
     <string name="alt_detail_cancel">Annuler</string>
@@ -286,7 +286,7 @@
     <string name="details_title_format">%1$s alternatives</string>
     <string name="details_error_unknown">Erreur inconnue</string>
     <string name="details_retry">Réessayer</string>
-    <string name="details_no_alternatives">Pas d\'alternatives trouvé</string>
+    <string name="details_no_alternatives">Aucune alternative trouvée</string>
     <string name="details_not_in_db">This app is not in our database yet.</string>
     <string name="details_no_suggested_alternatives">No FOSS alternatives have been suggested for this app yet.</string>
     <string name="details_help_categorize">Help us categorize this app:</string>

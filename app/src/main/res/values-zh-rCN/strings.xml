@@ -15,7 +15,7 @@
     <string name="dashboard_filter_ignored_only">仅限已忽略</string>
     <string name="dashboard_profile">个人资料</string>
     <!-- Correction -->
-    <string name="correction_title">Suggest Correction</string>
+    <string name="correction_title">建议更正</string>
     <string name="correction_intro">Suggest a correction for %1$s. All suggestions are reviewed by moderators.</string>
     <string name="correction_type_label">Correction Type</string>
     <string name="correction_value_label">Correct Value</string>
@@ -191,7 +191,7 @@
     <!-- New strings for system/vendor package filtering toggle -->
     <string name="settings_hide_system_packages_title">System package filtering</string>
     <string name="settings_hide_system_packages_label">Hide vendor/system packages</string>
-    <string name="settings_on">On</string>
+    <string name="settings_on">不</string>
     <string name="settings_off">Off</string>
     <string name="settings_error">错误</string>
     <!-- Ignored Apps Screen -->
@@ -337,5 +337,5 @@
     <string name="report_priority_label">优先级</string>
     <string name="report_submit_button">提交报告</string>
     <string name="web_submission">Web Submission</string>
-    <string name="status_pwa">PWA</string>
+    <string name="status_pwa">渐进式 Web 应用</string>
 </resources>
