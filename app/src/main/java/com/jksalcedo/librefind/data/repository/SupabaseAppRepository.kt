@@ -332,7 +332,7 @@ class SupabaseAppRepository(
                 .map { it.packageName }
         } catch (e: Exception) {
             e.printStackTrace()
-            emptyList()
+            throw e
         }
     }
 
@@ -473,53 +473,99 @@ class SupabaseAppRepository(
         fdroidId: String,
         license: String,
         alternatives: List<String>,
-        category: String
+        category: String,
+        originalSubmitterId: String?,
+        contributors: List<String>?,
+        submissionType: SubmissionType?
     ): Result<Unit> = runCatching {
         try {
-            val updateData = UserSubmissionDto(
-                appName = appName,
-                appPackage = alternativePackage,
-                description = description,
-                proprietaryPackage = proprietaryPackage.ifBlank { null },
-                repoUrl = repoUrl.ifBlank { null },
-                fdroidId = fdroidId.ifBlank { null },
-                license = license.ifBlank { null },
-                alternatives = alternatives.ifEmpty { null },
-                submitterId = supabase.auth.currentUserOrNull()?.id
-                    ?: throw IllegalStateException("Not logged in"),
-                status = "PENDING",
-                rejectionReason = null,
-                category = category.ifBlank { null }
-            )
+            val currentUserId = supabase.auth.currentUserOrNull()?.id
+                ?: throw IllegalStateException("Not logged in")
 
-            val result = supabase.postgrest.from("user_submissions").update(updateData) {
-                filter {
-                    eq("id", id)
-                }
-                select() // Return updated rows to check count
-            }
+            val isCommunityEdit =
+                originalSubmitterId != null && originalSubmitterId != currentUserId
 
-            val updated = result.decodeList<UserSubmissionDto>()
-
-            if (updated.isEmpty()) {
-                // Fallback: Insert as new submission
-                supabase.postgrest.from("user_submissions").insert(updateData)
-                Log.d("SupabaseAppRepo", "Fallback insertion successful (0 rows updated)")
-            } else {
-                // Check if status was actually updated to PENDING
-                val newStatus = updated.first().status
-                if (newStatus != "PENDING") {
-                    Log.w(
-                        "SupabaseAppRepo",
-                        "Update succeeded but status is still $newStatus. RLS/Trigger prevented status change. Falling back to INSERT."
-                    )
-                    // Fallback: Insert as new submission
-                    supabase.postgrest.from("user_submissions").insert(updateData)
-                    Log.d("SupabaseAppRepo", "Fallback insertion successful (Status check failed)")
+            val newContributors = if (isCommunityEdit) {
+                val currentList = contributors ?: emptyList()
+                if (!currentList.contains(currentUserId)) {
+                    currentList + currentUserId
                 } else {
-                    Log.d("SupabaseAppRepo", "Update successful and status is PENDING")
+                    currentList
+                }
+            } else {
+                contributors
+            }
+
+            val finalSubmitterId = originalSubmitterId ?: currentUserId
+
+            val lastEditedByVal = if (isCommunityEdit) currentUserId else null
+            val lastEditedAtVal = if (isCommunityEdit) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    java.time.Instant.now().toString()
+                } else {
+                    null
+                }
+            } else null
+
+            val contributorsVal = newContributors?.ifEmpty { null }
+
+            if (submissionType == SubmissionType.LINKING) {
+                val updateData = UserLinkingSubmissionsDto(
+                    id = id,
+                    proprietaryPackage = proprietaryPackage,
+                    alternatives = alternatives,
+                    submitterId = finalSubmitterId,
+                    status = "PENDING",
+                    rejectionReason = null,
+                    lastEditedBy = lastEditedByVal,
+                    lastEditedAt = lastEditedAtVal,
+                    contributors = contributorsVal,
+                    submissionType = submissionType,
+                )
+                val result =
+                    supabase.postgrest.from("user_linking_submissions").update(updateData) {
+                        filter { eq("id", id) }
+                        select()
+                    }
+                val updated = result.decodeList<UserLinkingSubmissionsDto>()
+                if (updated.isEmpty()) {
+                    supabase.postgrest.from("user_linking_submissions")
+                        .insert(updateData.copy(id = null))
+                }
+            } else {
+                val updateData = UserSubmissionDto(
+                    id = id,
+                    appName = appName,
+                    appPackage = alternativePackage,
+                    description = description,
+                    proprietaryPackage = proprietaryPackage.ifBlank { null },
+                    repoUrl = repoUrl.ifBlank { null },
+                    fdroidId = fdroidId.ifBlank { null },
+                    license = license.ifBlank { null },
+                    alternatives = alternatives.ifEmpty { null },
+                    submissionType = submissionType?.name,
+                    type = submissionType?.name,
+                    submitterId = finalSubmitterId,
+                    status = "PENDING",
+                    rejectionReason = null,
+                    category = category.ifBlank { null },
+                    lastEditedBy = lastEditedByVal,
+                    lastEditedAt = lastEditedAtVal,
+                    contributors = contributorsVal
+                )
+
+                val result = supabase.postgrest.from("user_submissions").update(updateData) {
+                    filter { eq("id", id) }
+                    select()
+                }
+
+                val updated = result.decodeList<UserSubmissionDto>()
+                if (updated.isEmpty()) {
+                    // Fallback: Insert as new submission (proposal)
+                    supabase.postgrest.from("user_submissions").insert(updateData.copy(id = null))
                 }
             }
+            Log.d("SupabaseAppRepo", "Update/Upsert successful for ID: $id")
         } catch (e: Exception) {
             Log.e("SupabaseAppRepo", "Update failed", e)
             throw e
@@ -639,11 +685,17 @@ class SupabaseAppRepository(
                             "fdroid_id",
                             "license",
                             "submission_type",
+                            "type",
                             "status",
                             "submitter_id",
                             "rejection_reason",
                             "created_at",
-                            "profiles(id, username)"
+                            "category",
+                            "last_edited_by",
+                            "last_edited_at",
+                            "contributors",
+                            "alternatives",
+                            "profile:profiles!submitter_id(id, username)"
                         )
                     ) {
                         filter { eq("submitter_id", userId) }
@@ -661,79 +713,164 @@ class SupabaseAppRepository(
                             "submitter_id",
                             "rejection_reason",
                             "created_at",
-                            "profiles(id, username)"
+                            "last_edited_by",
+                            "last_edited_at",
+                            "contributors",
+                            "profile:profiles!submitter_id(id, username)"
                         )
                     ) {
                         filter { eq("submitter_id", userId) }
                     }.decodeList<UserLinkingSubmissionWithProfileDto>()
 
-            val standardList = standardDtos.map { dto ->
-                Submission(
-                    id = dto.id ?: "",
-                    type = dto.submissionType?.let {
-                        try {
-                            SubmissionType.valueOf(it)
-                        } catch (_: Exception) {
-                            null
-                        }
-                    } ?: if (!dto.license.isNullOrBlank() || !dto.repoUrl.isNullOrBlank())
-                        SubmissionType.NEW_ALTERNATIVE
-                    else
-                        SubmissionType.NEW_PROPRIETARY,
-                    proprietaryPackages = dto.proprietaryPackage ?: "",
-                    submittedApp = SubmittedApp(
-                        name = dto.appName,
-                        packageName = dto.appPackage,
-                        description = dto.description,
-                        repoUrl = dto.repoUrl ?: "",
-                        fdroidId = dto.fdroidId ?: "",
-                        license = dto.license ?: ""
-                    ),
-                    submitterUid = dto.submitterId,
-                    submitterUsername = dto.profile?.username ?: "Unknown",
-                    // Parse created_at timestamp or use current time if missing
-                    submittedAt = dto.createdAt?.let { parseTimestamp(it) }
-                        ?: System.currentTimeMillis(),
-                    status = try {
-                        SubmissionStatus.valueOf(dto.status)
-                    } catch (_: Exception) {
-                        SubmissionStatus.PENDING
-                    },
-                    rejectionReason = dto.rejectionReason
-                )
-            }
-
-            val linkingList = linkingDtos.map { dto ->
-                Submission(
-                    id = dto.id ?: "",
-                    type = SubmissionType.LINKING,
-                    proprietaryPackages = dto.proprietaryPackage,
-                    submittedApp = SubmittedApp(
-                        // format the name in the UI based on the type.
-                        name = "Link ${dto.alternatives.size} Alternatives",
-                        packageName = dto.proprietaryPackage,
-                        description = "Linking request for ${dto.proprietaryPackage}"
-                    ),
-                    submitterUid = dto.submitterId,
-                    submitterUsername = dto.profile?.username ?: "Unknown",
-                    submittedAt = dto.createdAt?.let { parseTimestamp(it) }
-                        ?: System.currentTimeMillis(),
-                    status = try {
-                        SubmissionStatus.valueOf(dto.status)
-                    } catch (_: Exception) {
-                        SubmissionStatus.PENDING
-                    },
-                    rejectionReason = dto.rejectionReason,
-                    linkedAlternatives = dto.alternatives
-                )
-            }
-
-            (standardList + linkingList).sortedByDescending { it.submittedAt }
+            mapDtosToSubmissions(standardDtos, linkingDtos)
 
         } catch (e: Exception) {
             e.printStackTrace()
-            emptyList()
+            throw e
         }
+    }
+
+    override suspend fun getAllPendingSubmissions(): List<Submission> {
+        return try {
+            // 1. Fetch standard pending submissions
+            val standardDtos =
+                supabase.postgrest.from("user_submissions")
+                    .select(
+                        columns = Columns.list(
+                            "id",
+                            "app_name",
+                            "app_package",
+                            "description",
+                            "proprietary_package",
+                            "repo_url",
+                            "fdroid_id",
+                            "license",
+                            "submission_type",
+                            "type",
+                            "status",
+                            "submitter_id",
+                            "rejection_reason",
+                            "created_at",
+                            "category",
+                            "last_edited_by",
+                            "last_edited_at",
+                            "contributors",
+                            "alternatives",
+                            "profile:profiles!submitter_id(id, username)"
+                        )
+                    ) {
+                        filter { eq("status", "PENDING") }
+                        // Prefer recently edited submissions for moderation.
+                        order("last_edited_at", Order.DESCENDING)
+                        order("created_at", Order.DESCENDING)
+                    }.decodeList<UserSubmissionWithProfileDto>()
+
+            // 2. Fetch linking pending submissions
+            val linkingDtos =
+                supabase.postgrest.from("user_linking_submissions")
+                    .select(
+                        columns = Columns.list(
+                            "id",
+                            "proprietary_package",
+                            "alternatives",
+                            "status",
+                            "submitter_id",
+                            "rejection_reason",
+                            "created_at",
+                            "last_edited_by",
+                            "last_edited_at",
+                            "contributors",
+                            // Same reasoning as above: keep it a left join.
+                            "profile:profiles(id, username)"
+                        )
+                    ) {
+                        filter { eq("status", "PENDING") }
+                        order("last_edited_at", Order.DESCENDING)
+                        order("created_at", Order.DESCENDING)
+                    }.decodeList<UserLinkingSubmissionWithProfileDto>()
+
+            mapDtosToSubmissions(standardDtos, linkingDtos)
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            throw e
+        }
+    }
+
+    private fun mapDtosToSubmissions(
+        standardDtos: List<UserSubmissionWithProfileDto>,
+        linkingDtos: List<UserLinkingSubmissionWithProfileDto>
+    ): List<Submission> {
+        val standardList = standardDtos.map { dto ->
+            Submission(
+                id = dto.id ?: "",
+                type = (dto.submissionType ?: dto.type)?.let {
+                    try {
+                        SubmissionType.valueOf(it)
+                    } catch (_: Exception) {
+                        null
+                    }
+                } ?: if (!dto.license.isNullOrBlank() || !dto.repoUrl.isNullOrBlank())
+                    SubmissionType.NEW_ALTERNATIVE
+                else
+                    SubmissionType.NEW_PROPRIETARY,
+                proprietaryPackages = dto.proprietaryPackage ?: "",
+                submittedApp = SubmittedApp(
+                    name = dto.appName ?: "Unknown App",
+                    packageName = dto.appPackage ?: "",
+                    description = dto.description ?: "",
+                    repoUrl = dto.repoUrl ?: "",
+                    fdroidId = dto.fdroidId ?: "",
+                    license = dto.license ?: ""
+                ),
+                submitterUid = dto.submitterId ?: "",
+                submitterUsername = dto.profile?.username ?: "Unknown",
+                // Parse created_at timestamp or use current time if missing
+                submittedAt = dto.createdAt?.let { parseTimestamp(it) }
+                    ?: System.currentTimeMillis(),
+                status = try {
+                    SubmissionStatus.valueOf(dto.status ?: "PENDING")
+                } catch (_: Exception) {
+                    SubmissionStatus.PENDING
+                },
+                rejectionReason = dto.rejectionReason,
+                category = dto.category,
+                linkedAlternatives = dto.alternatives ?: emptyList(),
+                lastEditedBy = dto.lastEditedBy,
+                lastEditedAt = dto.lastEditedAt?.let { parseTimestamp(it) },
+                contributors = dto.contributors ?: emptyList()
+            )
+        }
+
+        val linkingList = linkingDtos.map { dto ->
+            Submission(
+                id = dto.id ?: "",
+                type = SubmissionType.LINKING,
+                proprietaryPackages = dto.proprietaryPackage ?: "",
+                submittedApp = SubmittedApp(
+                    // format the name in the UI based on the type.
+                    name = "Link ${(dto.alternatives ?: emptyList()).size} Alternatives",
+                    packageName = dto.proprietaryPackage ?: "",
+                    description = "Linking request for ${dto.proprietaryPackage ?: "unknown"}"
+                ),
+                submitterUid = dto.submitterId ?: "",
+                submitterUsername = dto.profile?.username ?: "Unknown",
+                submittedAt = dto.createdAt?.let { parseTimestamp(it) }
+                    ?: System.currentTimeMillis(),
+                status = try {
+                    SubmissionStatus.valueOf(dto.status ?: "PENDING")
+                } catch (_: Exception) {
+                    SubmissionStatus.PENDING
+                },
+                rejectionReason = dto.rejectionReason,
+                linkedAlternatives = dto.alternatives ?: emptyList(),
+                lastEditedBy = dto.lastEditedBy,
+                lastEditedAt = dto.lastEditedAt?.let { parseTimestamp(it) },
+                contributors = dto.contributors ?: emptyList()
+            )
+        }
+
+        return (standardList + linkingList).sortedByDescending { it.submittedAt }
     }
 
     private fun parseTimestamp(isoString: String): Long {
@@ -1023,31 +1160,40 @@ class SupabaseAppRepository(
     @Serializable
     private data class UserSubmissionWithProfileDto(
         val id: String? = null,
-        @SerialName("app_name") val appName: String,
-        @SerialName("app_package") val appPackage: String,
-        val description: String = "",
+        @SerialName("app_name") val appName: String? = null,
+        @SerialName("app_package") val appPackage: String? = null,
+        val description: String? = "",
         @SerialName("proprietary_package") val proprietaryPackage: String? = null,
         @SerialName("repo_url") val repoUrl: String? = null,
         @SerialName("fdroid_id") val fdroidId: String? = null,
         val license: String? = null,
         @SerialName("submission_type") val submissionType: String? = null,
-        val status: String,
-        @SerialName("submitter_id") val submitterId: String,
+        val type: String? = null,
+        val status: String? = null,
+        @SerialName("submitter_id") val submitterId: String? = null,
         @SerialName("rejection_reason") val rejectionReason: String? = null,
         @SerialName("created_at") val createdAt: String? = null,
-        @SerialName("profiles") val profile: ProfileDto? = null
+        @SerialName("last_edited_by") val lastEditedBy: String? = null,
+        @SerialName("last_edited_at") val lastEditedAt: String? = null,
+        val contributors: List<String>? = null,
+        val category: String? = null,
+        val alternatives: List<String>? = null,
+        @SerialName("profile") val profile: ProfileDto? = null
     )
 
     @Serializable
     private data class UserLinkingSubmissionWithProfileDto(
         val id: String? = null,
-        @SerialName("proprietary_package") val proprietaryPackage: String,
-        val alternatives: List<String> = emptyList(),
-        val status: String,
-        @SerialName("submitter_id") val submitterId: String,
+        @SerialName("proprietary_package") val proprietaryPackage: String? = null,
+        val alternatives: List<String>? = emptyList(),
+        val status: String? = null,
+        @SerialName("submitter_id") val submitterId: String? = null,
         @SerialName("rejection_reason") val rejectionReason: String? = null,
         @SerialName("created_at") val createdAt: String? = null,
-        @SerialName("profiles") val profile: ProfileDto? = null
+        @SerialName("last_edited_by") val lastEditedBy: String? = null,
+        @SerialName("last_edited_at") val lastEditedAt: String? = null,
+        val contributors: List<String>? = null,
+        @SerialName("profile") val profile: ProfileDto? = null
     )
 
     override suspend fun submitReport(
@@ -1075,7 +1221,7 @@ class SupabaseAppRepository(
                         "id", "title", "description", "report_type",
                         "status", "priority", "submitter_id",
                         "admin_response", "resolved_at", "created_at",
-                        "profiles(id, username)"
+                        "profile:profiles!submitter_id(id, username)"
                     )
                 ) {
                     filter { eq("submitter_id", userId) }
@@ -1109,7 +1255,7 @@ class SupabaseAppRepository(
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            emptyList()
+            throw e
         }
     }
 
@@ -1125,7 +1271,7 @@ class SupabaseAppRepository(
         @SerialName("admin_response") val adminResponse: String? = null,
         @SerialName("resolved_at") val resolvedAt: String? = null,
         @SerialName("created_at") val createdAt: String? = null,
-        @SerialName("profiles") val profile: ProfileDto? = null
+        @SerialName("profile") val profile: ProfileDto? = null
     )
 
     override suspend fun getPendingSubmissionPackages(): Set<String> {
@@ -1144,6 +1290,28 @@ class SupabaseAppRepository(
         } catch (_: Exception) {
             emptySet()
         }
+    }
+
+    override suspend fun approveSubmission(id: String, type: SubmissionType): Result<Unit> =
+        runCatching {
+            val table =
+                if (type == SubmissionType.LINKING) "user_linking_submissions" else "user_submissions"
+            supabase.postgrest.from(table).update(mapOf("status" to "APPROVED")) {
+                filter { eq("id", id) }
+            }
+        }
+
+    override suspend fun rejectSubmission(
+        id: String,
+        type: SubmissionType,
+        reason: String
+    ): Result<Unit> = runCatching {
+        val table =
+            if (type == SubmissionType.LINKING) "user_linking_submissions" else "user_submissions"
+        supabase.postgrest.from(table)
+            .update(mapOf("status" to "REJECTED", "rejection_reason" to reason)) {
+                filter { eq("id", id) }
+            }
     }
 
     @Serializable

@@ -72,9 +72,12 @@ interface AppRepository {
         repoUrl: String,
         fdroidId: String,
         license: String,
-        alternatives: List<String> = emptyList(),
-        category: String = ""
-    ): Result<Unit>
+        alternatives: List<String>,
+        category: String,
+        originalSubmitterId: String?,
+        contributors: List<String>?,
+        submissionType: SubmissionType? = null
+        ): Result<Unit>
 
     suspend fun castVote(
         packageName: String,
@@ -94,6 +97,7 @@ interface AppRepository {
     ): Result<Unit>
 
     suspend fun getMySubmissions(userId: String): List<Submission>
+    suspend fun getAllPendingSubmissions(): List<Submission>
 
     suspend fun submitFeedback(
         packageName: String,
@@ -118,6 +122,9 @@ interface AppRepository {
     suspend fun getSiblingAlternatives(packageName: String): List<Alternative>?
 
     suspend fun getPendingSubmissionPackages(): Set<String>
+
+    suspend fun approveSubmission(id: String, type: SubmissionType): Result<Unit>
+    suspend fun rejectSubmission(id: String, type: SubmissionType, reason: String): Result<Unit>
 
     suspend fun submitScanStats(
         deviceId: String,

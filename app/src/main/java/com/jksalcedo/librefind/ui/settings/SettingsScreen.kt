@@ -20,6 +20,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Feedback
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.History
@@ -31,7 +32,7 @@ import androidx.compose.material.icons.filled.VolunteerActivism
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
+import com.jksalcedo.librefind.ui.common.LibreFindLoadingIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -63,7 +64,7 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
 // ─────────────────────────────────────────────────────────────────────────
-// Reusable Modern Preference Composables (Standard Android Settings Style)
+// Reusable Modern Preference Composables
 // ─────────────────────────────────────────────────────────────────────────
 
 @Composable
@@ -174,11 +175,7 @@ fun PreferenceAction(
                 }
             ) {
                 if (isLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(16.dp),
-                        strokeWidth = 2.dp,
-                        color = if (isDestructive) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimary
-                    )
+                    LibreFindLoadingIndicator(size = 32)
                 } else {
                     Text(actionLabel)
                 }
@@ -197,6 +194,7 @@ fun SettingsScreen(
     onBackClick: () -> Unit,
     onReportClick: () -> Unit = {},
     onMyReportsClick: () -> Unit = {},
+    onCommunityClick: () -> Unit = {},
     onPrivacyPolicyClick: () -> Unit = {},
     viewModel: SettingsViewModel = koinViewModel()
 ) {
@@ -223,6 +221,7 @@ fun SettingsScreen(
         onBackClick = onBackClick,
         onReportClick = onReportClick,
         onMyReportsClick = onMyReportsClick,
+        onCommunityClick = onCommunityClick,
         onPrivacyPolicyClick = onPrivacyPolicyClick,
         onResetTutorial = { preferencesManager.resetTutorial() },
         onOpenUri = { uriHandler.openUri(it) },
@@ -252,6 +251,7 @@ fun SettingsContent(
     onBackClick: () -> Unit,
     onReportClick: () -> Unit,
     onMyReportsClick: () -> Unit,
+    onCommunityClick: () -> Unit,
     onPrivacyPolicyClick: () -> Unit,
     onResetTutorial: () -> Unit,
     onOpenUri: (String) -> Unit,
@@ -355,6 +355,16 @@ fun SettingsContent(
                 title = stringResource(R.string.settings_join_community),
                 icon = Icons.Default.Group,
                 onClick = { onOpenUri("https://t.me/librefind") }
+            )
+            HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+
+            // Community Moderation
+            PreferenceCategory(stringResource(R.string.settings_community_title))
+            PreferenceItem(
+                title = stringResource(R.string.settings_browse_pending_title),
+                subtitle = stringResource(R.string.settings_browse_pending_desc),
+                icon = Icons.Default.Edit,
+                onClick = onCommunityClick
             )
             HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
@@ -655,10 +665,7 @@ private fun DeleteAccountDialog(
                 enabled = !state.isDeletingAccount
             ) {
                 if (state.isDeletingAccount) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.width(16.dp),
-                        strokeWidth = 2.dp
-                    )
+                    LibreFindLoadingIndicator(size = 40)
                 } else {
                     Text(stringResource(R.string.settings_delete))
                 }
@@ -725,7 +732,7 @@ private fun UpdateDialogs(
                 title = { Text(stringResource(R.string.settings_checking_updates)) },
                 text = {
                     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator()
+                        LibreFindLoadingIndicator()
                     }
                 },
                 confirmButton = {}
@@ -824,6 +831,7 @@ fun SettingsScreenPreview() {
         onBackClick = {},
         onReportClick = {},
         onMyReportsClick = {},
+        onCommunityClick = {},
         onPrivacyPolicyClick = {},
         onResetTutorial = {},
         onOpenUri = {},

@@ -10,7 +10,11 @@ data class Submission(
     val submittedAt: Long = System.currentTimeMillis(),
     val status: SubmissionStatus = SubmissionStatus.PENDING,
     val rejectionReason: String? = null,
-    val linkedAlternatives: List<String> = emptyList()
+    val category: String? = null,
+    val linkedAlternatives: List<String> = emptyList(),
+    val lastEditedBy: String? = null,
+    val lastEditedAt: Long? = null,
+    val contributors: List<String> = emptyList()
 )
 
 enum class SubmissionType { NEW_ALTERNATIVE, NEW_PROPRIETARY, LINKING }

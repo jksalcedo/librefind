@@ -1,6 +1,0 @@
-0.22.0
-
-- Added support for pre-release updates in the auto-updater
-- Added a toggle in Settings to opt-in to experimental updates
-- Added cache management option
-- Improved settings screen

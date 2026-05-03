@@ -25,6 +25,7 @@ import com.jksalcedo.librefind.domain.usecase.ScanInventoryUseCase
 import com.jksalcedo.librefind.domain.usecase.SubmitProposalUseCase
 import com.jksalcedo.librefind.domain.usecase.UpdateSubmissionUseCase
 import com.jksalcedo.librefind.ui.auth.AuthViewModel
+import com.jksalcedo.librefind.ui.community.CommunitySubmissionsViewModel
 import com.jksalcedo.librefind.ui.correction.SuggestCorrectionViewModel
 import com.jksalcedo.librefind.ui.dashboard.DashboardViewModel
 import com.jksalcedo.librefind.ui.details.AlternativeDetailViewModel
@@ -134,6 +135,7 @@ val viewModelModule = module {
     viewModel { AuthViewModel(get()) }
     viewModel { SubmitViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { MySubmissionsViewModel(get(), get()) }
+    viewModel { CommunitySubmissionsViewModel(get()) }
     viewModel { IgnoredAppsViewModel(get(), get()) }
     viewModel {
         SettingsViewModel(
