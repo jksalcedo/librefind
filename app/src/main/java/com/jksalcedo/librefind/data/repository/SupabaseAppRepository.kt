@@ -695,7 +695,7 @@ class SupabaseAppRepository(
                             "last_edited_at",
                             "contributors",
                             "alternatives",
-                            "profile:profiles!submitter_id(id, username)"
+                            "profile:profiles!fk_submissions_profiles(id, username)"
                         )
                     ) {
                         filter { eq("submitter_id", userId) }
@@ -716,7 +716,7 @@ class SupabaseAppRepository(
                             "last_edited_by",
                             "last_edited_at",
                             "contributors",
-                            "profile:profiles!submitter_id(id, username)"
+                            "profile:profiles!user_linking_submissions_submitter_id_fkey(id, username)"
                         )
                     ) {
                         filter { eq("submitter_id", userId) }
@@ -756,11 +756,12 @@ class SupabaseAppRepository(
                             "last_edited_at",
                             "contributors",
                             "alternatives",
-                            "profile:profiles!submitter_id(id, username)"
+                            "profile:profiles!fk_submissions_profiles(id, username)",
+                            // Join editor profile so UI can show username instead of uuid
+                            "editor_profile:profiles!last_edited_by(id, username)"
                         )
                     ) {
                         filter { eq("status", "PENDING") }
-                        // Prefer recently edited submissions for moderation.
                         order("last_edited_at", Order.DESCENDING)
                         order("created_at", Order.DESCENDING)
                     }.decodeList<UserSubmissionWithProfileDto>()
@@ -780,8 +781,8 @@ class SupabaseAppRepository(
                             "last_edited_by",
                             "last_edited_at",
                             "contributors",
-                            // Same reasoning as above: keep it a left join.
-                            "profile:profiles(id, username)"
+                            "profile:profiles!user_linking_submissions_submitter_id_fkey(id, username)",
+                            "editor_profile:profiles!last_edited_by(id, username)"
                         )
                     ) {
                         filter { eq("status", "PENDING") }
@@ -836,7 +837,8 @@ class SupabaseAppRepository(
                 rejectionReason = dto.rejectionReason,
                 category = dto.category,
                 linkedAlternatives = dto.alternatives ?: emptyList(),
-                lastEditedBy = dto.lastEditedBy,
+                // Prefer a human-friendly username for display; fall back to UUID if profile is hidden.
+                lastEditedBy = dto.editorProfile?.username ?: dto.lastEditedBy,
                 lastEditedAt = dto.lastEditedAt?.let { parseTimestamp(it) },
                 contributors = dto.contributors ?: emptyList()
             )
@@ -864,7 +866,7 @@ class SupabaseAppRepository(
                 },
                 rejectionReason = dto.rejectionReason,
                 linkedAlternatives = dto.alternatives ?: emptyList(),
-                lastEditedBy = dto.lastEditedBy,
+                lastEditedBy = dto.editorProfile?.username ?: dto.lastEditedBy,
                 lastEditedAt = dto.lastEditedAt?.let { parseTimestamp(it) },
                 contributors = dto.contributors ?: emptyList()
             )
@@ -1178,7 +1180,8 @@ class SupabaseAppRepository(
         val contributors: List<String>? = null,
         val category: String? = null,
         val alternatives: List<String>? = null,
-        @SerialName("profile") val profile: ProfileDto? = null
+        @SerialName("profile") val profile: ProfileDto? = null,
+        @SerialName("editor_profile") val editorProfile: ProfileDto? = null
     )
 
     @Serializable
@@ -1193,7 +1196,8 @@ class SupabaseAppRepository(
         @SerialName("last_edited_by") val lastEditedBy: String? = null,
         @SerialName("last_edited_at") val lastEditedAt: String? = null,
         val contributors: List<String>? = null,
-        @SerialName("profile") val profile: ProfileDto? = null
+        @SerialName("profile") val profile: ProfileDto? = null,
+        @SerialName("editor_profile") val editorProfile: ProfileDto? = null
     )
 
     override suspend fun submitReport(

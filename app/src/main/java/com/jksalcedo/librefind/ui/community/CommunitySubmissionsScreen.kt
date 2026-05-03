@@ -62,10 +62,10 @@ fun CommunitySubmissionsScreen(
                 state.submissions
             } else {
                 state.submissions.filter { submission ->
-                    submission.submittedApp.name.contains(state.searchQuery, ignoreCase = true) ||
-                            submission.submittedApp.packageName.contains(state.searchQuery, ignoreCase = true) ||
-                            submission.submitterUsername.contains(state.searchQuery, ignoreCase = true) ||
-                            submission.proprietaryPackages.contains(state.searchQuery, ignoreCase = true)
+            submission.submittedApp.name.contains(state.searchQuery, ignoreCase = true) ||
+                submission.submittedApp.packageName.contains(state.searchQuery, ignoreCase = true) ||
+                submission.proprietaryPackages.contains(state.searchQuery, ignoreCase = true) ||
+                submission.submitterUsername.contains(state.searchQuery, ignoreCase = true)
                 }
             }
         }
