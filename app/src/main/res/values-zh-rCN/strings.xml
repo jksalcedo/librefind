@@ -151,7 +151,7 @@
     <string name="settings_title">设置</string>
     <string name="settings_help">帮助</string>
     <string name="settings_reset_tutorial">重置教程</string>
-    <string name="settings_feedback">反馈与社区</string>
+    <string name="settings_feedback">反馈&amp; 与社区</string>
     <string name="settings_report_issue">报告问题 / 建议</string>
     <string name="settings_my_reports">我的报告</string>
     <string name="settings_github_issues">GitHub Issues</string>
@@ -232,7 +232,7 @@
     <string name="privacy_section_2_desc">我们将收集的数据用于以下目的：</string>
     <string name="privacy_bullet_provide_service">提供服务：计算您的\"自主性评分\"并在不同设备间同步您的偏好。</string>
     <string name="privacy_bullet_improve_service">改进服务：您的提交有助于我们识别需要 FOSS 替代方案的专有应用。</string>
-    <string name="privacy_bullet_security">安全与认证：您的邮箱和密码仅用于保护您的账号安全。</string>
+    <string name="privacy_bullet_security">安全&amp; 与认证：您的邮箱和密码仅用于保护您的账号安全。</string>
     <string name="privacy_bullet_community">社区功能：为防止应用推荐中的投票操纵（垃圾信息）。</string>
     <string name="privacy_section_3">3. 第三方服务</string>
     <string name="privacy_section_3_desc">我们使用可信赖的第三方服务来运营我们的基础设施。我们不出售您的数据。我们不会为广告目的与第三方共享您的数据。</string>
@@ -348,12 +348,12 @@
     <string name="report_desc_placeholder">详细描述问题或建议…</string>
     <string name="report_priority_label">优先级</string>
     <string name="report_submit_button">提交报告</string>
-    <string name="web_submission">Web Submission</string>
+    <string name="web_submission">网络提交</string>
     <string name="status_pwa">渐进式 Web 应用</string>
     <string name="settings_clearing">Clearing...</string>
     <!-- Community Moderation -->
-    <string name="settings_community_title">Community</string>
-    <string name="settings_browse_pending_title">Browse Pending Submissions</string>
+    <string name="settings_community_title">社区</string>
+    <string name="settings_browse_pending_title">浏览待处理的提交内容</string>
     <string name="settings_browse_pending_desc">Help moderate community contributions.</string>
     <string name="community_submissions_title">Pending Submissions</string>
     <string name="community_submissions_empty">No pending submissions found.</string>
