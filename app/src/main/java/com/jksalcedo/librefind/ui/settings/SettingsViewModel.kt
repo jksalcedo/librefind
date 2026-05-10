@@ -155,17 +155,18 @@ class SettingsViewModel(
                     showDeleteAccountConfirmation = false
                 )
             }
-            try {
-                authRepository.signOut()
-                _state.update { it.copy(isDeletingAccount = false, isAccountDeleted = true) }
-            } catch (e: Exception) {
-                _state.update {
-                    it.copy(
-                        isDeletingAccount = false,
-                        deleteAccountError = e.message ?: "Failed to delete account"
-                    )
+            authRepository.deleteAccount()
+                .onSuccess {
+                    _state.update { it.copy(isDeletingAccount = false, isAccountDeleted = true) }
                 }
-            }
+                .onFailure { e ->
+                    _state.update {
+                        it.copy(
+                            isDeletingAccount = false,
+                            deleteAccountError = e.message ?: "Failed to delete account"
+                        )
+                    }
+                }
         }
     }
 
