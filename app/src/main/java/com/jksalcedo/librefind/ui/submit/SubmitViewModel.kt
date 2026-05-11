@@ -179,7 +179,7 @@ class SubmitViewModel(
                 val duplicateStatus = appRepository.checkDuplicateApp(packageName)
                 if (duplicateStatus != DuplicateStatus.NONE) {
                     val warning = when (duplicateStatus) {
-                        DuplicateStatus.APPROVED_SOLUTION -> "This app is already an approved FOSS app."
+                        DuplicateStatus.APPROVED_SOLUTION -> "This app is already an approved FOSS app. Use 'Link App' to associate it with a proprietary app."
                         DuplicateStatus.APPROVED_TARGET -> "This app is already an approved proprietary target."
                         DuplicateStatus.PENDING -> "This app is already pending review."
                         else -> "Duplicate submission."
@@ -353,7 +353,7 @@ class SubmitViewModel(
 
             val duplicateStatus = appRepository.checkDuplicateApp(packageName)
             val warning = when (duplicateStatus) {
-                DuplicateStatus.APPROVED_SOLUTION -> "This app is already an approved FOSS app."
+                DuplicateStatus.APPROVED_SOLUTION -> "This app is already an approved FOSS app. Use 'Link App' to associate it with a proprietary app."
                 DuplicateStatus.APPROVED_TARGET -> "This app is already an approved proprietary target."
                 DuplicateStatus.PENDING -> "This app is already pending review."
                 DuplicateStatus.NONE -> null
