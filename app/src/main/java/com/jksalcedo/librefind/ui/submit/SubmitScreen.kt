@@ -149,6 +149,7 @@ fun SubmitContent(
     val defaultType = when {
         prefilledType == "foss" -> SubmissionType.NEW_ALTERNATIVE
         prefilledType == "proprietary" -> SubmissionType.NEW_PROPRIETARY
+        prefilledType == "link" -> SubmissionType.LINKING
         isPrefilled -> SubmissionType.NEW_PROPRIETARY
         else -> SubmissionType.NEW_ALTERNATIVE
     }
@@ -221,9 +222,13 @@ fun SubmitContent(
         }
     }
 
-    LaunchedEffect(prefilledProprietaryTarget) {
-        if (!prefilledProprietaryTarget.isNullOrBlank() && type == SubmissionType.NEW_ALTERNATIVE) {
-            selectedProprietaryPackages = selectedProprietaryPackages + prefilledProprietaryTarget
+    LaunchedEffect(prefilledProprietaryTarget, type) {
+        if (!prefilledProprietaryTarget.isNullOrBlank()) {
+            if (type == SubmissionType.NEW_ALTERNATIVE) {
+                selectedProprietaryPackages = selectedProprietaryPackages + prefilledProprietaryTarget
+            } else if (type == SubmissionType.LINKING) {
+                onAddTargets(setOf(prefilledProprietaryTarget))
+            }
         }
     }
 
