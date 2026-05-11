@@ -194,6 +194,18 @@
     <string name="settings_on">On</string>
     <string name="settings_off">Off</string>
     <string name="settings_error">Fehler</string>
+    <!-- Auto-Updater -->
+    <string name="settings_check_updates">Check for Updates</string>
+    <string name="settings_checking_updates">Checking for updates…</string>
+    <string name="settings_up_to_date">App is up to date</string>
+    <string name="settings_update_available_title">Update Available</string>
+    <string name="settings_update_available_message">A new version (%1$s) of LibreFind is available. Would you like to download and install it?</string>
+    <string name="settings_download_install">Download &amp; Install</string>
+    <string name="settings_update_error">Failed to check for updates: %1$s</string>
+    <string name="settings_changelog_title">What\'s New</string>
+    <string name="settings_include_prereleases_title">Experimental Updates</string>
+    <string name="settings_include_prereleases_label">Include pre-releases</string>
+    <string name="settings_include_prereleases_desc">Receive updates for alpha, beta, and RC versions.</string>
     <!-- Ignored Apps Screen -->
     <string name="ignored_apps_title">Ignorierte Apps</string>
     <string name="ignored_apps_empty">Keine ignorierten Apps. \nDrücke lang auf eine beliebige App in der Liste → drücke Ignorieren.</string>
@@ -338,4 +350,16 @@
     <string name="report_submit_button">Meldung einreichen</string>
     <string name="web_submission">Web-Vorlage</string>
     <string name="status_pwa">PWA</string>
+    <string name="settings_clearing">Clearing...</string>
+    <!-- Community Moderation -->
+    <string name="settings_community_title">Community</string>
+    <string name="settings_browse_pending_title">Browse Pending Submissions</string>
+    <string name="settings_browse_pending_desc">Help moderate community contributions.</string>
+    <string name="community_submissions_title">Pending Submissions</string>
+    <string name="community_submissions_empty">No pending submissions found.</string>
+    <string name="action_approve">Approve</string>
+    <string name="action_reject">Reject</string>
+    <string name="reject_reason_title">Reject Submission</string>
+    <string name="reject_reason_label">Reason for rejection</string>
+    <string name="community_suggest_correction">Suggest Correction</string>
 </resources>
