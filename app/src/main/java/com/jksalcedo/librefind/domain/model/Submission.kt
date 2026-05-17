@@ -14,7 +14,10 @@ data class Submission(
     val linkedAlternatives: List<String> = emptyList(),
     val lastEditedBy: String? = null,
     val lastEditedAt: Long? = null,
-    val contributors: List<String> = emptyList()
+    val contributors: List<String> = emptyList(),
+    val upvotes: Int = 0,
+    val downvotes: Int = 0,
+    val userVote: Int? = null
 )
 
 enum class SubmissionType { NEW_ALTERNATIVE, NEW_PROPRIETARY, LINKING }

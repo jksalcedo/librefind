@@ -41,6 +41,7 @@ foundation = "1.10.4"
 # Supabase
 supabase = "3.4.1"
 ktor = "3.4.0"
+freedroidwarn = "V1.13"
 
 # Testing
 mockk = "1.13.13"
@@ -100,6 +101,7 @@ androidx-compose-foundation = { group = "androidx.compose.foundation", name = "f
 supabase-bom = { group = "io.github.jan-tennert.supabase", name = "bom", version.ref = "supabase" }
 supabase-postgrest = { group = "io.github.jan-tennert.supabase", name = "postgrest-kt" }
 supabase-auth = { group = "io.github.jan-tennert.supabase", name = "auth-kt" }
+freedroidwarn = { group = "com.github.woheller69", name = "FreeDroidWarn", version.ref = "freedroidwarn" }
 
 # Ktor
 ktor-client-android = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor" }

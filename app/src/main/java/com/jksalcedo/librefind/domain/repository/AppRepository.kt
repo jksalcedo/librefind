@@ -97,7 +97,7 @@ interface AppRepository {
     ): Result<Unit>
 
     suspend fun getMySubmissions(userId: String): List<Submission>
-    suspend fun getAllPendingSubmissions(): List<Submission>
+    suspend fun getAllPendingSubmissions(forceRefresh: Boolean = false): List<Submission>
 
     suspend fun submitFeedback(
         packageName: String,
@@ -147,4 +147,17 @@ interface AppRepository {
         correctionValue: String,
         description: String
     ): Result<Unit>
+
+    suspend fun castSubmissionVote(
+        submissionId: String,
+        submissionTable: String,
+        vote: Int,
+        reason: String? = null,
+        reasonDetail: String? = null
+    ): Result<Unit>
+
+    suspend fun getSubmissionVoteCounts(
+        submissionIds: List<String>,
+        forceRefresh: Boolean = false
+    ): Map<String, com.jksalcedo.librefind.data.remote.model.SubmissionVoteAggregate>
 }

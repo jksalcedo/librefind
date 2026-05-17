@@ -110,7 +110,7 @@ fun NavGraph(
                 onAddAlternativeClick = { _, pkg ->
                     if (authState.isSignedIn) {
                         navController.navigate(
-                            Route.Submit.createRoute(type = "foss", proprietaryTarget = pkg)
+                            Route.Submit.createRoute(type = "link", proprietaryTarget = pkg)
                         )
                     } else {
                         navController.navigate(Route.Auth.route)

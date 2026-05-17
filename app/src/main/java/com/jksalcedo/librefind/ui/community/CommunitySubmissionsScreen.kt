@@ -10,16 +10,23 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.ThumbDown
+import androidx.compose.material.icons.filled.ThumbUp
+import androidx.compose.material.icons.outlined.ThumbDown
+import androidx.compose.material.icons.outlined.ThumbUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -44,6 +51,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.jksalcedo.librefind.R
 import com.jksalcedo.librefind.domain.model.Submission
+import com.jksalcedo.librefind.domain.model.SubmissionType
 import com.jksalcedo.librefind.ui.common.FullScreenLoading
 import org.koin.androidx.compose.koinViewModel
 
@@ -56,23 +64,27 @@ fun CommunitySubmissionsScreen(
 ) {
     val state by viewModel.uiState.collectAsState()
 
-    val filteredSubmissions by remember(state.submissions, state.searchQuery) {
+    val filteredSubmissions by remember(state.submissions, state.searchQuery, state.filterType) {
         derivedStateOf {
-            if (state.searchQuery.isBlank()) {
-                state.submissions
-            } else {
-                state.submissions.filter { submission ->
-            submission.submittedApp.name.contains(state.searchQuery, ignoreCase = true) ||
-                submission.submittedApp.packageName.contains(state.searchQuery, ignoreCase = true) ||
-                submission.proprietaryPackages.contains(state.searchQuery, ignoreCase = true) ||
-                submission.submitterUsername.contains(state.searchQuery, ignoreCase = true)
+            var result = state.submissions
+            if (state.filterType != null) {
+                result = result.filter { it.type == state.filterType }
+            }
+            if (state.searchQuery.isNotBlank()) {
+                result = result.filter { submission ->
+                    submission.submittedApp.name.contains(state.searchQuery, ignoreCase = true) ||
+                    submission.submittedApp.packageName.contains(state.searchQuery, ignoreCase = true) ||
+                    submission.proprietaryPackages.contains(state.searchQuery, ignoreCase = true) ||
+                    submission.submitterUsername.contains(state.searchQuery, ignoreCase = true)
                 }
             }
+            result
         }
     }
 
     var submissionToReject by remember { mutableStateOf<Submission?>(null) }
     var rejectionReason by remember { mutableStateOf("") }
+    var submissionToDownvote by remember { mutableStateOf<Submission?>(null) }
 
     if (submissionToReject != null) {
         Dialog(onDismissRequest = { submissionToReject = null }) {
@@ -120,6 +132,21 @@ fun CommunitySubmissionsScreen(
                 }
             }
         }
+    }
+
+    submissionToDownvote?.let { submission ->
+        DownvoteSheet(
+            onDismiss = { submissionToDownvote = null },
+            onConfirm = { reason, detail ->
+                viewModel.castVote(
+                    submission = submission,
+                    vote = -1,
+                    reason = reason,
+                    reasonDetail = detail
+                )
+                submissionToDownvote = null
+            }
+        )
     }
 
     Scaffold(
@@ -189,21 +216,50 @@ fun CommunitySubmissionsScreen(
                 }
 
                 else -> {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = androidx.compose.foundation.layout.PaddingValues(
-                            start = 16.dp,
-                            top = 16.dp,
-                            end = 16.dp,
-                            bottom = 16.dp
-                        ),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    androidx.compose.material3.pulltorefresh.PullToRefreshBox(
+                        isRefreshing = state.isRefreshing,
+                        onRefresh = { viewModel.loadSubmissions(forceRefresh = true) },
+                        modifier = Modifier.fillMaxSize()
                     ) {
-                        items(filteredSubmissions) { submission ->
-                            CommunitySubmissionItem(
-                                submission = submission,
-                                onClick = { onSubmissionClick(submission.id) }
-                            )
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize(),
+                            contentPadding = androidx.compose.foundation.layout.PaddingValues(
+                                start = 16.dp,
+                                top = 8.dp,
+                                end = 16.dp,
+                                bottom = 16.dp
+                            ),
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            item {
+                                LazyRow(
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                    modifier = Modifier.padding(bottom = 8.dp)
+                                ) {
+                                    item {
+                                        FilterChip(
+                                            selected = state.filterType == null,
+                                            onClick = { viewModel.setFilterType(null) },
+                                            label = { Text("All") }
+                                        )
+                                    }
+                                    items(SubmissionType.entries) { type ->
+                                        FilterChip(
+                                            selected = state.filterType == type,
+                                            onClick = { viewModel.setFilterType(if (state.filterType == type) null else type) },
+                                            label = { Text(type.name.replace("_", " ")) }
+                                        )
+                                    }
+                                }
+                            }
+                            items(filteredSubmissions) { submission ->
+                                CommunitySubmissionItem(
+                                    submission = submission,
+                                    onClick = { onSubmissionClick(submission.id) },
+                                    onUpvote = { viewModel.castVote(submission, 1) },
+                                    onDownvote = { submissionToDownvote = submission }
+                                )
+                            }
                         }
                     }
                 }
@@ -215,7 +271,9 @@ fun CommunitySubmissionsScreen(
 @Composable
 fun CommunitySubmissionItem(
     submission: Submission,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onUpvote: () -> Unit,
+    onDownvote: () -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -248,11 +306,52 @@ fun CommunitySubmissionItem(
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = submission.type.name.replace("_", " "),
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.primary
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = submission.type.name.replace("_", " "),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    IconButton(onClick = onUpvote, modifier = Modifier.size(36.dp)) {
+                        Icon(
+                            imageVector = if (submission.userVote == 1) Icons.Filled.ThumbUp
+                                         else Icons.Outlined.ThumbUp,
+                            contentDescription = stringResource(R.string.submission_upvote),
+                            tint = if (submission.userVote == 1) MaterialTheme.colorScheme.primary
+                                   else MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+                    Text(
+                        text = "${submission.upvotes}",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    IconButton(onClick = onDownvote, modifier = Modifier.size(36.dp)) {
+                        Icon(
+                            imageVector = if (submission.userVote == -1) Icons.Filled.ThumbDown
+                                          else Icons.Outlined.ThumbDown,
+                            contentDescription = stringResource(R.string.submission_downvote),
+                            tint = if (submission.userVote == -1) MaterialTheme.colorScheme.error
+                                   else MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+                    Text(
+                        text = "${submission.downvotes}",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
         }
     }
 }

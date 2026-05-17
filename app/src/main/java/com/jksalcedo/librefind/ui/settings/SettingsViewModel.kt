@@ -36,14 +36,18 @@ data class SettingsState(
     val latestUpdate: AppUpdate? = null,
     val updateError: String? = null,
     val includePrereleases: Boolean = false,
-    val isLoggedIn: Boolean = false
+    val isLoggedIn: Boolean = false,
+    val notificationsEnabled: Boolean = true,
+    val notificationIntervalMins: Long = 60L
 )
 
 class SettingsViewModel(
+    private val appContext: android.content.Context,
     private val preferencesManager: PreferencesManager,
     private val authRepository: AuthRepository,
     private val updateRepository: UpdateRepository,
-    private val cacheRepository: CacheRepository
+    private val cacheRepository: CacheRepository,
+    private val notificationPrefs: com.jksalcedo.librefind.data.local.NotificationPrefsDataStore
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(SettingsState())
@@ -70,10 +74,49 @@ class SettingsViewModel(
                 _state.update { it.copy(includePrereleases = enabled) }
             }
         }
+        viewModelScope.launch {
+            notificationPrefs.notificationsEnabledFlow.collect { enabled ->
+                _state.update { it.copy(notificationsEnabled = enabled) }
+            }
+        }
+        viewModelScope.launch {
+            notificationPrefs.notificationIntervalFlow.collect { interval ->
+                _state.update { it.copy(notificationIntervalMins = interval) }
+            }
+        }
     }
 
     fun setIncludePrereleases(enabled: Boolean) {
         preferencesManager.setIncludePrereleases(enabled)
+    }
+
+    fun setNotificationsEnabled(enabled: Boolean) {
+        viewModelScope.launch {
+            notificationPrefs.setNotificationsEnabled(enabled)
+            rescheduleNotificationWorker()
+        }
+    }
+
+    fun setNotificationInterval(minutes: Long) {
+        viewModelScope.launch {
+            notificationPrefs.setNotificationInterval(minutes)
+            rescheduleNotificationWorker()
+        }
+    }
+
+    private fun rescheduleNotificationWorker() {
+        val interval = _state.value.notificationIntervalMins
+        val constraints = androidx.work.Constraints.Builder()
+            .setRequiredNetworkType(androidx.work.NetworkType.CONNECTED)
+            .build()
+        val workRequest = androidx.work.PeriodicWorkRequestBuilder<com.jksalcedo.librefind.worker.NotificationWorker>(interval, java.util.concurrent.TimeUnit.MINUTES)
+            .setConstraints(constraints)
+            .build()
+        androidx.work.WorkManager.getInstance(appContext).enqueueUniquePeriodicWork(
+            "notification_check",
+            androidx.work.ExistingPeriodicWorkPolicy.UPDATE,
+            workRequest
+        )
     }
 
     fun calculateCacheSize() {
@@ -155,17 +198,18 @@ class SettingsViewModel(
                     showDeleteAccountConfirmation = false
                 )
             }
-            try {
-                authRepository.signOut()
-                _state.update { it.copy(isDeletingAccount = false, isAccountDeleted = true) }
-            } catch (e: Exception) {
-                _state.update {
-                    it.copy(
-                        isDeletingAccount = false,
-                        deleteAccountError = e.message ?: "Failed to delete account"
-                    )
+            authRepository.deleteAccount()
+                .onSuccess {
+                    _state.update { it.copy(isDeletingAccount = false, isAccountDeleted = true) }
                 }
-            }
+                .onFailure { e ->
+                    _state.update {
+                        it.copy(
+                            isDeletingAccount = false,
+                            deleteAccountError = e.message ?: "Failed to delete account"
+                        )
+                    }
+                }
         }
     }
 

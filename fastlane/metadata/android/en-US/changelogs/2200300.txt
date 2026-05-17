@@ -1,0 +1,8 @@
+- Fixed an issue where accounts were not being properly deleted
+- Added FreeDroidWarn
+- Improved "Add Alternative" flow and added duplicate warnings
+- Added upvote and downvote buttons to pending community submissions
+- Added pull-to-refresh and caching to community submissions
+- Added periodic background notifications
+- Added category filters for community pending submissions
+- Added user submission stats tracking to the Profile view

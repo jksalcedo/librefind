@@ -9,6 +9,8 @@ import com.jksalcedo.librefind.data.remote.model.AppScanStatsDto
 import com.jksalcedo.librefind.data.remote.model.MatchVoteDto
 import com.jksalcedo.librefind.data.remote.model.ProfileDto
 import com.jksalcedo.librefind.data.remote.model.SolutionDto
+import com.jksalcedo.librefind.data.remote.model.SubmissionVoteAggregate
+import com.jksalcedo.librefind.data.remote.model.SubmissionVoteDto
 import com.jksalcedo.librefind.data.remote.model.UserLinkingSubmissionsDto
 import com.jksalcedo.librefind.data.remote.model.UserReportDto
 import com.jksalcedo.librefind.data.remote.model.UserSubmissionDto
@@ -730,9 +732,18 @@ class SupabaseAppRepository(
         }
     }
 
-    override suspend fun getAllPendingSubmissions(): List<Submission> {
+    private var cachedPendingSubmissions: List<Submission>? = null
+    private var lastPendingSubmissionsFetchTime: Long = 0
+    private val CACHE_DURATION_MS = 10 * 60 * 1000L // 10 minutes
+
+    override suspend fun getAllPendingSubmissions(forceRefresh: Boolean): List<Submission> {
+        val currentTime = System.currentTimeMillis()
+        if (!forceRefresh && cachedPendingSubmissions != null && (currentTime - lastPendingSubmissionsFetchTime < CACHE_DURATION_MS)) {
+            return cachedPendingSubmissions!!
+        }
+
         return try {
-            // 1. Fetch standard pending submissions
+            // Fetch standard pending submissions
             val standardDtos =
                 supabase.postgrest.from("user_submissions")
                     .select(
@@ -766,7 +777,7 @@ class SupabaseAppRepository(
                         order("created_at", Order.DESCENDING)
                     }.decodeList<UserSubmissionWithProfileDto>()
 
-            // 2. Fetch linking pending submissions
+            // Fetch linking pending submissions
             val linkingDtos =
                 supabase.postgrest.from("user_linking_submissions")
                     .select(
@@ -790,8 +801,10 @@ class SupabaseAppRepository(
                         order("created_at", Order.DESCENDING)
                     }.decodeList<UserLinkingSubmissionWithProfileDto>()
 
-            mapDtosToSubmissions(standardDtos, linkingDtos)
-
+            val mapped = mapDtosToSubmissions(standardDtos, linkingDtos)
+            cachedPendingSubmissions = mapped
+            lastPendingSubmissionsFetchTime = currentTime
+            mapped
         } catch (e: Exception) {
             e.printStackTrace()
             throw e
@@ -1303,6 +1316,7 @@ class SupabaseAppRepository(
             supabase.postgrest.from(table).update(mapOf("status" to "APPROVED")) {
                 filter { eq("id", id) }
             }
+            lastPendingSubmissionsFetchTime = 0 // Invalidate cache
         }
 
     override suspend fun rejectSubmission(
@@ -1316,6 +1330,7 @@ class SupabaseAppRepository(
             .update(mapOf("status" to "REJECTED", "rejection_reason" to reason)) {
                 filter { eq("id", id) }
             }
+        lastPendingSubmissionsFetchTime = 0 // Invalidate cache
     }
 
     @Serializable
@@ -1407,4 +1422,97 @@ class SupabaseAppRepository(
         @SerialName("description") val description: String,
         @SerialName("status") val status: String = "PENDING"
     )
+
+    override suspend fun castSubmissionVote(
+        submissionId: String,
+        submissionTable: String,
+        vote: Int,
+        reason: String?,
+        reasonDetail: String?
+    ): Result<Unit> = runCatching {
+        val userId = supabase.auth.currentUserOrNull()?.id
+            ?: throw IllegalStateException("Not logged in")
+
+        if (vote == 0) {
+            supabase.postgrest.from("submission_votes").delete {
+                filter {
+                    eq("submission_id", submissionId)
+                    eq("user_id", userId)
+                }
+            }
+        } else {
+            val voteDto = SubmissionVoteDto(
+                submissionId = submissionId,
+                submissionTable = submissionTable,
+                userId = userId,
+                vote = vote.coerceIn(-1, 1),
+                reason = reason,
+                reasonDetail = reasonDetail
+            )
+            supabase.postgrest.from("submission_votes").upsert(voteDto) {
+                onConflict = "submission_id,user_id"
+                defaultToNull = false
+            }
+        }
+        lastVoteCountsFetchTime = 0 // Invalidate cache
+    }
+
+    private var cachedVoteCounts: Map<String, SubmissionVoteAggregate>? = null
+    private var lastVoteCountsFetchTime: Long = 0
+
+    override suspend fun getSubmissionVoteCounts(
+        submissionIds: List<String>,
+        forceRefresh: Boolean
+    ): Map<String, SubmissionVoteAggregate> {
+        val currentTime = System.currentTimeMillis()
+        if (!forceRefresh && cachedVoteCounts != null && (currentTime - lastVoteCountsFetchTime < CACHE_DURATION_MS)) {
+            return cachedVoteCounts!!
+        }
+
+        if (submissionIds.isEmpty()) return emptyMap()
+        return try {
+            val currentUserId = supabase.auth.currentUserOrNull()?.id
+
+            @Serializable
+            data class VoteRow(
+                @SerialName("submission_id") val submissionId: String,
+                @SerialName("user_id") val userId: String,
+                val vote: Int,
+                val reason: String? = null,
+                @SerialName("reason_detail") val reasonDetail: String? = null
+            )
+
+            val allRows = mutableListOf<VoteRow>()
+            for (chunk in submissionIds.chunked(50)) {
+                val rows = supabase.postgrest.from("submission_votes")
+                    .select(
+                        columns = Columns.list(
+                            "submission_id", "user_id", "vote", "reason", "reason_detail"
+                        )
+                    ) {
+                        filter { isIn("submission_id", chunk) }
+                    }.decodeList<VoteRow>()
+                allRows.addAll(rows)
+            }
+
+            val grouped = allRows.groupBy { it.submissionId }
+            val result = submissionIds.associateWith { id ->
+                val group = grouped[id] ?: emptyList()
+                val userRow = group.firstOrNull { it.userId == currentUserId }
+                SubmissionVoteAggregate(
+                    upvotes = group.count { it.vote == 1 },
+                    downvotes = group.count { it.vote == -1 },
+                    userVote = userRow?.vote,
+                    userReason = userRow?.reason,
+                    userReasonDetail = userRow?.reasonDetail
+                )
+            }
+            cachedVoteCounts = result
+            lastVoteCountsFetchTime = currentTime
+            result
+        } catch (e: Exception) {
+            Log.e("SupabaseAppRepo", "getSubmissionVoteCounts failed", e)
+            emptyMap()
+        }
+    }
 }

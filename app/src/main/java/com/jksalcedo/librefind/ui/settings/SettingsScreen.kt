@@ -32,7 +32,6 @@ import androidx.compose.material.icons.filled.VolunteerActivism
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import com.jksalcedo.librefind.ui.common.LibreFindLoadingIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -60,6 +59,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jksalcedo.librefind.R
 import com.jksalcedo.librefind.data.local.PreferencesManager
+import com.jksalcedo.librefind.ui.common.LibreFindLoadingIndicator
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
@@ -239,7 +239,9 @@ fun SettingsScreen(
         onCheckForUpdates = { viewModel.checkForUpdates() },
         onDownloadUpdate = { viewModel.downloadUpdate() },
         onResetUpdateStatus = { viewModel.resetUpdateStatus() },
-        onSetIncludePrereleases = { viewModel.setIncludePrereleases(it) }
+        onSetIncludePrereleases = { viewModel.setIncludePrereleases(it) },
+        onSetNotificationsEnabled = { viewModel.setNotificationsEnabled(it) },
+        onSetNotificationInterval = { viewModel.setNotificationInterval(it) }
     )
 }
 
@@ -272,7 +274,9 @@ fun SettingsContent(
     onCheckForUpdates: () -> Unit,
     onDownloadUpdate: () -> Unit,
     onResetUpdateStatus: () -> Unit,
-    onSetIncludePrereleases: (Boolean) -> Unit
+    onSetIncludePrereleases: (Boolean) -> Unit,
+    onSetNotificationsEnabled: (Boolean) -> Unit,
+    onSetNotificationInterval: (Long) -> Unit
 ) {
 
     Scaffold(
@@ -310,6 +314,53 @@ fun SettingsContent(
                     preferencesManager.setHideSystemPackages(it)
                 }
             )
+            HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+
+            // Notifications
+            PreferenceCategory("Notifications")
+            PreferenceSwitch(
+                title = "Background Notifications",
+                subtitle = "Notify me of new apps and submission updates.",
+                checked = state.notificationsEnabled,
+                onCheckedChange = onSetNotificationsEnabled
+            )
+
+            if (state.notificationsEnabled) {
+                var showIntervalDialog by remember { mutableStateOf(false) }
+                val intervalLabel = when (state.notificationIntervalMins) {
+                    15L -> "Every 15 minutes"
+                    60L -> "Every 1 hour"
+                    360L -> "Every 6 hours"
+                    1440L -> "Every 24 hours"
+                    else -> "Every ${state.notificationIntervalMins} minutes"
+                }
+
+                PreferenceItem(
+                    title = "Check Interval",
+                    subtitle = intervalLabel,
+                    icon = Icons.Default.Refresh,
+                    onClick = { showIntervalDialog = true },
+                    trailingContent = {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                )
+
+                if (showIntervalDialog) {
+                    NotificationIntervalDialog(
+                        currentInterval = state.notificationIntervalMins,
+                        onDismiss = { showIntervalDialog = false },
+                        onIntervalSelected = { newInterval ->
+                            showIntervalDialog = false
+                            onSetNotificationInterval(newInterval)
+                        }
+                    )
+                }
+            }
             HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
             // Cache Management
@@ -557,6 +608,57 @@ private fun LanguageSelectionDialog(
                         androidx.compose.material3.RadioButton(
                             selected = isSelected,
                             onClick = { onLanguageSelected(tag) }
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = label,
+                            style = MaterialTheme.typography.bodyLarge,
+                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                        )
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.settings_cancel))
+            }
+        }
+    )
+}
+
+@Composable
+private fun NotificationIntervalDialog(
+    currentInterval: Long,
+    onDismiss: () -> Unit,
+    onIntervalSelected: (Long) -> Unit
+) {
+    val intervals = listOf(
+        15L to "Every 15 minutes",
+        60L to "Every 1 hour",
+        360L to "Every 6 hours",
+        1440L to "Every 24 hours"
+    )
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Check Interval") },
+        text = {
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                intervals.forEach { (mins, label) ->
+                    val isSelected = mins == currentInterval
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { onIntervalSelected(mins) }
+                            .padding(vertical = 12.dp, horizontal = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        androidx.compose.material3.RadioButton(
+                            selected = isSelected,
+                            onClick = { onIntervalSelected(mins) }
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
@@ -849,6 +951,8 @@ fun SettingsScreenPreview() {
         onCheckForUpdates = {},
         onDownloadUpdate = {},
         onResetUpdateStatus = {},
-        onSetIncludePrereleases = {}
+        onSetIncludePrereleases = {},
+        onSetNotificationsEnabled = {},
+        onSetNotificationInterval = {}
     )
 }

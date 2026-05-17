@@ -115,10 +115,6 @@ class SupabaseAuthRepository(
 
     override suspend fun deleteAccount(): Result<Unit> = runCatching {
         supabase.postgrest.rpc("delete_account")
-        val userId = auth.currentUserOrNull()?.id ?: throw IllegalStateException("Not logged in")
-
-        auth.admin.deleteUser(userId)
-
         auth.signOut()
     }
 
@@ -146,7 +142,8 @@ class SupabaseAuthRepository(
                         }
                     } ?: System.currentTimeMillis(),
                     submissionCount = it.submissionCount,
-                    approvedCount = it.approvedCount
+                    approvedCount = it.approvedCount,
+                    rejectedCount = it.rejectedCount
                 )
             }
         } catch (e: Exception) {
