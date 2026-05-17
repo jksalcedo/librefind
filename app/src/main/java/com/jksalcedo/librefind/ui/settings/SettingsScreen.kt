@@ -952,6 +952,7 @@ fun SettingsScreenPreview() {
         onDownloadUpdate = {},
         onResetUpdateStatus = {},
         onSetIncludePrereleases = {},
-        onSetNotificationsEnabled = {}
+        onSetNotificationsEnabled = {},
+        onSetNotificationInterval = {}
     )
 }
