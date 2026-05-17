@@ -5,3 +5,4 @@
 - Downvoting opens a reason sheet (Duplicate, Wrong Category, Fake, Not Enough Info, Other) with contextual extra fields
 - Added pull-to-refresh and caching to community submissions
 - Added periodic background notifications for new apps and submission status updates (toggleable in Settings)
+- Added category filters for community pending submissions
