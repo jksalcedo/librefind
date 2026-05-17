@@ -97,7 +97,7 @@ interface AppRepository {
     ): Result<Unit>
 
     suspend fun getMySubmissions(userId: String): List<Submission>
-    suspend fun getAllPendingSubmissions(): List<Submission>
+    suspend fun getAllPendingSubmissions(forceRefresh: Boolean = false): List<Submission>
 
     suspend fun submitFeedback(
         packageName: String,
@@ -157,6 +157,7 @@ interface AppRepository {
     ): Result<Unit>
 
     suspend fun getSubmissionVoteCounts(
-        submissionIds: List<String>
+        submissionIds: List<String>,
+        forceRefresh: Boolean = false
     ): Map<String, com.jksalcedo.librefind.data.remote.model.SubmissionVoteAggregate>
 }

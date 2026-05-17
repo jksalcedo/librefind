@@ -210,23 +210,29 @@ fun CommunitySubmissionsScreen(
                 }
 
                 else -> {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = androidx.compose.foundation.layout.PaddingValues(
-                            start = 16.dp,
-                            top = 16.dp,
-                            end = 16.dp,
-                            bottom = 16.dp
-                        ),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    androidx.compose.material3.pulltorefresh.PullToRefreshBox(
+                        isRefreshing = state.isRefreshing,
+                        onRefresh = { viewModel.loadSubmissions(forceRefresh = true) },
+                        modifier = Modifier.fillMaxSize()
                     ) {
-                        items(filteredSubmissions) { submission ->
-                            CommunitySubmissionItem(
-                                submission = submission,
-                                onClick = { onSubmissionClick(submission.id) },
-                                onUpvote = { viewModel.castVote(submission, 1) },
-                                onDownvote = { submissionToDownvote = submission }
-                            )
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize(),
+                            contentPadding = androidx.compose.foundation.layout.PaddingValues(
+                                start = 16.dp,
+                                top = 16.dp,
+                                end = 16.dp,
+                                bottom = 16.dp
+                            ),
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            items(filteredSubmissions) { submission ->
+                                CommunitySubmissionItem(
+                                    submission = submission,
+                                    onClick = { onSubmissionClick(submission.id) },
+                                    onUpvote = { viewModel.castVote(submission, 1) },
+                                    onDownvote = { submissionToDownvote = submission }
+                                )
+                            }
                         }
                     }
                 }
