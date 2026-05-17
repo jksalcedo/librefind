@@ -41,7 +41,7 @@ object NotificationHelper {
         )
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.mipmap.ic_launcher) // Assuming default icon exists
+            .setSmallIcon(R.drawable.ic_launcher_monochrome) // Use monochrome icon for notifications
             .setContentTitle(title)
             .setContentText(content)
             .setStyle(NotificationCompat.BigTextStyle().bigText(content))
