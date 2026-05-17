@@ -56,6 +56,7 @@ val appModule = module {
     single { InventorySource(androidContext(), get()) }
     single { PackageNameHeuristicsDb() }
     single { SignerFeedDataStore(androidContext(), get()) }
+    single { com.jksalcedo.librefind.data.local.NotificationPrefsDataStore(androidContext()) }
 
     single { AppDatabase.getInstance(androidContext()) }
     single { get<AppDatabase>().ignoredAppDao() }
@@ -139,7 +140,7 @@ val viewModelModule = module {
     viewModel { IgnoredAppsViewModel(get(), get()) }
     viewModel {
         SettingsViewModel(
-            get(), get(), get(), get()
+            androidContext(), get(), get(), get(), get(), get()
         )
     }
     viewModel { ReportViewModel(get(), get()) }

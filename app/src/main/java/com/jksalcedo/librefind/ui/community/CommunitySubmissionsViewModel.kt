@@ -16,7 +16,8 @@ data class CommunitySubmissionsState(
     val isLoading: Boolean = false,
     val isRefreshing: Boolean = false,
     val error: String? = null,
-    val searchQuery: String = ""
+    val searchQuery: String = "",
+    val filterType: SubmissionType? = null
 )
 
 class CommunitySubmissionsViewModel(
@@ -59,6 +60,10 @@ class CommunitySubmissionsViewModel(
 
     fun updateSearchQuery(query: String) {
         _uiState.update { it.copy(searchQuery = query) }
+    }
+
+    fun setFilterType(type: SubmissionType?) {
+        _uiState.update { it.copy(filterType = type) }
     }
 
     fun approveSubmission(submission: Submission) {
