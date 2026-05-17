@@ -29,6 +29,7 @@ class LibreFindApp : Application() {
         }
 
         scheduleSignerFeedUpdate()
+        scheduleNotificationWorker()
     }
 
     private fun scheduleSignerFeedUpdate() {
@@ -42,6 +43,22 @@ class LibreFindApp : Application() {
 
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
             "signer_feed_update",
+            ExistingPeriodicWorkPolicy.KEEP,
+            workRequest
+        )
+    }
+
+    private fun scheduleNotificationWorker() {
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        val workRequest = PeriodicWorkRequestBuilder<com.jksalcedo.librefind.worker.NotificationWorker>(1, TimeUnit.HOURS)
+            .setConstraints(constraints)
+            .build()
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+            "notification_check",
             ExistingPeriodicWorkPolicy.KEEP,
             workRequest
         )
