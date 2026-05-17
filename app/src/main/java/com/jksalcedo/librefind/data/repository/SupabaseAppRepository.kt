@@ -732,9 +732,18 @@ class SupabaseAppRepository(
         }
     }
 
-    override suspend fun getAllPendingSubmissions(): List<Submission> {
+    private var cachedPendingSubmissions: List<Submission>? = null
+    private var lastPendingSubmissionsFetchTime: Long = 0
+    private val CACHE_DURATION_MS = 10 * 60 * 1000L // 10 minutes
+
+    override suspend fun getAllPendingSubmissions(forceRefresh: Boolean): List<Submission> {
+        val currentTime = System.currentTimeMillis()
+        if (!forceRefresh && cachedPendingSubmissions != null && (currentTime - lastPendingSubmissionsFetchTime < CACHE_DURATION_MS)) {
+            return cachedPendingSubmissions!!
+        }
+
         return try {
-            // 1. Fetch standard pending submissions
+            // Fetch standard pending submissions
             val standardDtos =
                 supabase.postgrest.from("user_submissions")
                     .select(
@@ -768,7 +777,7 @@ class SupabaseAppRepository(
                         order("created_at", Order.DESCENDING)
                     }.decodeList<UserSubmissionWithProfileDto>()
 
-            // 2. Fetch linking pending submissions
+            // Fetch linking pending submissions
             val linkingDtos =
                 supabase.postgrest.from("user_linking_submissions")
                     .select(
@@ -792,8 +801,10 @@ class SupabaseAppRepository(
                         order("created_at", Order.DESCENDING)
                     }.decodeList<UserLinkingSubmissionWithProfileDto>()
 
-            mapDtosToSubmissions(standardDtos, linkingDtos)
-
+            val mapped = mapDtosToSubmissions(standardDtos, linkingDtos)
+            cachedPendingSubmissions = mapped
+            lastPendingSubmissionsFetchTime = currentTime
+            mapped
         } catch (e: Exception) {
             e.printStackTrace()
             throw e
@@ -1305,6 +1316,7 @@ class SupabaseAppRepository(
             supabase.postgrest.from(table).update(mapOf("status" to "APPROVED")) {
                 filter { eq("id", id) }
             }
+            lastPendingSubmissionsFetchTime = 0 // Invalidate cache
         }
 
     override suspend fun rejectSubmission(
@@ -1318,6 +1330,7 @@ class SupabaseAppRepository(
             .update(mapOf("status" to "REJECTED", "rejection_reason" to reason)) {
                 filter { eq("id", id) }
             }
+        lastPendingSubmissionsFetchTime = 0 // Invalidate cache
     }
 
     @Serializable
@@ -1441,11 +1454,21 @@ class SupabaseAppRepository(
                 defaultToNull = false
             }
         }
+        lastVoteCountsFetchTime = 0 // Invalidate cache
     }
 
+    private var cachedVoteCounts: Map<String, SubmissionVoteAggregate>? = null
+    private var lastVoteCountsFetchTime: Long = 0
+
     override suspend fun getSubmissionVoteCounts(
-        submissionIds: List<String>
+        submissionIds: List<String>,
+        forceRefresh: Boolean
     ): Map<String, SubmissionVoteAggregate> {
+        val currentTime = System.currentTimeMillis()
+        if (!forceRefresh && cachedVoteCounts != null && (currentTime - lastVoteCountsFetchTime < CACHE_DURATION_MS)) {
+            return cachedVoteCounts!!
+        }
+
         if (submissionIds.isEmpty()) return emptyMap()
         return try {
             val currentUserId = supabase.auth.currentUserOrNull()?.id
@@ -1473,7 +1496,7 @@ class SupabaseAppRepository(
             }
 
             val grouped = allRows.groupBy { it.submissionId }
-            submissionIds.associateWith { id ->
+            val result = submissionIds.associateWith { id ->
                 val group = grouped[id] ?: emptyList()
                 val userRow = group.firstOrNull { it.userId == currentUserId }
                 SubmissionVoteAggregate(
@@ -1484,6 +1507,9 @@ class SupabaseAppRepository(
                     userReasonDetail = userRow?.reasonDetail
                 )
             }
+            cachedVoteCounts = result
+            lastVoteCountsFetchTime = currentTime
+            result
         } catch (e: Exception) {
             Log.e("SupabaseAppRepo", "getSubmissionVoteCounts failed", e)
             emptyMap()

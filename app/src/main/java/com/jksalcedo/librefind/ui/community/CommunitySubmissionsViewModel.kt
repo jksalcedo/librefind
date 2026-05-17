@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 data class CommunitySubmissionsState(
     val submissions: List<Submission> = emptyList(),
     val isLoading: Boolean = false,
+    val isRefreshing: Boolean = false,
     val error: String? = null,
     val searchQuery: String = ""
 )
@@ -29,11 +30,15 @@ class CommunitySubmissionsViewModel(
         loadSubmissions()
     }
 
-    fun loadSubmissions() {
+    fun loadSubmissions(forceRefresh: Boolean = false) {
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true, error = null) }
+            if (forceRefresh) {
+                _uiState.update { it.copy(isRefreshing = true, error = null) }
+            } else if (_uiState.value.submissions.isEmpty()) {
+                _uiState.update { it.copy(isLoading = true, error = null) }
+            }
             try {
-                val submissions = appRepository.getAllPendingSubmissions()
+                val submissions = appRepository.getAllPendingSubmissions(forceRefresh)
                 val voteCounts = appRepository.getSubmissionVoteCounts(submissions.map { it.id })
                 val enriched = submissions.map { s ->
                     val agg = voteCounts[s.id]
@@ -43,10 +48,10 @@ class CommunitySubmissionsViewModel(
                         userVote = agg?.userVote ?: s.userVote
                     )
                 }
-                _uiState.update { it.copy(submissions = enriched, isLoading = false) }
+                _uiState.update { it.copy(submissions = enriched, isLoading = false, isRefreshing = false) }
             } catch (e: Exception) {
                 _uiState.update {
-                    it.copy(isLoading = false, error = e.message ?: "Failed to load submissions")
+                    it.copy(isLoading = false, isRefreshing = false, error = e.message ?: "Failed to load submissions")
                 }
             }
         }
