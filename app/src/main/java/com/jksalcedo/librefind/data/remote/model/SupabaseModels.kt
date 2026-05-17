@@ -157,3 +157,22 @@ data class AppFeedbackDto(
     val status: String,
     @SerialName("rejection_reason") val rejectionReason: String? = null
 )
+
+@Serializable
+data class SubmissionVoteDto(
+    val id: String? = null,
+    @SerialName("submission_id") val submissionId: String,
+    @SerialName("submission_table") val submissionTable: String,
+    @SerialName("user_id") val userId: String,
+    val vote: Int,
+    val reason: String? = null,
+    @SerialName("reason_detail") val reasonDetail: String? = null
+)
+
+data class SubmissionVoteAggregate(
+    val upvotes: Int = 0,
+    val downvotes: Int = 0,
+    val userVote: Int? = null,
+    val userReason: String? = null,
+    val userReasonDetail: String? = null
+)

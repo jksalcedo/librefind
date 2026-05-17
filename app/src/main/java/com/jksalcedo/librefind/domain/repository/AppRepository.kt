@@ -147,4 +147,16 @@ interface AppRepository {
         correctionValue: String,
         description: String
     ): Result<Unit>
+
+    suspend fun castSubmissionVote(
+        submissionId: String,
+        submissionTable: String,
+        vote: Int,
+        reason: String? = null,
+        reasonDetail: String? = null
+    ): Result<Unit>
+
+    suspend fun getSubmissionVoteCounts(
+        submissionIds: List<String>
+    ): Map<String, com.jksalcedo.librefind.data.remote.model.SubmissionVoteAggregate>
 }
