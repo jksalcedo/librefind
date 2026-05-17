@@ -142,7 +142,8 @@ class SupabaseAuthRepository(
                         }
                     } ?: System.currentTimeMillis(),
                     submissionCount = it.submissionCount,
-                    approvedCount = it.approvedCount
+                    approvedCount = it.approvedCount,
+                    rejectedCount = it.rejectedCount
                 )
             }
         } catch (e: Exception) {
