@@ -34,7 +34,7 @@
     <string name="dashboard_no_matching_apps">No matching apps</string>
     <string name="dashboard_no_apps_found">No apps found</string>
     <!-- Profile Dialog -->
-    <string name="profile_dialog_title">Profile &amp; Settings</string>
+    <string name="profile_dialog_title">Profile</string>
     <string name="profile_unknown_username">Unknown Username</string>
     <string name="profile_no_email">No Email</string>
     <string name="profile_ignored_apps">Ignored Apps</string>

@@ -2,8 +2,7 @@
 - Added FreeDroidWarn
 - Improved "Add Alternative" flow and added duplicate warnings
 - Added upvote and downvote buttons to pending community submissions
-- Downvoting opens a reason sheet (Duplicate, Wrong Category, Fake, Not Enough Info, Other) with contextual extra fields
 - Added pull-to-refresh and caching to community submissions
-- Added periodic background notifications for new apps and submission status updates (toggleable in Settings)
+- Added periodic background notifications
 - Added category filters for community pending submissions
-- Added user submission stats tracking (Total, Approved, Rejected) to the Profile view
+- Added user submission stats tracking to the Profile view
