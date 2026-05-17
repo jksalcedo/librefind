@@ -10,12 +10,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.ThumbDown
+import androidx.compose.material.icons.filled.ThumbUp
+import androidx.compose.material.icons.outlined.ThumbDown
+import androidx.compose.material.icons.outlined.ThumbUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -73,6 +78,7 @@ fun CommunitySubmissionsScreen(
 
     var submissionToReject by remember { mutableStateOf<Submission?>(null) }
     var rejectionReason by remember { mutableStateOf("") }
+    var submissionToDownvote by remember { mutableStateOf<Submission?>(null) }
 
     if (submissionToReject != null) {
         Dialog(onDismissRequest = { submissionToReject = null }) {
@@ -120,6 +126,21 @@ fun CommunitySubmissionsScreen(
                 }
             }
         }
+    }
+
+    submissionToDownvote?.let { submission ->
+        DownvoteSheet(
+            onDismiss = { submissionToDownvote = null },
+            onConfirm = { reason, detail ->
+                viewModel.castVote(
+                    submission = submission,
+                    vote = -1,
+                    reason = reason,
+                    reasonDetail = detail
+                )
+                submissionToDownvote = null
+            }
+        )
     }
 
     Scaffold(
@@ -202,7 +223,9 @@ fun CommunitySubmissionsScreen(
                         items(filteredSubmissions) { submission ->
                             CommunitySubmissionItem(
                                 submission = submission,
-                                onClick = { onSubmissionClick(submission.id) }
+                                onClick = { onSubmissionClick(submission.id) },
+                                onUpvote = { viewModel.castVote(submission, 1) },
+                                onDownvote = { submissionToDownvote = submission }
                             )
                         }
                     }
@@ -215,7 +238,9 @@ fun CommunitySubmissionsScreen(
 @Composable
 fun CommunitySubmissionItem(
     submission: Submission,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onUpvote: () -> Unit,
+    onDownvote: () -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -248,11 +273,52 @@ fun CommunitySubmissionItem(
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = submission.type.name.replace("_", " "),
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.primary
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = submission.type.name.replace("_", " "),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    IconButton(onClick = onUpvote, modifier = Modifier.size(36.dp)) {
+                        Icon(
+                            imageVector = if (submission.userVote == 1) Icons.Filled.ThumbUp
+                                         else Icons.Outlined.ThumbUp,
+                            contentDescription = stringResource(R.string.submission_upvote),
+                            tint = if (submission.userVote == 1) MaterialTheme.colorScheme.primary
+                                   else MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+                    Text(
+                        text = "${submission.upvotes}",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    IconButton(onClick = onDownvote, modifier = Modifier.size(36.dp)) {
+                        Icon(
+                            imageVector = if (submission.userVote == -1) Icons.Filled.ThumbDown
+                                          else Icons.Outlined.ThumbDown,
+                            contentDescription = stringResource(R.string.submission_downvote),
+                            tint = if (submission.userVote == -1) MaterialTheme.colorScheme.error
+                                   else MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+                    Text(
+                        text = "${submission.downvotes}",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
         }
     }
 }
