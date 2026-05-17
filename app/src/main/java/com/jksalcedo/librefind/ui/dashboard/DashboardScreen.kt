@@ -514,8 +514,9 @@ fun DashboardScreen(
                                     modifier = Modifier.fillMaxWidth(),
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
-                                    val username = authState.userProfile?.username
-                                    val email = authState.userProfile?.email
+                                    val userProfile = authState.userProfile
+                                    val username = userProfile?.username
+                                    val email = userProfile?.email
 
                                     Text(
                                         text = if (username.isNullOrBlank()) stringResource(R.string.profile_unknown_username) else username,
@@ -527,6 +528,27 @@ fun DashboardScreen(
                                         style = MaterialTheme.typography.bodyMedium,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
+
+                                    if (userProfile != null) {
+                                        Spacer(modifier = Modifier.height(16.dp))
+                                        androidx.compose.foundation.layout.Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.SpaceEvenly
+                                        ) {
+                                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                                Text(text = userProfile.submissionCount.toString(), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
+                                                Text(text = "Submissions", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                            }
+                                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                                Text(text = userProfile.approvedCount.toString(), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium, color = androidx.compose.ui.graphics.Color(0xFF4CAF50))
+                                                Text(text = "Approved", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                            }
+                                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                                Text(text = userProfile.rejectedCount.toString(), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.error)
+                                                Text(text = "Rejected", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                            }
+                                        }
+                                    }
 
                                     Spacer(modifier = Modifier.height(24.dp))
                                     HorizontalDivider()

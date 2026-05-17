@@ -54,7 +54,8 @@ data class ProfileDto(
     @SerialName("avatar_url") val avatarUrl: String? = null,
     @SerialName("created_at") val createdAt: String? = null,
     @SerialName("submission_count") val submissionCount: Int = 0,
-    @SerialName("approved_count") val approvedCount: Int = 0
+    @SerialName("approved_count") val approvedCount: Int = 0,
+    @SerialName("rejected_count") val rejectedCount: Int = 0
 )
 
 @Serializable
