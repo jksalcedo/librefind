@@ -23,7 +23,7 @@
     <string name="correction_description_label">Description / Raison</string>
     <string name="correction_description_placeholder">Pourquoi cette correction est-elle nécessaire ? Fournissez les sources si possible.</string>
     <string name="correction_submit_button">Soumettre la correction</string>
-    <string name="back">Back</string>
+    <string name="back"></string>
     <string name="dashboard_settings">Paramètres</string>
     <string name="dashboard_submit_app">Soumettre une appli</string>
     <string name="dashboard_error_title">Erreur</string>
