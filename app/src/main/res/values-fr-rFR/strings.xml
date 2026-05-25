@@ -129,13 +129,13 @@
     <string name="help_app_name_desc">Le nom d\'affichage de l\'application tel que les utilisateurs le connaissent (par exemple « Signal », « Firefox », « VLC »).</string>
     <string name="help_app_name_tip">Utilisez le nom officiel figurant sur le site web de l\'application ou dans la fiche de l\'application sur la boutique en ligne.</string>
     <string name="help_package_name_title">Nom du paquet</string>
-    <string name="help_package_name_desc">The unique technical identifier for the app (e.g. \"org.mozilla.firefox\"). This is NOT the display name.</string>
-    <string name="help_package_name_tip">Find it on F-Droid (listed on the app page), or on the Play Store URL: play.google.com/store/apps/details?id=&lt;package.name&gt;. On your device: Settings → Apps → [App] → App info.</string>
+    <string name="help_package_name_desc">L\'identifiant unique de l\'app (ex. \"org.mozilla.firefox\"). Ce n\'est PAS le nom d\'affichage.</string>
+    <string name="help_package_name_tip">Trouvez-le sur F-Droid (indiqué sur la page de l\'app), ou dans l\'URL Play Store: play.google.com/store/apps/details?id=&lt;package.name&gt;. Sur votre appareil : Paramètres → Applications → [Application] → Infos sur l\'application. </string>
     <string name="help_description_title">Description</string>
     <string name="help_description_desc">Un bref résumé de ce que fait l\'application. Limitez-vous à 1 à 3 phrases.</string>
     <string name="help_repo_url_title">URL du dépôt</string>
-    <string name="help_repo_url_desc">The link to the app\'s public source code repository. This is required to verify the app is truly open source.</string>
-    <string name="help_repo_url_tip">Look for it on the app\'s website, F-Droid listing, or search \"&lt;app name&gt; source code\" on GitHub/GitLab/Codeberg.</string>
+    <string name="help_repo_url_desc">Le lien vers le dépôt public du code source de l\'application. Ceci est requis pour vérifier que l\'application est réellement open source.</string>
+    <string name="help_repo_url_tip">Cherchez-le sur le site de l\'app, sur F-Droid, ou cherchez \"&lt;app name&gt; code source\" sur GitHub/GitLab/Codeberg.</string>
     <string name="help_fdroid_id_title">ID F-Droid</string>
     <string name="help_fdroid_id_desc">Le nom du paquet tel qu\'il apparaît sur F-Droid. Il correspond généralement au nom du paquet, mais certaines applications utilisent un identifiant différent pour les versions F-Droid.</string>
     <string name="help_fdroid_id_tip">Vous le trouverez sur f-droid.org — l\'identifiant figure dans l\'URL : f-droid.org/packages/&lt;fdroid.id&gt;/</string>
@@ -199,8 +199,8 @@
     <string name="settings_checking_updates">Checking for updates…</string>
     <string name="settings_up_to_date">App is up to date</string>
     <string name="settings_update_available_title">Update Available</string>
-    <string name="settings_update_available_message">A new version (%1$s) of LibreFind is available. Would you like to download and install it?</string>
-    <string name="settings_download_install">Download &amp; Install</string>
+    <string name="settings_update_available_message">Une nouvelle version (%1$s) de LibreFind est disponible. Voulez-vous la télécharger et l\'installer ?</string>
+    <string name="settings_download_install">Télécharger &amp; Installer</string>
     <string name="settings_update_error">Failed to check for updates: %1$s</string>
     <string name="settings_changelog_title">What\'s New</string>
     <string name="settings_include_prereleases_title">Experimental Updates</string>
