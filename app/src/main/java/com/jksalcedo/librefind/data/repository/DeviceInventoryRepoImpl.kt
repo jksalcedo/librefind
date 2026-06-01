@@ -14,6 +14,7 @@ import com.jksalcedo.librefind.domain.repository.CacheRepository
 import com.jksalcedo.librefind.domain.repository.DeviceInventoryRepo
 import com.jksalcedo.librefind.domain.repository.IgnoredAppsRepository
 import com.jksalcedo.librefind.domain.repository.ReclassifiedAppsRepository
+import com.jksalcedo.librefind.util.InstallerHeuristics
 import com.jksalcedo.librefind.util.SignerUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -38,31 +39,7 @@ class DeviceInventoryRepoImpl(
     companion object {
         private const val TAG = "DeviceInventory"
 
-        // Apps installed FROM these are FOSS
-        private val FOSS_INSTALLERS = setOf(
-            "org.fdroid.fdroid",
-            "com.machiav3lli.fdroid",
-            "com.looker.droidify",
-            "nya.kitsunyan.foxydroid",
-            "in.sunilpaulmathew.izzyondroid",
-            "dev.zapstore.app",
-            "app.accrescent.client",
-            "com.samyak.repostore",
-            "com.nahnah.florid",
-            "ie.defo.ech_apps",
-            "app.flicky",
-            "dev.imranr.obtainium.fdroid"
-        )
 
-        // Apps installed FROM these are proprietary
-        private val PROPRIETARY_INSTALLERS = setOf(
-            "com.android.vending",
-            "com.aurora.store",
-            "com.apkpure.aegon",
-            "com.tomclaw.appsend",
-            "com.indus.appstore",
-            "com.apkupdater"
-        )
 
         private val OEM_BRANDS = setOf(
             "xiaomi", "redmi", "poco",
@@ -234,7 +211,7 @@ class DeviceInventoryRepoImpl(
             }
 
             val hasIndependentPropSignal =
-                (proprietaryMap[packageName] == true) || (installer in PROPRIETARY_INSTALLERS)
+                (proprietaryMap[packageName] == true) || InstallerHeuristics.isProprietaryInstaller(installer)
 
             val hasExplicitCacheHit = try {
                 cacheRepository.isTargetCached(packageName)
@@ -304,7 +281,7 @@ class DeviceInventoryRepoImpl(
             )
         }
 
-        if (installer in FOSS_INSTALLERS) {
+        if (InstallerHeuristics.isFossInstaller(installer)) {
             return createAppItem(
                 packageName,
                 label,
@@ -316,7 +293,7 @@ class DeviceInventoryRepoImpl(
             )
         }
 
-        if (installer in PROPRIETARY_INSTALLERS) {
+        if (InstallerHeuristics.isProprietaryInstaller(installer)) {
             return createAppItem(
                 packageName,
                 label,
