@@ -1,0 +1,2 @@
+- Fixed details screen showing "Help us categorize this app" for apps flagged as proprietary via installer heuristics
+- Centralized installer heuristic lists
