@@ -2,6 +2,7 @@ package com.jksalcedo.librefind.ui.correction
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jksalcedo.librefind.domain.model.Alternative
 import com.jksalcedo.librefind.domain.repository.AppRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,7 +18,11 @@ class SuggestCorrectionViewModel(
     val state: StateFlow<SuggestCorrectionState> = _state.asStateFlow()
 
     fun setPackageName(packageName: String) {
-        _state.update { it.copy(packageName = packageName) }
+        _state.update { it.copy(packageName = packageName, appInfoLoading = true, appInfo = null) }
+        viewModelScope.launch {
+            val appInfo = appRepository.getAlternative(packageName)
+            _state.update { it.copy(appInfo = appInfo, appInfoLoading = false) }
+        }
     }
 
     fun onCorrectionTypeChanged(type: CorrectionType) {
@@ -71,6 +76,8 @@ data class SuggestCorrectionState(
     val correctionType: CorrectionType = CorrectionType.LICENSE,
     val correctionValue: String = "",
     val description: String = "",
+    val appInfo: Alternative? = null,
+    val appInfoLoading: Boolean = false,
     val isLoading: Boolean = false,
     val isSuccess: Boolean = false,
     val error: String? = null

@@ -49,6 +49,7 @@ import com.jksalcedo.librefind.domain.model.Alternative
 import org.koin.androidx.compose.koinViewModel
 import androidx.compose.ui.res.stringResource
 import com.jksalcedo.librefind.R
+import com.jksalcedo.librefind.ui.common.AppInfoCard
 import com.jksalcedo.librefind.ui.common.FullScreenLoading
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -148,57 +149,69 @@ fun DetailsScreen(
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(32.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
+                            .padding(32.dp)
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.Info,
-                            contentDescription = null,
-                            modifier = Modifier.size(64.dp),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        AppInfoCard(
+                            appName = state.appInfo?.name ?: appName,
+                            packageName = packageName,
+                            category = state.appInfo?.category,
+                            license = state.appInfo?.license,
+                            description = state.appInfo?.description
                         )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Text(
-                            text = stringResource(R.string.details_no_alternatives),
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = stringResource(
-                                when {
-                                    state.isUnknown -> R.string.details_not_in_db
-                                    state.fossCategoryUnset -> R.string.details_foss_category_unset
-                                    state.isFoss -> R.string.details_no_siblings
-                                    else -> R.string.details_no_suggested_alternatives
-                                }
-                            ),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                        if (state.isUnknown) {
-                            Spacer(modifier = Modifier.height(24.dp))
-                            Text(
-                                text = stringResource(R.string.details_help_categorize),
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.SemiBold
+                        Spacer(modifier = Modifier.height(24.dp))
+                        Column(
+                            modifier = Modifier.weight(1f),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Info,
+                                contentDescription = null,
+                                modifier = Modifier.size(64.dp),
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Spacer(modifier = Modifier.height(16.dp))
-                            Row(
-                                horizontalArrangement = Arrangement.spacedBy(12.dp)
-                            ) {
-                                Button(
-                                    onClick = { onSuggestAsFoss(appName, packageName) },
-                                    modifier = Modifier.width(160.dp)
+                            Text(
+                                text = stringResource(R.string.details_no_alternatives),
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = stringResource(
+                                    when {
+                                        state.isUnknown -> R.string.details_not_in_db
+                                        state.fossCategoryUnset -> R.string.details_foss_category_unset
+                                        state.isFoss -> R.string.details_no_siblings
+                                        else -> R.string.details_no_suggested_alternatives
+                                    }
+                                ),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            if (state.isUnknown) {
+                                Spacer(modifier = Modifier.height(24.dp))
+                                Text(
+                                    text = stringResource(R.string.details_help_categorize),
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                                Spacer(modifier = Modifier.height(16.dp))
+                                Row(
+                                    horizontalArrangement = Arrangement.spacedBy(12.dp)
                                 ) {
-                                    Text(stringResource(R.string.details_suggest_foss))
-                                }
-                                Button(
-                                    onClick = { onSuggestAsProprietary(appName, packageName) },
-                                    modifier = Modifier.width(160.dp)
-                                ) {
-                                    Text(stringResource(R.string.details_suggest_proprietary))
+                                    Button(
+                                        onClick = { onSuggestAsFoss(appName, packageName) },
+                                        modifier = Modifier.width(160.dp)
+                                    ) {
+                                        Text(stringResource(R.string.details_suggest_foss))
+                                    }
+                                    Button(
+                                        onClick = { onSuggestAsProprietary(appName, packageName) },
+                                        modifier = Modifier.width(160.dp)
+                                    ) {
+                                        Text(stringResource(R.string.details_suggest_proprietary))
+                                    }
                                 }
                             }
                         }
@@ -213,6 +226,14 @@ fun DetailsScreen(
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         item {
+                            AppInfoCard(
+                                appName = state.appInfo?.name ?: appName,
+                                packageName = packageName,
+                                category = state.appInfo?.category,
+                                license = state.appInfo?.license,
+                                description = state.appInfo?.description
+                            )
+                            Spacer(modifier = Modifier.height(12.dp))
                             Text(
                                 text = if (state.isFoss) {
                                     stringResource(R.string.details_siblings_found_format, displayList.size, if (displayList.size > 1) "s" else "")

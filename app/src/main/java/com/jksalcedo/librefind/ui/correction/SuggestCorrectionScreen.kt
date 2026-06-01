@@ -36,7 +36,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalContext
 import com.jksalcedo.librefind.R
+import com.jksalcedo.librefind.ui.common.AppInfoCard
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,6 +50,15 @@ fun SuggestCorrectionScreen(
 ) {
     val state by viewModel.state.collectAsState()
     var expanded by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    val appLabel = remember(packageName) {
+        try {
+            val appInfo = context.packageManager.getApplicationInfo(packageName, 0)
+            context.packageManager.getApplicationLabel(appInfo).toString()
+        } catch (_: Exception) {
+            packageName
+        }
+    }
 
     LaunchedEffect(packageName) {
         viewModel.setPackageName(packageName)
@@ -87,6 +98,18 @@ fun SuggestCorrectionScreen(
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
+
+            if (state.appInfoLoading && state.appInfo == null) {
+                CircularProgressIndicator()
+            } else {
+                AppInfoCard(
+                    appName = state.appInfo?.name ?: appLabel,
+                    packageName = packageName,
+                    category = state.appInfo?.category,
+                    license = state.appInfo?.license,
+                    description = state.appInfo?.description
+                )
+            }
 
             // Correction Type Dropdown
             ExposedDropdownMenuBox(
