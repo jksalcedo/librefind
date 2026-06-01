@@ -42,6 +42,12 @@ class DetailsViewModel(
                     emptyList()
                 }
 
+                val appInfo = if (isFoss) {
+                    appRepository.getAlternative(packageName)
+                } else {
+                    null
+                }
+
                 val siblings = if (isFoss) {
                     appRepository.getSiblingAlternatives(packageName)
                 } else {
@@ -60,6 +66,7 @@ class DetailsViewModel(
                         siblingAlternatives = siblings.orEmpty(),
                         isFoss = isFoss,
                         fossCategoryUnset = fossCategoryUnset,
+                        appInfo = appInfo,
                         isSignedIn = user != null,
                         error = null
                     )
@@ -157,6 +164,7 @@ data class DetailsState(
     val siblingAlternatives: List<Alternative> = emptyList(),
     val isFoss: Boolean = false,
     val fossCategoryUnset: Boolean = false,
+    val appInfo: Alternative? = null,
     val isSignedIn: Boolean = false,
     val error: String? = null,
     val isUnknown: Boolean = false

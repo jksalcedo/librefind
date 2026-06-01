@@ -25,6 +25,17 @@
     <string name="correction_description_label">Description / Reason</string>
     <string name="correction_description_placeholder">Why is this correction needed? Provide sources if possible.</string>
     <string name="correction_submit_button">Submit Correction</string>
+
+    <!-- App Info -->
+    <string name="app_info_title">App info</string>
+    <string name="app_info_label_name">Name</string>
+    <string name="app_info_label_package">Package</string>
+    <string name="app_info_label_category">Category</string>
+    <string name="app_info_label_license">License</string>
+    <string name="app_info_label_description">Description</string>
+    <string name="app_info_unknown">Unknown</string>
+    <string name="app_info_unavailable">No app metadata available yet.</string>
+
     <string name="back">Back</string>
     <string name="dashboard_settings">Settings</string>
     <string name="dashboard_submit_app">Submit App</string>
