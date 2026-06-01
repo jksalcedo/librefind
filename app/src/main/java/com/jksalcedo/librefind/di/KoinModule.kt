@@ -130,7 +130,7 @@ val useCaseModule = module {
 }
 
 val viewModelModule = module {
-    viewModel { DetailsViewModel(get(), get(), get(), get()) }
+    viewModel { DetailsViewModel(get(), get(), get(), get(), get()) }
     viewModel { AlternativeDetailViewModel(get(), get()) }
     viewModel { DashboardViewModel(get(), get(), get(), get(), get()) }
     viewModel { AuthViewModel(get()) }
