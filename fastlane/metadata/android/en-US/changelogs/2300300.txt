@@ -1,0 +1,3 @@
+- Fixed details screen
+- Centralized installer heuristic lists
+- Added an app info card on the details screen
