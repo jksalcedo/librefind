@@ -320,6 +320,36 @@ class SupabaseAppRepository(
         }
     }
 
+    override suspend fun getTarget(packageName: String): Alternative? {
+        return try {
+            val dto = supabase.postgrest.from("targets")
+                .select(
+                    columns = Columns.list(
+                        "package_name", "name", "description", "category", "icon_url"
+                    )
+                ) {
+                    filter {
+                        eq("package_name", packageName)
+                    }
+                }.decodeSingleOrNull<com.jksalcedo.librefind.data.remote.model.TargetDto>() ?: return null
+
+            Alternative(
+                id = dto.packageName,
+                name = dto.name,
+                packageName = dto.packageName,
+                license = "Proprietary",
+                repoUrl = "",
+                fdroidId = "",
+                iconUrl = dto.iconUrl,
+                category = dto.category ?: "Other",
+                description = dto.description ?: ""
+            )
+        } catch (e: Exception) {
+            Log.e("SupabaseAppRepo", "getTarget failed for $packageName", e)
+            null
+        }
+    }
+
     @Serializable
     private data class PackageNameDto(@SerialName("package_name") val packageName: String)
 
@@ -1040,12 +1070,6 @@ class SupabaseAppRepository(
         }
     }
 
-    @Serializable
-    private data class TargetSearchDto(
-        @SerialName("package_name") val packageName: String,
-        val name: String = ""
-    )
-
     override suspend fun searchProprietary(query: String, limit: Int): List<Alternative> {
         if (query.isBlank()) return emptyList()
 
@@ -1056,7 +1080,7 @@ class SupabaseAppRepository(
                 .replace("_", "\\_")
 
             val targets = supabase.postgrest.from("targets")
-                .select(columns = Columns.list("package_name", "name")) {
+                .select(columns = Columns.list("package_name", "name", "description", "category", "icon_url")) {
                     filter {
                         or {
                             ilike("name", "%$sanitizedQuery%")
@@ -1064,7 +1088,7 @@ class SupabaseAppRepository(
                         }
                     }
                     limit(limit.toLong())
-                }.decodeList<TargetSearchDto>()
+                }.decodeList<com.jksalcedo.librefind.data.remote.model.TargetDto>()
 
             targets.map { dto ->
                 Alternative(
@@ -1074,8 +1098,9 @@ class SupabaseAppRepository(
                     license = "Proprietary",
                     repoUrl = "",
                     fdroidId = "",
-                    iconUrl = null,
-                    description = dto.packageName
+                    iconUrl = dto.iconUrl,
+                    category = dto.category ?: "Other",
+                    description = dto.description ?: ""
                 )
             }
         } catch (e: Exception) {

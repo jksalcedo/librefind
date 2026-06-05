@@ -21,6 +21,7 @@ class SuggestCorrectionViewModel(
         _state.update { it.copy(packageName = packageName, appInfoLoading = true, appInfo = null) }
         viewModelScope.launch {
             val appInfo = appRepository.getAlternative(packageName)
+                ?: appRepository.getTarget(packageName)
             _state.update { it.copy(appInfo = appInfo, appInfoLoading = false) }
         }
     }

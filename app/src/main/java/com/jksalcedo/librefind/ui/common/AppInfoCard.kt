@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jksalcedo.librefind.R
 
@@ -65,11 +66,11 @@ fun AppInfoCard(
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
-                    text = description.let {
-                        it.dropLast(description.length - (it.length * 0.5).toInt()) + "..."
-                    },
+                    text = description,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 8,
+                    overflow = TextOverflow.Ellipsis
                 )
             } else {
                 InfoRow(

@@ -1,3 +1,5 @@
 - Fixed details screen
 - Centralized installer heuristic lists
 - Added an app info card on the details screen
+- Display metadata for proprietary target apps
+- Improved description truncation in app info card

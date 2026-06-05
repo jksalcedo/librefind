@@ -5,6 +5,16 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
+data class TargetDto(
+    @SerialName("package_name") val packageName: String,
+    val name: String,
+    val description: String? = null,
+    val category: String? = "Other",
+    @SerialName("icon_url") val iconUrl: String? = null,
+    @SerialName("created_at") val createdAt: String? = null
+)
+
+@Serializable
 data class SolutionDto(
     @SerialName("package_name") val packageName: String,
     val name: String,

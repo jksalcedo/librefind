@@ -48,7 +48,7 @@ class DetailsViewModel(
                 val appInfo = if (isFoss) {
                     appRepository.getAlternative(packageName)
                 } else {
-                    null
+                    appRepository.getTarget(packageName)
                 }
 
                 val siblings = if (isFoss) {
