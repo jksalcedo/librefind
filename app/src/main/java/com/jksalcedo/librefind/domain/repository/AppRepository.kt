@@ -13,6 +13,7 @@ interface AppRepository {
     suspend fun isSolution(packageName: String): Boolean
     suspend fun getAlternatives(packageName: String): List<Alternative>
     suspend fun getAlternative(packageName: String): Alternative?
+    suspend fun getTarget(packageName: String): Alternative?
     suspend fun getProprietaryTargets(): List<String>
 
 
