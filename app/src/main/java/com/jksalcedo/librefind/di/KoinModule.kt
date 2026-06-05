@@ -32,6 +32,7 @@ import com.jksalcedo.librefind.ui.details.AlternativeDetailViewModel
 import com.jksalcedo.librefind.ui.details.DetailsViewModel
 import com.jksalcedo.librefind.ui.discover.DiscoverViewModel
 import com.jksalcedo.librefind.ui.mysubmissions.MySubmissionsViewModel
+import com.jksalcedo.librefind.ui.profile.ProfileViewModel
 import com.jksalcedo.librefind.ui.reports.MyReportsViewModel
 import com.jksalcedo.librefind.ui.reports.ReportViewModel
 import com.jksalcedo.librefind.ui.settings.IgnoredAppsViewModel
@@ -147,4 +148,5 @@ val viewModelModule = module {
     viewModel { MyReportsViewModel(get(), get()) }
     viewModel { DiscoverViewModel(get()) }
     viewModel { SuggestCorrectionViewModel(get()) }
+    viewModel { ProfileViewModel(get(), get()) }
 }

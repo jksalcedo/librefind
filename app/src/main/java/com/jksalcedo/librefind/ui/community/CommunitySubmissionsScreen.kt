@@ -60,6 +60,7 @@ import org.koin.androidx.compose.koinViewModel
 fun CommunitySubmissionsScreen(
     onBackClick: () -> Unit,
     onSubmissionClick: (String) -> Unit,
+    onUserClick: (String) -> Unit = {},
     viewModel: CommunitySubmissionsViewModel = koinViewModel()
 ) {
     val state by viewModel.uiState.collectAsState()
@@ -256,6 +257,7 @@ fun CommunitySubmissionsScreen(
                                 CommunitySubmissionItem(
                                     submission = submission,
                                     onClick = { onSubmissionClick(submission.id) },
+                                    onUserClick = { onUserClick(submission.submitterUid) },
                                     onUpvote = { viewModel.castVote(submission, 1) },
                                     onDownvote = { submissionToDownvote = submission }
                                 )
@@ -272,6 +274,7 @@ fun CommunitySubmissionsScreen(
 fun CommunitySubmissionItem(
     submission: Submission,
     onClick: () -> Unit,
+    onUserClick: () -> Unit = {},
     onUpvote: () -> Unit,
     onDownvote: () -> Unit
 ) {
@@ -298,11 +301,37 @@ fun CommunitySubmissionItem(
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = "Submitted by ${submission.submitterUsername}",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        modifier = Modifier.clickable { onUserClick() }
+                    ) {
+                        Text(
+                            text = submission.submitterUsername,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.Bold
+                        )
+                        if (!submission.submitterBadge.isNullOrBlank()) {
+                            Surface(
+                                color = MaterialTheme.colorScheme.secondaryContainer,
+                                shape = MaterialTheme.shapes.extraSmall
+                            ) {
+                                Text(
+                                    text = submission.submitterBadge,
+                                    modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    fontSize = androidx.compose.ui.unit.sp.times(0.8),
+                                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                                )
+                            }
+                        }
+                        Text(
+                            text = "(${submission.submitterReputation})",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))

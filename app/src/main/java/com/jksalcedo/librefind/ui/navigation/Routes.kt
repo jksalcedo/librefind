@@ -56,4 +56,8 @@ sealed class Route(val route: String) {
     data object SuggestCorrection : Route("suggest_correction/{packageName}") {
         fun createRoute(packageName: String) = "suggest_correction/${Uri.encode(packageName)}"
     }
+
+    data object Profile : Route("profile?userId={userId}") {
+        fun createRoute(userId: String? = null) = if (userId != null) "profile?userId=${Uri.encode(userId)}" else "profile"
+    }
 }

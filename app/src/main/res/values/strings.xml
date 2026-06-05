@@ -36,6 +36,11 @@
     <string name="app_info_unknown">Unknown</string>
     <string name="app_info_unavailable">No app metadata available yet.</string>
 
+    <!-- Profile -->
+    <string name="profile_my_profile">My Profile</string>
+    <string name="profile_user_profile">User Profile</string>
+    <string name="profile_user_submissions">User Submissions</string>
+
     <string name="back">Back</string>
     <string name="dashboard_settings">Settings</string>
     <string name="dashboard_submit_app">Submit App</string>

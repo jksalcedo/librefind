@@ -78,6 +78,7 @@ fun DashboardScreen(
     onMySubmissionsClick: () -> Unit = {},
     onIgnoredAppsClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {},
+    onProfileClick: (String?) -> Unit = {},
     viewModel: DashboardViewModel = koinViewModel(),
     authViewModel: AuthViewModel = koinViewModel()
 ) {
@@ -86,7 +87,6 @@ fun DashboardScreen(
     LocalContext.current
     val preferencesManager: PreferencesManager = koinInject()
     var showDialog by remember { mutableStateOf(false) }
-    var showProfileDialog by remember { mutableStateOf(false) }
     var showFilterMenu by remember { mutableStateOf(false) }
     var isSearchActive by remember { mutableStateOf(false) }
 
@@ -343,7 +343,7 @@ fun DashboardScreen(
                                 }
                             }
                             IconButton(
-                                onClick = { showProfileDialog = true },
+                                onClick = { onProfileClick(null) },
                                 modifier = Modifier.onGloballyPositioned { coords ->
                                     profileRect = coords.boundsInRoot()
                                 }
@@ -500,154 +500,6 @@ fun DashboardScreen(
                             currentFilter = state.statusFilter,
                             onFilterClick = { status -> viewModel.setStatusFilter(status) },
                             onDismissRequest = { showDialog = false }
-                        )
-                    }
-                }
-
-                if (showProfileDialog) {
-                    if (authState.isSignedIn && authState.userProfile != null) {
-                        AlertDialog(
-                            onDismissRequest = { showProfileDialog = false },
-                            title = { Text(stringResource(R.string.profile_dialog_title)) },
-                            text = {
-                                Column(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ) {
-                                    val userProfile = authState.userProfile
-                                    val username = userProfile?.username
-                                    val email = userProfile?.email
-
-                                    Text(
-                                        text = if (username.isNullOrBlank()) stringResource(R.string.profile_unknown_username) else username,
-                                        style = MaterialTheme.typography.titleMedium,
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                    Text(
-                                        text = if (email.isNullOrBlank()) stringResource(R.string.profile_no_email) else email,
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                                    )
-
-                                    if (userProfile != null) {
-                                        Spacer(modifier = Modifier.height(16.dp))
-                                        androidx.compose.foundation.layout.Row(
-                                            modifier = Modifier.fillMaxWidth(),
-                                            horizontalArrangement = Arrangement.SpaceEvenly
-                                        ) {
-                                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                                Text(text = userProfile.submissionCount.toString(), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
-                                                Text(text = "Submissions", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                                            }
-                                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                                Text(text = userProfile.approvedCount.toString(), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium, color = androidx.compose.ui.graphics.Color(0xFF4CAF50))
-                                                Text(text = "Approved", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                                            }
-                                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                                Text(text = userProfile.rejectedCount.toString(), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.error)
-                                                Text(text = "Rejected", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                                            }
-                                        }
-                                    }
-
-                                    Spacer(modifier = Modifier.height(24.dp))
-                                    HorizontalDivider()
-                                    Spacer(modifier = Modifier.height(16.dp))
-
-                                    OutlinedButton(
-                                        onClick = {
-                                            showProfileDialog = false
-                                            onIgnoredAppsClick()
-                                        },
-                                        modifier = Modifier.fillMaxWidth()
-                                    ) {
-                                        Icon(Icons.Default.VisibilityOff, contentDescription = null)
-                                        Spacer(modifier = Modifier.width(8.dp))
-                                        Text(stringResource(R.string.profile_ignored_apps))
-                                    }
-
-                                    Spacer(modifier = Modifier.height(8.dp))
-
-                                    OutlinedButton(
-                                        onClick = {
-                                            showProfileDialog = false
-                                            onMySubmissionsClick()
-                                        },
-                                        modifier = Modifier.fillMaxWidth()
-                                    ) {
-                                        Icon(Icons.Default.CloudUpload, contentDescription = null)
-                                        Spacer(modifier = Modifier.width(8.dp))
-                                        Text(stringResource(R.string.profile_my_submissions))
-                                    }
-
-                                    Spacer(modifier = Modifier.height(16.dp))
-                                    HorizontalDivider()
-                                    Spacer(modifier = Modifier.height(16.dp))
-
-
-
-                                    OutlinedButton(
-                                        onClick = {
-                                            showProfileDialog = false
-                                            authViewModel.signOut()
-                                        },
-                                        modifier = Modifier.fillMaxWidth(),
-                                        colors = ButtonDefaults.outlinedButtonColors(
-                                            contentColor = MaterialTheme.colorScheme.error
-                                        )
-                                    ) {
-                                        Icon(
-                                            Icons.AutoMirrored.Filled.ExitToApp,
-                                            contentDescription = null
-                                        )
-                                        Spacer(modifier = Modifier.width(8.dp))
-                                        Text(stringResource(R.string.profile_sign_out))
-                                    }
-                                }
-                            },
-                            confirmButton = {
-                                TextButton(onClick = { showProfileDialog = false }) {
-                                    Text(stringResource(R.string.profile_close))
-                                }
-                            },
-                            properties = DialogProperties(
-                                dismissOnBackPress = false,
-                                dismissOnClickOutside = false
-                            ),
-                            modifier = Modifier.fillMaxWidth(0.9f)
-                        )
-                    } else {
-                        val title =
-                            if (authState.isSignedIn) stringResource(R.string.profile_missing_title) else stringResource(
-                                R.string.profile_not_signed_in_title
-                            )
-                        val message = if (authState.isSignedIn)
-                            stringResource(R.string.profile_missing_message)
-                        else stringResource(R.string.profile_not_signed_in_message)
-
-                        AlertDialog(
-                            onDismissRequest = { showProfileDialog = false },
-                            title = { Text(title) },
-                            text = { Text(message) },
-                            confirmButton = {
-                                TextButton(
-                                    onClick = {
-                                        showProfileDialog = false
-                                        onSubmitClick() // Redirect to Auth/Submit flow which handles login
-                                    }
-                                ) {
-                                    Text(
-                                        if (authState.isSignedIn) stringResource(R.string.profile_fix_profile) else stringResource(
-                                            R.string.profile_sign_in
-                                        )
-                                    )
-                                }
-                            },
-                            dismissButton = {
-                                TextButton(onClick = { showProfileDialog = false }) {
-                                    Text(stringResource(R.string.profile_close))
-                                }
-                            }
                         )
                     }
                 }

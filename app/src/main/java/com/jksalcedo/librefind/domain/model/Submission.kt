@@ -7,6 +7,8 @@ data class Submission(
     val submittedApp: SubmittedApp,
     val submitterUid: String,
     val submitterUsername: String,
+    val submitterReputation: Int = 0,
+    val submitterBadge: String? = null,
     val submittedAt: Long = System.currentTimeMillis(),
     val status: SubmissionStatus = SubmissionStatus.PENDING,
     val rejectionReason: String? = null,

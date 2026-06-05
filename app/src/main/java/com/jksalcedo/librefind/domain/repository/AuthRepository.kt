@@ -11,6 +11,7 @@ interface AuthRepository {
     suspend fun signInWithGithub(): Result<Unit>
     suspend fun signOut()
     suspend fun getCurrentUser(): UserProfile?
+    suspend fun getPublicProfile(userId: String): UserProfile?
     suspend fun updateProfile(username: String): Result<Unit>
     suspend fun deleteAccount(): Result<Unit>
 }

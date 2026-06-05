@@ -65,7 +65,9 @@ data class ProfileDto(
     @SerialName("created_at") val createdAt: String? = null,
     @SerialName("submission_count") val submissionCount: Int = 0,
     @SerialName("approved_count") val approvedCount: Int = 0,
-    @SerialName("rejected_count") val rejectedCount: Int = 0
+    @SerialName("rejected_count") val rejectedCount: Int = 0,
+    @SerialName("reputation_score") val reputationScore: Int = 0,
+    val badge: String? = null
 )
 
 @Serializable

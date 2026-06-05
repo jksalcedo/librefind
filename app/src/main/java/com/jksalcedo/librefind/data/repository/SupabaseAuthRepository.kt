@@ -97,6 +97,10 @@ class SupabaseAuthRepository(
         return profile
     }
 
+    override suspend fun getPublicProfile(userId: String): UserProfile? {
+        return fetchUserProfile(userId)
+    }
+
     override suspend fun updateProfile(username: String): Result<Unit> = runCatching {
         val userId = auth.currentUserOrNull()?.id ?: throw IllegalStateException("Not logged in")
 
@@ -143,7 +147,9 @@ class SupabaseAuthRepository(
                     } ?: System.currentTimeMillis(),
                     submissionCount = it.submissionCount,
                     approvedCount = it.approvedCount,
-                    rejectedCount = it.rejectedCount
+                    rejectedCount = it.rejectedCount,
+                    reputationScore = it.reputationScore,
+                    badge = it.badge
                 )
             }
         } catch (e: Exception) {
