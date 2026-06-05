@@ -6,6 +6,8 @@ import com.jksalcedo.librefind.domain.model.Alternative
 import com.jksalcedo.librefind.domain.repository.AppRepository
 import com.jksalcedo.librefind.domain.repository.AuthRepository
 import com.jksalcedo.librefind.domain.repository.CacheRepository
+import com.jksalcedo.librefind.domain.repository.DeviceInventoryRepo
+import com.jksalcedo.librefind.util.InstallerHeuristics
 import com.jksalcedo.librefind.domain.usecase.GetAlternativeUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,7 +19,8 @@ class DetailsViewModel(
     private val getAlternativeUseCase: GetAlternativeUseCase,
     private val authRepository: AuthRepository,
     private val appRepository: AppRepository,
-    private val cacheRepository: CacheRepository
+    private val cacheRepository: CacheRepository,
+    private val deviceInventoryRepo: DeviceInventoryRepo
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(DetailsState())
@@ -42,6 +45,12 @@ class DetailsViewModel(
                     emptyList()
                 }
 
+                val appInfo = if (isFoss) {
+                    appRepository.getAlternative(packageName)
+                } else {
+                    appRepository.getTarget(packageName)
+                }
+
                 val siblings = if (isFoss) {
                     appRepository.getSiblingAlternatives(packageName)
                 } else {
@@ -60,6 +69,7 @@ class DetailsViewModel(
                         siblingAlternatives = siblings.orEmpty(),
                         isFoss = isFoss,
                         fossCategoryUnset = fossCategoryUnset,
+                        appInfo = appInfo,
                         isSignedIn = user != null,
                         error = null
                     )
@@ -127,7 +137,8 @@ class DetailsViewModel(
 
     /**
      * Lightweight check using cached data instead of a full device scan.
-     * An app is "unknown" if it's neither a known proprietary target nor a known FOSS solution.
+     * An app is "unknown" if it's neither a known proprietary target nor a known FOSS solution,
+     * and it does not have a proprietary installer signal.
      */
     private suspend fun isAppUnknown(packageName: String) {
         val isTarget = try {
@@ -142,7 +153,10 @@ class DetailsViewModel(
             false
         }
 
-        val isUnknown = !isTarget && !isSolution
+        val installer = deviceInventoryRepo.getInstaller(packageName)
+        val isProprietaryInstaller = InstallerHeuristics.isProprietaryInstaller(installer)
+
+        val isUnknown = !isTarget && !isSolution && !isProprietaryInstaller
 
         _state.update {
             it.copy(isUnknown = isUnknown)
@@ -157,6 +171,7 @@ data class DetailsState(
     val siblingAlternatives: List<Alternative> = emptyList(),
     val isFoss: Boolean = false,
     val fossCategoryUnset: Boolean = false,
+    val appInfo: Alternative? = null,
     val isSignedIn: Boolean = false,
     val error: String? = null,
     val isUnknown: Boolean = false

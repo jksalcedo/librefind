@@ -320,6 +320,36 @@ class SupabaseAppRepository(
         }
     }
 
+    override suspend fun getTarget(packageName: String): Alternative? {
+        return try {
+            val dto = supabase.postgrest.from("targets")
+                .select(
+                    columns = Columns.list(
+                        "package_name", "name", "description", "category", "icon_url"
+                    )
+                ) {
+                    filter {
+                        eq("package_name", packageName)
+                    }
+                }.decodeSingleOrNull<com.jksalcedo.librefind.data.remote.model.TargetDto>() ?: return null
+
+            Alternative(
+                id = dto.packageName,
+                name = dto.name,
+                packageName = dto.packageName,
+                license = "Proprietary",
+                repoUrl = "",
+                fdroidId = "",
+                iconUrl = dto.iconUrl,
+                category = dto.category ?: "Other",
+                description = dto.description ?: ""
+            )
+        } catch (e: Exception) {
+            Log.e("SupabaseAppRepo", "getTarget failed for $packageName", e)
+            null
+        }
+    }
+
     @Serializable
     private data class PackageNameDto(@SerialName("package_name") val packageName: String)
 
@@ -671,7 +701,10 @@ class SupabaseAppRepository(
         supabase.postgrest.from("app_feedback").insert(feedback)
     }
 
-    override suspend fun getMySubmissions(userId: String): List<Submission> {
+    override suspend fun getUserSubmissions(
+        userId: String,
+        status: SubmissionStatus?
+    ): List<Submission> {
         return try {
             // 1. Fetch standard submissions
             val standardDtos =
@@ -697,10 +730,13 @@ class SupabaseAppRepository(
                             "last_edited_at",
                             "contributors",
                             "alternatives",
-                            "profile:profiles!fk_submissions_profiles(id, username)"
+                            "profile:profiles!fk_submissions_profiles(id, username, reputation_score, badge)"
                         )
                     ) {
-                        filter { eq("submitter_id", userId) }
+                        filter {
+                            eq("submitter_id", userId)
+                            status?.let { eq("status", it.name) }
+                        }
                     }.decodeList<UserSubmissionWithProfileDto>()
 
             // 2. Fetch linking submissions
@@ -718,10 +754,13 @@ class SupabaseAppRepository(
                             "last_edited_by",
                             "last_edited_at",
                             "contributors",
-                            "profile:profiles!user_linking_submissions_submitter_id_fkey(id, username)"
+                            "profile:profiles!user_linking_submissions_submitter_id_fkey(id, username, reputation_score, badge)"
                         )
                     ) {
-                        filter { eq("submitter_id", userId) }
+                        filter {
+                            eq("submitter_id", userId)
+                            status?.let { eq("status", it.name) }
+                        }
                     }.decodeList<UserLinkingSubmissionWithProfileDto>()
 
             mapDtosToSubmissions(standardDtos, linkingDtos)
@@ -767,9 +806,9 @@ class SupabaseAppRepository(
                             "last_edited_at",
                             "contributors",
                             "alternatives",
-                            "profile:profiles!fk_submissions_profiles(id, username)",
+                            "profile:profiles!fk_submissions_profiles(id, username, reputation_score, badge)",
                             // Join editor profile so UI can show username instead of uuid
-                            "editor_profile:profiles!last_edited_by(id, username)"
+                            "editor_profile:profiles!last_edited_by(id, username, reputation_score, badge)"
                         )
                     ) {
                         filter { eq("status", "PENDING") }
@@ -792,8 +831,8 @@ class SupabaseAppRepository(
                             "last_edited_by",
                             "last_edited_at",
                             "contributors",
-                            "profile:profiles!user_linking_submissions_submitter_id_fkey(id, username)",
-                            "editor_profile:profiles!last_edited_by(id, username)"
+                            "profile:profiles!user_linking_submissions_submitter_id_fkey(id, username, reputation_score, badge)",
+                            "editor_profile:profiles!last_edited_by(id, username, reputation_score, badge)"
                         )
                     ) {
                         filter { eq("status", "PENDING") }
@@ -839,6 +878,8 @@ class SupabaseAppRepository(
                 ),
                 submitterUid = dto.submitterId ?: "",
                 submitterUsername = dto.profile?.username ?: "Unknown",
+                submitterReputation = dto.profile?.reputationScore ?: 0,
+                submitterBadge = dto.profile?.badge,
                 // Parse created_at timestamp or use current time if missing
                 submittedAt = dto.createdAt?.let { parseTimestamp(it) }
                     ?: System.currentTimeMillis(),
@@ -867,11 +908,12 @@ class SupabaseAppRepository(
                     name = "Link ${(dto.alternatives ?: emptyList()).size} Alternatives",
                     packageName = dto.proprietaryPackage ?: "",
                     description = "Linking request for ${dto.proprietaryPackage ?: "unknown"}"
-                ),
-                submitterUid = dto.submitterId ?: "",
-                submitterUsername = dto.profile?.username ?: "Unknown",
-                submittedAt = dto.createdAt?.let { parseTimestamp(it) }
-                    ?: System.currentTimeMillis(),
+                    ),
+                    submitterUid = dto.submitterId ?: "",
+                    submitterUsername = dto.profile?.username ?: "Unknown",
+                    submitterReputation = dto.profile?.reputationScore ?: 0,
+                    submitterBadge = dto.profile?.badge,
+                    submittedAt = dto.createdAt?.let { parseTimestamp(it) } ?: System.currentTimeMillis(),
                 status = try {
                     SubmissionStatus.valueOf(dto.status ?: "PENDING")
                 } catch (_: Exception) {
@@ -1040,12 +1082,6 @@ class SupabaseAppRepository(
         }
     }
 
-    @Serializable
-    private data class TargetSearchDto(
-        @SerialName("package_name") val packageName: String,
-        val name: String = ""
-    )
-
     override suspend fun searchProprietary(query: String, limit: Int): List<Alternative> {
         if (query.isBlank()) return emptyList()
 
@@ -1056,7 +1092,7 @@ class SupabaseAppRepository(
                 .replace("_", "\\_")
 
             val targets = supabase.postgrest.from("targets")
-                .select(columns = Columns.list("package_name", "name")) {
+                .select(columns = Columns.list("package_name", "name", "description", "category", "icon_url")) {
                     filter {
                         or {
                             ilike("name", "%$sanitizedQuery%")
@@ -1064,7 +1100,7 @@ class SupabaseAppRepository(
                         }
                     }
                     limit(limit.toLong())
-                }.decodeList<TargetSearchDto>()
+                }.decodeList<com.jksalcedo.librefind.data.remote.model.TargetDto>()
 
             targets.map { dto ->
                 Alternative(
@@ -1074,8 +1110,9 @@ class SupabaseAppRepository(
                     license = "Proprietary",
                     repoUrl = "",
                     fdroidId = "",
-                    iconUrl = null,
-                    description = dto.packageName
+                    iconUrl = dto.iconUrl,
+                    category = dto.category ?: "Other",
+                    description = dto.description ?: ""
                 )
             }
         } catch (e: Exception) {

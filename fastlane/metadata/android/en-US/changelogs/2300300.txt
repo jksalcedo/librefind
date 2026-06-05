@@ -1,0 +1,6 @@
+- Added full-screen user profiles with contribution stats
+- Introduced public profiles for community members
+- Implemented reputation system and badges for contributors
+- Added "Top Contributors" leaderboard
+- Display metadata for proprietary target apps
+- Fixed details screen and centralized heuristics

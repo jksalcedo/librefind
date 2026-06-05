@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.EmojiEvents
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ThumbDown
 import androidx.compose.material.icons.filled.ThumbUp
@@ -60,6 +61,8 @@ import org.koin.androidx.compose.koinViewModel
 fun CommunitySubmissionsScreen(
     onBackClick: () -> Unit,
     onSubmissionClick: (String) -> Unit,
+    onUserClick: (String) -> Unit = {},
+    onLeaderboardClick: () -> Unit = {},
     viewModel: CommunitySubmissionsViewModel = koinViewModel()
 ) {
     val state by viewModel.uiState.collectAsState()
@@ -73,9 +76,18 @@ fun CommunitySubmissionsScreen(
             if (state.searchQuery.isNotBlank()) {
                 result = result.filter { submission ->
                     submission.submittedApp.name.contains(state.searchQuery, ignoreCase = true) ||
-                    submission.submittedApp.packageName.contains(state.searchQuery, ignoreCase = true) ||
-                    submission.proprietaryPackages.contains(state.searchQuery, ignoreCase = true) ||
-                    submission.submitterUsername.contains(state.searchQuery, ignoreCase = true)
+                            submission.submittedApp.packageName.contains(
+                                state.searchQuery,
+                                ignoreCase = true
+                            ) ||
+                            submission.proprietaryPackages.contains(
+                                state.searchQuery,
+                                ignoreCase = true
+                            ) ||
+                            submission.submitterUsername.contains(
+                                state.searchQuery,
+                                ignoreCase = true
+                            )
                 }
             }
             result
@@ -156,6 +168,15 @@ fun CommunitySubmissionsScreen(
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                    }
+                },
+                actions = {
+                    IconButton(onClick = onLeaderboardClick) {
+                        Icon(
+                            Icons.Default.EmojiEvents,
+                            contentDescription = stringResource(R.string.community_leaderboard_title),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
                     }
                 }
             )
@@ -256,6 +277,7 @@ fun CommunitySubmissionsScreen(
                                 CommunitySubmissionItem(
                                     submission = submission,
                                     onClick = { onSubmissionClick(submission.id) },
+                                    onUserClick = { onUserClick(submission.submitterUid) },
                                     onUpvote = { viewModel.castVote(submission, 1) },
                                     onDownvote = { submissionToDownvote = submission }
                                 )
@@ -272,6 +294,7 @@ fun CommunitySubmissionsScreen(
 fun CommunitySubmissionItem(
     submission: Submission,
     onClick: () -> Unit,
+    onUserClick: () -> Unit = {},
     onUpvote: () -> Unit,
     onDownvote: () -> Unit
 ) {
@@ -298,11 +321,37 @@ fun CommunitySubmissionItem(
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = "Submitted by ${submission.submitterUsername}",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        modifier = Modifier.clickable { onUserClick() }
+                    ) {
+                        Text(
+                            text = submission.submitterUsername,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.Bold
+                        )
+                        if (!submission.submitterBadge.isNullOrBlank()) {
+                            Surface(
+                                color = MaterialTheme.colorScheme.secondaryContainer,
+                                shape = MaterialTheme.shapes.extraSmall
+                            ) {
+                                Text(
+                                    text = submission.submitterBadge,
+                                    modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    fontSize = MaterialTheme.typography.labelSmall.fontSize * 0.8f,
+                                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                                )
+                            }
+                        }
+                        Text(
+                            text = "(${submission.submitterReputation})",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
@@ -323,10 +372,10 @@ fun CommunitySubmissionItem(
                     IconButton(onClick = onUpvote, modifier = Modifier.size(36.dp)) {
                         Icon(
                             imageVector = if (submission.userVote == 1) Icons.Filled.ThumbUp
-                                         else Icons.Outlined.ThumbUp,
+                            else Icons.Outlined.ThumbUp,
                             contentDescription = stringResource(R.string.submission_upvote),
                             tint = if (submission.userVote == 1) MaterialTheme.colorScheme.primary
-                                   else MaterialTheme.colorScheme.onSurfaceVariant,
+                            else MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.size(18.dp)
                         )
                     }
@@ -338,10 +387,10 @@ fun CommunitySubmissionItem(
                     IconButton(onClick = onDownvote, modifier = Modifier.size(36.dp)) {
                         Icon(
                             imageVector = if (submission.userVote == -1) Icons.Filled.ThumbDown
-                                          else Icons.Outlined.ThumbDown,
+                            else Icons.Outlined.ThumbDown,
                             contentDescription = stringResource(R.string.submission_downvote),
                             tint = if (submission.userVote == -1) MaterialTheme.colorScheme.error
-                                   else MaterialTheme.colorScheme.onSurfaceVariant,
+                            else MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.size(18.dp)
                         )
                     }

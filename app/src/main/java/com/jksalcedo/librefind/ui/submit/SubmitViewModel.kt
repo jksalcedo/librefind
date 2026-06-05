@@ -112,9 +112,9 @@ class SubmitViewModel(
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
             val user = authRepository.getCurrentUser() ?: return@launch
-            
+
             // First check my submissions
-            val mySubmissions = appRepository.getMySubmissions(user.uid)
+            val mySubmissions = appRepository.getUserSubmissions(user.uid)
             var submission = mySubmissions.find { it.id == id }
             var isCommunityEdit = false
 
@@ -182,7 +182,6 @@ class SubmitViewModel(
                         DuplicateStatus.APPROVED_SOLUTION -> "This app is already an approved FOSS app. Use 'Link App' to associate it with a proprietary app."
                         DuplicateStatus.APPROVED_TARGET -> "This app is already an approved proprietary target."
                         DuplicateStatus.PENDING -> "This app is already pending review."
-                        else -> "Duplicate submission."
                     }
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,

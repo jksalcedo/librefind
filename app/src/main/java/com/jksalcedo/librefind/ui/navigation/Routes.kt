@@ -6,6 +6,7 @@ sealed class Route(val route: String) {
     data object Dashboard : Route("dashboard")
     data object Discover : Route("discover")
     data object Community : Route("community")
+    data object Leaderboard : Route("leaderboard")
     data object SubmissionDetail : Route("submission_detail/{submissionId}") {
         fun createRoute(submissionId: String) = "submission_detail/${Uri.encode(submissionId)}"
     }
@@ -55,5 +56,9 @@ sealed class Route(val route: String) {
 
     data object SuggestCorrection : Route("suggest_correction/{packageName}") {
         fun createRoute(packageName: String) = "suggest_correction/${Uri.encode(packageName)}"
+    }
+
+    data object Profile : Route("profile?userId={userId}") {
+        fun createRoute(userId: String? = null) = if (userId != null) "profile?userId=${Uri.encode(userId)}" else "profile"
     }
 }

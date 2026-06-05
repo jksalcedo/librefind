@@ -41,7 +41,7 @@ class MySubmissionsViewModel(
             }
 
             try {
-                val submissions = appRepository.getMySubmissions(user.uid)
+                val submissions = appRepository.getUserSubmissions(user.uid)
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
                     submissions = submissions

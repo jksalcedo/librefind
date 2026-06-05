@@ -18,6 +18,7 @@ import com.jksalcedo.librefind.ui.auth.AuthScreen
 import com.jksalcedo.librefind.ui.auth.AuthViewModel
 import com.jksalcedo.librefind.ui.auth.ProfileSetupScreen
 import com.jksalcedo.librefind.ui.community.CommunitySubmissionsScreen
+import com.jksalcedo.librefind.ui.community.LeaderboardScreen
 import com.jksalcedo.librefind.ui.dashboard.DashboardScreen
 import org.koin.androidx.compose.koinViewModel
 import com.jksalcedo.librefind.ui.details.AlternativeDetailScreen
@@ -27,6 +28,7 @@ import com.jksalcedo.librefind.ui.mysubmissions.MySubmissionsScreen
 import com.jksalcedo.librefind.ui.reports.MyReportsScreen
 import com.jksalcedo.librefind.ui.reports.ReportScreen
 import com.jksalcedo.librefind.ui.correction.SuggestCorrectionScreen
+import com.jksalcedo.librefind.ui.profile.ProfileScreen
 import com.jksalcedo.librefind.ui.settings.IgnoredAppsScreen
 import com.jksalcedo.librefind.ui.submit.SubmitScreen
 
@@ -67,6 +69,32 @@ fun NavGraph(
                 },
                 onSettingsClick = {
                     navController.navigate(Route.Settings.route)
+                },
+                onProfileClick = { userId ->
+                    navController.navigate(Route.Profile.createRoute(userId))
+                }
+            )
+        }
+
+        composable(
+            route = Route.Profile.route,
+            arguments = listOf(navArgument("userId") {
+                type = NavType.StringType
+                nullable = true
+                defaultValue = null
+            })
+        ) { backStackEntry ->
+            val userId = backStackEntry.arguments?.getString("userId")?.let { Uri.decode(it) }
+            ProfileScreen(
+                userId = userId,
+                onBackClick = { navController.navigateUp() },
+                onSubmissionClick = { submissionId ->
+                    navController.navigate(Route.Submit.createRoute(submissionId = submissionId))
+                },
+                onSignOutSuccess = {
+                    navController.navigate(Route.Dashboard.route) {
+                        popUpTo(Route.Dashboard.route) { inclusive = true }
+                    }
                 }
             )
         }
@@ -291,6 +319,21 @@ fun NavGraph(
                 onBackClick = { navController.navigateUp() },
                 onSubmissionClick = { submissionId ->
                     navController.navigate(Route.SubmissionDetail.createRoute(submissionId))
+                },
+                onUserClick = { userId ->
+                    navController.navigate(Route.Profile.createRoute(userId))
+                },
+                onLeaderboardClick = {
+                    navController.navigate(Route.Leaderboard.route)
+                }
+            )
+        }
+
+        composable(Route.Leaderboard.route) {
+            LeaderboardScreen(
+                onBackClick = { navController.navigateUp() },
+                onUserClick = { userId ->
+                    navController.navigate(Route.Profile.createRoute(userId))
                 }
             )
         }
