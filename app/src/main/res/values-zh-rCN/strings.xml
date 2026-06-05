@@ -32,7 +32,7 @@
     <string name="dashboard_no_matching_apps">没有匹配的应用</string>
     <string name="dashboard_no_apps_found">未找到应用</string>
     <!-- Profile Dialog -->
-    <string name="profile_dialog_title">个人资料与设置</string>
+    <string name="profile_dialog_title">Profile</string>
     <string name="profile_unknown_username">未知用户名</string>
     <string name="profile_no_email">无邮箱</string>
     <string name="profile_ignored_apps">已忽略的应用</string>
@@ -362,4 +362,23 @@
     <string name="reject_reason_title">Reject Submission</string>
     <string name="reject_reason_label">Reason for rejection</string>
     <string name="community_suggest_correction">Suggest Correction</string>
+    <!-- Submission voting -->
+    <string name="submission_upvote">Upvote submission</string>
+    <string name="submission_downvote">Downvote submission</string>
+    <string name="submission_votes_title">Community Votes</string>
+    <string name="downvote_sheet_title">Report an Issue</string>
+    <string name="downvote_sheet_subtitle">What\'s wrong with this submission?</string>
+    <string name="downvote_reason_duplicate">Duplicate</string>
+    <string name="downvote_reason_wrong_category">Wrong Category</string>
+    <string name="downvote_reason_fake">Fake Submission</string>
+    <string name="downvote_reason_not_enough_info">Not Enough Information</string>
+    <string name="downvote_reason_other">Other</string>
+    <string name="downvote_duplicate_hint">What is it a duplicate of?</string>
+    <string name="downvote_category_hint">Correct category</string>
+    <string name="downvote_other_hint">Please describe the issue…</string>
+    <string name="downvote_category_foss">FOSS</string>
+    <string name="downvote_category_proprietary">Proprietary</string>
+    <string name="downvote_category_source_available">Source Available</string>
+    <string name="downvote_category_pwa">PWA</string>
+    <string name="downvote_confirm">Downvote</string>
 </resources>

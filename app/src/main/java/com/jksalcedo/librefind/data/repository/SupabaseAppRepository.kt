@@ -701,7 +701,10 @@ class SupabaseAppRepository(
         supabase.postgrest.from("app_feedback").insert(feedback)
     }
 
-    override suspend fun getMySubmissions(userId: String): List<Submission> {
+    override suspend fun getUserSubmissions(
+        userId: String,
+        status: SubmissionStatus?
+    ): List<Submission> {
         return try {
             // 1. Fetch standard submissions
             val standardDtos =
@@ -727,10 +730,13 @@ class SupabaseAppRepository(
                             "last_edited_at",
                             "contributors",
                             "alternatives",
-                            "profile:profiles!fk_submissions_profiles(id, username)"
+                            "profile:profiles!fk_submissions_profiles(id, username, reputation_score, badge)"
                         )
                     ) {
-                        filter { eq("submitter_id", userId) }
+                        filter {
+                            eq("submitter_id", userId)
+                            status?.let { eq("status", it.name) }
+                        }
                     }.decodeList<UserSubmissionWithProfileDto>()
 
             // 2. Fetch linking submissions
@@ -748,10 +754,13 @@ class SupabaseAppRepository(
                             "last_edited_by",
                             "last_edited_at",
                             "contributors",
-                            "profile:profiles!user_linking_submissions_submitter_id_fkey(id, username)"
+                            "profile:profiles!user_linking_submissions_submitter_id_fkey(id, username, reputation_score, badge)"
                         )
                     ) {
-                        filter { eq("submitter_id", userId) }
+                        filter {
+                            eq("submitter_id", userId)
+                            status?.let { eq("status", it.name) }
+                        }
                     }.decodeList<UserLinkingSubmissionWithProfileDto>()
 
             mapDtosToSubmissions(standardDtos, linkingDtos)
@@ -797,9 +806,9 @@ class SupabaseAppRepository(
                             "last_edited_at",
                             "contributors",
                             "alternatives",
-                            "profile:profiles!fk_submissions_profiles(id, username)",
+                            "profile:profiles!fk_submissions_profiles(id, username, reputation_score, badge)",
                             // Join editor profile so UI can show username instead of uuid
-                            "editor_profile:profiles!last_edited_by(id, username)"
+                            "editor_profile:profiles!last_edited_by(id, username, reputation_score, badge)"
                         )
                     ) {
                         filter { eq("status", "PENDING") }
@@ -822,8 +831,8 @@ class SupabaseAppRepository(
                             "last_edited_by",
                             "last_edited_at",
                             "contributors",
-                            "profile:profiles!user_linking_submissions_submitter_id_fkey(id, username)",
-                            "editor_profile:profiles!last_edited_by(id, username)"
+                            "profile:profiles!user_linking_submissions_submitter_id_fkey(id, username, reputation_score, badge)",
+                            "editor_profile:profiles!last_edited_by(id, username, reputation_score, badge)"
                         )
                     ) {
                         filter { eq("status", "PENDING") }
@@ -869,6 +878,8 @@ class SupabaseAppRepository(
                 ),
                 submitterUid = dto.submitterId ?: "",
                 submitterUsername = dto.profile?.username ?: "Unknown",
+                submitterReputation = dto.profile?.reputationScore ?: 0,
+                submitterBadge = dto.profile?.badge,
                 // Parse created_at timestamp or use current time if missing
                 submittedAt = dto.createdAt?.let { parseTimestamp(it) }
                     ?: System.currentTimeMillis(),
@@ -897,11 +908,12 @@ class SupabaseAppRepository(
                     name = "Link ${(dto.alternatives ?: emptyList()).size} Alternatives",
                     packageName = dto.proprietaryPackage ?: "",
                     description = "Linking request for ${dto.proprietaryPackage ?: "unknown"}"
-                ),
-                submitterUid = dto.submitterId ?: "",
-                submitterUsername = dto.profile?.username ?: "Unknown",
-                submittedAt = dto.createdAt?.let { parseTimestamp(it) }
-                    ?: System.currentTimeMillis(),
+                    ),
+                    submitterUid = dto.submitterId ?: "",
+                    submitterUsername = dto.profile?.username ?: "Unknown",
+                    submitterReputation = dto.profile?.reputationScore ?: 0,
+                    submitterBadge = dto.profile?.badge,
+                    submittedAt = dto.createdAt?.let { parseTimestamp(it) } ?: System.currentTimeMillis(),
                 status = try {
                     SubmissionStatus.valueOf(dto.status ?: "PENDING")
                 } catch (_: Exception) {

@@ -26,12 +26,14 @@ import com.jksalcedo.librefind.domain.usecase.SubmitProposalUseCase
 import com.jksalcedo.librefind.domain.usecase.UpdateSubmissionUseCase
 import com.jksalcedo.librefind.ui.auth.AuthViewModel
 import com.jksalcedo.librefind.ui.community.CommunitySubmissionsViewModel
+import com.jksalcedo.librefind.ui.community.LeaderboardViewModel
 import com.jksalcedo.librefind.ui.correction.SuggestCorrectionViewModel
 import com.jksalcedo.librefind.ui.dashboard.DashboardViewModel
 import com.jksalcedo.librefind.ui.details.AlternativeDetailViewModel
 import com.jksalcedo.librefind.ui.details.DetailsViewModel
 import com.jksalcedo.librefind.ui.discover.DiscoverViewModel
 import com.jksalcedo.librefind.ui.mysubmissions.MySubmissionsViewModel
+import com.jksalcedo.librefind.ui.profile.ProfileViewModel
 import com.jksalcedo.librefind.ui.reports.MyReportsViewModel
 import com.jksalcedo.librefind.ui.reports.ReportViewModel
 import com.jksalcedo.librefind.ui.settings.IgnoredAppsViewModel
@@ -147,4 +149,6 @@ val viewModelModule = module {
     viewModel { MyReportsViewModel(get(), get()) }
     viewModel { DiscoverViewModel(get()) }
     viewModel { SuggestCorrectionViewModel(get()) }
+    viewModel { ProfileViewModel(get(), get()) }
+    viewModel { LeaderboardViewModel(get()) }
 }

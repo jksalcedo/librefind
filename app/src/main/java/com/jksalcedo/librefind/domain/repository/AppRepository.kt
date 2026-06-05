@@ -97,7 +97,10 @@ interface AppRepository {
         vote: Int
     ): Result<Unit>
 
-    suspend fun getMySubmissions(userId: String): List<Submission>
+    suspend fun getUserSubmissions(
+        userId: String,
+        status: com.jksalcedo.librefind.domain.model.SubmissionStatus? = null
+    ): List<Submission>
     suspend fun getAllPendingSubmissions(forceRefresh: Boolean = false): List<Submission>
 
     suspend fun submitFeedback(
