@@ -74,9 +74,18 @@ fun CommunitySubmissionsScreen(
             if (state.searchQuery.isNotBlank()) {
                 result = result.filter { submission ->
                     submission.submittedApp.name.contains(state.searchQuery, ignoreCase = true) ||
-                    submission.submittedApp.packageName.contains(state.searchQuery, ignoreCase = true) ||
-                    submission.proprietaryPackages.contains(state.searchQuery, ignoreCase = true) ||
-                    submission.submitterUsername.contains(state.searchQuery, ignoreCase = true)
+                            submission.submittedApp.packageName.contains(
+                                state.searchQuery,
+                                ignoreCase = true
+                            ) ||
+                            submission.proprietaryPackages.contains(
+                                state.searchQuery,
+                                ignoreCase = true
+                            ) ||
+                            submission.submitterUsername.contains(
+                                state.searchQuery,
+                                ignoreCase = true
+                            )
                 }
             }
             result
@@ -321,7 +330,7 @@ fun CommunitySubmissionItem(
                                     text = submission.submitterBadge,
                                     modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp),
                                     style = MaterialTheme.typography.labelSmall,
-                                    fontSize = androidx.compose.ui.unit.sp.times(0.8),
+                                    fontSize = MaterialTheme.typography.labelSmall.fontSize * 0.8f,
                                     color = MaterialTheme.colorScheme.onSecondaryContainer
                                 )
                             }
@@ -352,10 +361,10 @@ fun CommunitySubmissionItem(
                     IconButton(onClick = onUpvote, modifier = Modifier.size(36.dp)) {
                         Icon(
                             imageVector = if (submission.userVote == 1) Icons.Filled.ThumbUp
-                                         else Icons.Outlined.ThumbUp,
+                            else Icons.Outlined.ThumbUp,
                             contentDescription = stringResource(R.string.submission_upvote),
                             tint = if (submission.userVote == 1) MaterialTheme.colorScheme.primary
-                                   else MaterialTheme.colorScheme.onSurfaceVariant,
+                            else MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.size(18.dp)
                         )
                     }
@@ -367,10 +376,10 @@ fun CommunitySubmissionItem(
                     IconButton(onClick = onDownvote, modifier = Modifier.size(36.dp)) {
                         Icon(
                             imageVector = if (submission.userVote == -1) Icons.Filled.ThumbDown
-                                          else Icons.Outlined.ThumbDown,
+                            else Icons.Outlined.ThumbDown,
                             contentDescription = stringResource(R.string.submission_downvote),
                             tint = if (submission.userVote == -1) MaterialTheme.colorScheme.error
-                                   else MaterialTheme.colorScheme.onSurfaceVariant,
+                            else MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.size(18.dp)
                         )
                     }
