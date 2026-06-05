@@ -18,6 +18,7 @@ import com.jksalcedo.librefind.ui.auth.AuthScreen
 import com.jksalcedo.librefind.ui.auth.AuthViewModel
 import com.jksalcedo.librefind.ui.auth.ProfileSetupScreen
 import com.jksalcedo.librefind.ui.community.CommunitySubmissionsScreen
+import com.jksalcedo.librefind.ui.community.LeaderboardScreen
 import com.jksalcedo.librefind.ui.dashboard.DashboardScreen
 import org.koin.androidx.compose.koinViewModel
 import com.jksalcedo.librefind.ui.details.AlternativeDetailScreen
@@ -319,6 +320,18 @@ fun NavGraph(
                 onSubmissionClick = { submissionId ->
                     navController.navigate(Route.SubmissionDetail.createRoute(submissionId))
                 },
+                onUserClick = { userId ->
+                    navController.navigate(Route.Profile.createRoute(userId))
+                },
+                onLeaderboardClick = {
+                    navController.navigate(Route.Leaderboard.route)
+                }
+            )
+        }
+
+        composable(Route.Leaderboard.route) {
+            LeaderboardScreen(
+                onBackClick = { navController.navigateUp() },
                 onUserClick = { userId ->
                     navController.navigate(Route.Profile.createRoute(userId))
                 }

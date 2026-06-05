@@ -149,4 +149,5 @@ val viewModelModule = module {
     viewModel { DiscoverViewModel(get()) }
     viewModel { SuggestCorrectionViewModel(get()) }
     viewModel { ProfileViewModel(get(), get()) }
+    viewModel { LeaderboardViewModel(get()) }
 }

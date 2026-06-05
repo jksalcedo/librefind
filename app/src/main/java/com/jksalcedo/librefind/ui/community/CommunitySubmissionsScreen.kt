@@ -61,6 +61,7 @@ fun CommunitySubmissionsScreen(
     onBackClick: () -> Unit,
     onSubmissionClick: (String) -> Unit,
     onUserClick: (String) -> Unit = {},
+    onLeaderboardClick: () -> Unit = {},
     viewModel: CommunitySubmissionsViewModel = koinViewModel()
 ) {
     val state by viewModel.uiState.collectAsState()
@@ -166,6 +167,15 @@ fun CommunitySubmissionsScreen(
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                    }
+                },
+                actions = {
+                    IconButton(onClick = onLeaderboardClick) {
+                        Icon(
+                            Icons.Default.EmojiEvents,
+                            contentDescription = stringResource(R.string.community_leaderboard_title),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
                     }
                 }
             )

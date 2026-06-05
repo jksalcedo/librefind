@@ -12,6 +12,7 @@ interface AuthRepository {
     suspend fun signOut()
     suspend fun getCurrentUser(): UserProfile?
     suspend fun getPublicProfile(userId: String): UserProfile?
+    val topContributors: kotlinx.coroutines.flow.Flow<List<UserProfile>>
     suspend fun updateProfile(username: String): Result<Unit>
     suspend fun deleteAccount(): Result<Unit>
 }

@@ -39,6 +39,39 @@ class SupabaseAuthRepository(
         }
     }
 
+    override val topContributors: Flow<List<UserProfile>> = kotlinx.coroutines.flow.flow {
+        try {
+            val dtos = supabase.postgrest.from("profiles")
+                .select() {
+                    order("reputation_score", io.github.jan.supabase.postgrest.query.Order.DESCENDING)
+                    limit(20)
+                }.decodeList<ProfileDto>()
+            
+            emit(dtos.map { dto ->
+                UserProfile(
+                    uid = dto.id,
+                    username = dto.username ?: "Unknown",
+                    email = "",
+                    joinedAt = dto.createdAt?.let { dateStr ->
+                        try {
+                            Instant.parse(dateStr).toEpochMilliseconds()
+                        } catch (_: Exception) {
+                            0L
+                        }
+                    } ?: 0L,
+                    submissionCount = dto.submissionCount,
+                    approvedCount = dto.approvedCount,
+                    rejectedCount = dto.rejectedCount,
+                    reputationScore = dto.reputationScore,
+                    badge = dto.badge
+                )
+            })
+        } catch (e: Exception) {
+            android.util.Log.e("AuthRepo", "Failed to fetch top contributors", e)
+            emit(emptyList())
+        }
+    }
+
     override suspend fun signUp(email: String, password: String, username: String): Result<Unit> =
         runCatching {
             auth.signUpWith(Email, redirectUrl = "librefind://login-callback") {

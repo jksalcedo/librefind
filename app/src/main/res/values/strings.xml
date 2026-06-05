@@ -380,7 +380,8 @@
     <string name="settings_community_title">Community</string>
     <string name="settings_browse_pending_title">Browse Pending Submissions</string>
     <string name="settings_browse_pending_desc">Help moderate community contributions.</string>
-    <string name="community_submissions_title">Pending Submissions</string>
+    <string name="community_submissions_title">Community Activity</string>
+    <string name="community_leaderboard_title">Top Contributors</string>
     <string name="community_submissions_empty">No pending submissions found.</string>
     <string name="action_approve">Approve</string>
     <string name="action_reject">Reject</string>
