@@ -23,6 +23,19 @@
     <string name="correction_description_label">Description / Reason</string>
     <string name="correction_description_placeholder">Why is this correction needed? Provide sources if possible.</string>
     <string name="correction_submit_button">Submit Correction</string>
+    <!-- App Info -->
+    <string name="app_info_title">App info</string>
+    <string name="app_info_label_name">Name</string>
+    <string name="app_info_label_package">Package</string>
+    <string name="app_info_label_category">Category</string>
+    <string name="app_info_label_license">License</string>
+    <string name="app_info_label_description">Description</string>
+    <string name="app_info_unknown">Unknown</string>
+    <string name="app_info_unavailable">No app metadata available yet.</string>
+    <!-- Profile -->
+    <string name="profile_my_profile">My Profile</string>
+    <string name="profile_user_profile">User Profile</string>
+    <string name="profile_user_submissions">User Submissions</string>
     <string name="back">Back</string>
     <string name="dashboard_settings">设置</string>
     <string name="dashboard_submit_app">提交应用</string>
@@ -32,7 +45,7 @@
     <string name="dashboard_no_matching_apps">没有匹配的应用</string>
     <string name="dashboard_no_apps_found">未找到应用</string>
     <!-- Profile Dialog -->
-    <string name="profile_dialog_title">Profile</string>
+    <string name="profile_dialog_title">个人资料与设置</string>
     <string name="profile_unknown_username">未知用户名</string>
     <string name="profile_no_email">无邮箱</string>
     <string name="profile_ignored_apps">已忽略的应用</string>
@@ -356,6 +369,7 @@
     <string name="settings_browse_pending_title">浏览待处理的提交内容</string>
     <string name="settings_browse_pending_desc">Help moderate community contributions.</string>
     <string name="community_submissions_title">Pending Submissions</string>
+    <string name="community_leaderboard_title">Top Contributors</string>
     <string name="community_submissions_empty">No pending submissions found.</string>
     <string name="action_approve">Approve</string>
     <string name="action_reject">Reject</string>
