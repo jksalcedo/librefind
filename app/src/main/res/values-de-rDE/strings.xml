@@ -15,28 +15,28 @@
     <string name="dashboard_filter_ignored_only">Nur Ignorierte</string>
     <string name="dashboard_profile">Profil</string>
     <!-- Correction -->
-    <string name="correction_title">Suggest Correction</string>
-    <string name="correction_intro">Suggest a correction for %1$s. All suggestions are reviewed by moderators.</string>
-    <string name="correction_type_label">Correction Type</string>
-    <string name="correction_value_label">Correct Value</string>
-    <string name="correction_value_placeholder">e.g. GPLv3, Utility, https://example.com</string>
-    <string name="correction_description_label">Description / Reason</string>
-    <string name="correction_description_placeholder">Why is this correction needed? Provide sources if possible.</string>
-    <string name="correction_submit_button">Submit Correction</string>
+    <string name="correction_title">Korrektur vorschlagen</string>
+    <string name="correction_intro">Schlage eine Korrektur für %1$s vor. Alle Vorschläge werden von Moderatoren geprüft.</string>
+    <string name="correction_type_label">Korrekturtyp</string>
+    <string name="correction_value_label">Richtiger Wert</string>
+    <string name="correction_value_placeholder">z.B. GPLv3, Utility, https://example.com</string>
+    <string name="correction_description_label">Beschreibung / Grund</string>
+    <string name="correction_description_placeholder">Warum ist diese Korrektur notwendig? Stelle nach Möglichkeit Quellen zur Verfügung.</string>
+    <string name="correction_submit_button">Korrektur einreichen</string>
     <!-- App Info -->
-    <string name="app_info_title">App info</string>
+    <string name="app_info_title">App-Infos</string>
     <string name="app_info_label_name">Name</string>
-    <string name="app_info_label_package">Package</string>
-    <string name="app_info_label_category">Category</string>
-    <string name="app_info_label_license">License</string>
-    <string name="app_info_label_description">Description</string>
-    <string name="app_info_unknown">Unknown</string>
-    <string name="app_info_unavailable">No app metadata available yet.</string>
+    <string name="app_info_label_package">Paket</string>
+    <string name="app_info_label_category">Kategorie</string>
+    <string name="app_info_label_license">Lizenz</string>
+    <string name="app_info_label_description">Beschreibung</string>
+    <string name="app_info_unknown">Unbekannt</string>
+    <string name="app_info_unavailable">Noch keine App-Metadaten verfügbar.</string>
     <!-- Profile -->
-    <string name="profile_my_profile">My Profile</string>
-    <string name="profile_user_profile">User Profile</string>
-    <string name="profile_user_submissions">User Submissions</string>
-    <string name="back">Back</string>
+    <string name="profile_my_profile">Mein Profil</string>
+    <string name="profile_user_profile">Benutzerprofil</string>
+    <string name="profile_user_submissions">Benutzereinreichungen</string>
+    <string name="back">Zurück</string>
     <string name="dashboard_settings">Einstellungen</string>
     <string name="dashboard_submit_app">App einreichen</string>
     <string name="dashboard_error_title">Fehler</string>
@@ -190,7 +190,7 @@
     <string name="settings_cache_management">Cache-Verwaltung</string>
     <string name="settings_cache_size">Icon-Cache Größe</string>
     <string name="settings_clear">Leeren</string>
-    <string name="settings_account">Account</string>
+    <string name="settings_account">Konto</string>
     <string name="settings_delete_account">Account löschen</string>
     <string name="settings_clear_cache_title">Icon-Cache löschen?</string>
     <string name="settings_clear_cache_message">Hierdurch werden alle zwischengespeicherten App-Icons gelöscht. Sie werden erneut geladen, wenn du durchs Dashboard scrollst.</string>
@@ -202,23 +202,23 @@
     <string name="settings_account_deleted_message">Dein Account wurde erfolgreich gelöscht.</string>
     <string name="settings_ok">OK</string>
     <!-- New strings for system/vendor package filtering toggle -->
-    <string name="settings_hide_system_packages_title">System package filtering</string>
-    <string name="settings_hide_system_packages_label">Hide vendor/system packages</string>
-    <string name="settings_on">On</string>
-    <string name="settings_off">Off</string>
+    <string name="settings_hide_system_packages_title">Filtern von Systempaketen</string>
+    <string name="settings_hide_system_packages_label">Anbieter-/Systempakete ausblenden</string>
+    <string name="settings_on">Ein</string>
+    <string name="settings_off">Aus</string>
     <string name="settings_error">Fehler</string>
     <!-- Auto-Updater -->
-    <string name="settings_check_updates">Check for Updates</string>
-    <string name="settings_checking_updates">Checking for updates…</string>
-    <string name="settings_up_to_date">App is up to date</string>
-    <string name="settings_update_available_title">Update Available</string>
-    <string name="settings_update_available_message">A new version (%1$s) of LibreFind is available. Would you like to download and install it?</string>
-    <string name="settings_download_install">Download &amp; Install</string>
-    <string name="settings_update_error">Failed to check for updates: %1$s</string>
-    <string name="settings_changelog_title">What\'s New</string>
-    <string name="settings_include_prereleases_title">Experimental Updates</string>
-    <string name="settings_include_prereleases_label">Include pre-releases</string>
-    <string name="settings_include_prereleases_desc">Receive updates for alpha, beta, and RC versions.</string>
+    <string name="settings_check_updates">Nach Updates suchen</string>
+    <string name="settings_checking_updates">Suche nach Updates…</string>
+    <string name="settings_up_to_date">Die App ist auf dem neuesten Stand</string>
+    <string name="settings_update_available_title">Update verfügbar</string>
+    <string name="settings_update_available_message">Eine neue Version (%1$s) von LibreFind ist verfügbar. Möchtest du sie herunterladen und installieren?</string>
+    <string name="settings_download_install">Herunterladen &amp; Installieren</string>
+    <string name="settings_update_error">Suche nach Updates fehlgeschlagen: %1$s</string>
+    <string name="settings_changelog_title">Was gibt\'s Neues</string>
+    <string name="settings_include_prereleases_title">Experimentelle Updates</string>
+    <string name="settings_include_prereleases_label">Vorveröffentlichungen einschließen</string>
+    <string name="settings_include_prereleases_desc">Erhalte Updates für Alpha-, Beta- und RC-Versionen.</string>
     <!-- Ignored Apps Screen -->
     <string name="ignored_apps_title">Ignorierte Apps</string>
     <string name="ignored_apps_empty">Keine ignorierten Apps. \nDrücke lang auf eine beliebige App in der Liste → drücke Ignorieren.</string>
@@ -319,12 +319,12 @@
     <string name="details_suggest_proprietary">Als Proprietär vorschagen</string>
     <string name="details_found_format">%1$d FOSS Alternative%2$s gefunden</string>
     <string name="details_suggest_alternative">Schlage eine Alternative vor</string>
-    <string name="details_no_siblings">No other FOSS apps in the same category yet.</string>
-    <string name="details_siblings_found_format">%1$d similar FOSS app%2$s in this category</string>
-    <string name="details_foss_category_unset">This app hasn\'t been assigned a category yet. Similar apps can\'t be shown until it is.</string>
+    <string name="details_no_siblings">Noch keine anderen FOSS-Apps in der gleichen Kategorie.</string>
+    <string name="details_siblings_found_format">%1$d ähnliche FOSS app%2$s in dieser Kategorie</string>
+    <string name="details_foss_category_unset">Dieser App wurde noch keine Kategorie zugewiesen. Ähnliche Apps können erst angezeigt werden, wenn sie es sind.</string>
     <!-- Match vote buttons -->
-    <string name="vote_upvote">Good replacement (upvote)</string>
-    <string name="vote_downvote">Poor replacement (downvote)</string>
+    <string name="vote_upvote">Guter Ersatz (Upvote)</string>
+    <string name="vote_downvote">Schlechter Ersatz (Downvote)</string>
     <!-- My Submissions Screen -->
     <string name="my_submissions_title">Meine Einreichungen</string>
     <string name="my_submissions_empty">Keine Einreichungen gefunden</string>
@@ -363,24 +363,24 @@
     <string name="report_submit_button">Meldung einreichen</string>
     <string name="web_submission">Web-Vorlage</string>
     <string name="status_pwa">PWA</string>
-    <string name="settings_clearing">Clearing...</string>
+    <string name="settings_clearing">Leere...</string>
     <!-- Community Moderation -->
     <string name="settings_community_title">Community</string>
-    <string name="settings_browse_pending_title">Browse Pending Submissions</string>
-    <string name="settings_browse_pending_desc">Help moderate community contributions.</string>
+    <string name="settings_browse_pending_title">Ausstehende Einreichungen durchsuchen</string>
+    <string name="settings_browse_pending_desc">Hilf, Beiträge der Gemeinschaft zu moderieren.</string>
     <string name="community_submissions_title">Pending Submissions</string>
-    <string name="community_leaderboard_title">Top Contributors</string>
-    <string name="community_submissions_empty">No pending submissions found.</string>
-    <string name="action_approve">Approve</string>
-    <string name="action_reject">Reject</string>
-    <string name="reject_reason_title">Reject Submission</string>
-    <string name="reject_reason_label">Reason for rejection</string>
-    <string name="community_suggest_correction">Suggest Correction</string>
+    <string name="community_leaderboard_title">Top-Mitwirkende</string>
+    <string name="community_submissions_empty">Keine ausstehenden Einreichungen gefunden.</string>
+    <string name="action_approve">Genehmigen</string>
+    <string name="action_reject">Ablehnen</string>
+    <string name="reject_reason_title">Einreichung ablehnen</string>
+    <string name="reject_reason_label">Grund für Ablehnung</string>
+    <string name="community_suggest_correction">Korrektur vorschlagen</string>
     <!-- Submission voting -->
-    <string name="submission_upvote">Upvote submission</string>
-    <string name="submission_downvote">Downvote submission</string>
+    <string name="submission_upvote">Einreichung upvoten</string>
+    <string name="submission_downvote">Einreichung downvoten</string>
     <string name="submission_votes_title">Community Votes</string>
-    <string name="downvote_sheet_title">Report an Issue</string>
+    <string name="downvote_sheet_title">Problem melden</string>
     <string name="downvote_sheet_subtitle">What\'s wrong with this submission?</string>
     <string name="downvote_reason_duplicate">Duplicate</string>
     <string name="downvote_reason_wrong_category">Wrong Category</string>
