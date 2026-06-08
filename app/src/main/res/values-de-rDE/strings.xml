@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Dashboard -->
-    <string name="dashboard_search_hint">Apps suchen …</string>
+    <string name="dashboard_search_hint">Apps suchen…</string>
     <string name="dashboard_close_search">Suche schließen</string>
     <string name="dashboard_search">Suche</string>
     <string name="dashboard_filter">Filter</string>
@@ -45,7 +45,7 @@
     <string name="dashboard_no_matching_apps">Keine passenden Apps</string>
     <string name="dashboard_no_apps_found">Keine Apps gefunden</string>
     <!-- Profile Dialog -->
-    <string name="profile_dialog_title">Profil &amp; Einstellungen</string>
+    <string name="profile_dialog_title">Profil</string>
     <string name="profile_unknown_username">Unbekannter Benutzername</string>
     <string name="profile_no_email">Keine E-Mail</string>
     <string name="profile_ignored_apps">Ignorierte Apps</string>
@@ -69,11 +69,11 @@
     <string name="auth_show_password">Passwort anzeigen</string>
     <string name="auth_or">ODER</string>
     <string name="auth_sign_in_github">Mit GitHub anmelden</string>
-    <string name="auth_already_have_account">Du hast bereits einen Account? Melde dich an</string>
-    <string name="auth_dont_have_account">Du hast noch keinen Account? Melde dich an</string>
+    <string name="auth_already_have_account">Du hast bereits einen Account? Anmelden</string>
+    <string name="auth_dont_have_account">Du hast noch keinen Account? Registrieren</string>
     <string name="auth_check_email_title">Prüfe deine E-Mail</string>
     <string name="auth_check_email_message">Wir haben dir einen Verifizierungslink an deine E-Mail-Adresse gesendet. Bitte prüfe deine E-Mail bevor du dich anmeldest.</string>
-    <string name="auth_go_to_sign_in">Gehe zum Anmelden</string>
+    <string name="auth_go_to_sign_in">Zum Anmelden</string>
     <!-- Profile Setup -->
     <string name="setup_title">Profil einrichten</string>
     <string name="setup_choose_username">Wähle einen Benutzernamen</string>
@@ -93,7 +93,7 @@
     <string name="submit_web_submission_page">Web-Vorlagen-Seiten öffnen</string>
     <string name="submit_type_foss">FOSS App</string>
     <string name="submit_type_proprietary">Proprietäre App</string>
-    <string name="submit_type_link">App verknüpften</string>
+    <string name="submit_type_link">App verknüpfen</string>
     <string name="submit_app_name">App-Name *</string>
     <string name="submit_package_name">Paketname *</string>
     <string name="submit_package_placeholder">com.example.app</string>
@@ -106,10 +106,10 @@
     <string name="submit_alternative_details">Alternativen Details</string>
     <string name="submit_search_foss_optional">Suche spezifische FOSS App (optional)</string>
     <string name="submit_search_foss_placeholder">Durchsuche existierende Datenbank …</string>
-    <string name="submit_linked_app">Verknüpft mit existiertender App</string>
+    <string name="submit_linked_app">Mit bestehender App verknüpft</string>
     <string name="submit_foss_requirements">Lizenz und Repository URL sind erforderlich für FOSS Alternativen</string>
     <string name="submit_target_proprietary">Ziel-Proprietäre Apps</string>
-    <string name="submit_search_to_add">Suche zum hinzufügen …</string>
+    <string name="submit_search_to_add">Suchen, um hinzuzufügen…</string>
     <string name="submit_repo_url">Repository URL *</string>
     <string name="submit_repo_placeholder">https://github.com/…</string>
     <string name="submit_fdroid_id">F-Droid ID</string>
@@ -120,11 +120,11 @@
     <string name="submit_select_license">Wähle Lizenz</string>
     <string name="submit_other">Andere</string>
     <string name="submit_cancel">Abbrechen</string>
-    <string name="submit_link_solutions_title">Verknüpfe existiertende Lösungen</string>
+    <string name="submit_link_solutions_title">Bestehende Lösungen verknüpfen</string>
     <string name="submit_link_solutions_desc">Verknüpfe eine existierende FOSS-App mit einer existierenden proprietären App in unserer Datenbank.</string>
     <string name="submit_target_app">Ziel-Proprietäre App</string>
     <string name="submit_link_solutions_target">Wähle die proprietäre App, die durch diese FOSS Lösung ersetzt wird.</string>
-    <string name="submit_select_target">Wähle eine Ziel App …</string>
+    <string name="submit_select_target">Ziel-App auswählen…</string>
     <string name="submit_select_solutions">Wähle Lösungen zum Verknüpfen</string>
     <string name="submit_search_solutions">Suche nach Lösungen</string>
     <string name="submit_selected_solutions">Ausgewählte Lösungen:</string>
@@ -142,7 +142,7 @@
     <string name="help_app_name_desc">Der Anzeigename der App, unter dem Benutzer sie kennen (z.B. „Signal“, „Firefox“, „VLC“).</string>
     <string name="help_app_name_tip">Nutze den offiziellen Namen von der App-Website oder dem App-Store Eintrag.</string>
     <string name="help_package_name_title">Paketname</string>
-    <string name="help_package_name_desc">Die Eindeutige technische Kennung der App (z.B. „org.mozilla.firefox“). Das ist NICHT der Anzeigename.</string>
+    <string name="help_package_name_desc">Die eindeutige technische Kennung der App (z.B. „org.mozilla.firefox“). Das ist NICHT der Anzeigename.</string>
     <string name="help_package_name_tip">Finde sie auf F-Droid (gelistet auf der App-Seite) oder in der Play Store URL: play.google.com/store/apps/details?id=&lt;package.name&gt;. Auf deinem Gerät: Einstellungen → Apps → [App] → App Info.</string>
     <string name="help_description_title">Beschreibung</string>
     <string name="help_description_desc">Eine kurze Zusammenfassung der Funktion der App. Beschränke dich auf 1-3 Sätze.</string>
@@ -190,7 +190,7 @@
     <string name="settings_cache_management">Cache-Verwaltung</string>
     <string name="settings_cache_size">Icon-Cache Größe</string>
     <string name="settings_clear">Leeren</string>
-    <string name="settings_account">Konto</string>
+    <string name="settings_account">Account</string>
     <string name="settings_delete_account">Account löschen</string>
     <string name="settings_clear_cache_title">Icon-Cache löschen?</string>
     <string name="settings_clear_cache_message">Hierdurch werden alle zwischengespeicherten App-Icons gelöscht. Sie werden erneut geladen, wenn du durchs Dashboard scrollst.</string>
@@ -237,7 +237,7 @@
     <string name="privacy_note_app_names">Anmerkung: Wir senden die Paketnamen deiner installierten Apps an unsere Server ausschließlich für Klassifizierungszwecke (Bestimmung FOSS vs. proprietärer Status). Wir speichern oder protokollieren diese Paketnamen nicht darüberhinaus was nötig ist für die Abfrage.</string>
     <string name="privacy_bullet_app_version">App Version: Die LibreFind-Version, die du nutzt.</string>
     <string name="privacy_subsection_1b">B. Account-Daten (Optional)</string>
-    <string name="privacy_subsection_1b_desc">Falls du dich entscheidest einen Account zu erstellen um Alternativen beizutragen oder Daten zu synchronisieren, sammeln wir:</string>
+    <string name="privacy_subsection_1b_desc">Falls du dich entscheidest einen Account zu erstellen, um Alternativen beizutragen oder Daten zu synchronisieren, sammeln wir:</string>
     <string name="privacy_bullet_user_email">Benutzername &amp; E-Mail: Um dich zu identifizieren und Spam vorzubeugen.</string>
     <string name="privacy_bullet_password">Passwort: Sicher gehashst durch unseren Authentifizierungsanbieter. Wir haben nie Zugang zu deinem Klartext-Passwort.</string>
     <string name="privacy_bullet_submissions">Benutzer Einreichungen: Alle Alternativ-App-Vorschläge oder Bewertungen die du zur Community-Datenbank beiträgst.</string>
@@ -289,19 +289,19 @@
     <string name="alt_detail_no_pros">Bisher noch keine Vorteile</string>
     <string name="alt_detail_cons">Nachteile</string>
     <string name="alt_detail_no_cons">Bisher noch keine Nachteile</string>
-    <string name="alt_detail_add_pro">Füge einen Vorteil hinzu</string>
-    <string name="alt_detail_add_con">Füge einen Nachteil hinzu</string>
+    <string name="alt_detail_add_pro">Vorteil hinzufügen</string>
+    <string name="alt_detail_add_con">Nachteil hinzufügen</string>
     <string name="alt_detail_pro">Vorteil</string>
     <string name="alt_detail_con">Nachteil</string>
     <string name="alt_detail_feedback_label">Dein Feedback</string>
     <string name="alt_detail_submit">Einreichen</string>
     <string name="alt_detail_cancel">Abbrechen</string>
-    <string name="alt_detail_report">Bericht</string>
-    <string name="alt_detail_report_title">Bericht %1$s</string>
+    <string name="alt_detail_report">Melden</string>
+    <string name="alt_detail_report_title">%1$s melden</string>
     <string name="alt_detail_report_prompt">Wieso ist diese Empfehlung falsch?</string>
     <string name="alt_detail_report_details">Details (optional)</string>
-    <string name="alt_detail_report_success">Bericht versendet</string>
-    <string name="alt_detail_report_error">Bericht konnte nicht versendet werden</string>
+    <string name="alt_detail_report_success">Meldung versendet</string>
+    <string name="alt_detail_report_error">Meldung konnte nicht versendet werden</string>
     <string name="alt_detail_report_not_foss">Kein FOSS</string>
     <string name="alt_detail_report_unrelated">ohne Bezug</string>
     <string name="alt_detail_report_broken_link">Defekte Verbindung</string>
@@ -381,18 +381,18 @@
     <string name="submission_downvote">Einreichung downvoten</string>
     <string name="submission_votes_title">Community Votes</string>
     <string name="downvote_sheet_title">Problem melden</string>
-    <string name="downvote_sheet_subtitle">What\'s wrong with this submission?</string>
-    <string name="downvote_reason_duplicate">Duplicate</string>
-    <string name="downvote_reason_wrong_category">Wrong Category</string>
-    <string name="downvote_reason_fake">Fake Submission</string>
-    <string name="downvote_reason_not_enough_info">Not Enough Information</string>
-    <string name="downvote_reason_other">Other</string>
-    <string name="downvote_duplicate_hint">What is it a duplicate of?</string>
-    <string name="downvote_category_hint">Correct category</string>
-    <string name="downvote_other_hint">Please describe the issue…</string>
+    <string name="downvote_sheet_subtitle">Was ist an dieser Einreichung falsch?</string>
+    <string name="downvote_reason_duplicate">Duplikat</string>
+    <string name="downvote_reason_wrong_category">Falsche Kategorie</string>
+    <string name="downvote_reason_fake">Gefälschte Einreichung</string>
+    <string name="downvote_reason_not_enough_info">Nicht genügend Informationen</string>
+    <string name="downvote_reason_other">Sonstiges</string>
+    <string name="downvote_duplicate_hint">Wovon ist es ein Duplikat?</string>
+    <string name="downvote_category_hint">Kategorie berichtigen</string>
+    <string name="downvote_other_hint">Bitte beschreibe das Problem…</string>
     <string name="downvote_category_foss">FOSS</string>
-    <string name="downvote_category_proprietary">Proprietary</string>
-    <string name="downvote_category_source_available">Source Available</string>
+    <string name="downvote_category_proprietary">Proprietär</string>
+    <string name="downvote_category_source_available">Quelle verfügbar</string>
     <string name="downvote_category_pwa">PWA</string>
     <string name="downvote_confirm">Downvote</string>
 </resources>
