@@ -1,14 +1,4 @@
 
-# LibreFind
-
-> [!IMPORTANT]
-> **Google has announced that, starting in 2026/2027, all apps on certified Android devices
-> will require the developer to submit personal identity details directly to Google.
-> Since the developers of this app do not agree to this requirement, this app will no longer
-> work on certified Android devices after that time.**
-> https://keepandroidopen.org/
-
-[![Keep Android Open](https://keepandroidopen.org/banner/banner.png)](https://keepandroidopen.org)
 
 <h1 align="center">
 
@@ -60,6 +50,13 @@
     <img alt="Zapstore" src="https://github.com/zapstore/zapstore/blob/master/assets/images/badge.png" width="140">
   </a>
 </p>
+
+> [!IMPORTANT]
+> **Google has announced that, starting in 2026/2027, all apps on certified Android devices
+> will require the developer to submit personal identity details directly to Google.
+> Since the developers of this app do not agree to this requirement, this app will no longer
+> work on certified Android devices after that time.**
+> https://keepandroidopen.org/
 
 ## What is LibreFind?
 
@@ -140,8 +137,6 @@ Every small contribution helps the project grow.
 [![Crowdin](https://badges.crowdin.net/librefind/localized.svg)](https://crowdin.com/project/librefind)
 
 LibreFind is a global project, and we aim to make FOSS discovery accessible to everyone. 
-
-**Current Status:** We are currently transitioning our localization workflow. While we plan to move to a **self-hosted Weblate instance** in the near future (generously hosted by [@ren7](https://github.com/ren7uk)), we are using **Crowdin** for all active translations in the interim.
 
 ### How to contribute:
 1. Visit our [Crowdin Project Page](https://crowdin.com/project/librefind).
