@@ -5,8 +5,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Environment
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import java.io.File
 
 class UpdateDownloadReceiver : BroadcastReceiver() {
@@ -15,7 +15,8 @@ class UpdateDownloadReceiver : BroadcastReceiver() {
             val downloadId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1L)
             if (downloadId == -1L) return
 
-            val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+            val downloadManager =
+                context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
             val query = DownloadManager.Query().setFilterById(downloadId)
             val cursor = downloadManager.query(query)
 
@@ -26,9 +27,9 @@ class UpdateDownloadReceiver : BroadcastReceiver() {
                 if (status == DownloadManager.STATUS_SUCCESSFUL) {
                     val localUriIndex = cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI)
                     val localUriString = cursor.getString(localUriIndex)
-                    
+
                     if (localUriString != null) {
-                        installApk(context, Uri.parse(localUriString))
+                        installApk(context, localUriString.toUri())
                     }
                 }
             }
@@ -38,7 +39,7 @@ class UpdateDownloadReceiver : BroadcastReceiver() {
 
     private fun installApk(context: Context, uri: Uri) {
         val file = File(uri.path!!)
-        
+
         // Use FileProvider to get a content URI
         val contentUri = FileProvider.getUriForFile(
             context,

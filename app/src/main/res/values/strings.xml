@@ -408,4 +408,15 @@
     <string name="downvote_category_source_available">Source Available</string>
     <string name="downvote_category_pwa">PWA</string>
     <string name="downvote_confirm">Downvote</string>
+
+    <!-- Signing Key Vote -->
+    <string name="signing_key_title">Submit Signing Key</string>
+    <string name="signing_key_digest_label">SHA-256 Certificate Digest</string>
+    <string name="signing_key_no_digest">No signing certificate found for this app.</string>
+    <string name="signing_key_explanation">Submitting this key helps LibreFind verify that this app is signed by a trusted FOSS publisher. Once at least 3 users submit the same key for this app, it may be automatically classified as FOSS.</string>
+    <string name="signing_key_submit_button">Submit key as FOSS evidence</string>
+    <string name="signing_key_endorse_button">Endorse this key</string>
+    <string name="signing_key_already_submitted">Already submitted ✓</string>
+    <string name="signing_key_filter_label">Key Vote</string>
+    <string name="signing_key_empty">No signing key votes yet.</string>
 </resources>

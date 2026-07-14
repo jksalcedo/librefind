@@ -2,6 +2,7 @@ package com.jksalcedo.librefind.ui.community
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jksalcedo.librefind.domain.model.SigningKeyVote
 import com.jksalcedo.librefind.domain.model.Submission
 import com.jksalcedo.librefind.domain.model.SubmissionType
 import com.jksalcedo.librefind.domain.repository.AppRepository
@@ -13,11 +14,13 @@ import kotlinx.coroutines.launch
 
 data class CommunitySubmissionsState(
     val submissions: List<Submission> = emptyList(),
+    val signingKeyVotes: List<SigningKeyVote> = emptyList(),
     val isLoading: Boolean = false,
     val isRefreshing: Boolean = false,
     val error: String? = null,
     val searchQuery: String = "",
-    val filterType: SubmissionType? = null
+    val filterType: SubmissionType? = null,
+    val isKeyVoteFilter: Boolean = false
 )
 
 class CommunitySubmissionsViewModel(
@@ -49,7 +52,20 @@ class CommunitySubmissionsViewModel(
                         userVote = agg?.userVote ?: s.userVote
                     )
                 }
-                _uiState.update { it.copy(submissions = enriched, isLoading = false, isRefreshing = false) }
+                val keyVotes = try {
+                    appRepository.getSigningKeyVotes(forceRefresh)
+                } catch (e: Exception) {
+                    _uiState.update { it.copy(error = "Key votes error: ${e.message}") }
+                    emptyList() 
+                }
+                _uiState.update {
+                    it.copy(
+                        submissions = enriched,
+                        signingKeyVotes = keyVotes,
+                        isLoading = false,
+                        isRefreshing = false
+                    )
+                }
             } catch (e: Exception) {
                 _uiState.update {
                     it.copy(isLoading = false, isRefreshing = false, error = e.message ?: "Failed to load submissions")
@@ -63,7 +79,11 @@ class CommunitySubmissionsViewModel(
     }
 
     fun setFilterType(type: SubmissionType?) {
-        _uiState.update { it.copy(filterType = type) }
+        _uiState.update { it.copy(filterType = type, isKeyVoteFilter = false) }
+    }
+
+    fun setKeyVoteFilter(enabled: Boolean) {
+        _uiState.update { it.copy(isKeyVoteFilter = enabled, filterType = null) }
     }
 
     fun approveSubmission(submission: Submission) {

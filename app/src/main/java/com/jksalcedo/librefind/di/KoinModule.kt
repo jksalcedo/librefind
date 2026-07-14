@@ -23,6 +23,7 @@ import com.jksalcedo.librefind.domain.repository.UpdateRepository
 import com.jksalcedo.librefind.domain.usecase.GetAlternativeUseCase
 import com.jksalcedo.librefind.domain.usecase.ScanInventoryUseCase
 import com.jksalcedo.librefind.domain.usecase.SubmitProposalUseCase
+import com.jksalcedo.librefind.domain.usecase.SubmitSigningKeyVoteUseCase
 import com.jksalcedo.librefind.domain.usecase.UpdateSubmissionUseCase
 import com.jksalcedo.librefind.ui.auth.AuthViewModel
 import com.jksalcedo.librefind.ui.community.CommunitySubmissionsViewModel
@@ -38,6 +39,7 @@ import com.jksalcedo.librefind.ui.reports.MyReportsViewModel
 import com.jksalcedo.librefind.ui.reports.ReportViewModel
 import com.jksalcedo.librefind.ui.settings.IgnoredAppsViewModel
 import com.jksalcedo.librefind.ui.settings.SettingsViewModel
+import com.jksalcedo.librefind.ui.signingkey.SigningKeyVoteViewModel
 import com.jksalcedo.librefind.ui.submit.SubmitViewModel
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
@@ -129,6 +131,7 @@ val useCaseModule = module {
     single { ScanInventoryUseCase(get()) }
     single { SubmitProposalUseCase(get()) }
     single { UpdateSubmissionUseCase(get()) }
+    single { SubmitSigningKeyVoteUseCase(get(), androidContext().packageManager) }
 }
 
 val viewModelModule = module {
@@ -151,4 +154,5 @@ val viewModelModule = module {
     viewModel { SuggestCorrectionViewModel(get()) }
     viewModel { ProfileViewModel(get(), get()) }
     viewModel { LeaderboardViewModel(get()) }
+    viewModel { SigningKeyVoteViewModel(get(), get(), androidContext().packageManager) }
 }
