@@ -18,11 +18,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.EmojiEvents
+import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ThumbDown
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.outlined.ThumbDown
 import androidx.compose.material.icons.outlined.ThumbUp
+import androidx.compose.material3.Badge
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -47,10 +49,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.jksalcedo.librefind.R
+import com.jksalcedo.librefind.domain.model.SigningKeyVote
 import com.jksalcedo.librefind.domain.model.Submission
 import com.jksalcedo.librefind.domain.model.SubmissionType
 import com.jksalcedo.librefind.ui.common.FullScreenLoading
@@ -61,14 +65,16 @@ import org.koin.androidx.compose.koinViewModel
 fun CommunitySubmissionsScreen(
     onBackClick: () -> Unit,
     onSubmissionClick: (String) -> Unit,
+    onKeyVoteClick: (packageName: String, appName: String, sha256Digest: String) -> Unit = { _, _, _ -> },
     onUserClick: (String) -> Unit = {},
     onLeaderboardClick: () -> Unit = {},
     viewModel: CommunitySubmissionsViewModel = koinViewModel()
 ) {
     val state by viewModel.uiState.collectAsState()
 
-    val filteredSubmissions by remember(state.submissions, state.searchQuery, state.filterType) {
+    val filteredSubmissions by remember(state.submissions, state.searchQuery, state.filterType, state.isKeyVoteFilter) {
         derivedStateOf {
+            if (state.isKeyVoteFilter) return@derivedStateOf emptyList()
             var result = state.submissions
             if (state.filterType != null) {
                 result = result.filter { it.type == state.filterType }
@@ -91,6 +97,18 @@ fun CommunitySubmissionsScreen(
                 }
             }
             result
+        }
+    }
+
+    val filteredKeyVotes by remember(state.signingKeyVotes, state.searchQuery, state.isKeyVoteFilter) {
+        derivedStateOf {
+            if (!state.isKeyVoteFilter) return@derivedStateOf emptyList()
+            if (state.searchQuery.isBlank()) return@derivedStateOf state.signingKeyVotes
+            state.signingKeyVotes.filter { vote ->
+                vote.appLabel.contains(state.searchQuery, ignoreCase = true) ||
+                        vote.packageName.contains(state.searchQuery, ignoreCase = true) ||
+                        vote.sha256Digest.contains(state.searchQuery, ignoreCase = true)
+            }
         }
     }
 
@@ -225,17 +243,6 @@ fun CommunitySubmissionsScreen(
                     )
                 }
 
-                filteredSubmissions.isEmpty() -> {
-                    Text(
-                        text = if (state.searchQuery.isEmpty())
-                            stringResource(R.string.community_submissions_empty)
-                        else
-                            stringResource(R.string.submit_no_results),
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.align(Alignment.Center)
-                    )
-                }
-
                 else -> {
                     androidx.compose.material3.pulltorefresh.PullToRefreshBox(
                         isRefreshing = state.isRefreshing,
@@ -259,8 +266,11 @@ fun CommunitySubmissionsScreen(
                                 ) {
                                     item {
                                         FilterChip(
-                                            selected = state.filterType == null,
-                                            onClick = { viewModel.setFilterType(null) },
+                                            selected = state.filterType == null && !state.isKeyVoteFilter,
+                                            onClick = {
+                                                viewModel.setFilterType(null)
+                                                viewModel.setKeyVoteFilter(false)
+                                            },
                                             label = { Text("All") }
                                         )
                                     }
@@ -271,16 +281,66 @@ fun CommunitySubmissionsScreen(
                                             label = { Text(type.name.replace("_", " ")) }
                                         )
                                     }
+                                    item {
+                                        FilterChip(
+                                            selected = state.isKeyVoteFilter,
+                                            onClick = { viewModel.setKeyVoteFilter(!state.isKeyVoteFilter) },
+                                            leadingIcon = {
+                                                Icon(
+                                                    imageVector = Icons.Default.Key,
+                                                    contentDescription = null,
+                                                    modifier = Modifier.size(16.dp)
+                                                )
+                                            },
+                                            label = { Text(stringResource(R.string.signing_key_filter_label)) }
+                                        )
+                                    }
                                 }
                             }
-                            items(filteredSubmissions) { submission ->
-                                CommunitySubmissionItem(
-                                    submission = submission,
-                                    onClick = { onSubmissionClick(submission.id) },
-                                    onUserClick = { onUserClick(submission.submitterUid) },
-                                    onUpvote = { viewModel.castVote(submission, 1) },
-                                    onDownvote = { submissionToDownvote = submission }
-                                )
+                            if (state.isKeyVoteFilter) {
+                                if (filteredKeyVotes.isEmpty()) {
+                                    item {
+                                        Box(Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
+                                            Text(
+                                                text = stringResource(R.string.signing_key_empty),
+                                                style = MaterialTheme.typography.bodyLarge
+                                            )
+                                        }
+                                    }
+                                } else {
+                                    items(filteredKeyVotes) { vote ->
+                                        KeyVoteItem(
+                                            vote = vote,
+                                            onClick = {
+                                                onKeyVoteClick(vote.packageName, vote.appLabel, vote.sha256Digest)
+                                            }
+                                        )
+                                    }
+                                }
+                            } else {
+                                if (filteredSubmissions.isEmpty()) {
+                                    item {
+                                        Box(Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
+                                            Text(
+                                                text = if (state.searchQuery.isEmpty())
+                                                    stringResource(R.string.community_submissions_empty)
+                                                else
+                                                    stringResource(R.string.submit_no_results),
+                                                style = MaterialTheme.typography.bodyLarge
+                                            )
+                                        }
+                                    }
+                                } else {
+                                    items(filteredSubmissions) { submission ->
+                                        CommunitySubmissionItem(
+                                            submission = submission,
+                                            onClick = { onSubmissionClick(submission.id) },
+                                            onUserClick = { onUserClick(submission.submitterUid) },
+                                            onUpvote = { viewModel.castVote(submission, 1) },
+                                            onDownvote = { submissionToDownvote = submission }
+                                        )
+                                    }
+                                }
                             }
                         }
                     }
@@ -400,6 +460,89 @@ fun CommunitySubmissionItem(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun KeyVoteItem(
+    vote: SigningKeyVote,
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = vote.appLabel.ifEmpty { vote.packageName },
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = vote.packageName,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                Surface(
+                    color = MaterialTheme.colorScheme.primaryContainer,
+                    shape = MaterialTheme.shapes.small
+                ) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Key,
+                            contentDescription = null,
+                            modifier = Modifier.size(12.dp),
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                        Text(
+                            text = "${vote.endorseCount}",
+                            style = MaterialTheme.typography.labelSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                    }
+                }
+            }
+            Text(
+                text = vote.sha256Digest.take(16) + "…",
+                style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace),
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(R.string.signing_key_filter_label),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Text(
+                    text = vote.submitterUsername,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
         }
     }
