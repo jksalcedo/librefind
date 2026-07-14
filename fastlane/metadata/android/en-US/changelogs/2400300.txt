@@ -1,2 +1,3 @@
 - Added signing key submission: extract and submit your app's SHA-256 signing certificate to help classify unknown system apps as FOSS.
 - Fix percentage rounding
+- Sovereignty Gauge is now collapsible
