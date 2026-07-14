@@ -1,5 +1,6 @@
 package com.jksalcedo.librefind.ui.dashboard
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +17,8 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.CloudUpload
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -43,6 +46,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
@@ -89,6 +93,7 @@ fun DashboardScreen(
     var showDialog by remember { mutableStateOf(false) }
     var showFilterMenu by remember { mutableStateOf(false) }
     var isSearchActive by remember { mutableStateOf(false) }
+    var isSovereigntyExpanded by rememberSaveable { mutableStateOf(true) }
 
     var showTutorial by remember { mutableStateOf(!preferencesManager.hasSeenTutorial()) }
     var tutorialStepIndex by remember { mutableIntStateOf(0) }
@@ -423,16 +428,29 @@ fun DashboardScreen(
                             // Show gauge even when empty
                             Column(modifier = Modifier.fillMaxSize()) {
                                 state.sovereigntyScore?.let { score ->
-                                    SovereigntyGauge(
-                                        score = score,
-                                        currentFilter = state.statusFilter,
-                                        onFilterClick = { status -> viewModel.setStatusFilter(status) },
-                                        modifier = Modifier
-                                            .padding(16.dp)
-                                            .onGloballyPositioned { coords ->
-                                                gaugeRect = coords.boundsInRoot()
-                                            }
-                                    ) { showDialog = true }
+                                    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+                                        AnimatedVisibility(visible = isSovereigntyExpanded) {
+                                            SovereigntyGauge(
+                                                score = score,
+                                                currentFilter = state.statusFilter,
+                                                onFilterClick = { status -> viewModel.setStatusFilter(status) },
+                                                modifier = Modifier
+                                                    .padding(16.dp)
+                                                    .onGloballyPositioned { coords ->
+                                                        gaugeRect = coords.boundsInRoot()
+                                                    }
+                                            ) { showDialog = true }
+                                        }
+                                        IconButton(
+                                            onClick = { isSovereigntyExpanded = !isSovereigntyExpanded },
+                                            modifier = Modifier.height(32.dp)
+                                        ) {
+                                            Icon(
+                                                imageVector = if (isSovereigntyExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                                                contentDescription = if (isSovereigntyExpanded) "Collapse" else "Expand"
+                                            )
+                                        }
+                                    }
                                 }
                                 Box(
                                     modifier = Modifier.fillMaxSize(),
@@ -472,20 +490,33 @@ fun DashboardScreen(
                                 modifier = Modifier.fillMaxSize(),
                                 headerContent = {
                                     state.sovereigntyScore?.let { score ->
-                                        SovereigntyGauge(
-                                            score = score,
-                                            currentFilter = state.statusFilter,
-                                            onFilterClick = { status ->
-                                                viewModel.setStatusFilter(
-                                                    status
+                                        Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+                                            AnimatedVisibility(visible = isSovereigntyExpanded) {
+                                                SovereigntyGauge(
+                                                    score = score,
+                                                    currentFilter = state.statusFilter,
+                                                    onFilterClick = { status ->
+                                                        viewModel.setStatusFilter(
+                                                            status
+                                                        )
+                                                    },
+                                                    modifier = Modifier
+                                                        .padding(bottom = 8.dp)
+                                                        .onGloballyPositioned { coords ->
+                                                            gaugeRect = coords.boundsInRoot()
+                                                        }
+                                                ) { showDialog = true }
+                                            }
+                                            IconButton(
+                                                onClick = { isSovereigntyExpanded = !isSovereigntyExpanded },
+                                                modifier = Modifier.height(32.dp)
+                                            ) {
+                                                Icon(
+                                                    imageVector = if (isSovereigntyExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                                                    contentDescription = if (isSovereigntyExpanded) "Collapse" else "Expand"
                                                 )
-                                            },
-                                            modifier = Modifier
-                                                .padding(bottom = 8.dp)
-                                                .onGloballyPositioned { coords ->
-                                                    gaugeRect = coords.boundsInRoot()
-                                                }
-                                        ) { showDialog = true }
+                                            }
+                                        }
                                     }
                                 }
                             )
