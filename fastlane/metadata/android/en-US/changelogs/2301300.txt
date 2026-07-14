@@ -1,0 +1,1 @@
+- Fixed sovereignty score percentages not summing to 100% in edge cases (#317)
