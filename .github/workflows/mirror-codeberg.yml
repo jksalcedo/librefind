@@ -1,0 +1,77 @@
+name: Mirror Release to Codeberg
+run-name: Mirror Release ${{ github.event.release.tag_name || inputs.tag_name }}
+
+on:
+  # Automatically triggers when the main Android Release workflow finishes creating the GitHub release
+  release:
+    types: [ published ]
+  # Allows you to manually trigger a mirror for past releases or if a mirror fails
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Tag to mirror (e.g., v1.9.0)'
+        required: true
+        type: string
+
+jobs:
+  mirror-release:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Download GitHub Release Assets & Notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.event.release.tag_name || inputs.tag_name }}
+        run: |
+          set -euo pipefail
+          echo "Fetching data for $TAG..."
+          
+          # Download all APKs attached to the GitHub release into an 'assets' folder
+          gh release download "$TAG" --pattern "*.apk" --dir release_assets
+          
+          # Extract the exact generated release notes from GitHub
+          gh release view "$TAG" --json body --jq '.body' > RELEASE_NOTES.md
+
+      - name: Install Codeberg CLI (Tea)
+        run: |
+          set -euo pipefail
+          curl -sL https://gitea.com/gitea/tea/releases/download/v0.9.2/tea-0.9.2-linux-amd64 -o tea
+          chmod +x tea
+          sudo mv tea /usr/local/bin/
+
+      - name: Mirror Release to Codeberg
+        env:
+          CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
+          TAG: ${{ github.event.release.tag_name || inputs.tag_name }}
+        run: |
+          set -euo pipefail
+          tea login add --name codeberg --url https://codeberg.org --token $CODEBERG_TOKEN
+          
+          # Match your GitHub prerelease logic
+          PRERELEASE_FLAG=""
+          if [[ "$TAG" == *alpha* || "$TAG" == *beta* || "$TAG" == *rc* || "$TAG" == *"-"* ]]; then
+            PRERELEASE_FLAG="--prerelease"
+            echo "Pre-release tag detected. Adding pre-release flag."
+          fi
+          
+          RELEASE_NOTES=$(cat RELEASE_NOTES.md)
+          
+          # Dynamically append all downloaded APKs as assets
+          ASSET_ARGS=""
+          for apk in release_assets/*.apk; do
+            if [ -f "$apk" ]; then
+              ASSET_ARGS="$ASSET_ARGS --asset $apk"
+            fi
+          done
+          
+          # Create the release on LibreFind's Codeberg repo
+          tea release create \
+            --repo jksalcedo/librefind \
+            --tag "$TAG" \
+            --title "$TAG" \
+            --note "$RELEASE_NOTES" \
+            $PRERELEASE_FLAG \
+            $ASSET_ARGS

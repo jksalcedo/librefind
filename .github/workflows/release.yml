@@ -86,14 +86,67 @@ jobs:
         run: |
           cp app/build/outputs/apk/release/app-release.apk "librefind-${{ steps.version.outputs.tag }}-release.apk"
 
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ steps.version.outputs.tag }}
-          name: "${{ steps.version.outputs.tag }}"
-          generate_release_notes: true
-          draft: false
-          prerelease: ${{ steps.version.outputs.prerelease == 'true' }}
-          files: librefind-${{ steps.version.outputs.tag }}-release.apk
+      - name: Generate categorized release notes
+        run: |
+          set -euo pipefail
+          git fetch --tags --force
+          
+          TAG="${GITHUB_REF_NAME}"
+          PREV_TAG="$(git tag --sort=-creatordate | grep -v "^${TAG}$" | head -n 1 || true)"
+          
+          # Determine the commit range
+          if [[ -n "${PREV_TAG}" ]]; then
+            RANGE="${PREV_TAG}..${TAG}"
+            echo "Changes since ${PREV_TAG}" >> RELEASE_NOTES.md
+          else
+            RANGE="${TAG}"
+            echo "Initial Release" >> RELEASE_NOTES.md
+          fi
+          echo "" >> RELEASE_NOTES.md
+          
+          # 1. Dump all non-merge commits to a temp file
+          # We check for standard prefixes: feat, fix, chore, docs, refactor, etc.
+          git log "${RANGE}" --no-merges --pretty=format:"- %s (%h)" > all_commits.txt
+          
+          # 2. Extract Features (looks for 'feat' or 'feat(' case-insensitive)
+          echo "### Features" >> RELEASE_NOTES.md
+          grep -iE "^- feat" all_commits.txt >> RELEASE_NOTES.md || echo "_No new features._" >> RELEASE_NOTES.md
+          echo "" >> RELEASE_NOTES.md
+          
+          # 3. Extract Bug Fixes (looks for 'fix' or 'fix(')
+          echo "### Bug Fixes" >> RELEASE_NOTES.md
+          grep -iE "^- fix" all_commits.txt >> RELEASE_NOTES.md || echo "_No bug fixes._" >> RELEASE_NOTES.md
+          echo "" >> RELEASE_NOTES.md
+          
+          # 4. Extract Others (Everything that is NOT feat or fix)
+          echo "### Other Changes" >> RELEASE_NOTES.md
+          grep -ivE "^- (feat|fix)" all_commits.txt >> RELEASE_NOTES.md || echo "_No other changes._" >> RELEASE_NOTES.md
+          
+          # Cleanup
+          rm all_commits.txt
+          
+          # Debug print to console
+          cat RELEASE_NOTES.md
+
+      - name: Create GitHub Release and upload APKs
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          TAG="${GITHUB_REF_NAME}"
+
+          PRERELEASE=false
+          if [[ "$TAG" == *alpha* || "$TAG" == *beta* || "$TAG" == *rc* ]]; then
+            PRERELEASE=true
+          fi
+
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release exists: $TAG"
+          else
+            gh release create "$TAG" \
+              --title "$TAG" \
+              --notes-file RELEASE_NOTES.md \
+              $( [[ "$PRERELEASE" == "true" ]] && echo "--prerelease" )
+          fi
+
+          gh release upload "$TAG" "librefind-${TAG}-release.apk" --clobber
