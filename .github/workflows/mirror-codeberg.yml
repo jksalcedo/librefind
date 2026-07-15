@@ -12,6 +12,8 @@ on:
         description: 'Tag to mirror (e.g., v1.9.0)'
         required: true
         type: string
+permissions:
+  contents: read
 
 jobs:
   mirror-release:
