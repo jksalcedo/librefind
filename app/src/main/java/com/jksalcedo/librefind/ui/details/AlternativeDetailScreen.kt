@@ -60,9 +60,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalContext
@@ -73,6 +73,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.jksalcedo.librefind.R
 import com.jksalcedo.librefind.ui.common.FullScreenLoading
+import com.jksalcedo.librefind.ui.components.CommentSection
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -286,11 +287,13 @@ fun AlternativeDetailScreen(
                             color = MaterialTheme.colorScheme.primary
                         )
 
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(16.dp))
 
                         // Dimensional Rating Scorecard
                         Card(
-                            modifier = Modifier.fillMaxWidth().clickable { isScorecardExpanded = !isScorecardExpanded },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable { isScorecardExpanded = !isScorecardExpanded },
                             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
                         ) {
                             Column(modifier = Modifier.padding(16.dp)) {
@@ -309,7 +312,7 @@ fun AlternativeDetailScreen(
                                         contentDescription = if (isScorecardExpanded) "Collapse" else "Expand"
                                     )
                                 }
-                                
+
                                 AnimatedVisibility(visible = isScorecardExpanded) {
                                     Column {
                                         Spacer(modifier = Modifier.height(12.dp))
@@ -460,6 +463,9 @@ fun AlternativeDetailScreen(
                             }
                         }
 
+                        Spacer(Modifier.height(16.dp))
+                        HorizontalDivider()
+
                         // Pros
                         Spacer(modifier = Modifier.height(16.dp))
                         Row(
@@ -533,6 +539,11 @@ fun AlternativeDetailScreen(
                                 )
                             }
                         }
+
+                        // Comments Feed
+                        Spacer(modifier = Modifier.height(24.dp))
+                        HorizontalDivider()
+                        CommentSection(targetId = altId)
                     }
                 }
             }

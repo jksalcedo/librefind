@@ -1,3 +1,6 @@
-- Added signing key submission: extract and submit your app's SHA-256 signing certificate to help classify unknown system apps as FOSS.
-- Fix percentage rounding
+- Added signing key submission: extract and submit your app's SHA-256 signing certificate
 - Sovereignty Gauge is now collapsible
+- Implement auto-approval when upvote count reach 5
+- Add comments section for alternative and submission pages
+- Fix alternatives vote counts not showing
+- Fix percentage rounding

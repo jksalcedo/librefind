@@ -166,6 +166,9 @@ interface AppRepository {
         forceRefresh: Boolean = false
     ): Map<String, com.jksalcedo.librefind.data.remote.model.SubmissionVoteAggregate>
 
+    suspend fun getComments(targetId: String): List<com.jksalcedo.librefind.domain.model.Comment>
+    suspend fun submitComment(targetId: String, content: String): Result<Unit>
+
     suspend fun submitSigningKeyVote(
         packageName: String,
         appLabel: String,

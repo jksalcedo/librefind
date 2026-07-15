@@ -142,6 +142,7 @@ val viewModelModule = module {
     viewModel { SubmitViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { MySubmissionsViewModel(get(), get()) }
     viewModel { CommunitySubmissionsViewModel(get()) }
+    viewModel { com.jksalcedo.librefind.ui.components.CommentsViewModel(get()) }
     viewModel { IgnoredAppsViewModel(get(), get()) }
     viewModel {
         SettingsViewModel(
