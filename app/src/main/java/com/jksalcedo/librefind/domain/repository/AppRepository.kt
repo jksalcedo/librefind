@@ -3,6 +3,7 @@ package com.jksalcedo.librefind.domain.repository
 import com.jksalcedo.librefind.domain.model.Alternative
 import com.jksalcedo.librefind.domain.model.DuplicateStatus
 import com.jksalcedo.librefind.domain.model.Report
+import com.jksalcedo.librefind.domain.model.SigningKeyVote
 import com.jksalcedo.librefind.domain.model.Submission
 import com.jksalcedo.librefind.domain.model.SubmissionType
 
@@ -164,4 +165,21 @@ interface AppRepository {
         submissionIds: List<String>,
         forceRefresh: Boolean = false
     ): Map<String, com.jksalcedo.librefind.data.remote.model.SubmissionVoteAggregate>
+
+    suspend fun getComments(targetId: String): List<com.jksalcedo.librefind.domain.model.Comment>
+    suspend fun submitComment(targetId: String, content: String): Result<Unit>
+
+    suspend fun submitSigningKeyVote(
+        packageName: String,
+        appLabel: String,
+        sha256Digest: String
+    ): Result<Unit>
+
+    suspend fun getSigningKeyVotes(forceRefresh: Boolean = false): List<SigningKeyVote>
+
+    suspend fun getSigningKeyVoteCount(packageName: String, sha256Digest: String): Int
+
+    suspend fun hasUserSubmittedKeyVote(packageName: String): Boolean
+
+    suspend fun endorseSigningKeyVote(packageName: String, sha256Digest: String): Result<Unit>
 }

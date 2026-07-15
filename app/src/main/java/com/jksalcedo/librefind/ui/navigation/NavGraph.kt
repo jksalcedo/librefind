@@ -30,6 +30,7 @@ import com.jksalcedo.librefind.ui.reports.ReportScreen
 import com.jksalcedo.librefind.ui.correction.SuggestCorrectionScreen
 import com.jksalcedo.librefind.ui.profile.ProfileScreen
 import com.jksalcedo.librefind.ui.settings.IgnoredAppsScreen
+import com.jksalcedo.librefind.ui.signingkey.SigningKeyVoteScreen
 import com.jksalcedo.librefind.ui.submit.SubmitScreen
 
 private const val NAV_DURATION = 300
@@ -147,6 +148,13 @@ fun NavGraph(
                 onSuggestCorrection = { pkg ->
                     if (authState.isSignedIn) {
                         navController.navigate(Route.SuggestCorrection.createRoute(pkg))
+                    } else {
+                        navController.navigate(Route.Auth.route)
+                    }
+                },
+                onSubmitSigningKey = { name, pkg ->
+                    if (authState.isSignedIn) {
+                        navController.navigate(Route.SigningKeyVote.createRoute(pkg, name))
                     } else {
                         navController.navigate(Route.Auth.route)
                     }
@@ -320,6 +328,9 @@ fun NavGraph(
                 onSubmissionClick = { submissionId ->
                     navController.navigate(Route.SubmissionDetail.createRoute(submissionId))
                 },
+                onKeyVoteClick = { packageName, appName, sha256 ->
+                    navController.navigate(Route.SigningKeyVote.createViewRoute(packageName, appName, sha256))
+                },
                 onUserClick = { userId ->
                     navController.navigate(Route.Profile.createRoute(userId))
                 },
@@ -362,6 +373,32 @@ fun NavGraph(
                     ?: return@composable
             SuggestCorrectionScreen(
                 packageName = packageName,
+                onBackClick = { navController.navigateUp() }
+            )
+        }
+
+        composable(
+            route = Route.SigningKeyVote.route,
+            arguments = listOf(
+                navArgument("packageName") { type = NavType.StringType },
+                navArgument("appName") { type = NavType.StringType },
+                navArgument("sha256") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                }
+            )
+        ) { backStackEntry ->
+            val packageName = backStackEntry.arguments?.getString("packageName")
+                ?.let { Uri.decode(it) } ?: return@composable
+            val appName = backStackEntry.arguments?.getString("appName")
+                ?.let { Uri.decode(it) } ?: return@composable
+            val sha256 = backStackEntry.arguments?.getString("sha256")
+                ?.let { Uri.decode(it) }.orEmpty()
+            SigningKeyVoteScreen(
+                packageName = packageName,
+                appName = appName,
+                sha256Digest = sha256,
                 onBackClick = { navController.navigateUp() }
             )
         }

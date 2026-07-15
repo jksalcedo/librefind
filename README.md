@@ -1,17 +1,4 @@
-
-# LibreFind
-
-> [!IMPORTANT]
-> **Google has announced that, starting in 2026/2027, all apps on certified Android devices
-> will require the developer to submit personal identity details directly to Google.
-> Since the developers of this app do not agree to this requirement, this app will no longer
-> work on certified Android devices after that time.**
-> https://keepandroidopen.org/
-
-[![Keep Android Open](https://keepandroidopen.org/banner/banner.png)](https://keepandroidopen.org)
-
 <h1 align="center">
-
   <br>
     <img src="./fastlane/metadata/android/en-US/images/icon.png" alt="LibreFind icon" width="150" />
   <br>
@@ -61,58 +48,93 @@
   </a>
 </p>
 
+> [!IMPORTANT]
+> **Google has announced that, starting in 2026/2027, all apps on certified Android devices
+> will require the developer to submit personal identity details directly to Google.
+> Since the developers of this app do not agree to this requirement, this app will no longer
+> work on certified Android devices after that time.**
+> https://keepandroidopen.org/
+
 ## What is LibreFind?
 
-LibreFind is a free and lightweight Android app that scans your installed packages locally and
-queries our database to identify proprietary software and find FOSS alternatives.
+LibreFind is a free, lightweight, and community-driven Android app designed to help you de-Google
+your device. It scans your installed packages locally and queries our open-source database to flag
+proprietary software, instantly pairing them with privacy-respecting FOSS alternatives.
 
 ### Core Features
 
-- Scan installed apps to detect proprietary software
-- Get FOSS alternative recommendations
-- View sovereignty scores showing FOSS vs. proprietary ratio
-- Community-driven database
+* **Local Device Scanner:** Audits your installed apps entirely on-device to calculate your personal
+  sovereignty score.
+* **Global DB Search (Discover):** Look up any FOSS or proprietary app directly in our crowdsourced
+  database to plan your next setup.
+* **Alternative Recommendations:** Seamlessly browse community-vetted open-source alternatives
+  tailored to replace mainstream big-tech software.
+* **The Hub (Community):** View, review, and interact with pending app submissions to help maintain
+  the database's integrity.
+* **Gamified Progression:** Earn points for your contributions and unlock community rank badges (
+  *Scout, Pathfinder, Guide, Curator, Vanguard*) directly on your profile.
+
+---
 
 ## Screenshots
 
-| Dashboard                                                                           | Alternative List                                                                              | Submission                                                                            | Profile                                                                         |
-|-------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
-| ![Dashboard](fastlane/metadata/android/en-US/images/phoneScreenshots/dashboard.jpg) | ![Alternatives](fastlane/metadata/android/en-US/images/phoneScreenshots/alternative_list.jpg) | ![Submission](fastlane/metadata/android/en-US/images/phoneScreenshots/submission.jpg) | ![Profile](fastlane/metadata/android/en-US/images/phoneScreenshots/profile.jpg) |
-| Scan your apps and view sovereignty score                                           | Browse FOSS alternatives                                                                      | Contribute new alternatives                                                           | Track your submissions                                                          |
+|                                      Dashboard                                      |                                     Discover                                      |                                       Alternative List                                        |
+|:-----------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------:|
+| ![Dashboard](fastlane/metadata/android/en-US/images/phoneScreenshots/dashboard.png) | ![Discover](fastlane/metadata/android/en-US/images/phoneScreenshots/discover.png) | ![Alternatives](fastlane/metadata/android/en-US/images/phoneScreenshots/alternative_list.png) |
+|                         Scan apps & view sovereignty score                          |                             Search the FOSS database                              |                                  Browse curated alternatives                                  |
+
+|                                      Community                                      |                                      Submission                                       |                                     Profile                                     |
+|:-----------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------:|
+| ![Community](fastlane/metadata/android/en-US/images/phoneScreenshots/community.png) | ![Submission](fastlane/metadata/android/en-US/images/phoneScreenshots/submission.png) | ![Profile](fastlane/metadata/android/en-US/images/phoneScreenshots/profile.png) |
+|                            Interact with pending entries                            |                                 Propose or link apps                                  |                          Track impact & unlock badges                           |
+
+---
 
 ### Community Contributions
 
-- Propose new FOSS alternatives for review
-- Submit pros and cons for existing alternatives
-- Vote on app recommendations
-- Help build a comprehensive alternative database
+* **Discover & Vote:** Help the best alternatives rise to the top by upvoting high-quality
+  open-source recommendations.
+* **Propose New Pairings:** Suggest new FOSS alternatives for proprietary apps directly from your
+  device.
+* **Review and Vet:** Submit pros, cons, and detailed feedback for existing alternative profiles.
+* **Moderate Pending Queue:** Use the Community tab to peer-review pending entries before they go
+  live globally.
 
-You can contribute from within the app, or you can go to [librefind-submission.web.app](https://librefind-submission.web.app/) and use the web version.
-  
+You can contribute directly within the Android client, or head over to the web version
+at [librefind-submission.web.app](https://librefind-submission.web.app/).
+
 ---
 
 ### Required Permissions
 
-- `QUERY_ALL_PACKAGES` - To scan installed apps
-    - **Note**: This is a restricted permission.
-- `INTERNET` - To query Supabase
+* `QUERY_ALL_PACKAGES` – Used strictly to scan your local application list for proprietary tracking
+  components. *(Restricted Permission)*
+* `INTERNET` – Used securely to check app configurations against our decentralized Supabase
+  database.
 
-Please join the Telegram channel for further discussions.
-[Telegram](https://t.me/librefind)
+### 💬 Join the Community
+
+Connect with fellow open-source advocates, discuss alternative apps, and help shape the project
+roadmap:
+
+* [Reddit Subreddit](https://www.reddit.com/r/LibreFind)
+* [Telegram Channel](https://t.me/librefind)
+
+---
 
 ## ☕ Support
 
 LibreFind is a free and open-source project managed independently. Our goal is to promote digital
-privacy by making FOSS apps mainstream. Currently, LibreFind is trusted by **1,735 registered users** globally.
+privacy by making FOSS apps mainstream. Currently, LibreFind is trusted by **1,735 registered users
+** globally.
 
-While the app is free, **infrastructure and hosting servers** cost money to keep running 24/7.
-
-If you find this tool useful for reclaiming your digital privacy, please consider buying me a
-coffee. Your support goes directly toward:
+While the app is free, **infrastructure and hosting servers** cost money to keep running 24/7. If
+you find this tool useful for reclaiming your digital privacy, please consider supporting the
+project. Your contributions go directly toward:
 
 * Paying monthly server bills.
-* Keeping the database online and fast.
-* Development of new features.
+* Keeping the database fast, responsive, and online.
+* Development of heavy features (like offline sync architecture).
 
 <div align="center">
   <a href="https://ko-fi.com/jksalcedo">
@@ -120,35 +142,33 @@ coffee. Your support goes directly toward:
   </a>
 </div>
 
+---
+
 ## Contributing
 
-Can't donate? You can still make a real difference:
+Can't donate? You can still make a massive difference to the project's health:
 
-- **Star the repo** — helps others discover LibreFind on GitHub
-- **Report bugs** — open an issue if something isn't working
-- **Suggest features** — share ideas through GitHub issues
-- **Test & give feedback** — usability and performance reports are valuable
-- **Translate** — help bring LibreFind to more languages
+* **Star the repo** — Helps others discover LibreFind across GitHub.
+* **Report bugs** — Open an issue if a scanner module or specific sync crashes.
+* **Suggest features** — Share architectural ideas through our issue tracker.
+* **Translate** — Bring digital sovereignty to more regions
   via [Weblate](https://hosted.weblate.org/engage/librefind/)
-- **Spread the word** — share with friends or on social media
-- **Contribute code** — fix bugs or add features via pull requests
+  or [Crowdin](https://crowdin.com/project/librefind).
+* **Contribute code** — Fix bugs or help build our client features via Pull Requests.
 
-Every small contribution helps the project grow.
+Every single contribution counts.
+
+---
 
 ## 🌍 Translations
 
 [![Crowdin](https://badges.crowdin.net/librefind/localized.svg)](https://crowdin.com/project/librefind)
 
-LibreFind is a global project, and we aim to make FOSS discovery accessible to everyone. 
+LibreFind is a global project. If your native language isn't represented, head to
+our [Crowdin Project Page](https://crowdin.com/project/librefind), choose your language, and help
+make alternative discovery accessible to everyone.
 
-**Current Status:** We are currently transitioning our localization workflow. While we plan to move to a **self-hosted Weblate instance** in the near future (generously hosted by [@ren7](https://github.com/ren7uk)), we are using **Crowdin** for all active translations in the interim.
-
-### How to contribute:
-1. Visit our [Crowdin Project Page](https://crowdin.com/project/librefind).
-2. Select your language.
-3. Start translating! 
-
-*Note: If your language isn't listed, feel free to open an issue or request it directly on Crowdin.*
+---
 
 ## Star History
 
@@ -156,5 +176,4 @@ LibreFind is a global project, and we aim to make FOSS discovery accessible to e
 
 ## License
 
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE)
-file for details.
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.

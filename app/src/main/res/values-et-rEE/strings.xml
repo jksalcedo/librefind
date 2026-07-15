@@ -23,6 +23,19 @@
     <string name="correction_description_label">Kirjeldus / Põhjus</string>
     <string name="correction_description_placeholder">Miks seda parandust on vaja? Lisa allikad kui võimalik.</string>
     <string name="correction_submit_button">Esita parandust</string>
+    <!-- App Info -->
+    <string name="app_info_title">App info</string>
+    <string name="app_info_label_name">Name</string>
+    <string name="app_info_label_package">Package</string>
+    <string name="app_info_label_category">Category</string>
+    <string name="app_info_label_license">License</string>
+    <string name="app_info_label_description">Description</string>
+    <string name="app_info_unknown">Unknown</string>
+    <string name="app_info_unavailable">No app metadata available yet.</string>
+    <!-- Profile -->
+    <string name="profile_my_profile">My Profile</string>
+    <string name="profile_user_profile">User Profile</string>
+    <string name="profile_user_submissions">User Submissions</string>
     <string name="back">Tagasi</string>
     <string name="dashboard_settings">Seadistused</string>
     <string name="dashboard_submit_app">Esita rakendus</string>
@@ -32,7 +45,7 @@
     <string name="dashboard_no_matching_apps">Sobivaid rakendusi pole</string>
     <string name="dashboard_no_apps_found">Rakendusi ei leidu</string>
     <!-- Profile Dialog -->
-    <string name="profile_dialog_title">Profile</string>
+    <string name="profile_dialog_title">Profiil &amp; seadistused</string>
     <string name="profile_unknown_username">Tundmatu kasutajanimi</string>
     <string name="profile_no_email">Pole E-posti</string>
     <string name="profile_ignored_apps">Eiratud Rakendused</string>
@@ -356,6 +369,7 @@
     <string name="settings_browse_pending_title">Browse Pending Submissions</string>
     <string name="settings_browse_pending_desc">Help moderate community contributions.</string>
     <string name="community_submissions_title">Pending Submissions</string>
+    <string name="community_leaderboard_title">Top Contributors</string>
     <string name="community_submissions_empty">No pending submissions found.</string>
     <string name="action_approve">Approve</string>
     <string name="action_reject">Reject</string>

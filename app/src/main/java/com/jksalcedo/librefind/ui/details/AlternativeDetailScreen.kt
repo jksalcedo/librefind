@@ -3,6 +3,7 @@ package com.jksalcedo.librefind.ui.details
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Intent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,6 +24,8 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Download
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.MoreVert
@@ -57,6 +60,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -69,6 +73,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.jksalcedo.librefind.R
 import com.jksalcedo.librefind.ui.common.FullScreenLoading
+import com.jksalcedo.librefind.ui.components.CommentSection
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -84,6 +89,7 @@ fun AlternativeDetailScreen(
     var showFeedbackDialog by remember { mutableStateOf(false) }
     var showReportDialog by remember { mutableStateOf(false) }
     var showVotingSection by remember { mutableStateOf(false) }
+    var isScorecardExpanded by rememberSaveable { mutableStateOf(true) }
     var feedbackType by remember { mutableIntStateOf(0) }
     var feedbackText by remember { mutableStateOf("") }
     val snackbarHostState = remember { SnackbarHostState() }
@@ -281,48 +287,65 @@ fun AlternativeDetailScreen(
                             color = MaterialTheme.colorScheme.primary
                         )
 
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(16.dp))
 
                         // Dimensional Rating Scorecard
                         Card(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable { isScorecardExpanded = !isScorecardExpanded },
                             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
                         ) {
                             Column(modifier = Modifier.padding(16.dp)) {
-                                Text(
-                                    stringResource(R.string.alt_detail_ratings_title),
-                                    style = MaterialTheme.typography.titleMedium,
-                                    fontWeight = FontWeight.Bold
-                                )
-                                Spacer(modifier = Modifier.height(12.dp))
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        stringResource(R.string.alt_detail_ratings_title),
+                                        style = MaterialTheme.typography.titleMedium,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                    Icon(
+                                        imageVector = if (isScorecardExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                                        contentDescription = if (isScorecardExpanded) "Collapse" else "Expand"
+                                    )
+                                }
 
-                                // Privacy Rating
-                                DimensionalRatingRow(
-                                    label = stringResource(R.string.alt_detail_privacy),
-                                    description = stringResource(R.string.alt_detail_privacy_desc),
-                                    rating = alt.privacyRating,
-                                    displayRating = alt.displayPrivacyRating
-                                )
+                                AnimatedVisibility(visible = isScorecardExpanded) {
+                                    Column {
+                                        Spacer(modifier = Modifier.height(12.dp))
 
-                                Spacer(modifier = Modifier.height(8.dp))
+                                        // Privacy Rating
+                                        DimensionalRatingRow(
+                                            label = stringResource(R.string.alt_detail_privacy),
+                                            description = stringResource(R.string.alt_detail_privacy_desc),
+                                            rating = alt.privacyRating,
+                                            displayRating = alt.displayPrivacyRating
+                                        )
 
-                                // Usability Rating
-                                DimensionalRatingRow(
-                                    label = stringResource(R.string.alt_detail_usability),
-                                    description = stringResource(R.string.alt_detail_usability_desc),
-                                    rating = alt.usabilityRating,
-                                    displayRating = alt.displayUsabilityRating
-                                )
+                                        Spacer(modifier = Modifier.height(8.dp))
 
-                                Spacer(modifier = Modifier.height(8.dp))
+                                        // Usability Rating
+                                        DimensionalRatingRow(
+                                            label = stringResource(R.string.alt_detail_usability),
+                                            description = stringResource(R.string.alt_detail_usability_desc),
+                                            rating = alt.usabilityRating,
+                                            displayRating = alt.displayUsabilityRating
+                                        )
 
-                                // Feature Parity Rating
-                                DimensionalRatingRow(
-                                    label = stringResource(R.string.alt_detail_feature_parity),
-                                    description = stringResource(R.string.alt_detail_features_desc),
-                                    rating = alt.featuresRating,
-                                    displayRating = alt.displayFeaturesRating
-                                )
+                                        Spacer(modifier = Modifier.height(8.dp))
+
+                                        // Feature Parity Rating
+                                        DimensionalRatingRow(
+                                            label = stringResource(R.string.alt_detail_feature_parity),
+                                            description = stringResource(R.string.alt_detail_features_desc),
+                                            rating = alt.featuresRating,
+                                            displayRating = alt.displayFeaturesRating
+                                        )
+                                    }
+                                }
                             }
                         }
 
@@ -440,6 +463,9 @@ fun AlternativeDetailScreen(
                             }
                         }
 
+                        Spacer(Modifier.height(16.dp))
+                        HorizontalDivider()
+
                         // Pros
                         Spacer(modifier = Modifier.height(16.dp))
                         Row(
@@ -513,6 +539,11 @@ fun AlternativeDetailScreen(
                                 )
                             }
                         }
+
+                        // Comments Feed
+                        Spacer(modifier = Modifier.height(24.dp))
+                        HorizontalDivider()
+                        CommentSection(targetId = altId)
                     }
                 }
             }

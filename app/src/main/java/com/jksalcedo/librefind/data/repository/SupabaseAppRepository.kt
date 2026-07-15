@@ -8,6 +8,8 @@ import com.jksalcedo.librefind.data.remote.model.AppReport
 import com.jksalcedo.librefind.data.remote.model.AppScanStatsDto
 import com.jksalcedo.librefind.data.remote.model.MatchVoteDto
 import com.jksalcedo.librefind.data.remote.model.ProfileDto
+import com.jksalcedo.librefind.data.remote.model.SigningKeyVoteDto
+import com.jksalcedo.librefind.data.remote.model.SigningKeyVoteWithProfileDto
 import com.jksalcedo.librefind.data.remote.model.SolutionDto
 import com.jksalcedo.librefind.data.remote.model.SubmissionVoteAggregate
 import com.jksalcedo.librefind.data.remote.model.SubmissionVoteDto
@@ -21,6 +23,7 @@ import com.jksalcedo.librefind.domain.model.Report
 import com.jksalcedo.librefind.domain.model.ReportPriority
 import com.jksalcedo.librefind.domain.model.ReportStatus
 import com.jksalcedo.librefind.domain.model.ReportType
+import com.jksalcedo.librefind.domain.model.SigningKeyVote
 import com.jksalcedo.librefind.domain.model.Submission
 import com.jksalcedo.librefind.domain.model.SubmissionStatus
 import com.jksalcedo.librefind.domain.model.SubmissionType
@@ -109,7 +112,7 @@ class SupabaseAppRepository(
             @Serializable
             data class GetAlternativesParams(
                 @SerialName("target_pkg") val targetPkg: String,
-                @SerialName("user_id") val userId: String?
+                @SerialName("p_user_id") val userId: String?
             )
 
             val results = supabase.postgrest.rpc(
@@ -331,7 +334,8 @@ class SupabaseAppRepository(
                     filter {
                         eq("package_name", packageName)
                     }
-                }.decodeSingleOrNull<com.jksalcedo.librefind.data.remote.model.TargetDto>() ?: return null
+                }.decodeSingleOrNull<com.jksalcedo.librefind.data.remote.model.TargetDto>()
+                ?: return null
 
             Alternative(
                 id = dto.packageName,
@@ -436,7 +440,7 @@ class SupabaseAppRepository(
             // Final repository-level check to prevent race conditions
             val duplicateStatus = checkDuplicateApp(alternativePackage)
             if (duplicateStatus != DuplicateStatus.NONE) {
-                return@runCatching Unit // SILENT FAILURE or we could throw an exception, but Unit is safe.
+                return@runCatching
             }
 
             val submission = UserSubmissionDto(
@@ -479,7 +483,7 @@ class SupabaseAppRepository(
             if (existing > 0) {
                 // If a pending linking already exists, we might still want to allow it if alternatives are different,
                 // but for now let's just prevent spamming the same target app.
-                return@runCatching Unit
+                return@runCatching
             }
 
             val submission = UserLinkingSubmissionsDto(
@@ -533,7 +537,7 @@ class SupabaseAppRepository(
             val lastEditedByVal = if (isCommunityEdit) currentUserId else null
             val lastEditedAtVal = if (isCommunityEdit) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    java.time.Instant.now().toString()
+                    Instant.now().toString()
                 } else {
                     null
                 }
@@ -908,12 +912,13 @@ class SupabaseAppRepository(
                     name = "Link ${(dto.alternatives ?: emptyList()).size} Alternatives",
                     packageName = dto.proprietaryPackage ?: "",
                     description = "Linking request for ${dto.proprietaryPackage ?: "unknown"}"
-                    ),
-                    submitterUid = dto.submitterId ?: "",
-                    submitterUsername = dto.profile?.username ?: "Unknown",
-                    submitterReputation = dto.profile?.reputationScore ?: 0,
-                    submitterBadge = dto.profile?.badge,
-                    submittedAt = dto.createdAt?.let { parseTimestamp(it) } ?: System.currentTimeMillis(),
+                ),
+                submitterUid = dto.submitterId ?: "",
+                submitterUsername = dto.profile?.username ?: "Unknown",
+                submitterReputation = dto.profile?.reputationScore ?: 0,
+                submitterBadge = dto.profile?.badge,
+                submittedAt = dto.createdAt?.let { parseTimestamp(it) }
+                    ?: System.currentTimeMillis(),
                 status = try {
                     SubmissionStatus.valueOf(dto.status ?: "PENDING")
                 } catch (_: Exception) {
@@ -1092,7 +1097,15 @@ class SupabaseAppRepository(
                 .replace("_", "\\_")
 
             val targets = supabase.postgrest.from("targets")
-                .select(columns = Columns.list("package_name", "name", "description", "category", "icon_url")) {
+                .select(
+                    columns = Columns.list(
+                        "package_name",
+                        "name",
+                        "description",
+                        "category",
+                        "icon_url"
+                    )
+                ) {
                     filter {
                         or {
                             ilike("name", "%$sanitizedQuery%")
@@ -1407,9 +1420,6 @@ class SupabaseAppRepository(
             defaultToNull = false
         }
         Log.d("SupabaseAppRepo", "Scan stats submitted for device: $deviceId")
-
-        // ensure the lambda returns Unit explicitly
-        Unit
     }
 
     override suspend fun submitAppReport(
@@ -1551,5 +1561,154 @@ class SupabaseAppRepository(
             Log.e("SupabaseAppRepo", "getSubmissionVoteCounts failed", e)
             emptyMap()
         }
+    }
+
+    override suspend fun submitSigningKeyVote(
+        packageName: String,
+        appLabel: String,
+        sha256Digest: String
+    ): Result<Unit> = runCatching {
+        val userId = supabase.auth.currentUserOrNull()?.id
+            ?: throw IllegalStateException("Not logged in")
+        val dto = SigningKeyVoteDto(
+            packageName = packageName,
+            appLabel = appLabel,
+            sha256Digest = sha256Digest,
+            submitterId = userId
+        )
+        supabase.postgrest.from("signing_key_votes").upsert(dto) {
+            onConflict = "package_name,submitter_id"
+            defaultToNull = false
+        }
+    }
+
+    private var cachedKeyVotes: List<SigningKeyVote>? = null
+    private var lastKeyVotesFetchTime: Long = 0
+    private val KEY_VOTES_CACHE_MS = 5 * 60 * 1000L
+
+
+    override suspend fun getSigningKeyVotes(forceRefresh: Boolean): List<SigningKeyVote> {
+        val now = System.currentTimeMillis()
+        if (!forceRefresh && cachedKeyVotes != null && (now - lastKeyVotesFetchTime < KEY_VOTES_CACHE_MS)) {
+            return cachedKeyVotes!!
+        }
+        val userId = supabase.auth.currentUserOrNull()?.id
+        val rows = supabase.postgrest.from("signing_key_votes")
+            .select(
+                columns = Columns.list(
+                    "id", "package_name", "app_label", "sha256_digest",
+                    "submitter_id", "created_at",
+                    "profile:profiles!submitter_id(id, username, reputation_score, badge)"
+                )
+            ) {
+                order("created_at", order = Order.DESCENDING)
+            }.decodeList<SigningKeyVoteWithProfileDto>()
+
+        val deduped = rows
+            .groupBy { it.packageName to it.sha256Digest }
+            .map { (_, group) ->
+                val first = group.first()
+                SigningKeyVote(
+                    id = first.id ?: "",
+                    packageName = first.packageName,
+                    appLabel = first.appLabel ?: "",
+                    sha256Digest = first.sha256Digest,
+                    submitterUid = first.submitterId,
+                    submitterUsername = first.profile?.username ?: first.submitterId.take(8),
+                    submitterReputation = first.profile?.reputationScore ?: 0,
+                    submitterBadge = first.profile?.badge,
+                    endorseCount = group.size,
+                    hasUserEndorsed = userId != null && group.any { it.submitterId == userId },
+                    submittedAt = first.createdAt?.let { parseTimestamp(it) } ?: 0L
+                )
+            }
+        cachedKeyVotes = deduped
+        lastKeyVotesFetchTime = now
+        return deduped
+    }
+
+    override suspend fun getSigningKeyVoteCount(packageName: String, sha256Digest: String): Int {
+        return try {
+            supabase.postgrest.from("signing_key_votes")
+                .select(columns = Columns.list("id")) {
+                    count(Count.EXACT)
+                    filter {
+                        eq("package_name", packageName)
+                        eq("sha256_digest", sha256Digest)
+                    }
+                }.countOrNull()?.toInt() ?: 0
+        } catch (_: Exception) {
+            0
+        }
+    }
+
+    override suspend fun hasUserSubmittedKeyVote(packageName: String): Boolean {
+        val userId = supabase.auth.currentUserOrNull()?.id ?: return false
+        return try {
+            val count = supabase.postgrest.from("signing_key_votes")
+                .select(columns = Columns.list("id")) {
+                    count(Count.EXACT)
+                    filter {
+                        eq("package_name", packageName)
+                        eq("submitter_id", userId)
+                    }
+                    limit(1)
+                }.countOrNull() ?: 0
+            count > 0
+        } catch (_: Exception) {
+            false
+        }
+    }
+
+    override suspend fun endorseSigningKeyVote(
+        packageName: String,
+        sha256Digest: String
+    ): Result<Unit> = runCatching {
+        submitSigningKeyVote(packageName, "", sha256Digest).getOrThrow()
+    }
+
+    override suspend fun getComments(targetId: String): List<com.jksalcedo.librefind.domain.model.Comment> {
+        return try {
+            val dtos = supabase.postgrest.from("comments")
+                .select(columns = io.github.jan.supabase.postgrest.query.Columns.raw("*, profile:profiles(*)")) {
+                    filter {
+                        eq("target_id", targetId)
+                    }
+                    order("created_at", order = io.github.jan.supabase.postgrest.query.Order.DESCENDING)
+                }.decodeList<com.jksalcedo.librefind.data.remote.model.CommentWithProfileDto>()
+                
+            dtos.map { dto ->
+                com.jksalcedo.librefind.domain.model.Comment(
+                    id = dto.id,
+                    targetId = dto.targetId,
+                    userId = dto.userId,
+                    username = dto.profile?.username,
+                    avatarUrl = dto.profile?.avatarUrl,
+                    badge = dto.profile?.badge,
+                    content = dto.content,
+                    createdAt = try {
+                        java.time.Instant.parse(dto.createdAt).toEpochMilli()
+                    } catch (e: Exception) {
+                        0L
+                    }
+                )
+            }
+        } catch (e: Exception) {
+            android.util.Log.e("SupabaseAppRepo", "Failed to fetch comments", e)
+            emptyList()
+        }
+    }
+
+    override suspend fun submitComment(targetId: String, content: String): Result<Unit> = runCatching {
+        val userId = supabase.auth.currentUserOrNull()?.id
+            ?: throw IllegalStateException("Not logged in")
+            
+        val commentDto = com.jksalcedo.librefind.data.remote.model.CommentDto(
+            targetId = targetId,
+            userId = userId,
+            content = content
+        )
+        
+        supabase.postgrest.from("comments").insert(commentDto)
     }
 }

@@ -1,6 +1,7 @@
 package com.jksalcedo.librefind.util
 
 import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.os.Build
 import java.security.MessageDigest
 
@@ -18,6 +19,21 @@ object SignerUtils {
         return signatures.map { sig ->
             sha256Hex(sig.toByteArray())
         }.toSet()
+    }
+
+    fun getSignerDigests(packageManager: PackageManager, packageName: String): List<String> {
+        return try {
+            val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                PackageManager.GET_SIGNING_CERTIFICATES
+            } else {
+                @Suppress("DEPRECATION")
+                PackageManager.GET_SIGNATURES
+            }
+            val pkg = packageManager.getPackageInfo(packageName, flags)
+            signerSha256Digests(pkg).toList()
+        } catch (_: Exception) {
+            emptyList()
+        }
     }
 
     private fun sha256Hex(bytes: ByteArray): String {

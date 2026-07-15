@@ -32,6 +32,7 @@ object NotificationHelper {
     fun showNotification(context: Context, notificationId: Int, title: String, content: String) {
         val intent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            setPackage(context.packageName)
         }
         val pendingIntent: PendingIntent = PendingIntent.getActivity(
             context,

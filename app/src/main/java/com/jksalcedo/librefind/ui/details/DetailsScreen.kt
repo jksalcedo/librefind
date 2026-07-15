@@ -17,7 +17,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.ThumbDown
 import androidx.compose.material.icons.filled.ThumbUp
@@ -63,6 +65,7 @@ fun DetailsScreen(
     onSuggestAsProprietary: (appName: String, packageName: String) -> Unit = { _, _ -> },
     onAddAlternativeClick: (appName: String, packageName: String) -> Unit = { _, _ -> },
     onSuggestCorrection: (packageName: String) -> Unit = {},
+    onSubmitSigningKey: (appName: String, packageName: String) -> Unit = { _, _ -> },
     viewModel: DetailsViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsState()
@@ -86,6 +89,14 @@ fun DetailsScreen(
                     }
                 },
                 actions = {
+                    if (state.isUnknown && state.isSignedIn) {
+                        IconButton(onClick = { onSubmitSigningKey(appName, packageName) }) {
+                            Icon(
+                                imageVector = Icons.Default.Key,
+                                contentDescription = stringResource(R.string.signing_key_title)
+                            )
+                        }
+                    }
                     IconButton(onClick = { onSuggestCorrection(packageName) }) {
                         Icon(
                             imageVector = Icons.Default.Edit,

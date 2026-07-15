@@ -61,4 +61,11 @@ sealed class Route(val route: String) {
     data object Profile : Route("profile?userId={userId}") {
         fun createRoute(userId: String? = null) = if (userId != null) "profile?userId=${Uri.encode(userId)}" else "profile"
     }
+
+    data object SigningKeyVote : Route("signing_key_vote/{packageName}/{appName}?sha256={sha256}") {
+        fun createRoute(packageName: String, appName: String) =
+            "signing_key_vote/${Uri.encode(packageName)}/${Uri.encode(appName)}"
+        fun createViewRoute(packageName: String, appName: String, sha256Digest: String) =
+            "signing_key_vote/${Uri.encode(packageName)}/${Uri.encode(appName)}?sha256=${Uri.encode(sha256Digest)}"
+    }
 }

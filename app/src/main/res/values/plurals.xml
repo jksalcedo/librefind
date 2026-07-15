@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="signing_key_vote_count">
+        <item quantity="one">%d user submitted this key</item>
+        <item quantity="other">%d users submitted this key</item>
+    </plurals>
+</resources>

@@ -1,5 +1,7 @@
 package com.jksalcedo.librefind.domain.model
 
+import kotlin.math.floor
+
 /**
  * User's sovereignty score representing migration progress
  *
@@ -54,6 +56,37 @@ data class SovereigntyScore(
      */
     val ignoredPercentage: Float
         get() = 0f
+
+    /**
+     * Rounded percentages that always sum to exactly 100 using the Largest Remainder Method.
+     * Prevents edge cases where independent rounding of each category produces totals != 100%.
+     */
+    val roundedPercentages: Map<AppStatus, Int>
+        get() {
+            val denominator = totalApps - ignoredCount
+            if (denominator <= 0) {
+                return AppStatus.entries.associateWith { 0 }
+            }
+            val counts = mapOf(
+                AppStatus.FOSS to fossCount,
+                AppStatus.PROP to proprietaryCount,
+                AppStatus.UNKN to unknownCount,
+                AppStatus.PENDING to pendingCount,
+                AppStatus.PWA to pwaCount,
+                AppStatus.IGNORED to 0
+            )
+            val exactValues = counts.mapValues { (_, count) ->
+                (count.toFloat() / denominator) * 100
+            }
+            val floored = exactValues.mapValues { (_, v) -> floor(v).toInt() }
+            val remainder = 100 - floored.values.sum()
+            val sorted = exactValues.entries
+                .sortedByDescending { (_, v) -> v - floor(v) }
+                .map { it.key }
+            val result = floored.toMutableMap()
+            sorted.take(remainder).forEach { key -> result[key] = result.getOrDefault(key, 0) + 1 }
+            return result
+        }
 
     /**
      * Sovereignty level based on percentage

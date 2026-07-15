@@ -22,10 +22,15 @@ description: |
 
 license: MIT
 repository: https://github.com/jksalcedo/librefind
-tags: [ utilities, privacy ]
+pubkey: npub1v4dfske62puuyhxzs8s83p9xhzlqlwq0h998map93jjlylp6p6wscd3z4t
+tags:
+  - utilities
+  - privacy
 icon: https://raw.githubusercontent.com/jksalcedo/librefind/main/fastlane/metadata/android/en-US/images/icon.png
 images:
-  - https://raw.githubusercontent.com/jksalcedo/librefind/main/fastlane/metadata/android/en-US/images/phoneScreenshots/dashboard.jpg
-  - https://raw.githubusercontent.com/jksalcedo/librefind/main/fastlane/metadata/android/en-US/images/phoneScreenshots/alternative_list.jpg
-  - https://raw.githubusercontent.com/jksalcedo/librefind/main/fastlane/metadata/android/en-US/images/phoneScreenshots/submission.jpg
-  - https://raw.githubusercontent.com/jksalcedo/librefind/main/fastlane/metadata/android/en-US/images/phoneScreenshots/profile.jpg
+  - https://raw.githubusercontent.com/jksalcedo/librefind/main/fastlane/metadata/android/en-US/images/phoneScreenshots/dashboard.png
+  - https://raw.githubusercontent.com/jksalcedo/librefind/main/fastlane/metadata/android/en-US/images/phoneScreenshots/alternative_list.png
+  - https://raw.githubusercontent.com/jksalcedo/librefind/main/fastlane/metadata/android/en-US/images/phoneScreenshots/submission.png
+  - https://raw.githubusercontent.com/jksalcedo/librefind/main/fastlane/metadata/android/en-US/images/phoneScreenshots/profile.png
+  - https://raw.githubusercontent.com/jksalcedo/librefind/main/fastlane/metadata/android/en-US/images/phoneScreenshots/community.png
+  - https://raw.githubusercontent.com/jksalcedo/librefind/main/fastlane/metadata/android/en-US/images/phoneScreenshots/discover.png
