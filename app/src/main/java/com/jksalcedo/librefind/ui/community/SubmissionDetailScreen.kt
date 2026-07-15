@@ -24,6 +24,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -43,6 +44,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jksalcedo.librefind.R
 import com.jksalcedo.librefind.ui.common.LibreFindLoadingIndicator
+import com.jksalcedo.librefind.ui.components.CommentSection
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -207,6 +209,11 @@ fun SubmissionDetailScreen(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text("Edit Proposal")
             }
+
+            // Comments Feed
+            Spacer(modifier = Modifier.height(16.dp))
+            HorizontalDivider()
+            CommentSection(targetId = submission.id)
         }
     }
 }

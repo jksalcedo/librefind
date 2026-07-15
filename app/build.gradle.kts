@@ -38,13 +38,15 @@ val stageWeight = when (vStage) {
 
 val suffix = if (vStage == "stable") "" else "-$vStage.$vBuild"
 
-val computedVersionCode = versionProps.getProperty("VERSION_CODE")?.toInt() ?: ((vMajor * 10000000) +
-        (vMinor * 100000) +
-        (vPatch * 1000) +
-        (stageWeight * 100) +
-        vBuild)
+val computedVersionCode =
+    versionProps.getProperty("VERSION_CODE")?.toInt() ?: ((vMajor * 10000000) +
+            (vMinor * 100000) +
+            (vPatch * 1000) +
+            (stageWeight * 100) +
+            vBuild)
 
-val computedVersionName = versionProps.getProperty("VERSION_NAME") ?: "$vMajor.$vMinor.$vPatch$suffix"
+val computedVersionName =
+    versionProps.getProperty("VERSION_NAME") ?: "$vMajor.$vMinor.$vPatch$suffix"
 
 tasks.register("updateVersionProperties") {
     doLast {
@@ -155,6 +157,7 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material3.adaptive.navigation.suite)
     implementation(libs.androidx.compose.material.icons.extended)
+    implementation(libs.coil.compose)
 
     // Koin (Dependency Injection)
     implementation(libs.koin.android)

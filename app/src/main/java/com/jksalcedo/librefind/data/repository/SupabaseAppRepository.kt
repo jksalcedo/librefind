@@ -112,7 +112,7 @@ class SupabaseAppRepository(
             @Serializable
             data class GetAlternativesParams(
                 @SerialName("target_pkg") val targetPkg: String,
-                @SerialName("user_id") val userId: String?
+                @SerialName("p_user_id") val userId: String?
             )
 
             val results = supabase.postgrest.rpc(
@@ -1665,5 +1665,50 @@ class SupabaseAppRepository(
         sha256Digest: String
     ): Result<Unit> = runCatching {
         submitSigningKeyVote(packageName, "", sha256Digest).getOrThrow()
+    }
+
+    override suspend fun getComments(targetId: String): List<com.jksalcedo.librefind.domain.model.Comment> {
+        return try {
+            val dtos = supabase.postgrest.from("comments")
+                .select(columns = io.github.jan.supabase.postgrest.query.Columns.raw("*, profile:profiles(*)")) {
+                    filter {
+                        eq("target_id", targetId)
+                    }
+                    order("created_at", order = io.github.jan.supabase.postgrest.query.Order.DESCENDING)
+                }.decodeList<com.jksalcedo.librefind.data.remote.model.CommentWithProfileDto>()
+                
+            dtos.map { dto ->
+                com.jksalcedo.librefind.domain.model.Comment(
+                    id = dto.id,
+                    targetId = dto.targetId,
+                    userId = dto.userId,
+                    username = dto.profile?.username,
+                    avatarUrl = dto.profile?.avatarUrl,
+                    badge = dto.profile?.badge,
+                    content = dto.content,
+                    createdAt = try {
+                        java.time.Instant.parse(dto.createdAt).toEpochMilli()
+                    } catch (e: Exception) {
+                        0L
+                    }
+                )
+            }
+        } catch (e: Exception) {
+            android.util.Log.e("SupabaseAppRepo", "Failed to fetch comments", e)
+            emptyList()
+        }
+    }
+
+    override suspend fun submitComment(targetId: String, content: String): Result<Unit> = runCatching {
+        val userId = supabase.auth.currentUserOrNull()?.id
+            ?: throw IllegalStateException("Not logged in")
+            
+        val commentDto = com.jksalcedo.librefind.data.remote.model.CommentDto(
+            targetId = targetId,
+            userId = userId,
+            content = content
+        )
+        
+        supabase.postgrest.from("comments").insert(commentDto)
     }
 }
