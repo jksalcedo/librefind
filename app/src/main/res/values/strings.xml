@@ -419,4 +419,5 @@
     <string name="signing_key_already_submitted">Already submitted ✓</string>
     <string name="signing_key_filter_label">Key Vote</string>
     <string name="signing_key_empty">No signing key votes yet.</string>
+    <string name="submission_details_title">Submission Details</string>
 </resources>

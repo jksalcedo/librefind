@@ -1,5 +1,6 @@
 package com.jksalcedo.librefind.ui.community
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,10 +13,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Category
+import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Gavel
+import androidx.compose.material.icons.filled.Link
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Shop
 import androidx.compose.material.icons.filled.ThumbDown
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.outlined.ThumbDown
@@ -29,6 +37,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -39,7 +48,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jksalcedo.librefind.R
@@ -72,7 +84,7 @@ fun SubmissionDetailScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Submission Details") },
+                title = { Text(stringResource(R.string.submission_details_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -96,131 +108,289 @@ fun SubmissionDetailScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(16.dp)
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Header Info
-            Card(modifier = Modifier.fillMaxWidth(), elevation = CardDefaults.cardElevation(2.dp)) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Text(
-                        text = "Type: ${submission.type.name.replace("_", " ")}",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                    Text(
-                        text = submission.submittedApp.name,
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Text(
-                        text = "Original Submitter: ${submission.submitterUsername}",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    if (submission.lastEditedBy != null) {
-                        Text(
-                            text = "Last Edited by User: ${submission.lastEditedBy}",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                    }
-                }
-            }
-
-            // App Details
-            Card(modifier = Modifier.fillMaxWidth(), elevation = CardDefaults.cardElevation(2.dp)) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    DetailRow("Package Name", submission.submittedApp.packageName)
-                    DetailRow("Category", submission.category ?: "N/A")
-                    DetailRow("Description", submission.submittedApp.description)
-                    DetailRow("Repo URL", submission.submittedApp.repoUrl.ifBlank { "N/A" })
-                    DetailRow("F-Droid ID", submission.submittedApp.fdroidId.ifBlank { "N/A" })
-                    DetailRow("License", submission.submittedApp.license.ifBlank { "N/A" })
-
-                    if (submission.proprietaryPackages.isNotBlank()) {
-                        DetailRow("Targets (Proprietary Apps)", submission.proprietaryPackages)
-                    }
-                    if (submission.linkedAlternatives.isNotEmpty()) {
-                        DetailRow(
-                            "Linked Solutions (FOSS Apps)",
-                            submission.linkedAlternatives.joinToString(", ")
-                        )
-                    }
-                }
-            }
-
-            // Community Votes
-            Card(modifier = Modifier.fillMaxWidth(), elevation = CardDefaults.cardElevation(2.dp)) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.submission_votes_title),
-                        style = MaterialTheme.typography.titleSmall
-                    )
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        VoteButton(
-                            icon = if (submission.userVote == 1) Icons.Filled.ThumbUp
-                            else Icons.Outlined.ThumbUp,
-                            label = "${submission.upvotes}",
-                            active = submission.userVote == 1,
-                            activeColor = MaterialTheme.colorScheme.primary,
-                            contentDescription = stringResource(R.string.submission_upvote),
-                            onClick = { viewModel.castVote(submission, 1) }
-                        )
-                        VoteButton(
-                            icon = if (submission.userVote == -1) Icons.Filled.ThumbDown
-                            else Icons.Outlined.ThumbDown,
-                            label = "${submission.downvotes}",
-                            active = submission.userVote == -1,
-                            activeColor = MaterialTheme.colorScheme.error,
-                            contentDescription = stringResource(R.string.submission_downvote),
-                            onClick = {
-                                if (submission.userVote == -1) {
-                                    viewModel.castVote(submission, -1)
-                                } else {
-                                    showDownvoteSheet = true
-                                }
-                            }
-                        )
-                    }
-                }
-            }
-
-            // Actions
-            Spacer(modifier = Modifier.height(8.dp))
-            Button(
-                onClick = { onEditClick(submission.id) },
+            // Header Card (Title, Submitter, and Votes)
+            Surface(
+                color = MaterialTheme.colorScheme.surfaceContainerLow,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Icon(Icons.Default.Edit, contentDescription = null, modifier = Modifier.size(18.dp))
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("Edit Proposal")
+                Column(modifier = Modifier.padding(16.dp)) {
+                    // Type Badge
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(4.dp))
+                            .background(MaterialTheme.colorScheme.primaryContainer)
+                            .padding(horizontal = 8.dp, vertical = 4.dp)
+                    ) {
+                        Text(
+                            text = submission.type.name.replace("_", " "),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    Text(
+                        text = submission.submittedApp.name,
+                        style = MaterialTheme.typography.headlineMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    // Submitter Info
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = submission.submitterUsername,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        if (submission.lastEditedBy != null) {
+                            Text(
+                                text = " • Edited by ${submission.lastEditedBy}",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.secondary,
+                                modifier = Modifier.padding(start = 4.dp)
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+
+                    // Inline Action Bar (Votes & Edit)
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            VoteButton(
+                                icon = if (submission.userVote == 1) Icons.Filled.ThumbUp else Icons.Outlined.ThumbUp,
+                                label = "${submission.upvotes}",
+                                active = submission.userVote == 1,
+                                activeColor = MaterialTheme.colorScheme.primary,
+                                contentDescription = stringResource(R.string.submission_upvote),
+                                onClick = { viewModel.castVote(submission, 1) }
+                            )
+                            VoteButton(
+                                icon = if (submission.userVote == -1) Icons.Filled.ThumbDown else Icons.Outlined.ThumbDown,
+                                label = "${submission.downvotes}",
+                                active = submission.userVote == -1,
+                                activeColor = MaterialTheme.colorScheme.error,
+                                contentDescription = stringResource(R.string.submission_downvote),
+                                onClick = {
+                                    if (submission.userVote == -1) viewModel.castVote(
+                                        submission,
+                                        -1
+                                    )
+                                    else showDownvoteSheet = true
+                                }
+                            )
+                        }
+
+                        Button(onClick = { onEditClick(submission.id) }) {
+                            Icon(
+                                Icons.Default.Edit,
+                                contentDescription = null,
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("Edit")
+                        }
+                    }
+                }
+            }
+
+            // Relationship Boxes (Targets and Solutions)
+            if (submission.proprietaryPackages.isNotBlank() || submission.linkedAlternatives.isNotEmpty()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    if (submission.proprietaryPackages.isNotBlank()) {
+                        RelationshipBox(
+                            title = "Replaces Proprietary Targets",
+                            items = submission.proprietaryPackages,
+                            isProprietary = true
+                        )
+                    }
+                    if (submission.linkedAlternatives.isNotEmpty()) {
+                        RelationshipBox(
+                            title = "Linked FOSS Solutions",
+                            items = submission.linkedAlternatives.joinToString(", "),
+                            isProprietary = false
+                        )
+                    }
+                }
+            }
+
+            // App Metadata Card
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Text(
+                        text = "App Details",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+
+                    DetailItemWithIcon(
+                        icon = Icons.Default.Code,
+                        label = "Package Name",
+                        value = submission.submittedApp.packageName,
+                        isMono = true
+                    )
+                    DetailItemWithIcon(
+                        icon = Icons.Default.Category,
+                        label = "Category",
+                        value = submission.category ?: "Unknown"
+                    )
+                    DetailItemWithIcon(
+                        icon = Icons.Default.Gavel,
+                        label = "License",
+                        value = submission.submittedApp.license.ifBlank { "Unknown" }
+                    )
+                    DetailItemWithIcon(
+                        icon = Icons.Default.Link,
+                        label = "Repository URL",
+                        value = submission.submittedApp.repoUrl.ifBlank { "N/A" }
+                    )
+                    DetailItemWithIcon(
+                        icon = Icons.Default.Shop,
+                        label = "F-Droid ID",
+                        value = submission.submittedApp.fdroidId.ifBlank { "N/A" }
+                    )
+
+                    // Description Container
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+                            .padding(12.dp)
+                    ) {
+                        Column {
+                            Text(
+                                text = "Description",
+                                style = MaterialTheme.typography.labelMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = submission.submittedApp.description.ifBlank { "No description provided." },
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                    }
+                }
             }
 
             // Comments Feed
-            Spacer(modifier = Modifier.height(16.dp))
-            HorizontalDivider()
-            CommentSection(targetId = submission.id)
+            Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+                Text(
+                    text = "Discussion",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                CommentSection(targetId = submission.id)
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+        }
+    }
+}
+
+@Composable
+private fun DetailItemWithIcon(
+    icon: ImageVector,
+    label: String,
+    value: String,
+    isMono: Boolean = false
+) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.outline,
+            modifier = Modifier.size(24.dp)
+        )
+        Spacer(modifier = Modifier.width(16.dp))
+        Column {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Text(
+                text = value,
+                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = if (isMono) FontFamily.Monospace else FontFamily.Default,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+        }
+    }
+}
+
+@Composable
+private fun RelationshipBox(title: String, items: String, isProprietary: Boolean) {
+    val containerColor =
+        if (isProprietary) MaterialTheme.colorScheme.errorContainer else MaterialTheme.colorScheme.tertiaryContainer
+    val contentColor =
+        if (isProprietary) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.onTertiaryContainer
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(8.dp))
+            .background(containerColor)
+            .padding(12.dp)
+    ) {
+        Column {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.labelSmall,
+                color = contentColor.copy(alpha = 0.8f),
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(2.dp))
+            Text(
+                text = items,
+                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = FontFamily.Monospace,
+                color = contentColor
+            )
         }
     }
 }
 
 @Composable
 private fun VoteButton(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    icon: ImageVector,
     label: String,
     active: Boolean,
     activeColor: androidx.compose.ui.graphics.Color,
@@ -232,26 +402,19 @@ private fun VoteButton(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        IconButton(onClick = onClick) {
-            Icon(imageVector = icon, contentDescription = contentDescription, tint = tint)
+        IconButton(onClick = onClick, modifier = Modifier.size(36.dp)) {
+            Icon(
+                imageVector = icon,
+                contentDescription = contentDescription,
+                tint = tint,
+                modifier = Modifier.size(20.dp)
+            )
         }
         Text(
             text = label,
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = if (active) FontWeight.Bold else FontWeight.Normal,
             color = tint
         )
-    }
-}
-
-@Composable
-fun DetailRow(label: String, value: String) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.primary
-        )
-        Text(text = value, style = MaterialTheme.typography.bodyMedium)
-        Spacer(modifier = Modifier.height(4.dp))
     }
 }
