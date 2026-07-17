@@ -396,14 +396,14 @@
     <string name="downvote_category_pwa">PWA</string>
     <string name="downvote_confirm">Hääleta vastu</string>
     <!-- Signing Key Vote -->
-    <string name="signing_key_title">Submit Signing Key</string>
-    <string name="signing_key_digest_label">SHA-256 Certificate Digest</string>
-    <string name="signing_key_no_digest">No signing certificate found for this app.</string>
-    <string name="signing_key_explanation">Submitting this key helps LibreFind verify that this app is signed by a trusted FOSS publisher. Once at least 3 users submit the same key for this app, it may be automatically classified as FOSS.</string>
-    <string name="signing_key_submit_button">Submit key as FOSS evidence</string>
-    <string name="signing_key_endorse_button">Endorse this key</string>
+    <string name="signing_key_title">Edasta allkirjastamise võti</string>
+    <string name="signing_key_digest_label">Sertifikaadi SHA-256 räsi</string>
+    <string name="signing_key_no_digest">Selle rakenduse jaoks ei leidu allkirjastamise sertifikaati.</string>
+    <string name="signing_key_explanation">Selle võtme edastamine aitab LibreFindil kontrollida, kas antud rakendus on allkirjastatud usaldusväärse vaba ja avatud lähtekoodiga tarkvara (FOSS) väljaandja poolt. Kui vähemalt 3 kasutajat on selle rakenduse jaoks sama võtme edastanud, võib rakenduse automaatselt klassifitseerida vaba ja avatud lähtekoodiga tarkvaraks (FOSS).</string>
+    <string name="signing_key_submit_button">Edasta võti tõendina olemisest vaba ja avatud lähtekoodiga tarkvarana (FOSS)</string>
+    <string name="signing_key_endorse_button">Lis oma kinnitus sellele võtmele</string>
     <string name="signing_key_already_submitted">Juba edastatud ✓</string>
-    <string name="signing_key_filter_label">Key Vote</string>
-    <string name="signing_key_empty">No signing key votes yet.</string>
+    <string name="signing_key_filter_label">Võtme hääletus</string>
+    <string name="signing_key_empty">Allkirjavõtmel pole veel hääli.</string>
     <string name="submission_details_title">Edastatud andmete üksikasjad</string>
 </resources>
