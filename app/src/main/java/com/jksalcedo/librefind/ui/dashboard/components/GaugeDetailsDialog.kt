@@ -21,9 +21,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.jksalcedo.librefind.R
 import com.jksalcedo.librefind.domain.model.AppStatus
 import com.jksalcedo.librefind.domain.model.SovereigntyScore
 import com.jksalcedo.librefind.ui.theme.CapturedOrange
@@ -42,25 +44,25 @@ fun GaugeDetailsDialog(
     AlertDialog(
         onDismissRequest = onDismissRequest,
         title = {
-            Text(text = "Sovereignty Score")
+            Text(text = stringResource(R.string.gauge_dialog_title))
         },
         text = {
             Column {
                 Text(
-                    text = "Your score represents how much of your digital life is powered by Free and Open Source Software.",
+                    text = stringResource(R.string.gauge_dialog_desc),
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = "Breakdown (tap to filter):",
+                    text = stringResource(R.string.gauge_dialog_breakdown),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.height(8.dp))
 
                 ClickableStatRow(
-                    label = "FOSS Apps",
+                    label = stringResource(R.string.gauge_dialog_foss_apps),
                     value = "${score.fossCount}",
                     color = FossGreen,
                     isActive = currentFilter == AppStatus.FOSS,
@@ -73,7 +75,7 @@ fun GaugeDetailsDialog(
                     }
                 )
                 ClickableStatRow(
-                    label = "Proprietary Apps",
+                    label = stringResource(R.string.gauge_dialog_proprietary_apps),
                     value = "${score.proprietaryCount}",
                     color = CapturedOrange,
                     isActive = currentFilter == AppStatus.PROP,
@@ -86,7 +88,7 @@ fun GaugeDetailsDialog(
                     }
                 )
                 ClickableStatRow(
-                    label = "Unknown Apps",
+                    label = stringResource(R.string.gauge_dialog_unknown_apps),
                     value = "${score.unknownCount}",
                     color = MaterialTheme.colorScheme.outline,
                     isActive = currentFilter == AppStatus.UNKN,
@@ -99,7 +101,7 @@ fun GaugeDetailsDialog(
                     }
                 )
                 ClickableStatRow(
-                    label = "Ignored Apps",
+                    label = stringResource(R.string.gauge_dialog_ignored_apps),
                     value = "${score.ignoredCount}",
                     color = MaterialTheme.colorScheme.error,
                     isActive = currentFilter == AppStatus.IGNORED,
@@ -112,7 +114,7 @@ fun GaugeDetailsDialog(
                     }
                 )
                 ClickableStatRow(
-                    label = "Pending Apps",
+                    label = stringResource(R.string.gauge_dialog_pending_apps),
                     value = "${score.pendingCount}",
                     color = PendingOrange,
                     isActive = currentFilter == AppStatus.PENDING,
@@ -128,20 +130,20 @@ fun GaugeDetailsDialog(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = "Levels:",
+                    text = stringResource(R.string.gauge_dialog_levels),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.height(8.dp))
 
-                LevelRow(label = "Sovereign (80%+)", color = SovereignGreen)
-                LevelRow(label = "Transitioning (40-79%)", color = TransitionBlue)
-                LevelRow(label = "Captured (<40%)", color = CapturedOrange)
+                LevelRow(label = stringResource(R.string.gauge_level_sovereign_label), color = SovereignGreen)
+                LevelRow(label = stringResource(R.string.gauge_level_transitioning_label), color = TransitionBlue)
+                LevelRow(label = stringResource(R.string.gauge_level_captured_label), color = CapturedOrange)
             }
         },
         confirmButton = {
             TextButton(onClick = onDismissRequest) {
-                Text("Close")
+                Text(stringResource(R.string.gauge_dialog_close))
             }
         }
     )

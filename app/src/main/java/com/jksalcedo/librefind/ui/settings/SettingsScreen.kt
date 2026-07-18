@@ -285,7 +285,7 @@ fun SettingsContent(
                 title = { Text(stringResource(R.string.settings_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back))
                     }
                 }
             )
@@ -317,10 +317,10 @@ fun SettingsContent(
             HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
             // Notifications
-            PreferenceCategory("Notifications")
+            PreferenceCategory(stringResource(R.string.settings_notifications))
             PreferenceSwitch(
-                title = "Background Notifications",
-                subtitle = "Notify me of new apps and submission updates.",
+                title = stringResource(R.string.settings_bg_notifications_title),
+                subtitle = stringResource(R.string.settings_bg_notifications_subtitle),
                 checked = state.notificationsEnabled,
                 onCheckedChange = onSetNotificationsEnabled
             )
@@ -328,15 +328,15 @@ fun SettingsContent(
             if (state.notificationsEnabled) {
                 var showIntervalDialog by remember { mutableStateOf(false) }
                 val intervalLabel = when (state.notificationIntervalMins) {
-                    15L -> "Every 15 minutes"
-                    60L -> "Every 1 hour"
-                    360L -> "Every 6 hours"
-                    1440L -> "Every 24 hours"
-                    else -> "Every ${state.notificationIntervalMins} minutes"
+                    15L -> stringResource(R.string.settings_interval_15min)
+                    60L -> stringResource(R.string.settings_interval_1hour)
+                    360L -> stringResource(R.string.settings_interval_6hours)
+                    1440L -> stringResource(R.string.settings_interval_24hours)
+                    else -> stringResource(R.string.settings_interval_custom, state.notificationIntervalMins)
                 }
 
                 PreferenceItem(
-                    title = "Check Interval",
+                    title = stringResource(R.string.settings_check_interval),
                     subtitle = intervalLabel,
                     icon = Icons.Default.Refresh,
                     onClick = { showIntervalDialog = true },
@@ -375,8 +375,8 @@ fun SettingsContent(
                 icon = Icons.Default.Delete
             )
             PreferenceAction(
-                title = "Classification Cache",
-                subtitle = "${state.classificationCacheCount} apps cached",
+                title = stringResource(R.string.settings_classification_cache_title),
+                subtitle = stringResource(R.string.settings_classification_cache_subtitle, state.classificationCacheCount),
                 actionLabel = stringResource(R.string.settings_clear),
                 onClick = onClearClassificationRequest,
                 isLoading = state.isClearingClassification,
@@ -634,15 +634,15 @@ private fun NotificationIntervalDialog(
     onIntervalSelected: (Long) -> Unit
 ) {
     val intervals = listOf(
-        15L to "Every 15 minutes",
-        60L to "Every 1 hour",
-        360L to "Every 6 hours",
-        1440L to "Every 24 hours"
+        15L to stringResource(R.string.settings_interval_15min),
+        60L to stringResource(R.string.settings_interval_1hour),
+        360L to stringResource(R.string.settings_interval_6hours),
+        1440L to stringResource(R.string.settings_interval_24hours)
     )
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Check Interval") },
+        title = { Text(stringResource(R.string.settings_check_interval)) },
         text = {
             Column(
                 modifier = Modifier.fillMaxWidth()
@@ -724,8 +724,8 @@ private fun ClearClassificationCacheDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Clear Classification Cache?") },
-        text = { Text("This will clear cached classification results. They will be re-fetched on the next scan.") },
+        title = { Text(stringResource(R.string.settings_clear_classification_title)) },
+        text = { Text(stringResource(R.string.settings_clear_classification_message)) },
         confirmButton = {
             TextButton(
                 onClick = onConfirm,

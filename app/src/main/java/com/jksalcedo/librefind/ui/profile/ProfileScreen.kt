@@ -81,7 +81,10 @@ fun ProfileScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.back)
+                        )
                     }
                 },
                 actions = {
@@ -89,7 +92,10 @@ fun ProfileScreen(
                         var menuExpanded by remember { mutableStateOf(false) }
                         Box {
                             IconButton(onClick = { menuExpanded = true }) {
-                                Icon(Icons.Default.MoreVert, contentDescription = "More")
+                                Icon(
+                                    Icons.Default.MoreVert,
+                                    contentDescription = stringResource(R.string.more)
+                                )
                             }
                             DropdownMenu(
                                 expanded = menuExpanded,
@@ -230,7 +236,7 @@ private fun ProfileHeader(profile: UserProfile) {
                 }
             }
             Text(
-                text = "Reputation: ${profile.reputationScore}",
+                text = stringResource(R.string.profile_reputation, profile.reputationScore),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -251,17 +257,17 @@ private fun ProfileStats(profile: UserProfile) {
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             StatItem(
-                label = "Submitted",
+                label = stringResource(R.string.submitted),
                 value = profile.submissionCount.toString(),
                 Icons.Default.FileUpload
             )
             StatItem(
-                label = "Approved",
+                label = stringResource(R.string.approved),
                 value = profile.approvedCount.toString(),
                 Icons.Default.CheckCircle
             )
             StatItem(
-                label = "Rejected",
+                label = stringResource(R.string.rejected),
                 value = profile.rejectedCount.toString(),
                 Icons.Default.Cancel
             )

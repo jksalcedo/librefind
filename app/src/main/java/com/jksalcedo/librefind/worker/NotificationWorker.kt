@@ -14,6 +14,7 @@ import org.koin.core.component.inject
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
 import kotlinx.datetime.Instant
+import com.jksalcedo.librefind.R
 
 class NotificationWorker(
     appContext: Context,
@@ -69,8 +70,8 @@ class NotificationWorker(
                     NotificationHelper.showNotification(
                         context = applicationContext,
                         notificationId = 1001,
-                        title = "New FOSS Apps Added!",
-                        content = "Check out the newly added apps: $appNames"
+                        title = applicationContext.getString(R.string.notification_new_apps_title),
+                        content = applicationContext.getString(R.string.notification_new_apps_content, appNames)
                     )
                 }
             }
@@ -104,12 +105,12 @@ class NotificationWorker(
 
                     val allUpdates = updatedSubs + updatedLinks
                     allUpdates.forEachIndexed { index, sub ->
-                        val name = sub.app_name ?: sub.proprietary_package ?: "Your submission"
+                        val name = sub.app_name ?: sub.proprietary_package ?: applicationContext.getString(R.string.notification_submission_fallback_name)
                         NotificationHelper.showNotification(
                             context = applicationContext,
                             notificationId = 2000 + index,
-                            title = "Submission Updated",
-                            content = "$name was ${sub.status.lowercase()}."
+                            title = applicationContext.getString(R.string.notification_submission_updated_title),
+                            content = applicationContext.getString(R.string.notification_submission_updated_content, name, sub.status.lowercase())
                         )
                     }
                 }

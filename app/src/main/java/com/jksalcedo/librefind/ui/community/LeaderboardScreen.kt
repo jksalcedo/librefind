@@ -38,7 +38,7 @@ fun LeaderboardScreen(
                 title = { Text(stringResource(R.string.community_leaderboard_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -60,7 +60,7 @@ fun LeaderboardScreen(
                 }
                 state.topContributors.isEmpty() -> {
                     Text(
-                        text = "No contributors yet",
+                        text = stringResource(R.string.leaderboard_no_contributors),
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
@@ -162,7 +162,7 @@ fun ContributorItem(
                     color = MaterialTheme.colorScheme.primary
                 )
                 Text(
-                    text = "points",
+                    text = stringResource(R.string.leaderboard_points),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

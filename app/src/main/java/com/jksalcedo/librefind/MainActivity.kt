@@ -13,11 +13,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
     private val requestPermissionLauncher = registerForActivityResult(
         androidx.activity.result.contract.ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
+    ) { _: Boolean ->
         // Handle if needed
     }
 
@@ -85,10 +85,10 @@ class MainActivity : AppCompatActivity() {
                                     icon = {
                                         Icon(
                                             painter = painterResource(R.drawable.ic_home),
-                                            contentDescription = "Dashboard"
+                                            contentDescription = stringResource(R.string.dashboard)
                                         )
                                     },
-                                    label = { Text("Dashboard") },
+                                    label = { stringResource(R.string.dashboard) },
                                     selected = currentRoute == Route.Dashboard.route,
                                     onClick = {
                                         if (currentRoute != Route.Dashboard.route) {
@@ -103,10 +103,10 @@ class MainActivity : AppCompatActivity() {
                                     icon = {
                                         Icon(
                                             painter = painterResource(R.drawable.ic_discover),
-                                            contentDescription = "Discover"
+                                            contentDescription = stringResource(R.string.discover)
                                         )
                                     },
-                                    label = { Text("Discover") },
+                                    label = { stringResource(R.string.discover) },
                                     selected = currentRoute == Route.Discover.route,
                                     onClick = {
                                         if (currentRoute != Route.Discover.route) {
@@ -121,10 +121,10 @@ class MainActivity : AppCompatActivity() {
                                     icon = {
                                         Icon(
                                             painter = painterResource(R.drawable.ic_world),
-                                            contentDescription = "Community"
+                                            contentDescription = stringResource(R.string.community)
                                         )
                                     },
-                                    label = { Text("Community") },
+                                    label = { stringResource(R.string.community) },
                                     selected = currentRoute == Route.Community.route,
                                     onClick = {
                                         if (currentRoute != Route.Community.route) {

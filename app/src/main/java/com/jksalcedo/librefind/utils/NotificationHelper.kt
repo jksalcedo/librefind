@@ -14,14 +14,14 @@ import com.jksalcedo.librefind.R
 object NotificationHelper {
 
     private const val CHANNEL_ID = "librefind_general_channel"
-    private const val CHANNEL_NAME = "General Notifications"
-    private const val CHANNEL_DESC = "Notifications for new apps and submission updates."
 
     fun createNotificationChannel(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance).apply {
-                description = CHANNEL_DESC
+            val channelName = context.getString(R.string.notification_channel_name)
+            val channelDesc = context.getString(R.string.notification_channel_description)
+            val channel = NotificationChannel(CHANNEL_ID, channelName, importance).apply {
+                description = channelDesc
             }
             val notificationManager: NotificationManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

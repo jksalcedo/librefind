@@ -151,7 +151,7 @@ fun DashboardScreen(
                     navigationIcon = {
                         if (state.isSelectionMode) {
                             IconButton(onClick = { viewModel.clearSelection() }) {
-                                Icon(Icons.Default.Close, contentDescription = "Clear selection")
+                                Icon(Icons.Default.Close, contentDescription = stringResource(R.string.dashboard_clear_selection))
                             }
                         }
                     },
@@ -160,14 +160,14 @@ fun DashboardScreen(
                             var showSelectionMenu by remember { mutableStateOf(false) }
                             Box {
                                 IconButton(onClick = { showSelectionMenu = true }) {
-                                    Icon(painter = painterResource(R.drawable.ic_filter), contentDescription = "Selection Actions")
+                                    Icon(painter = painterResource(R.drawable.ic_filter), contentDescription = stringResource(R.string.dashboard_selection_actions))
                                 }
                                 DropdownMenu(
                                     expanded = showSelectionMenu,
                                     onDismissRequest = { showSelectionMenu = false }
                                 ) {
                                     DropdownMenuItem(
-                                        text = { Text("Ignore selected") },
+                                        text = { Text(stringResource(R.string.dashboard_ignore_selected)) },
                                         onClick = {
                                             viewModel.ignoreSelected()
                                             showSelectionMenu = false
@@ -175,7 +175,7 @@ fun DashboardScreen(
                                         leadingIcon = { Icon(Icons.Default.VisibilityOff, contentDescription = null) }
                                     )
                                     DropdownMenuItem(
-                                        text = { Text("Restore selected") },
+                                        text = { Text(stringResource(R.string.dashboard_restore_selected)) },
                                         onClick = {
                                             viewModel.restoreSelected()
                                             showSelectionMenu = false
@@ -184,7 +184,7 @@ fun DashboardScreen(
                                     )
                                     HorizontalDivider()
                                     DropdownMenuItem(
-                                        text = { Text("Mark selected as FOSS") },
+                                        text = { Text(stringResource(R.string.dashboard_mark_foss)) },
                                         onClick = {
                                             viewModel.reclassifySelected(AppStatus.FOSS)
                                             showSelectionMenu = false
@@ -192,7 +192,7 @@ fun DashboardScreen(
                                         leadingIcon = { Icon(Icons.Default.Check, contentDescription = null) }
                                     )
                                     DropdownMenuItem(
-                                        text = { Text("Mark selected as PWA") },
+                                        text = { Text(stringResource(R.string.dashboard_mark_pwa)) },
                                         onClick = {
                                             viewModel.reclassifySelected(AppStatus.PWA)
                                             showSelectionMenu = false
@@ -200,7 +200,7 @@ fun DashboardScreen(
                                         leadingIcon = { Icon(Icons.Default.Check, contentDescription = null) }
                                     )
                                     DropdownMenuItem(
-                                        text = { Text("Undo reclassification") },
+                                        text = { Text(stringResource(R.string.dashboard_undo_reclassify)) },
                                         onClick = {
                                             viewModel.undoReclassifySelected()
                                             showSelectionMenu = false
@@ -447,7 +447,7 @@ fun DashboardScreen(
                                         ) {
                                             Icon(
                                                 imageVector = if (isSovereigntyExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                                                contentDescription = if (isSovereigntyExpanded) "Collapse" else "Expand"
+                                                contentDescription = if (isSovereigntyExpanded) stringResource(R.string.dashboard_collapse) else stringResource(R.string.dashboard_expand)
                                             )
                                         }
                                     }
@@ -513,7 +513,7 @@ fun DashboardScreen(
                                             ) {
                                                 Icon(
                                                     imageVector = if (isSovereigntyExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                                                    contentDescription = if (isSovereigntyExpanded) "Collapse" else "Expand"
+                                                    contentDescription = if (isSovereigntyExpanded) stringResource(R.string.dashboard_collapse) else stringResource(R.string.dashboard_expand)
                                                 )
                                             }
                                         }

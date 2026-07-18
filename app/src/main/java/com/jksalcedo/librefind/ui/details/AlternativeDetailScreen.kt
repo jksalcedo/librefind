@@ -122,13 +122,13 @@ fun AlternativeDetailScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 },
                 actions = {
                     Box {
                         IconButton(onClick = { menuExpanded = true }) {
-                            Icon(Icons.Default.MoreVert, contentDescription = "More options")
+                            Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.alt_detail_more_options))
                         }
                         DropdownMenu(
                             expanded = menuExpanded,
@@ -309,7 +309,7 @@ fun AlternativeDetailScreen(
                                     )
                                     Icon(
                                         imageVector = if (isScorecardExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                                        contentDescription = if (isScorecardExpanded) "Collapse" else "Expand"
+                                        contentDescription = if (isScorecardExpanded) stringResource(R.string.alt_detail_collapse) else stringResource(R.string.alt_detail_expand)
                                     )
                                 }
 
@@ -380,7 +380,7 @@ fun AlternativeDetailScreen(
                                             IconButton(onClick = { showVotingSection = false }) {
                                                 Icon(
                                                     Icons.Default.Add,
-                                                    contentDescription = "Close",
+                                                    contentDescription = stringResource(R.string.alt_detail_close),
                                                     modifier = Modifier
                                                         .size(20.dp)
                                                         .rotate(45f)
@@ -483,7 +483,7 @@ fun AlternativeDetailScreen(
                                 IconButton(onClick = {
                                     feedbackType = 0; showFeedbackDialog = true
                                 }) {
-                                    Icon(Icons.Default.Add, "Add pro")
+                                    Icon(Icons.Default.Add, stringResource(R.string.alt_detail_add_pro_desc))
                                 }
                             }
                         }
@@ -520,7 +520,7 @@ fun AlternativeDetailScreen(
                                 IconButton(onClick = {
                                     feedbackType = 1; showFeedbackDialog = true
                                 }) {
-                                    Icon(Icons.Default.Add, "Add con")
+                                    Icon(Icons.Default.Add, stringResource(R.string.alt_detail_add_con_desc))
                                 }
                             }
                         }
@@ -698,7 +698,7 @@ private fun UserRatingRow(
                 ) {
                     Icon(
                         Icons.Default.Star,
-                        "Rate $star",
+                        stringResource(R.string.alt_detail_rate_star, star),
                         tint = if (userRating != null && star <= userRating) MaterialTheme.colorScheme.primary
                         else MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.size(24.dp)
