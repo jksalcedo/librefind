@@ -9,11 +9,10 @@ import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.postgrest.postgrest
 import kotlinx.coroutines.flow.first
+import kotlinx.serialization.Serializable
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.SerialName
-import kotlinx.datetime.Instant
+import kotlin.time.Instant.Companion.fromEpochMilliseconds
 
 class NotificationWorker(
     appContext: Context,
@@ -25,18 +24,18 @@ class NotificationWorker(
 
     @Serializable
     private data class AppCheckDto(
-        val package_name: String,
+        val packageName: String,
         val name: String,
-        val created_at: String? = null
+        val createdAt: String? = null
     )
 
     @Serializable
     private data class SubmissionCheckDto(
         val id: String,
-        val app_name: String? = null,
-        val proprietary_package: String? = null,
+        val appName: String? = null,
+        val proprietaryPackage: String? = null,
         val status: String,
-        val last_edited_at: String
+        val lastEditedAt: String
     )
 
     override suspend fun doWork(): Result {
@@ -54,13 +53,13 @@ class NotificationWorker(
             // Check for new apps in the main directory
             val lastAppCheck = prefs.getLastAppCheckTime()
             if (lastAppCheck > 0) {
-                val lastAppInstant = Instant.fromEpochMilliseconds(lastAppCheck)
+                val lastAppInstant = fromEpochMilliseconds(lastAppCheck)
                 val newApps = try {
                     supabase.postgrest.from("solutions")
                         .select {
                             filter { gt("created_at", lastAppInstant.toString()) }
                         }.decodeList<AppCheckDto>()
-                } catch (e: Exception) {
+                } catch (_: Exception) {
                     emptyList() // Fallback if created_at doesn't exist
                 }
 
@@ -80,12 +79,12 @@ class NotificationWorker(
             if (currentUserId != null) {
                 val lastSubCheck = prefs.getLastSubmissionCheckTime()
                 if (lastSubCheck > 0) {
-                    val lastSubInstant = Instant.fromEpochMilliseconds(lastSubCheck)
-                    
+                    val lastSubInstant = fromEpochMilliseconds(lastSubCheck)
+
                     // Check standard submissions
                     val updatedSubs = supabase.postgrest.from("user_submissions")
                         .select {
-                            filter { 
+                            filter {
                                 eq("submitter_id", currentUserId)
                                 gt("last_edited_at", lastSubInstant.toString())
                                 isIn("status", listOf("APPROVED", "REJECTED"))
@@ -95,7 +94,7 @@ class NotificationWorker(
                     // Check linking submissions
                     val updatedLinks = supabase.postgrest.from("user_linking_submissions")
                         .select {
-                            filter { 
+                            filter {
                                 eq("submitter_id", currentUserId)
                                 gt("last_edited_at", lastSubInstant.toString())
                                 isIn("status", listOf("APPROVED", "REJECTED"))
@@ -104,7 +103,7 @@ class NotificationWorker(
 
                     val allUpdates = updatedSubs + updatedLinks
                     allUpdates.forEachIndexed { index, sub ->
-                        val name = sub.app_name ?: sub.proprietary_package ?: "Your submission"
+                        val name = sub.appName ?: sub.proprietaryPackage ?: "Your submission"
                         NotificationHelper.showNotification(
                             context = applicationContext,
                             notificationId = 2000 + index,

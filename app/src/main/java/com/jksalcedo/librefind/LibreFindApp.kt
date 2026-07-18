@@ -12,6 +12,7 @@ import com.jksalcedo.librefind.di.repositoryModule
 import com.jksalcedo.librefind.di.supabaseModule
 import com.jksalcedo.librefind.di.useCaseModule
 import com.jksalcedo.librefind.di.viewModelModule
+import com.jksalcedo.librefind.worker.NotificationWorker
 import com.jksalcedo.librefind.worker.SignerFeedWorker
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -25,7 +26,14 @@ class LibreFindApp : Application() {
         startKoin {
             androidLogger()
             androidContext(this@LibreFindApp)
-            modules(appModule, networkModule, repositoryModule, useCaseModule, viewModelModule, supabaseModule)
+            modules(
+                appModule,
+                networkModule,
+                repositoryModule,
+                useCaseModule,
+                viewModelModule,
+                supabaseModule
+            )
         }
 
         scheduleSignerFeedUpdate()
@@ -43,7 +51,7 @@ class LibreFindApp : Application() {
 
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
             "signer_feed_update",
-            ExistingPeriodicWorkPolicy.KEEP,
+            ExistingPeriodicWorkPolicy.UPDATE,
             workRequest
         )
     }
@@ -53,13 +61,13 @@ class LibreFindApp : Application() {
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
 
-        val workRequest = PeriodicWorkRequestBuilder<com.jksalcedo.librefind.worker.NotificationWorker>(1, TimeUnit.HOURS)
+        val workRequest = PeriodicWorkRequestBuilder<NotificationWorker>(1, TimeUnit.HOURS)
             .setConstraints(constraints)
             .build()
 
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
             "notification_check",
-            ExistingPeriodicWorkPolicy.KEEP,
+            ExistingPeriodicWorkPolicy.UPDATE,
             workRequest
         )
     }
