@@ -20,9 +20,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.jksalcedo.librefind.R
 import com.jksalcedo.librefind.domain.model.AppStatus
 import com.jksalcedo.librefind.domain.model.SovereigntyLevel
 import com.jksalcedo.librefind.domain.model.SovereigntyScore
@@ -81,7 +83,7 @@ fun SovereigntyGauge(
                     color = getAppStatusColor(score.level, currentFilter)
                 )
                 Text(
-                    text = getLevelText(score.level),
+                    text = stringResource(getLevelTextRes(score.level)),
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -98,77 +100,77 @@ fun SovereigntyGauge(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             StatItem(
-                label = "FOSS",
-                count = score.fossCount,
-                color = FossGreen,
-                isActive = currentFilter == AppStatus.FOSS,
-                onClick = {
-                    onFilterClick(
-                        if (currentFilter == AppStatus.FOSS) null
-                        else AppStatus.FOSS
-                    )
-                }
-            )
+                    label = stringResource(R.string.gauge_label_foss),
+                    count = score.fossCount,
+                    color = FossGreen,
+                    isActive = currentFilter == AppStatus.FOSS,
+                    onClick = {
+                        onFilterClick(
+                            if (currentFilter == AppStatus.FOSS) null
+                            else AppStatus.FOSS
+                        )
+                    }
+                )
             StatItem(
-                label = "PROPRIETARY",
-                count = score.proprietaryCount,
-                color = CapturedOrange,
-                isActive = currentFilter == AppStatus.PROP,
-                onClick = {
-                    onFilterClick(
-                        if (currentFilter == AppStatus.PROP) null
-                        else AppStatus.PROP
-                    )
-                }
-            )
+                    label = stringResource(R.string.gauge_label_proprietary),
+                    count = score.proprietaryCount,
+                    color = CapturedOrange,
+                    isActive = currentFilter == AppStatus.PROP,
+                    onClick = {
+                        onFilterClick(
+                            if (currentFilter == AppStatus.PROP) null
+                            else AppStatus.PROP
+                        )
+                    }
+                )
             StatItem(
-                label = "UNKNOWN",
-                count = score.unknownCount,
-                color = MaterialTheme.colorScheme.outline,
-                isActive = currentFilter == AppStatus.UNKN,
-                onClick = {
-                    onFilterClick(
-                        if (currentFilter == AppStatus.UNKN) null
-                        else AppStatus.UNKN
-                    )
-                }
-            )
+                    label = stringResource(R.string.gauge_label_unknown),
+                    count = score.unknownCount,
+                    color = MaterialTheme.colorScheme.outline,
+                    isActive = currentFilter == AppStatus.UNKN,
+                    onClick = {
+                        onFilterClick(
+                            if (currentFilter == AppStatus.UNKN) null
+                            else AppStatus.UNKN
+                        )
+                    }
+                )
             StatItem(
-                label = "Ignored",
-                count = score.ignoredCount,
-                color = MaterialTheme.colorScheme.error,
-                isActive = currentFilter == AppStatus.IGNORED,
-                onClick = {
-                    onFilterClick(
-                        if (currentFilter == AppStatus.IGNORED) null
-                        else AppStatus.IGNORED
-                    )
-                }
-            )
+                    label = stringResource(R.string.gauge_label_ignored),
+                    count = score.ignoredCount,
+                    color = MaterialTheme.colorScheme.error,
+                    isActive = currentFilter == AppStatus.IGNORED,
+                    onClick = {
+                        onFilterClick(
+                            if (currentFilter == AppStatus.IGNORED) null
+                            else AppStatus.IGNORED
+                        )
+                    }
+                )
             StatItem(
-                label = "Pending",
-                count = score.pendingCount,
-                color = PendingOrange,
-                isActive = currentFilter == AppStatus.PENDING,
-                onClick = {
-                    onFilterClick(
-                        if (currentFilter == AppStatus.PENDING) null
-                        else AppStatus.PENDING
-                    )
-                }
-            )
+                    label = stringResource(R.string.gauge_label_pending),
+                    count = score.pendingCount,
+                    color = PendingOrange,
+                    isActive = currentFilter == AppStatus.PENDING,
+                    onClick = {
+                        onFilterClick(
+                            if (currentFilter == AppStatus.PENDING) null
+                            else AppStatus.PENDING
+                        )
+                    }
+                )
             StatItem(
-                label = "PWA",
-                count = score.pwaCount,
-                color = Color(0xFF9C27B0),
-                isActive = currentFilter == AppStatus.PWA,
-                onClick = {
-                    onFilterClick(
-                        if (currentFilter == AppStatus.PWA) null
-                        else AppStatus.PWA
-                    )
-                }
-            )
+                    label = "PWA",
+                    count = score.pwaCount,
+                    color = MaterialTheme.colorScheme.tertiary,
+                    isActive = currentFilter == AppStatus.PWA,
+                    onClick = {
+                        onFilterClick(
+                            if (currentFilter == AppStatus.PWA) null
+                            else AppStatus.PWA
+                        )
+                    }
+                )
         }
     }
 }
@@ -228,7 +230,7 @@ private fun getAppStatusColor(level: SovereigntyLevel, appStatus: AppStatus?): C
         AppStatus.PROP -> CapturedOrange
         AppStatus.UNKN -> MaterialTheme.colorScheme.outline
         AppStatus.PENDING -> PendingOrange
-        AppStatus.PWA -> Color(0xFF9C27B0)
+        AppStatus.PWA -> MaterialTheme.colorScheme.tertiary
         AppStatus.IGNORED -> MaterialTheme.colorScheme.error
         else -> getLevelColor(level)
     }
@@ -242,11 +244,11 @@ private fun getLevelColor(level: SovereigntyLevel): Color {
     }
 }
 
-private fun getLevelText(level: SovereigntyLevel): String {
+private fun getLevelTextRes(level: SovereigntyLevel): Int {
     return when (level) {
-        SovereigntyLevel.SOVEREIGN -> "Sovereign"
-        SovereigntyLevel.TRANSITIONING -> "Transitioning"
-        SovereigntyLevel.CAPTURED -> "Captured"
+        SovereigntyLevel.SOVEREIGN -> R.string.gauge_level_sovereign
+        SovereigntyLevel.TRANSITIONING -> R.string.gauge_level_transitioning
+        SovereigntyLevel.CAPTURED -> R.string.gauge_level_captured
     }
 }
 

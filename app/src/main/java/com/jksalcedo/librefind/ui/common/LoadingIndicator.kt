@@ -20,10 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.jksalcedo.librefind.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalAnimationGraphicsApi::class)
 @Composable
@@ -40,7 +42,7 @@ fun LibreFindLoadingIndicator(
 
     LaunchedEffect(Unit) {
         while (isActive) {
-            delay(1000)
+            delay(1000.milliseconds)
             atEnd = !atEnd
         }
     }
@@ -51,7 +53,7 @@ fun LibreFindLoadingIndicator(
     ) {
         Image(
             painter = rememberAnimatedVectorPainter(image, atEnd),
-            contentDescription = "Loading...",
+            contentDescription = stringResource(R.string.cd_loading),
             contentScale = ContentScale.Fit,
             modifier = Modifier.fillMaxSize(),
             colorFilter = ColorFilter.tint(tintColor) // Dynamically tints the vector

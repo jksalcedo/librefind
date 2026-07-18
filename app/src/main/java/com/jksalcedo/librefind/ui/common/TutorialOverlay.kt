@@ -140,7 +140,7 @@ fun TutorialOverlay(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = currentStep.title,
+                        text = stringResource(currentStep.titleRes),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -154,7 +154,7 @@ fun TutorialOverlay(
                 Spacer(modifier = Modifier.height(8.dp))
                 
                 Text(
-                    text = currentStep.description,
+                    text = stringResource(currentStep.descriptionRes),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

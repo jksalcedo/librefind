@@ -55,7 +55,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -71,6 +70,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jksalcedo.librefind.R
 import com.jksalcedo.librefind.ui.common.FullScreenLoading
 import com.jksalcedo.librefind.ui.components.CommentSection
@@ -83,7 +83,7 @@ fun AlternativeDetailScreen(
     onBackClick: () -> Unit,
     viewModel: AlternativeDetailViewModel = koinViewModel()
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     var menuExpanded by remember { mutableStateOf(false) }
     var showFeedbackDialog by remember { mutableStateOf(false) }
@@ -122,13 +122,19 @@ fun AlternativeDetailScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.back)
+                        )
                     }
                 },
                 actions = {
                     Box {
                         IconButton(onClick = { menuExpanded = true }) {
-                            Icon(Icons.Default.MoreVert, contentDescription = "More options")
+                            Icon(
+                                Icons.Default.MoreVert,
+                                contentDescription = stringResource(R.string.alt_detail_more_options)
+                            )
                         }
                         DropdownMenu(
                             expanded = menuExpanded,
@@ -217,6 +223,7 @@ fun AlternativeDetailScreen(
                                     leadingIcon = { Icon(Icons.Default.Code, null) }
                                 )
                                 HorizontalDivider()
+                                val packageLabel = stringResource(R.string.package_label)
                                 DropdownMenuItem(
                                     text = { Text(stringResource(R.string.alt_detail_copy_package)) },
                                     onClick = {
@@ -225,7 +232,7 @@ fun AlternativeDetailScreen(
                                             context.getSystemService(ClipboardManager::class.java)
                                         clipboard?.setPrimaryClip(
                                             ClipData.newPlainText(
-                                                "Package",
+                                                packageLabel,
                                                 alt.packageName
                                             )
                                         )
@@ -268,7 +275,7 @@ fun AlternativeDetailScreen(
                 }
 
                 else -> {
-                    val alt = state.alternative!!
+                    val alt = state.alternative ?: return@Box
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
@@ -309,7 +316,9 @@ fun AlternativeDetailScreen(
                                     )
                                     Icon(
                                         imageVector = if (isScorecardExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                                        contentDescription = if (isScorecardExpanded) "Collapse" else "Expand"
+                                        contentDescription = if (isScorecardExpanded) stringResource(
+                                            R.string.alt_detail_collapse
+                                        ) else stringResource(R.string.alt_detail_expand)
                                     )
                                 }
 
@@ -380,7 +389,7 @@ fun AlternativeDetailScreen(
                                             IconButton(onClick = { showVotingSection = false }) {
                                                 Icon(
                                                     Icons.Default.Add,
-                                                    contentDescription = "Close",
+                                                    contentDescription = stringResource(R.string.alt_detail_close),
                                                     modifier = Modifier
                                                         .size(20.dp)
                                                         .rotate(45f)
@@ -483,7 +492,10 @@ fun AlternativeDetailScreen(
                                 IconButton(onClick = {
                                     feedbackType = 0; showFeedbackDialog = true
                                 }) {
-                                    Icon(Icons.Default.Add, "Add pro")
+                                    Icon(
+                                        Icons.Default.Add,
+                                        stringResource(R.string.alt_detail_add_pro_desc)
+                                    )
                                 }
                             }
                         }
@@ -520,7 +532,10 @@ fun AlternativeDetailScreen(
                                 IconButton(onClick = {
                                     feedbackType = 1; showFeedbackDialog = true
                                 }) {
-                                    Icon(Icons.Default.Add, "Add con")
+                                    Icon(
+                                        Icons.Default.Add,
+                                        stringResource(R.string.alt_detail_add_con_desc)
+                                    )
                                 }
                             }
                         }
@@ -698,7 +713,7 @@ private fun UserRatingRow(
                 ) {
                     Icon(
                         Icons.Default.Star,
-                        "Rate $star",
+                        stringResource(R.string.alt_detail_rate_star, star),
                         tint = if (userRating != null && star <= userRating) MaterialTheme.colorScheme.primary
                         else MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.size(24.dp)

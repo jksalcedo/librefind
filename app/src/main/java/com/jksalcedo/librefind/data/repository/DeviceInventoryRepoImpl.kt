@@ -14,8 +14,8 @@ import com.jksalcedo.librefind.domain.repository.CacheRepository
 import com.jksalcedo.librefind.domain.repository.DeviceInventoryRepo
 import com.jksalcedo.librefind.domain.repository.IgnoredAppsRepository
 import com.jksalcedo.librefind.domain.repository.ReclassifiedAppsRepository
-import com.jksalcedo.librefind.util.InstallerHeuristics
-import com.jksalcedo.librefind.util.SignerUtils
+import com.jksalcedo.librefind.utils.InstallerHeuristics
+import com.jksalcedo.librefind.utils.SignerUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -38,7 +38,6 @@ class DeviceInventoryRepoImpl(
 
     companion object {
         private const val TAG = "DeviceInventory"
-
 
 
         private val OEM_BRANDS = setOf(
@@ -211,7 +210,9 @@ class DeviceInventoryRepoImpl(
             }
 
             val hasIndependentPropSignal =
-                (proprietaryMap[packageName] == true) || InstallerHeuristics.isProprietaryInstaller(installer)
+                (proprietaryMap[packageName] == true) || InstallerHeuristics.isProprietaryInstaller(
+                    installer
+                )
 
             val hasExplicitCacheHit = try {
                 cacheRepository.isTargetCached(packageName)

@@ -26,7 +26,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,7 +45,7 @@ fun MyReportsScreen(
     onBackClick: () -> Unit,
     viewModel: MyReportsViewModel = koinViewModel()
 ) {
-    val state by viewModel.uiState.collectAsState()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
@@ -53,7 +53,7 @@ fun MyReportsScreen(
                 title = { Text(stringResource(R.string.my_reports_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -172,37 +172,37 @@ fun ReportStatusBadge(status: ReportStatus) {
     val (backgroundColor, contentColor, text) = when (status) {
         ReportStatus.OPEN -> Triple(
             MaterialTheme.colorScheme.surface,
-            Color(0xFF2E7D32),
+            MaterialTheme.colorScheme.primary,
             stringResource(R.string.report_status_open)
         )
 
         ReportStatus.IN_PROGRESS -> Triple(
             MaterialTheme.colorScheme.surface,
-            Color(0xFF1565C0),
+            MaterialTheme.colorScheme.tertiary,
             stringResource(R.string.report_status_in_progress)
         )
 
         ReportStatus.RESOLVED -> Triple(
             MaterialTheme.colorScheme.surface,
-            Color(0xFF6A1B9A),
+            MaterialTheme.colorScheme.secondary,
             stringResource(R.string.report_status_resolved)
         )
 
         ReportStatus.WONTFIX -> Triple(
             MaterialTheme.colorScheme.surface,
-            Color(0xFF757575),
+            MaterialTheme.colorScheme.outline,
             stringResource(R.string.report_status_wontfix)
         )
 
         ReportStatus.DUPLICATE -> Triple(
             MaterialTheme.colorScheme.surface,
-            Color(0xFF757575),
+            MaterialTheme.colorScheme.outline,
             stringResource(R.string.report_status_duplicate)
         )
 
         ReportStatus.CLOSED -> Triple(
             MaterialTheme.colorScheme.surface,
-            Color(0xFFC62828),
+            MaterialTheme.colorScheme.error,
             stringResource(R.string.report_status_closed)
         )
     }

@@ -38,7 +38,7 @@ fun StatusBadge(
         AppStatus.PROP -> PropRed
         AppStatus.UNKN -> UnknownGray
         AppStatus.PENDING -> PendingOrange
-        AppStatus.PWA -> Color(0xFF9C27B0)
+        AppStatus.PWA -> MaterialTheme.colorScheme.tertiary
         else -> IgnoredGray
     }
 

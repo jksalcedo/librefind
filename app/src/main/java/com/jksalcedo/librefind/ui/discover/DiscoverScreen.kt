@@ -25,7 +25,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,7 +45,7 @@ fun DiscoverScreen(
     onProprietaryClick: (appName: String, packageName: String) -> Unit,
     viewModel: DiscoverViewModel = koinViewModel()
 ) {
-    val state by viewModel.uiState.collectAsState()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     Scaffold(
         contentWindowInsets = WindowInsets(0),
@@ -55,7 +55,7 @@ fun DiscoverScreen(
                     TextField(
                         value = state.query,
                         onValueChange = viewModel::updateQuery,
-                        placeholder = { Text("Search database...") },
+                        placeholder = { Text(stringResource(R.string.search_database)) },
                         singleLine = true,
                         colors = TextFieldDefaults.colors(
                             focusedContainerColor = Color.Transparent,
@@ -78,7 +78,10 @@ fun DiscoverScreen(
                 actions = {
                     if (state.query.isNotEmpty()) {
                         IconButton(onClick = { viewModel.updateQuery("") }) {
-                            Icon(Icons.Default.Close, contentDescription = "Clear")
+                            Icon(
+                                Icons.Default.Close,
+                                contentDescription = stringResource(R.string.clear)
+                            )
                         }
                     } else {
                         IconButton(onClick = { /* No-op, visual cue only */ }) {
@@ -104,17 +107,18 @@ fun DiscoverScreen(
                 Tab(
                     selected = !state.isProprietaryTabSelected,
                     onClick = { viewModel.setProprietaryTabSelected(false) },
-                    text = { Text("FOSS Alternatives") }
+                    text = { Text(stringResource(R.string.foss_alternatives)) }
                 )
                 Tab(
                     selected = state.isProprietaryTabSelected,
                     onClick = { viewModel.setProprietaryTabSelected(true) },
-                    text = { Text("Proprietary Apps") }
+                    text = { Text(stringResource(R.string.proprietary_apps)) }
                 )
             }
 
             Box(modifier = Modifier.fillMaxSize()) {
-                val results = if (state.isProprietaryTabSelected) state.proprietaryResults else state.fossResults
+                val results =
+                    if (state.isProprietaryTabSelected) state.proprietaryResults else state.fossResults
 
                 when {
                     state.isLoading -> {
@@ -125,7 +129,7 @@ fun DiscoverScreen(
 
                     state.error != null -> {
                         Text(
-                            text = state.error!!,
+                            text = state.error ?: "",
                             color = MaterialTheme.colorScheme.error,
                             modifier = Modifier
                                 .align(Alignment.Center)
@@ -147,14 +151,19 @@ fun DiscoverScreen(
                         LazyColumn(
                             modifier = Modifier.fillMaxSize(),
                             contentPadding = PaddingValues(16.dp),
-                            verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(12.dp)
+                            verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(
+                                12.dp
+                            )
                         ) {
                             items(results) { alternative ->
                                 AlternativeListItem(
                                     alternative = alternative,
                                     onClick = {
                                         if (state.isProprietaryTabSelected) {
-                                            onProprietaryClick(alternative.name, alternative.packageName)
+                                            onProprietaryClick(
+                                                alternative.name,
+                                                alternative.packageName
+                                            )
                                         } else {
                                             onAlternativeClick(alternative.id)
                                         }
@@ -166,7 +175,7 @@ fun DiscoverScreen(
 
                     else -> {
                         Text(
-                            text = "Type to search the database.",
+                            text = stringResource(R.string.type_to_search_the_database),
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier
                                 .align(Alignment.Center)

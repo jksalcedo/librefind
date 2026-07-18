@@ -9,7 +9,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.EmojiEvents
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,7 +30,7 @@ fun LeaderboardScreen(
     onUserClick: (String) -> Unit,
     viewModel: LeaderboardViewModel = koinViewModel()
 ) {
-    val state by viewModel.uiState.collectAsState()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
@@ -38,7 +38,7 @@ fun LeaderboardScreen(
                 title = { Text(stringResource(R.string.community_leaderboard_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -53,14 +53,14 @@ fun LeaderboardScreen(
                 state.isLoading -> FullScreenLoading()
                 state.error != null -> {
                     Text(
-                        text = state.error!!,
+                        text = state.error ?: "",
                         color = MaterialTheme.colorScheme.error,
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
                 state.topContributors.isEmpty() -> {
                     Text(
-                        text = "No contributors yet",
+                        text = stringResource(R.string.leaderboard_no_contributors),
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
@@ -109,9 +109,9 @@ fun ContributorItem(
                         Icons.Default.EmojiEvents,
                         contentDescription = null,
                         tint = when (rank) {
-                            1 -> Color(0xFFFFD700) // Gold
-                            2 -> Color(0xFFC0C0C0) // Silver
-                            else -> Color(0xFFCD7F32) // Bronze
+                            1 -> MaterialTheme.colorScheme.primary // Gold
+                            2 -> MaterialTheme.colorScheme.secondary // Silver
+                            else -> MaterialTheme.colorScheme.tertiary // Bronze
                         },
                         modifier = Modifier.size(40.dp)
                     )
@@ -162,7 +162,7 @@ fun ContributorItem(
                     color = MaterialTheme.colorScheme.primary
                 )
                 Text(
-                    text = "points",
+                    text = stringResource(R.string.leaderboard_points),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

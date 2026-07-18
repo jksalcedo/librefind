@@ -41,7 +41,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -67,7 +67,7 @@ fun SubmissionDetailScreen(
     onEditClick: (String) -> Unit,
     viewModel: CommunitySubmissionsViewModel = koinViewModel()
 ) {
-    val state by viewModel.uiState.collectAsState()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
     val submission = state.submissions.find { it.id == submissionId }
     var showDownvoteSheet by remember { mutableStateOf(false) }
 
@@ -87,7 +87,7 @@ fun SubmissionDetailScreen(
                 title = { Text(stringResource(R.string.submission_details_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -98,7 +98,7 @@ fun SubmissionDetailScreen(
                 if (state.isLoading) {
                     LibreFindLoadingIndicator()
                 } else {
-                    Text("Submission not found or already processed.")
+                    Text(stringResource(R.string.submission_detail_not_found))
                 }
             }
             return@Scaffold
@@ -156,7 +156,7 @@ fun SubmissionDetailScreen(
                         )
                         if (submission.lastEditedBy != null) {
                             Text(
-                                text = " • Edited by ${submission.lastEditedBy}",
+                                text = stringResource(R.string.submission_detail_edited_by, submission.lastEditedBy),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.secondary,
                                 modifier = Modifier.padding(start = 4.dp)
@@ -207,7 +207,7 @@ fun SubmissionDetailScreen(
                                 modifier = Modifier.size(16.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("Edit")
+                            Text(stringResource(R.string.submission_detail_edit))
                         }
                     }
                 }
@@ -223,14 +223,14 @@ fun SubmissionDetailScreen(
                 ) {
                     if (submission.proprietaryPackages.isNotBlank()) {
                         RelationshipBox(
-                            title = "Replaces Proprietary Targets",
+                            title = stringResource(R.string.submission_detail_replaces),
                             items = submission.proprietaryPackages,
                             isProprietary = true
                         )
                     }
                     if (submission.linkedAlternatives.isNotEmpty()) {
                         RelationshipBox(
-                            title = "Linked FOSS Solutions",
+                            title = stringResource(R.string.submission_detail_linked_solutions),
                             items = submission.linkedAlternatives.joinToString(", "),
                             isProprietary = false
                         )
@@ -250,7 +250,7 @@ fun SubmissionDetailScreen(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     Text(
-                        text = "App Details",
+                        text = stringResource(R.string.submission_detail_app_details),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary
@@ -258,29 +258,29 @@ fun SubmissionDetailScreen(
 
                     DetailItemWithIcon(
                         icon = Icons.Default.Code,
-                        label = "Package Name",
+                        label = stringResource(R.string.submission_detail_package_name),
                         value = submission.submittedApp.packageName,
                         isMono = true
                     )
                     DetailItemWithIcon(
                         icon = Icons.Default.Category,
-                        label = "Category",
-                        value = submission.category ?: "Unknown"
+                        label = stringResource(R.string.submission_detail_category),
+                        value = submission.category ?: stringResource(R.string.submission_detail_unknown)
                     )
                     DetailItemWithIcon(
                         icon = Icons.Default.Gavel,
-                        label = "License",
-                        value = submission.submittedApp.license.ifBlank { "Unknown" }
+                        label = stringResource(R.string.submission_detail_license),
+                        value = submission.submittedApp.license.ifBlank { stringResource(R.string.submission_detail_unknown) }
                     )
                     DetailItemWithIcon(
                         icon = Icons.Default.Link,
-                        label = "Repository URL",
-                        value = submission.submittedApp.repoUrl.ifBlank { "N/A" }
+                        label = stringResource(R.string.submission_detail_repo_url),
+                        value = submission.submittedApp.repoUrl.ifBlank { stringResource(R.string.submission_detail_na) }
                     )
                     DetailItemWithIcon(
                         icon = Icons.Default.Shop,
-                        label = "F-Droid ID",
-                        value = submission.submittedApp.fdroidId.ifBlank { "N/A" }
+                        label = stringResource(R.string.submission_detail_fdroid_id),
+                        value = submission.submittedApp.fdroidId.ifBlank { stringResource(R.string.submission_detail_na) }
                     )
 
                     // Description Container
@@ -293,14 +293,14 @@ fun SubmissionDetailScreen(
                     ) {
                         Column {
                             Text(
-                                text = "Description",
+                                text = stringResource(R.string.submission_detail_description),
                                 style = MaterialTheme.typography.labelMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
-                                text = submission.submittedApp.description.ifBlank { "No description provided." },
+                                text = submission.submittedApp.description.ifBlank { stringResource(R.string.submission_detail_no_description) },
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
@@ -312,7 +312,7 @@ fun SubmissionDetailScreen(
             // Comments Feed
             Column(modifier = Modifier.padding(horizontal = 16.dp)) {
                 Text(
-                    text = "Discussion",
+                    text = stringResource(R.string.submission_detail_discussion),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )

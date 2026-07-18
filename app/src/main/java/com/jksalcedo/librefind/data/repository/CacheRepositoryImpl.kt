@@ -9,9 +9,12 @@ import com.jksalcedo.librefind.domain.repository.CacheRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+import kotlinx.coroutines.CoroutineDispatcher
+
 class CacheRepositoryImpl(
     private val appCacheDao: AppCacheDao,
-    private val appRepository: AppRepository
+    private val appRepository: AppRepository,
+    private val ioDispatcher: CoroutineDispatcher
 ) : CacheRepository {
 
     companion object {
@@ -20,7 +23,7 @@ class CacheRepositoryImpl(
     }
 
     override suspend fun refreshCache() {
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher) {
             try {
                 Log.d(TAG, "Refreshing cache from remote...")
 
@@ -64,7 +67,7 @@ class CacheRepositoryImpl(
         }
     }
 
-    override suspend fun isCacheValid(): Boolean = withContext(Dispatchers.IO) {
+    override suspend fun isCacheValid(): Boolean = withContext(ioDispatcher) {
         val lastUpdated = getCacheLastUpdated() ?: return@withContext false
         val age = System.currentTimeMillis() - lastUpdated
         val isValid = age < CACHE_TTL_MS
@@ -73,37 +76,37 @@ class CacheRepositoryImpl(
     }
 
     override suspend fun isTargetCached(packageName: String): Boolean =
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher) {
             appCacheDao.getTarget(packageName) != null
         }
 
     override suspend fun isSolutionCached(packageName: String): Boolean =
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher) {
             appCacheDao.getSolution(packageName) != null
         }
 
     override suspend fun getAlternativesCount(packageName: String): Int? =
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher) {
             appCacheDao.getAlternativesCount(packageName)
         }
 
     override suspend fun clearCache() {
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher) {
             appCacheDao.clearTargets()
             appCacheDao.clearSolutions()
             Log.d(TAG, "Cache cleared")
         }
     }
 
-    override suspend fun hasAnyCache(): Boolean = withContext(Dispatchers.IO) {
+    override suspend fun hasAnyCache(): Boolean = withContext(ioDispatcher) {
         appCacheDao.getTotalCachedRows() > 0
     }
 
-    override suspend fun getTotalCachedItems(): Int = withContext(Dispatchers.IO) {
+    override suspend fun getTotalCachedItems(): Int = withContext(ioDispatcher) {
         appCacheDao.getTotalCachedRows()
     }
 
-    override suspend fun getCacheLastUpdated(): Long? = withContext(Dispatchers.IO) {
+    override suspend fun getCacheLastUpdated(): Long? = withContext(ioDispatcher) {
         val t = appCacheDao.getTargetsLastUpdated()
         val s = appCacheDao.getSolutionsLastUpdated()
         when {

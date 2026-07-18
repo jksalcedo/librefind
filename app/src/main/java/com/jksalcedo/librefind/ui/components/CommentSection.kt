@@ -25,7 +25,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,6 +33,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
@@ -46,6 +47,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import com.jksalcedo.librefind.R
 
 data class CommentsState(
     val comments: List<Comment> = emptyList(),
@@ -101,7 +103,7 @@ fun CommentSection(
     modifier: Modifier = Modifier,
     viewModel: CommentsViewModel = koinViewModel()
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     var commentText by remember { mutableStateOf("") }
 
     LaunchedEffect(targetId) {
@@ -110,7 +112,7 @@ fun CommentSection(
 
     Column(modifier = modifier.fillMaxWidth()) {
         Text(
-            text = "Comments",
+            text = stringResource(R.string.comments_title),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(vertical = 8.dp)
@@ -127,7 +129,7 @@ fun CommentSection(
             }
         } else if (state.comments.isEmpty()) {
             Text(
-                text = "No comments yet. Be the first to discuss!",
+                text = stringResource(R.string.comments_empty),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(16.dp)
@@ -145,9 +147,10 @@ fun CommentSection(
             }
         }
 
-        if (state.error != null) {
+        val errorMsg = state.error
+        if (errorMsg != null) {
             Text(
-                text = state.error!!,
+                text = errorMsg,
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
@@ -165,7 +168,7 @@ fun CommentSection(
                 value = commentText,
                 onValueChange = { commentText = it },
                 modifier = Modifier.weight(1f),
-                placeholder = { Text("Add a comment...") },
+                placeholder = { Text(stringResource(R.string.comments_add_placeholder)) },
                 shape = RoundedCornerShape(24.dp),
                 enabled = !state.isSubmitting,
                 maxLines = 3
@@ -185,7 +188,7 @@ fun CommentSection(
                 if (state.isSubmitting) {
                     CircularProgressIndicator(modifier = Modifier.size(24.dp), strokeWidth = 2.dp)
                 } else {
-                    Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Send Comment")
+                    Icon(Icons.AutoMirrored.Filled.Send, contentDescription = stringResource(R.string.comments_send))
                 }
             }
         }
@@ -229,7 +232,7 @@ private fun CommentItem(comment: Comment) {
                 horizontalArrangement = Arrangement.spacedBy(6.dp)
             ) {
                 Text(
-                    text = comment.username ?: "Anonymous",
+                    text = comment.username ?: stringResource(R.string.comments_anonymous),
                     style = MaterialTheme.typography.labelLarge,
                     fontWeight = FontWeight.Bold
                 )

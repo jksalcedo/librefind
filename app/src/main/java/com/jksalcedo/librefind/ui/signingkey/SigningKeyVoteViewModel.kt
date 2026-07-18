@@ -1,11 +1,11 @@
 package com.jksalcedo.librefind.ui.signingkey
 
+import android.content.pm.PackageManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jksalcedo.librefind.domain.repository.AppRepository
 import com.jksalcedo.librefind.domain.usecase.SubmitSigningKeyVoteUseCase
-import com.jksalcedo.librefind.util.SignerUtils
-import android.content.pm.PackageManager
+import com.jksalcedo.librefind.utils.SignerUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -37,10 +37,18 @@ class SigningKeyVoteViewModel(
             val digests = SignerUtils.getSignerDigests(packageManager, packageName)
             val digest = digests.firstOrNull() ?: ""
             val alreadySubmitted = if (digest.isNotEmpty()) {
-                try { appRepository.hasUserSubmittedKeyVote(packageName) } catch (_: Exception) { false }
+                try {
+                    appRepository.hasUserSubmittedKeyVote(packageName)
+                } catch (_: Exception) {
+                    false
+                }
             } else false
             val count = if (digest.isNotEmpty()) {
-                try { appRepository.getSigningKeyVoteCount(packageName, digest) } catch (_: Exception) { 0 }
+                try {
+                    appRepository.getSigningKeyVoteCount(packageName, digest)
+                } catch (_: Exception) {
+                    0
+                }
             } else 0
             _state.update {
                 it.copy(
@@ -57,8 +65,16 @@ class SigningKeyVoteViewModel(
     fun loadExistingVote(packageName: String, sha256Digest: String) {
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true, error = null, sha256Digest = sha256Digest) }
-            val alreadySubmitted = try { appRepository.hasUserSubmittedKeyVote(packageName) } catch (_: Exception) { false }
-            val count = try { appRepository.getSigningKeyVoteCount(packageName, sha256Digest) } catch (_: Exception) { 0 }
+            val alreadySubmitted = try {
+                appRepository.hasUserSubmittedKeyVote(packageName)
+            } catch (_: Exception) {
+                false
+            }
+            val count = try {
+                appRepository.getSigningKeyVoteCount(packageName, sha256Digest)
+            } catch (_: Exception) {
+                0
+            }
             _state.update {
                 it.copy(isLoading = false, voteCount = count, hasUserSubmitted = alreadySubmitted)
             }
@@ -70,13 +86,27 @@ class SigningKeyVoteViewModel(
             _state.update { it.copy(isSubmitting = true, error = null) }
             submitSigningKeyVoteUseCase(packageName, appLabel)
                 .onSuccess { digest ->
-                    val newCount = try { appRepository.getSigningKeyVoteCount(packageName, digest) } catch (_: Exception) { 1 }
+                    val newCount = try {
+                        appRepository.getSigningKeyVoteCount(packageName, digest)
+                    } catch (_: Exception) {
+                        1
+                    }
                     _state.update {
-                        it.copy(isSubmitting = false, success = true, hasUserSubmitted = true, voteCount = newCount)
+                        it.copy(
+                            isSubmitting = false,
+                            success = true,
+                            hasUserSubmitted = true,
+                            voteCount = newCount
+                        )
                     }
                 }
                 .onFailure { e ->
-                    _state.update { it.copy(isSubmitting = false, error = e.message ?: "Submission failed") }
+                    _state.update {
+                        it.copy(
+                            isSubmitting = false,
+                            error = e.message ?: "Submission failed"
+                        )
+                    }
                 }
         }
     }
@@ -88,11 +118,27 @@ class SigningKeyVoteViewModel(
             _state.update { it.copy(isSubmitting = true, error = null) }
             appRepository.endorseSigningKeyVote(packageName, digest)
                 .onSuccess {
-                    val newCount = try { appRepository.getSigningKeyVoteCount(packageName, digest) } catch (_: Exception) { _state.value.voteCount + 1 }
-                    _state.update { it.copy(isSubmitting = false, success = true, hasUserSubmitted = true, voteCount = newCount) }
+                    val newCount = try {
+                        appRepository.getSigningKeyVoteCount(packageName, digest)
+                    } catch (_: Exception) {
+                        _state.value.voteCount + 1
+                    }
+                    _state.update {
+                        it.copy(
+                            isSubmitting = false,
+                            success = true,
+                            hasUserSubmitted = true,
+                            voteCount = newCount
+                        )
+                    }
                 }
                 .onFailure { e ->
-                    _state.update { it.copy(isSubmitting = false, error = e.message ?: "Endorsement failed") }
+                    _state.update {
+                        it.copy(
+                            isSubmitting = false,
+                            error = e.message ?: "Endorsement failed"
+                        )
+                    }
                 }
         }
     }

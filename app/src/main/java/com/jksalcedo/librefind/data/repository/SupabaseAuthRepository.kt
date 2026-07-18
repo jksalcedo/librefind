@@ -43,10 +43,13 @@ class SupabaseAuthRepository(
         try {
             val dtos = supabase.postgrest.from("profiles")
                 .select() {
-                    order("reputation_score", io.github.jan.supabase.postgrest.query.Order.DESCENDING)
+                    order(
+                        "reputation_score",
+                        io.github.jan.supabase.postgrest.query.Order.DESCENDING
+                    )
                     limit(20)
                 }.decodeList<ProfileDto>()
-            
+
             emit(dtos.map { dto ->
                 UserProfile(
                     uid = dto.id,
@@ -115,14 +118,11 @@ class SupabaseAuthRepository(
             android.util.Log.d("AuthRepo", "getCurrentUser: currentUserOrNull returned null")
             return null
         }
-        android.util.Log.d("AuthRepo", "getCurrentUser: user.id=${user.id}, email=${user.email}, metadataKeys=${user.userMetadata?.keys}")
         ensureProfileCreated(user)
         val profile = fetchUserProfile(user.id)
-        android.util.Log.d("AuthRepo", "getCurrentUser: profile username='${profile?.username}'")
 
         if (profile != null && profile.username.isBlank()) {
             val fallback = extractUsernameFromMetadata(user)
-            android.util.Log.d("AuthRepo", "getCurrentUser: blank username, fallback='$fallback'")
             if (fallback.isNotBlank()) {
                 return profile.copy(username = fallback)
             }
@@ -198,7 +198,9 @@ class SupabaseAuthRepository(
                 listOf("user_name", "preferred_username", "full_name", "name")
                     .firstNotNullOfOrNull { key -> m[key]?.jsonPrimitive?.content?.takeIf { it.isNotBlank() } }
             }
-        } catch (_: Exception) { null }
+        } catch (_: Exception) {
+            null
+        }
             ?: user.email?.substringBefore("@")
             ?: ""
     }

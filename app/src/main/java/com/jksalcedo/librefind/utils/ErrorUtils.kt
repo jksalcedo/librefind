@@ -1,6 +1,4 @@
-package com.jksalcedo.librefind.util
-
-import android.util.Log
+package com.jksalcedo.librefind.utils
 
 object ErrorUtils {
 
@@ -45,8 +43,6 @@ object ErrorUtils {
                     .substringBefore("(")
                     .substringBefore("Details:")
                     .trim()
-
-                Log.e("AuthError", "Raw error: $message")
 
                 if (cleanMessage.isNotBlank() && cleanMessage.length < 100) {
                     cleanMessage

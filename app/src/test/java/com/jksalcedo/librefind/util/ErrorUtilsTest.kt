@@ -1,6 +1,7 @@
 package com.jksalcedo.librefind.util
 
 import android.util.Log
+import com.jksalcedo.librefind.utils.ErrorUtils
 import io.mockk.every
 import io.mockk.mockkStatic
 import org.junit.Assert.assertEquals

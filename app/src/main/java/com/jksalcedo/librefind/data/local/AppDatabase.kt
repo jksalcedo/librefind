@@ -55,7 +55,6 @@ abstract class AppDatabase : RoomDatabase() {
                     "librefind_database"
                 )
                     .addMigrations(MIGRATION_2_3, MIGRATION_3_4)
-                    .fallbackToDestructiveMigration(false)
                     .build()
                 INSTANCE = instance
                 instance

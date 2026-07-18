@@ -40,7 +40,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -70,7 +70,7 @@ fun CommunitySubmissionsScreen(
     onLeaderboardClick: () -> Unit = {},
     viewModel: CommunitySubmissionsViewModel = koinViewModel()
 ) {
-    val state by viewModel.uiState.collectAsState()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     val filteredSubmissions by remember(state.submissions, state.searchQuery, state.filterType, state.isKeyVoteFilter) {
         derivedStateOf {
@@ -185,7 +185,7 @@ fun CommunitySubmissionsScreen(
                 title = { Text(stringResource(R.string.community_submissions_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 },
                 actions = {
@@ -215,7 +215,7 @@ fun CommunitySubmissionsScreen(
                     trailingIcon = {
                         if (state.searchQuery.isNotEmpty()) {
                             IconButton(onClick = { viewModel.updateSearchQuery("") }) {
-                                Icon(Icons.Default.Close, contentDescription = "Clear")
+                                Icon(Icons.Default.Close, contentDescription = stringResource(R.string.community_clear))
                             }
                         }
                     },
@@ -237,7 +237,7 @@ fun CommunitySubmissionsScreen(
 
                 state.error != null -> {
                     Text(
-                        text = state.error ?: "Unknown error",
+                        text = state.error ?: stringResource(R.string.community_unknown_error),
                         color = MaterialTheme.colorScheme.error,
                         modifier = Modifier.align(Alignment.Center)
                     )
@@ -271,7 +271,7 @@ fun CommunitySubmissionsScreen(
                                                 viewModel.setFilterType(null)
                                                 viewModel.setKeyVoteFilter(false)
                                             },
-                                            label = { Text("All") }
+                                            label = { Text(stringResource(R.string.community_filter_all)) }
                                         )
                                     }
                                     items(SubmissionType.entries) { type ->

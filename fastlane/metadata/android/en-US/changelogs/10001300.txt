@@ -1,0 +1,4 @@
+- Fix Room database migration API misuse
+- Extract all remaining hardcoded UI strings
+- Minor code refactoring and fixes
+- Improved UI theming

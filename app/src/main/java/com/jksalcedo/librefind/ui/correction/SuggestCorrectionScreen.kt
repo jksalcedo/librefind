@@ -27,7 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,7 +48,7 @@ fun SuggestCorrectionScreen(
     onBackClick: () -> Unit,
     viewModel: SuggestCorrectionViewModel = koinViewModel()
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     var expanded by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val appLabel = remember(packageName) {
@@ -165,9 +165,10 @@ fun SuggestCorrectionScreen(
                 minLines = 3
             )
 
-            if (state.error != null) {
+            val errorMsg = state.error
+            if (errorMsg != null) {
                 Text(
-                    text = state.error!!,
+                    text = errorMsg,
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall
                 )

@@ -8,7 +8,7 @@ import com.jksalcedo.librefind.domain.repository.AuthRepository
 import com.jksalcedo.librefind.domain.repository.CacheRepository
 import com.jksalcedo.librefind.domain.repository.UpdateRepository
 import com.jksalcedo.librefind.ui.dashboard.components.AppIconCache
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -47,7 +47,8 @@ class SettingsViewModel(
     private val authRepository: AuthRepository,
     private val updateRepository: UpdateRepository,
     private val cacheRepository: CacheRepository,
-    private val notificationPrefs: com.jksalcedo.librefind.data.local.NotificationPrefsDataStore
+    private val notificationPrefs: com.jksalcedo.librefind.data.local.NotificationPrefsDataStore,
+    private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(SettingsState())
@@ -109,9 +110,13 @@ class SettingsViewModel(
         val constraints = androidx.work.Constraints.Builder()
             .setRequiredNetworkType(androidx.work.NetworkType.CONNECTED)
             .build()
-        val workRequest = androidx.work.PeriodicWorkRequestBuilder<com.jksalcedo.librefind.worker.NotificationWorker>(interval, java.util.concurrent.TimeUnit.MINUTES)
-            .setConstraints(constraints)
-            .build()
+        val workRequest =
+            androidx.work.PeriodicWorkRequestBuilder<com.jksalcedo.librefind.worker.NotificationWorker>(
+                interval,
+                java.util.concurrent.TimeUnit.MINUTES
+            )
+                .setConstraints(constraints)
+                .build()
         androidx.work.WorkManager.getInstance(appContext).enqueueUniquePeriodicWork(
             "notification_check",
             androidx.work.ExistingPeriodicWorkPolicy.UPDATE,
@@ -121,7 +126,7 @@ class SettingsViewModel(
 
     fun calculateCacheSize() {
         viewModelScope.launch {
-            val sizeBytes = withContext(Dispatchers.IO) {
+            val sizeBytes = withContext(ioDispatcher) {
                 AppIconCache.getCacheSize()
             }
             val sizeMB = sizeBytes / (1024.0 * 1024.0)
@@ -155,7 +160,7 @@ class SettingsViewModel(
     fun clearCache() {
         viewModelScope.launch {
             _state.update { it.copy(isClearing = true, showClearConfirmation = false) }
-            withContext(Dispatchers.IO) {
+            withContext(ioDispatcher) {
                 AppIconCache.clearCache()
             }
             calculateCacheSize()
@@ -173,7 +178,12 @@ class SettingsViewModel(
 
     fun clearClassificationCache() {
         viewModelScope.launch {
-            _state.update { it.copy(isClearingClassification = true, showClearClassificationConfirmation = false) }
+            _state.update {
+                it.copy(
+                    isClearingClassification = true,
+                    showClearClassificationConfirmation = false
+                )
+            }
             cacheRepository.clearCache()
             calculateClassificationCacheCount()
             _state.update { it.copy(isClearingClassification = false) }
@@ -249,6 +259,12 @@ class SettingsViewModel(
     }
 
     fun resetUpdateStatus() {
-        _state.update { it.copy(updateCheckStatus = UpdateCheckStatus.IDLE, latestUpdate = null, updateError = null) }
+        _state.update {
+            it.copy(
+                updateCheckStatus = UpdateCheckStatus.IDLE,
+                latestUpdate = null,
+                updateError = null
+            )
+        }
     }
 }

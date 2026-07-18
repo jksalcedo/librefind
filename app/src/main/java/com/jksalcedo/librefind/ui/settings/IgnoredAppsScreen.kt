@@ -27,7 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,7 +48,7 @@ fun IgnoredAppsScreen(
     onBackClick: () -> Unit,
     viewModel: IgnoredAppsViewModel = koinViewModel()
 ) {
-    val ignoredApps by viewModel.ignoredApps.collectAsState()
+    val ignoredApps by viewModel.ignoredApps.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
@@ -56,7 +56,7 @@ fun IgnoredAppsScreen(
                 title = { Text(stringResource(R.string.ignored_apps_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 }
             )

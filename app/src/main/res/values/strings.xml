@@ -420,4 +420,161 @@
     <string name="signing_key_filter_label">Key Vote</string>
     <string name="signing_key_empty">No signing key votes yet.</string>
     <string name="submission_details_title">Submission Details</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="discover">Discover</string>
+    <string name="community">Community</string>
+    <string name="search_database">Search database...</string>
+    <string name="clear">Clear</string>
+    <string name="foss_alternatives">FOSS Alternatives</string>
+    <string name="proprietary_apps">Proprietary Apps</string>
+    <string name="type_to_search_the_database">Type to search the database.</string>
+    <string name="more">More</string>
+    <string name="submitted">Submitted</string>
+    <string name="approved">Approved</string>
+    <string name="rejected">Rejected</string>
+
+    <!-- Sovereignty Gauge -->
+    <string name="gauge_label_foss">FOSS</string>
+    <string name="gauge_label_proprietary">PROPRIETARY</string>
+    <string name="gauge_label_unknown">UNKNOWN</string>
+    <string name="gauge_label_ignored">Ignored</string>
+    <string name="gauge_label_pending">Pending</string>
+    <string name="gauge_level_sovereign">Sovereign</string>
+    <string name="gauge_level_transitioning">Transitioning</string>
+    <string name="gauge_level_captured">Captured</string>
+
+    <!-- Gauge Details Dialog -->
+    <string name="gauge_dialog_title">Sovereignty Score</string>
+    <string name="gauge_dialog_desc">Your score represents how much of your digital life is powered by Free and Open Source Software.</string>
+    <string name="gauge_dialog_breakdown">Breakdown (tap to filter):</string>
+    <string name="gauge_dialog_foss_apps">FOSS Apps</string>
+    <string name="gauge_dialog_proprietary_apps">Proprietary Apps</string>
+    <string name="gauge_dialog_unknown_apps">Unknown Apps</string>
+    <string name="gauge_dialog_ignored_apps">Ignored Apps</string>
+    <string name="gauge_dialog_pending_apps">Pending Apps</string>
+    <string name="gauge_dialog_levels">Levels:</string>
+    <string name="gauge_level_sovereign_label">Sovereign (80%+)</string>
+    <string name="gauge_level_transitioning_label">Transitioning (40-79%)</string>
+    <string name="gauge_level_captured_label">Captured (&lt;40%)</string>
+    <string name="gauge_dialog_close">Close</string>
+
+    <!-- Dashboard multi-select actions -->
+    <string name="dashboard_clear_selection">Clear selection</string>
+    <string name="dashboard_selection_actions">Selection Actions</string>
+    <string name="dashboard_ignore_selected">Ignore selected</string>
+    <string name="dashboard_restore_selected">Restore selected</string>
+    <string name="dashboard_mark_foss">Mark selected as FOSS</string>
+    <string name="dashboard_mark_pwa">Mark selected as PWA</string>
+    <string name="dashboard_undo_reclassify">Undo reclassification</string>
+    <string name="dashboard_collapse">Collapse</string>
+    <string name="dashboard_expand">Expand</string>
+
+    <!-- Leaderboard -->
+    <string name="leaderboard_no_contributors">No contributors yet</string>
+    <string name="leaderboard_points">points</string>
+
+    <!-- Submission Detail -->
+    <string name="submission_detail_not_found">Submission not found or already processed.</string>
+    <string name="submission_detail_edit">Edit</string>
+    <string name="submission_detail_replaces">Replaces Proprietary Targets</string>
+    <string name="submission_detail_linked_solutions">Linked FOSS Solutions</string>
+    <string name="submission_detail_app_details">App Details</string>
+    <string name="submission_detail_package_name">Package Name</string>
+    <string name="submission_detail_category">Category</string>
+    <string name="submission_detail_license">License</string>
+    <string name="submission_detail_repo_url">Repository URL</string>
+    <string name="submission_detail_fdroid_id">F-Droid ID</string>
+    <string name="submission_detail_description">Description</string>
+    <string name="submission_detail_no_description">No description provided.</string>
+    <string name="submission_detail_discussion">Discussion</string>
+    <string name="submission_detail_edited_by"> • Edited by %1$s</string>
+    <string name="submission_detail_unknown">Unknown</string>
+    <string name="submission_detail_na">N/A</string>
+
+    <!-- Community screen -->
+    <string name="community_filter_all">All</string>
+    <string name="community_unknown_error">Unknown error</string>
+    <string name="community_clear">Clear</string>
+    <string name="community_back">Back</string>
+
+    <!-- Profile screen -->
+    <string name="profile_reputation">Reputation: %1$d</string>
+
+    <!-- Alternative Detail Screen -->
+    <string name="alt_detail_collapse">Collapse</string>
+    <string name="alt_detail_expand">Expand</string>
+    <string name="alt_detail_close">Close</string>
+    <string name="alt_detail_more_options">More options</string>
+    <string name="alt_detail_add_pro_desc">Add pro</string>
+    <string name="alt_detail_add_con_desc">Add con</string>
+    <string name="alt_detail_rate_star">Rate %1$d</string>
+
+    <!-- Comment Section -->
+    <string name="comments_title">Comments</string>
+    <string name="comments_empty">No comments yet. Be the first to discuss!</string>
+    <string name="comments_add_placeholder">Add a comment...</string>
+    <string name="comments_send">Send Comment</string>
+    <string name="comments_anonymous">Anonymous</string>
+
+    <!-- Settings screen - Notifications section -->
+    <string name="settings_notifications">Notifications</string>
+    <string name="settings_bg_notifications_title">Background Notifications</string>
+    <string name="settings_bg_notifications_subtitle">Notify me of new apps and submission updates.</string>
+    <string name="settings_check_interval">Check Interval</string>
+    <string name="settings_interval_15min">Every 15 minutes</string>
+    <string name="settings_interval_1hour">Every 1 hour</string>
+    <string name="settings_interval_6hours">Every 6 hours</string>
+    <string name="settings_interval_24hours">Every 24 hours</string>
+    <string name="settings_interval_custom">Every %1$d minutes</string>
+    <string name="settings_classification_cache_title">Classification Cache</string>
+    <string name="settings_classification_cache_subtitle">%1$d apps cached</string>
+    <string name="settings_clear_classification_title">Clear Classification Cache?</string>
+    <string name="settings_clear_classification_message">This will clear cached classification results. They will be re-fetched on the next scan.</string>
+    <string name="settings_version_unknown">Unknown</string>
+
+    <!-- ScanList / AppRow -->
+    <string name="badge_system">SYSTEM</string>
+    <string name="action_ignore">Ignore</string>
+    <string name="action_restore">Restore</string>
+    <string name="action_mark_foss">Mark as FOSS</string>
+    <string name="action_mark_pwa">Mark as PWA</string>
+    <string name="action_undo_reclassification">Undo reclassification</string>
+    <string name="cd_loading">Loading</string>
+    <string name="cd_app_icon">App Icon</string>
+    <string name="cd_default_icon">Default Icon</string>
+
+    <!-- Notification channel / worker -->
+    <string name="notification_channel_name">General Notifications</string>
+    <string name="notification_channel_description">Notifications for new apps and submission updates.</string>
+    <string name="notification_new_apps_title">New FOSS Apps Added!</string>
+    <string name="notification_new_apps_content">Check out the newly added apps: %1$s</string>
+    <string name="notification_submission_updated_title">Submission Updated</string>
+    <string name="notification_submission_updated_content">%1$s was %2$s.</string>
+    <string name="notification_submission_fallback_name">Your submission</string>
+
+    <string name="tutorial_gauge_title">Sovereignty Score</string>
+    <string name="tutorial_gauge_desc">This gauge shows your FOSS usage. Higher means more free software!</string>
+    <string name="tutorial_filter_title">Filter Apps</string>
+    <string name="tutorial_filter_desc">Tap these chips to filter by app type: FOSS, Proprietary, or Unknown.</string>
+    <string name="tutorial_search_title">Search</string>
+    <string name="tutorial_search_desc">Search for installed apps by name.</string>
+    <string name="tutorial_profile_title">Profile &amp; Settings</string>
+    <string name="tutorial_profile_desc">Access your profile, submissions, ignored apps, and settings here.</string>
+    <string name="tutorial_fab_title">Submit an App</string>
+    <string name="tutorial_fab_desc">Know if an app is FOSS? Tap here to submit it and help the community!</string>
+
+    <string name="error_unknown">Unknown error</string>
+    <string name="submit_category">Category</string>
+    <string name="submit_category_placeholder">Select a category</string>
+    <string name="submit_select_category">Select category</string>
+    <string name="remove">Remove</string>
+    <string name="cd_link">Link</string>
+    <string name="cd_unlink">Unlink</string>
+
+    <plurals name="scan_list_alternatives_count">
+        <item quantity="one">%1$d alternative available</item>
+        <item quantity="other">%1$d alternatives available</item>
+    </plurals>
+    <string name="items_selected">%1$d selected</string>
+    <string name="package_label">Package</string>
 </resources>

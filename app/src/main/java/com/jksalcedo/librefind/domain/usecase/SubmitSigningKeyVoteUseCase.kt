@@ -2,7 +2,7 @@ package com.jksalcedo.librefind.domain.usecase
 
 import android.content.pm.PackageManager
 import com.jksalcedo.librefind.domain.repository.AppRepository
-import com.jksalcedo.librefind.util.SignerUtils
+import com.jksalcedo.librefind.utils.SignerUtils
 
 class SubmitSigningKeyVoteUseCase(
     private val appRepository: AppRepository,

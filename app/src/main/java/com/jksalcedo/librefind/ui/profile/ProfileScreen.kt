@@ -37,7 +37,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -63,7 +63,7 @@ fun ProfileScreen(
     onSignOutSuccess: () -> Unit,
     viewModel: ProfileViewModel = koinViewModel()
 ) {
-    val state by viewModel.uiState.collectAsState()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(userId) {
         viewModel.loadProfile(userId)
@@ -81,7 +81,10 @@ fun ProfileScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.back)
+                        )
                     }
                 },
                 actions = {
@@ -89,7 +92,10 @@ fun ProfileScreen(
                         var menuExpanded by remember { mutableStateOf(false) }
                         Box {
                             IconButton(onClick = { menuExpanded = true }) {
-                                Icon(Icons.Default.MoreVert, contentDescription = "More")
+                                Icon(
+                                    Icons.Default.MoreVert,
+                                    contentDescription = stringResource(R.string.more)
+                                )
                             }
                             DropdownMenu(
                                 expanded = menuExpanded,
@@ -123,7 +129,7 @@ fun ProfileScreen(
                         modifier = Modifier.align(Alignment.Center),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(state.error!!, color = MaterialTheme.colorScheme.error)
+                        Text(state.error ?: "", color = MaterialTheme.colorScheme.error)
                         Button(onClick = { viewModel.loadProfile(userId) }) {
                             Text(stringResource(R.string.dashboard_retry))
                         }
@@ -131,12 +137,15 @@ fun ProfileScreen(
                 }
 
                 state.profile != null -> {
-                    ProfileContent(
-                        profile = state.profile!!,
-                        submissions = state.submissions,
-                        isOwnProfile = state.isOwnProfile,
-                        onSubmissionClick = onSubmissionClick
-                    )
+                    val profile = state.profile
+                    if (profile != null) {
+                        ProfileContent(
+                            profile = profile,
+                            submissions = state.submissions,
+                            isOwnProfile = state.isOwnProfile,
+                            onSubmissionClick = onSubmissionClick
+                        )
+                    }
                 }
             }
         }
@@ -230,7 +239,7 @@ private fun ProfileHeader(profile: UserProfile) {
                 }
             }
             Text(
-                text = "Reputation: ${profile.reputationScore}",
+                text = stringResource(R.string.profile_reputation, profile.reputationScore),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -251,17 +260,17 @@ private fun ProfileStats(profile: UserProfile) {
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             StatItem(
-                label = "Submitted",
+                label = stringResource(R.string.submitted),
                 value = profile.submissionCount.toString(),
                 Icons.Default.FileUpload
             )
             StatItem(
-                label = "Approved",
+                label = stringResource(R.string.approved),
                 value = profile.approvedCount.toString(),
                 Icons.Default.CheckCircle
             )
             StatItem(
-                label = "Rejected",
+                label = stringResource(R.string.rejected),
                 value = profile.rejectedCount.toString(),
                 Icons.Default.Cancel
             )

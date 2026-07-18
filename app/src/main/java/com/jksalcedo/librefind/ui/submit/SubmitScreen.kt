@@ -46,7 +46,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -61,7 +61,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jksalcedo.librefind.R
 import com.jksalcedo.librefind.domain.model.Alternative
 import com.jksalcedo.librefind.domain.model.SubmissionType
@@ -81,7 +80,7 @@ fun SubmitScreen(
     submissionId: String? = null,
     prefilledProprietaryTarget: String? = null
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(submissionId) {
         if (submissionId != null) {
@@ -198,7 +197,9 @@ fun SubmitContent(
 
             if (sub.type == SubmissionType.LINKING) {
                 // proprietaryPackages in the model contains the target app package for LINKING type
-                val targets = sub.proprietaryPackages.split(",").map { it.trim() }.filter { it.isNotEmpty() }.toSet()
+                val targets =
+                    sub.proprietaryPackages.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+                        .toSet()
                 if (targets.isNotEmpty()) {
                     onAddTargets(targets)
                 }
@@ -225,7 +226,8 @@ fun SubmitContent(
     LaunchedEffect(prefilledProprietaryTarget, type) {
         if (!prefilledProprietaryTarget.isNullOrBlank()) {
             if (type == SubmissionType.NEW_ALTERNATIVE) {
-                selectedProprietaryPackages = selectedProprietaryPackages + prefilledProprietaryTarget
+                selectedProprietaryPackages =
+                    selectedProprietaryPackages + prefilledProprietaryTarget
             } else if (type == SubmissionType.LINKING) {
                 onAddTargets(setOf(prefilledProprietaryTarget))
             }
@@ -254,10 +256,10 @@ fun SubmitContent(
                 Text(
                     if (uiState.isEditing) stringResource(
                         R.string.submit_update_message,
-                        uiState.submittedAppName ?: ""
+                        uiState.submittedAppName
                     ) else stringResource(
                         R.string.submit_success_message,
-                        uiState.submittedAppName ?: ""
+                        uiState.submittedAppName
                     )
                 )
             },
@@ -286,7 +288,10 @@ fun SubmitContent(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.back)
+                        )
                     }
                 }
             )
@@ -357,8 +362,8 @@ fun SubmitContent(
                         value = category,
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text("Category") },
-                        placeholder = { Text("Select a category") },
+                        label = { Text(stringResource(R.string.submit_category)) },
+                        placeholder = { Text(stringResource(R.string.submit_category_placeholder)) },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = showCategoryDropdown) },
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -372,7 +377,7 @@ fun SubmitContent(
                 if (showCategoryDropdown) {
                     AlertDialog(
                         onDismissRequest = { showCategoryDropdown = false },
-                        title = { Text("Select Category") },
+                        title = { Text(stringResource(R.string.submit_select_category)) },
                         text = {
                             LazyColumn {
                                 items(categories) { cat ->
@@ -510,7 +515,10 @@ fun SubmitContent(
                                     alternativeSearchQuery = ""
                                     onClearSolutionSearchResults()
                                 }) {
-                                    Icon(Icons.Default.Close, contentDescription = "Clear")
+                                    Icon(
+                                        Icons.Default.Close,
+                                        contentDescription = stringResource(R.string.clear)
+                                    )
                                 }
                             }
                         },
@@ -588,7 +596,7 @@ fun SubmitContent(
                                     trailingIcon = {
                                         Icon(
                                             Icons.Default.Close,
-                                            contentDescription = "Remove",
+                                            contentDescription = stringResource(R.string.remove),
                                             modifier = Modifier.size(InputChipDefaults.AvatarSize)
                                         )
                                     }
@@ -630,7 +638,10 @@ fun SubmitContent(
                                         fossSearchQuery = ""
                                         onSearchFossApps("")
                                     }) {
-                                        Icon(Icons.Default.Close, contentDescription = "Clear")
+                                        Icon(
+                                            Icons.Default.Close,
+                                            contentDescription = stringResource(R.string.clear)
+                                        )
                                     }
                                 }
                             },
@@ -675,7 +686,7 @@ fun SubmitContent(
                                             }
                                             Icon(
                                                 Icons.Default.Link,
-                                                contentDescription = "Link",
+                                                contentDescription = stringResource(R.string.cd_link),
                                                 tint = MaterialTheme.colorScheme.primary
                                             )
                                         }
@@ -725,7 +736,7 @@ fun SubmitContent(
                                 }) {
                                     Icon(
                                         Icons.Default.LinkOff,
-                                        contentDescription = "Unlink",
+                                        contentDescription = stringResource(R.string.cd_unlink),
                                         tint = MaterialTheme.colorScheme.onPrimaryContainer
                                     )
                                 }
@@ -784,7 +795,7 @@ fun SubmitContent(
                                     trailingIcon = {
                                         Icon(
                                             Icons.Default.Close,
-                                            contentDescription = "Remove",
+                                            contentDescription = stringResource(R.string.remove),
                                             modifier = Modifier.size(InputChipDefaults.AvatarSize)
                                         )
                                     }
@@ -992,7 +1003,6 @@ fun SubmitContent(
                 // Target App Selection
                 var showTargetDialog by remember { mutableStateOf(false) }
 
-                val targetAppsHelp = SubmitFieldHelp.getTargetProprietaryApps()
                 FieldWithHelp(
                     helpTitle = stringResource(R.string.submit_target_app),
                     helpText = stringResource(R.string.submit_link_solutions_target)
