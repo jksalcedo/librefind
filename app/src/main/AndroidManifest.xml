@@ -33,7 +33,7 @@
         </provider>
 
         <receiver
-            android:name=".util.UpdateDownloadReceiver"
+            android:name=".utils.UpdateDownloadReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />

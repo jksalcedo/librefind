@@ -1,4 +1,4 @@
-package com.jksalcedo.librefind.util
+package com.jksalcedo.librefind.utils
 
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager

@@ -1,4 +1,4 @@
-package com.jksalcedo.librefind.util
+package com.jksalcedo.librefind.utils
 
 import android.app.DownloadManager
 import android.content.BroadcastReceiver

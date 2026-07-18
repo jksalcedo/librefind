@@ -10,7 +10,7 @@ import com.jksalcedo.librefind.data.local.PreferencesManager
 import com.jksalcedo.librefind.data.remote.UpdateApiService
 import com.jksalcedo.librefind.domain.model.AppUpdate
 import com.jksalcedo.librefind.domain.repository.UpdateRepository
-import com.jksalcedo.librefind.util.VersionUtils
+import com.jksalcedo.librefind.utils.VersionUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -24,9 +24,9 @@ class UpdateRepositoryImpl(
         runCatching {
             val releases = updateApiService.getReleases()
             val includePrereleases = preferencesManager.shouldIncludePrereleases()
-            
-            val latestRelease = releases.firstOrNull { 
-                includePrereleases || !it.isPrerelease 
+
+            val latestRelease = releases.firstOrNull {
+                includePrereleases || !it.isPrerelease
             } ?: throw Exception("No suitable release found")
 
             val latestVersion = latestRelease.tagName.removePrefix("v")

@@ -1,4 +1,4 @@
-package com.jksalcedo.librefind.util
+package com.jksalcedo.librefind.utils
 
 object VersionUtils {
     private data class ParsedVersion(

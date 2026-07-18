@@ -10,7 +10,7 @@
 
 <h4 align=center>
   <a href="https://developer.android.com">
-    <img src="https://img.shields.io/badge/Platform-Android-brighgtreen?logo=android" alt="Android Platform">
+    <img src="https://img.shields.io/badge/Platform-Android-brightgreen?logo=android" alt="Android Platform">
   </a>
   <img src="https://img.shields.io/badge/API-24%2B-3DDC84?logo=android&color=blue" alt="Minimum SDK">
   <img alt="GitHub Release" src="https://img.shields.io/github/v/release/jksalcedo/librefind?include_prereleases&logo=github&label=Release&color=blue">
