@@ -782,7 +782,7 @@ class SupabaseAppRepository(
     override suspend fun getAllPendingSubmissions(forceRefresh: Boolean): List<Submission> {
         val currentTime = System.currentTimeMillis()
         if (!forceRefresh && cachedPendingSubmissions != null && (currentTime - lastPendingSubmissionsFetchTime < CACHE_DURATION_MS)) {
-            return cachedPendingSubmissions!!
+            return cachedPendingSubmissions ?: emptyList()
         }
 
         return try {
@@ -1513,7 +1513,7 @@ class SupabaseAppRepository(
     ): Map<String, SubmissionVoteAggregate> {
         val currentTime = System.currentTimeMillis()
         if (!forceRefresh && cachedVoteCounts != null && (currentTime - lastVoteCountsFetchTime < CACHE_DURATION_MS)) {
-            return cachedVoteCounts!!
+            return cachedVoteCounts ?: emptyMap()
         }
 
         if (submissionIds.isEmpty()) return emptyMap()
@@ -1590,7 +1590,7 @@ class SupabaseAppRepository(
     override suspend fun getSigningKeyVotes(forceRefresh: Boolean): List<SigningKeyVote> {
         val now = System.currentTimeMillis()
         if (!forceRefresh && cachedKeyVotes != null && (now - lastKeyVotesFetchTime < KEY_VOTES_CACHE_MS)) {
-            return cachedKeyVotes!!
+            return cachedKeyVotes ?: emptyList()
         }
         val userId = supabase.auth.currentUserOrNull()?.id
         val rows = supabase.postgrest.from("signing_key_votes")

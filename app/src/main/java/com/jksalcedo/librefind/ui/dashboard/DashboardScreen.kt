@@ -40,7 +40,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -86,8 +86,8 @@ fun DashboardScreen(
     viewModel: DashboardViewModel = koinViewModel(),
     authViewModel: AuthViewModel = koinViewModel()
 ) {
-    val state by viewModel.state.collectAsState()
-    val authState by authViewModel.uiState.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val authState by authViewModel.uiState.collectAsStateWithLifecycle()
     LocalContext.current
     val preferencesManager: PreferencesManager = koinInject()
     var showDialog by remember { mutableStateOf(false) }
@@ -122,7 +122,7 @@ fun DashboardScreen(
                     title = {
                         if (state.isSelectionMode) {
                             Text(
-                                text = "${state.selectedPackageNames.size} selected",
+                                text = stringResource(R.string.items_selected, state.selectedPackageNames.size),
                                 fontWeight = FontWeight.Bold
                             )
                         } else if (isSearchActive) {

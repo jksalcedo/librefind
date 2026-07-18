@@ -37,7 +37,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -63,7 +63,7 @@ fun ProfileScreen(
     onSignOutSuccess: () -> Unit,
     viewModel: ProfileViewModel = koinViewModel()
 ) {
-    val state by viewModel.uiState.collectAsState()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(userId) {
         viewModel.loadProfile(userId)
@@ -129,7 +129,7 @@ fun ProfileScreen(
                         modifier = Modifier.align(Alignment.Center),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(state.error!!, color = MaterialTheme.colorScheme.error)
+                        Text(state.error ?: "", color = MaterialTheme.colorScheme.error)
                         Button(onClick = { viewModel.loadProfile(userId) }) {
                             Text(stringResource(R.string.dashboard_retry))
                         }
@@ -137,12 +137,15 @@ fun ProfileScreen(
                 }
 
                 state.profile != null -> {
-                    ProfileContent(
-                        profile = state.profile!!,
-                        submissions = state.submissions,
-                        isOwnProfile = state.isOwnProfile,
-                        onSubmissionClick = onSubmissionClick
-                    )
+                    val profile = state.profile
+                    if (profile != null) {
+                        ProfileContent(
+                            profile = profile,
+                            submissions = state.submissions,
+                            isOwnProfile = state.isOwnProfile,
+                            onSubmissionClick = onSubmissionClick
+                        )
+                    }
                 }
             }
         }

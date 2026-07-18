@@ -47,14 +47,15 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
+import org.koin.core.qualifier.named
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 val appModule = module {
-    single { Dispatchers.IO }
-    single { Dispatchers.Main }
-    single { Dispatchers.Default }
+    single(named("IO")) { Dispatchers.IO }
+    single(named("Main")) { Dispatchers.Main }
+    single(named("Default")) { Dispatchers.Default }
 
     single { PreferencesManager(androidContext()) }
     single { InventorySource(androidContext(), get()) }
@@ -110,9 +111,9 @@ val networkModule = module {
 }
 
 val repositoryModule = module {
-    single<CacheRepository> { CacheRepositoryImpl(get(), get()) }
+    single<CacheRepository> { CacheRepositoryImpl(get(), get(), get(named("IO"))) }
     single { TrustedRomSignerDb(get(), get()) }
-    single<UpdateRepository> { UpdateRepositoryImpl(androidContext(), get(), get()) }
+    single<UpdateRepository> { UpdateRepositoryImpl(androidContext(), get(), get(), get(named("IO"))) }
     single<DeviceInventoryRepo> {
         DeviceInventoryRepoImpl(
             get(),
@@ -127,11 +128,11 @@ val repositoryModule = module {
 }
 
 val useCaseModule = module {
-    single { GetAlternativeUseCase(get()) }
-    single { ScanInventoryUseCase(get()) }
-    single { SubmitProposalUseCase(get()) }
-    single { UpdateSubmissionUseCase(get()) }
-    single { SubmitSigningKeyVoteUseCase(get(), androidContext().packageManager) }
+    factory { GetAlternativeUseCase(get()) }
+    factory { ScanInventoryUseCase(get()) }
+    factory { SubmitProposalUseCase(get()) }
+    factory { UpdateSubmissionUseCase(get()) }
+    factory { SubmitSigningKeyVoteUseCase(get(), androidContext().packageManager) }
 }
 
 val viewModelModule = module {
@@ -139,14 +140,14 @@ val viewModelModule = module {
     viewModel { AlternativeDetailViewModel(get(), get()) }
     viewModel { DashboardViewModel(get(), get(), get(), get(), get()) }
     viewModel { AuthViewModel(get()) }
-    viewModel { SubmitViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { SubmitViewModel(get(), get(), get(), get(), get(), get(), get(named("IO"))) }
     viewModel { MySubmissionsViewModel(get(), get()) }
     viewModel { CommunitySubmissionsViewModel(get()) }
     viewModel { com.jksalcedo.librefind.ui.components.CommentsViewModel(get()) }
     viewModel { IgnoredAppsViewModel(get(), get()) }
     viewModel {
         SettingsViewModel(
-            androidContext(), get(), get(), get(), get(), get()
+            androidContext(), get(), get(), get(), get(), get(), get(named("IO"))
         )
     }
     viewModel { ReportViewModel(get(), get()) }

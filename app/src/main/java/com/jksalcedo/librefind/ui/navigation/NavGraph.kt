@@ -12,7 +12,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import com.jksalcedo.librefind.ui.auth.AuthScreen
 import com.jksalcedo.librefind.ui.auth.AuthViewModel
@@ -49,7 +49,7 @@ fun NavGraph(
     ) {
         composable(Route.Dashboard.route) {
             val authViewModel: AuthViewModel = koinViewModel()
-            val authState by authViewModel.uiState.collectAsState()
+            val authState by authViewModel.uiState.collectAsStateWithLifecycle()
 
             DashboardScreen(
                 onAppClick = { appName, packageName ->
@@ -119,7 +119,7 @@ fun NavGraph(
                 navArgument("appName") { type = NavType.StringType })
         ) { backStackEntry ->
             val authViewModel: AuthViewModel = koinViewModel()
-            val authState by authViewModel.uiState.collectAsState()
+            val authState by authViewModel.uiState.collectAsStateWithLifecycle()
             val packageName =
                 backStackEntry.arguments?.getString("packageName") ?: return@composable
             val appName = backStackEntry.arguments?.getString("appName") ?: return@composable
@@ -272,7 +272,7 @@ fun NavGraph(
 
         composable(Route.Settings.route) {
             val authViewModel: AuthViewModel = koinViewModel()
-            val authState by authViewModel.uiState.collectAsState()
+            val authState by authViewModel.uiState.collectAsStateWithLifecycle()
 
             com.jksalcedo.librefind.ui.settings.SettingsScreen(
                 onBackClick = { navController.navigateUp() },

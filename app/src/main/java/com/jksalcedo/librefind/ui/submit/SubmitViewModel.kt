@@ -13,7 +13,7 @@ import com.jksalcedo.librefind.domain.repository.AuthRepository
 import com.jksalcedo.librefind.domain.repository.CacheRepository
 import com.jksalcedo.librefind.domain.usecase.SubmitProposalUseCase
 import com.jksalcedo.librefind.domain.usecase.UpdateSubmissionUseCase
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.time.Duration.Companion.milliseconds
 
 data class SubmitUiState(
     val isLoading: Boolean = false,
@@ -50,7 +51,8 @@ class SubmitViewModel(
     private val submitProposalUseCase: SubmitProposalUseCase,
     private val updateSubmissionUseCase: UpdateSubmissionUseCase,
     private val cacheRepository: CacheRepository,
-    private val inventorySource: InventorySource
+    private val inventorySource: InventorySource,
+    private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SubmitUiState())
@@ -72,7 +74,7 @@ class SubmitViewModel(
         viewModelScope.launch {
             try {
                 // Use lightweight local-only check instead of full scan + network classification
-                val rawApps = withContext(Dispatchers.IO) {
+                val rawApps = withContext(ioDispatcher) {
                     inventorySource.getRawApps()
                 }
 
@@ -93,7 +95,7 @@ class SubmitViewModel(
                     }
 
                     if (!isTarget && !isSolution) {
-                        val label = withContext(Dispatchers.IO) {
+                        val label = withContext(ioDispatcher) {
                             inventorySource.getAppLabel(packageName)
                         }
                         unknownApps[packageName] = label
@@ -226,22 +228,27 @@ class SubmitViewModel(
                     }
                     lastResult
 
-                } else if (_uiState.value.isEditing && _uiState.value.editingSubmissionId != null) {
-                    updateSubmissionUseCase(
-                        id = _uiState.value.editingSubmissionId!!,
-                        proprietaryPackage = proprietaryPackages,
-                        alternativeId = packageName,
-                        appName = appName,
-                        description = description,
-                        repoUrl = repoUrl,
-                        fdroidId = fdroidId,
-                        license = license,
-                        alternatives = _uiState.value.selectedAlternatives.toList(),
-                        category = category,
-                        originalSubmitterId = _uiState.value.loadedSubmission?.submitterUid,
-                        contributors = _uiState.value.loadedSubmission?.contributors,
-                        submissionType = type
-                    )
+                } else if (_uiState.value.isEditing) {
+                    val editId = _uiState.value.editingSubmissionId
+                    if (editId != null) {
+                        updateSubmissionUseCase(
+                            id = editId,
+                            proprietaryPackage = proprietaryPackages,
+                            alternativeId = packageName,
+                            appName = appName,
+                            description = description,
+                            repoUrl = repoUrl,
+                            fdroidId = fdroidId,
+                            license = license,
+                            alternatives = _uiState.value.selectedAlternatives.toList(),
+                            category = category,
+                            originalSubmitterId = _uiState.value.loadedSubmission?.submitterUid,
+                            contributors = _uiState.value.loadedSubmission?.contributors,
+                            submissionType = type
+                        )
+                    } else {
+                        Result.failure(Exception("Submission ID is missing"))
+                    }
                 } else {
                     submitProposalUseCase(
                         proprietaryPackage = proprietaryPackages,
@@ -307,7 +314,7 @@ class SubmitViewModel(
         }
 
         searchFossAppsJob = viewModelScope.launch {
-            delay(300)
+            delay(300.milliseconds)
             try {
                 val results = appRepository.searchSolutions(query, limit = 10)
                 _uiState.value = _uiState.value.copy(fossSearchResults = results)
@@ -344,7 +351,7 @@ class SubmitViewModel(
         }
 
         checkDuplicateJob = viewModelScope.launch {
-            delay(500)
+            delay(500.milliseconds)
             if (packageName.isBlank()) {
                 _uiState.value = _uiState.value.copy(duplicateWarning = null)
                 return@launch
@@ -439,7 +446,7 @@ class SubmitViewModel(
         }
 
         searchSolutionsJob = viewModelScope.launch {
-            delay(300)
+            delay(300.milliseconds)
             try {
                 val results = appRepository.searchSolutions(query, limit = 10)
                 _uiState.value = _uiState.value.copy(solutionSearchResults = results)

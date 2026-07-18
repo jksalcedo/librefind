@@ -25,7 +25,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -103,7 +103,7 @@ fun CommentSection(
     modifier: Modifier = Modifier,
     viewModel: CommentsViewModel = koinViewModel()
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     var commentText by remember { mutableStateOf("") }
 
     LaunchedEffect(targetId) {
@@ -147,9 +147,10 @@ fun CommentSection(
             }
         }
 
-        if (state.error != null) {
+        val errorMsg = state.error
+        if (errorMsg != null) {
             Text(
-                text = state.error!!,
+                text = errorMsg,
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)

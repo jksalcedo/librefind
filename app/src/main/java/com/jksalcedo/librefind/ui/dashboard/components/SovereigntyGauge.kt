@@ -162,7 +162,7 @@ fun SovereigntyGauge(
             StatItem(
                     label = "PWA",
                     count = score.pwaCount,
-                    color = Color(0xFF9C27B0),
+                    color = MaterialTheme.colorScheme.tertiary,
                     isActive = currentFilter == AppStatus.PWA,
                     onClick = {
                         onFilterClick(
@@ -230,7 +230,7 @@ private fun getAppStatusColor(level: SovereigntyLevel, appStatus: AppStatus?): C
         AppStatus.PROP -> CapturedOrange
         AppStatus.UNKN -> MaterialTheme.colorScheme.outline
         AppStatus.PENDING -> PendingOrange
-        AppStatus.PWA -> Color(0xFF9C27B0)
+        AppStatus.PWA -> MaterialTheme.colorScheme.tertiary
         AppStatus.IGNORED -> MaterialTheme.colorScheme.error
         else -> getLevelColor(level)
     }

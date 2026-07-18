@@ -1,5 +1,6 @@
 package com.jksalcedo.librefind.ui.auth
 
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -17,7 +18,7 @@ fun ProfileSetupScreen(
     onProfileComplete: () -> Unit,
     viewModel: AuthViewModel = koinViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var username by remember { mutableStateOf("") }
 
     LaunchedEffect(uiState.profileComplete) {
