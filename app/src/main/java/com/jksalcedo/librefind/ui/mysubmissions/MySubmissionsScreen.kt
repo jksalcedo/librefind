@@ -54,7 +54,7 @@ fun MySubmissionsScreen(
                 title = { Text(stringResource(R.string.my_submissions_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -72,7 +72,7 @@ fun MySubmissionsScreen(
 
                 state.error != null -> {
                     Text(
-                        text = state.error ?: "Unknown error",
+                        text = state.error ?: stringResource(R.string.error_unknown),
                         color = MaterialTheme.colorScheme.error,
                         modifier = Modifier.align(Alignment.Center)
                     )

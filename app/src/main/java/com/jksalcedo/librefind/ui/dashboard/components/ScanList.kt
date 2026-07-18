@@ -56,6 +56,8 @@ import com.jksalcedo.librefind.domain.model.AppStatus
 import com.jksalcedo.librefind.ui.common.StatusBadge
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import androidx.compose.ui.res.stringResource
+import com.jksalcedo.librefind.R
 
 object AppIconCache {
     private const val MAX_CACHE_SIZE = 50 * 1024 * 1024
@@ -209,7 +211,7 @@ fun AppRow(
                     if (app.isSystemPackage) {
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
-                            text = "SYSTEM",
+                            text = stringResource(R.string.badge_system),
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -223,8 +225,13 @@ fun AppRow(
                     }
                 }
                 if (app.knownAlternatives > 0) {
+                    val context = LocalContext.current
                     Text(
-                        text = "${app.knownAlternatives} alternative${if (app.knownAlternatives > 1) "s" else ""} available",
+                        text = context.resources.getQuantityString(
+                            R.plurals.scan_list_alternatives_count,
+                            app.knownAlternatives,
+                            app.knownAlternatives
+                        ),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -240,7 +247,7 @@ fun AppRow(
             ) {
                 if (app.status != AppStatus.IGNORED) {
                     DropdownMenuItem(
-                        text = { Text("Ignore") },
+                        text = { Text(stringResource(R.string.action_ignore)) },
                         onClick = {
                             showMenu = false
                             onIgnoreClick()
@@ -251,7 +258,7 @@ fun AppRow(
                     )
                 } else {
                     DropdownMenuItem(
-                        text = { Text("Restore") },
+                        text = { Text(stringResource(R.string.action_restore)) },
                         onClick = {
                             showMenu = false
                             onRestoreClick()
@@ -264,7 +271,7 @@ fun AppRow(
 
                 if (app.status == AppStatus.PROP || app.status == AppStatus.UNKN || app.status == AppStatus.PENDING) {
                     DropdownMenuItem(
-                        text = { Text("Mark as FOSS") },
+                        text = { Text(stringResource(R.string.action_mark_foss)) },
                         onClick = {
                             showMenu = false
                             onReclassifyClick(AppStatus.FOSS)
@@ -274,7 +281,7 @@ fun AppRow(
                         }
                     )
                     DropdownMenuItem(
-                        text = { Text("Mark as PWA") },
+                        text = { Text(stringResource(R.string.action_mark_pwa)) },
                         onClick = {
                             showMenu = false
                             onReclassifyClick(AppStatus.PWA)
@@ -285,7 +292,7 @@ fun AppRow(
                     )
                 } else if (app.isUserReclassified) {
                     DropdownMenuItem(
-                        text = { Text("Undo reclassification") },
+                        text = { Text(stringResource(R.string.action_undo_reclassification)) },
                         onClick = {
                             showMenu = false
                             onUndoReclassifyClick()
@@ -341,7 +348,7 @@ internal fun AppIconAsync(
             isLoading -> {
                 Icon(
                     imageVector = Icons.Default.Android,
-                    contentDescription = "Loading",
+                    contentDescription = stringResource(R.string.cd_loading),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                     modifier = Modifier.size(24.dp)
                 )
@@ -350,7 +357,7 @@ internal fun AppIconAsync(
             iconBitmap != null -> {
                 Image(
                     bitmap = iconBitmap!!.asImageBitmap(),
-                    contentDescription = "App Icon",
+                    contentDescription = stringResource(R.string.cd_app_icon),
                     modifier = Modifier
                         .fillMaxSize()
                         .clip(RoundedCornerShape(8.dp)),
@@ -361,7 +368,7 @@ internal fun AppIconAsync(
             else -> {
                 Icon(
                     imageVector = Icons.Default.Android,
-                    contentDescription = "Default Icon",
+                    contentDescription = stringResource(R.string.cd_default_icon),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.size(24.dp)
                 )

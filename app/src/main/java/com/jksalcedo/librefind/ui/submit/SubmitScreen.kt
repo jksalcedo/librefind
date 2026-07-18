@@ -286,7 +286,7 @@ fun SubmitContent(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -357,8 +357,8 @@ fun SubmitContent(
                         value = category,
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text("Category") },
-                        placeholder = { Text("Select a category") },
+                        label = { Text(stringResource(R.string.submit_category)) },
+                        placeholder = { Text(stringResource(R.string.submit_category_placeholder)) },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = showCategoryDropdown) },
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -372,7 +372,7 @@ fun SubmitContent(
                 if (showCategoryDropdown) {
                     AlertDialog(
                         onDismissRequest = { showCategoryDropdown = false },
-                        title = { Text("Select Category") },
+                        title = { Text(stringResource(R.string.submit_select_category)) },
                         text = {
                             LazyColumn {
                                 items(categories) { cat ->
@@ -510,7 +510,7 @@ fun SubmitContent(
                                     alternativeSearchQuery = ""
                                     onClearSolutionSearchResults()
                                 }) {
-                                    Icon(Icons.Default.Close, contentDescription = "Clear")
+                                    Icon(Icons.Default.Close, contentDescription = stringResource(R.string.action_clear))
                                 }
                             }
                         },
@@ -588,7 +588,7 @@ fun SubmitContent(
                                     trailingIcon = {
                                         Icon(
                                             Icons.Default.Close,
-                                            contentDescription = "Remove",
+                                            contentDescription = stringResource(R.string.action_remove),
                                             modifier = Modifier.size(InputChipDefaults.AvatarSize)
                                         )
                                     }
@@ -630,7 +630,7 @@ fun SubmitContent(
                                         fossSearchQuery = ""
                                         onSearchFossApps("")
                                     }) {
-                                        Icon(Icons.Default.Close, contentDescription = "Clear")
+                                        Icon(Icons.Default.Close, contentDescription = stringResource(R.string.action_clear))
                                     }
                                 }
                             },
@@ -675,7 +675,7 @@ fun SubmitContent(
                                             }
                                             Icon(
                                                 Icons.Default.Link,
-                                                contentDescription = "Link",
+                                                contentDescription = stringResource(R.string.cd_link),
                                                 tint = MaterialTheme.colorScheme.primary
                                             )
                                         }
@@ -725,7 +725,7 @@ fun SubmitContent(
                                 }) {
                                     Icon(
                                         Icons.Default.LinkOff,
-                                        contentDescription = "Unlink",
+                                        contentDescription = stringResource(R.string.cd_unlink),
                                         tint = MaterialTheme.colorScheme.onPrimaryContainer
                                     )
                                 }
@@ -784,7 +784,7 @@ fun SubmitContent(
                                     trailingIcon = {
                                         Icon(
                                             Icons.Default.Close,
-                                            contentDescription = "Remove",
+                                            contentDescription = stringResource(R.string.action_remove),
                                             modifier = Modifier.size(InputChipDefaults.AvatarSize)
                                         )
                                     }
