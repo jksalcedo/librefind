@@ -4,5 +4,3 @@
 - Add comments section for alternative and submission pages
 - Fix alternatives vote counts not showing
 - Fix percentage rounding
-- Fix Room database migration API misuse
-- Extract all remaining hardcoded UI strings

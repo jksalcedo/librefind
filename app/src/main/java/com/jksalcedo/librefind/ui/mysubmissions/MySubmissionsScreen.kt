@@ -25,7 +25,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,7 +46,7 @@ fun MySubmissionsScreen(
     onSubmissionClick: (String) -> Unit,
     viewModel: MySubmissionsViewModel = koinViewModel()
 ) {
-    val state by viewModel.uiState.collectAsState()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
@@ -179,19 +179,19 @@ fun StatusBadge(status: SubmissionStatus) {
     val (backgroundColor, contentColor, text) = when (status) {
         SubmissionStatus.PENDING -> Triple(
             MaterialTheme.colorScheme.surface,
-            Color(0xFFE65100),
+            MaterialTheme.colorScheme.tertiary,
             stringResource(R.string.status_pending)
         )
 
         SubmissionStatus.APPROVED -> Triple(
             MaterialTheme.colorScheme.surface,
-            Color(0xFF2E7D32),
+            MaterialTheme.colorScheme.primary,
             stringResource(R.string.status_approved)
         )
 
         SubmissionStatus.REJECTED -> Triple(
             MaterialTheme.colorScheme.surface,
-            Color(0xFFC62828),
+            MaterialTheme.colorScheme.error,
             stringResource(R.string.status_rejected)
         )
     }

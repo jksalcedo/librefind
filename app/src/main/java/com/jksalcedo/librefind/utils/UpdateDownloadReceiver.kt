@@ -38,7 +38,8 @@ class UpdateDownloadReceiver : BroadcastReceiver() {
     }
 
     private fun installApk(context: Context, uri: Uri) {
-        val file = File(uri.path!!)
+        val path = uri.path ?: return
+        val file = File(path)
 
         // Use FileProvider to get a content URI
         val contentUri = FileProvider.getUriForFile(

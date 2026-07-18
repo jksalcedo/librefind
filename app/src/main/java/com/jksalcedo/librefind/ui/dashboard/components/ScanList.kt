@@ -355,14 +355,16 @@ internal fun AppIconAsync(
             }
 
             iconBitmap != null -> {
-                Image(
-                    bitmap = iconBitmap!!.asImageBitmap(),
-                    contentDescription = stringResource(R.string.cd_app_icon),
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clip(RoundedCornerShape(8.dp)),
-                    contentScale = ContentScale.Crop
-                )
+                iconBitmap?.let { bitmap ->
+                    Image(
+                        bitmap = bitmap.asImageBitmap(),
+                        contentDescription = stringResource(R.string.cd_app_icon),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(RoundedCornerShape(8.dp)),
+                        contentScale = ContentScale.Crop
+                    )
+                }
             }
 
             else -> {

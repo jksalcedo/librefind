@@ -40,7 +40,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -70,7 +70,7 @@ fun CommunitySubmissionsScreen(
     onLeaderboardClick: () -> Unit = {},
     viewModel: CommunitySubmissionsViewModel = koinViewModel()
 ) {
-    val state by viewModel.uiState.collectAsState()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     val filteredSubmissions by remember(state.submissions, state.searchQuery, state.filterType, state.isKeyVoteFilter) {
         derivedStateOf {

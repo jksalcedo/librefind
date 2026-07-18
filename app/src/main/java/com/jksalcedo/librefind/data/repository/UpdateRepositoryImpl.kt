@@ -14,13 +14,16 @@ import com.jksalcedo.librefind.utils.VersionUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+import kotlinx.coroutines.CoroutineDispatcher
+
 class UpdateRepositoryImpl(
     private val context: Context,
     private val updateApiService: UpdateApiService,
-    private val preferencesManager: PreferencesManager
+    private val preferencesManager: PreferencesManager,
+    private val ioDispatcher: CoroutineDispatcher
 ) : UpdateRepository {
 
-    override suspend fun checkForUpdate(): Result<AppUpdate> = withContext(Dispatchers.IO) {
+    override suspend fun checkForUpdate(): Result<AppUpdate> = withContext(ioDispatcher) {
         runCatching {
             val releases = updateApiService.getReleases()
             val includePrereleases = preferencesManager.shouldIncludePrereleases()

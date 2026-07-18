@@ -49,17 +49,31 @@ val computedVersionName =
     versionProps.getProperty("VERSION_NAME") ?: "$vMajor.$vMinor.$vPatch$suffix"
 
 tasks.register("updateVersionProperties") {
-    doLast {
-        val calculatedCode = (vMajor * 10000000) +
-                (vMinor * 100000) +
-                (vPatch * 1000) +
-                (stageWeight * 100) +
-                vBuild
-        val calculatedName = "$vMajor.$vMinor.$vPatch$suffix"
+    description = "Updates version.properties values"
 
-        versionProps.setProperty("VERSION_CODE", calculatedCode.toString())
-        versionProps.setProperty("VERSION_NAME", calculatedName)
-        versionProps.store(versionPropsFile.outputStream(), null)
+    val major = vMajor
+    val minor = vMinor
+    val patch = vPatch
+    val weight = stageWeight
+    val build = vBuild
+    val sfx = suffix
+    val propsFile = versionPropsFile
+
+    doLast {
+        val calculatedCode = (major * 10000000) +
+                (minor * 100000) +
+                (patch * 1000) +
+                (weight * 100) +
+                build
+        val calculatedName = "$major.$minor.$patch$sfx"
+
+        val props = Properties()
+        if (propsFile.exists()) {
+            props.load(propsFile.inputStream())
+        }
+        props.setProperty("VERSION_CODE", calculatedCode.toString())
+        props.setProperty("VERSION_NAME", calculatedName)
+        props.store(propsFile.outputStream(), null)
     }
 }
 
@@ -147,6 +161,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.activity.compose)
 
     // Compose

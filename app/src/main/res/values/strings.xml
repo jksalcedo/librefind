@@ -564,9 +564,17 @@
     <string name="tutorial_fab_desc">Know if an app is FOSS? Tap here to submit it and help the community!</string>
 
     <string name="error_unknown">Unknown error</string>
+    <string name="submit_category">Category</string>
+    <string name="submit_category_placeholder">Select a category</string>
+    <string name="submit_select_category">Select category</string>
+    <string name="remove">Remove</string>
+    <string name="cd_link">Link</string>
+    <string name="cd_unlink">Unlink</string>
 
     <plurals name="scan_list_alternatives_count">
         <item quantity="one">%1$d alternative available</item>
         <item quantity="other">%1$d alternatives available</item>
     </plurals>
+    <string name="items_selected">%1$d selected</string>
+    <string name="package_label">Package</string>
 </resources>

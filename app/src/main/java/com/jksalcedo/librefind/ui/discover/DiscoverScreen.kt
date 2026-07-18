@@ -25,7 +25,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,7 +45,7 @@ fun DiscoverScreen(
     onProprietaryClick: (appName: String, packageName: String) -> Unit,
     viewModel: DiscoverViewModel = koinViewModel()
 ) {
-    val state by viewModel.uiState.collectAsState()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     Scaffold(
         contentWindowInsets = WindowInsets(0),
@@ -129,7 +129,7 @@ fun DiscoverScreen(
 
                     state.error != null -> {
                         Text(
-                            text = state.error!!,
+                            text = state.error ?: "",
                             color = MaterialTheme.colorScheme.error,
                             modifier = Modifier
                                 .align(Alignment.Center)
