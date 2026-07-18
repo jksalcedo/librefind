@@ -1,4 +1,4 @@
-package com.jksalcedo.librefind.util
+package com.jksalcedo.librefind.utils
 
 object InstallerHeuristics {
     // Apps installed FROM these are FOSS
@@ -27,7 +27,9 @@ object InstallerHeuristics {
         "com.apkupdater"
     )
 
-    fun isFossInstaller(installer: String?): Boolean = installer != null && installer in FOSS_INSTALLERS
+    fun isFossInstaller(installer: String?): Boolean =
+        installer != null && installer in FOSS_INSTALLERS
 
-    fun isProprietaryInstaller(installer: String?): Boolean = installer != null && installer in PROPRIETARY_INSTALLERS
+    fun isProprietaryInstaller(installer: String?): Boolean =
+        installer != null && installer in PROPRIETARY_INSTALLERS
 }

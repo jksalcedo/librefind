@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jksalcedo.librefind.domain.model.UserProfile
 import com.jksalcedo.librefind.domain.repository.AuthRepository
-import com.jksalcedo.librefind.util.ErrorUtils
+import com.jksalcedo.librefind.utils.ErrorUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -112,7 +112,7 @@ class AuthViewModel(
                 .onSuccess {
                     // Logic for success similar to signIn/signUp
                     val currentUser = authRepository.getCurrentUser()
-                     _uiState.value = _uiState.value.copy(
+                    _uiState.value = _uiState.value.copy(
                         isLoading = false,
                         isSignedIn = true,
                         needsProfileSetup = currentUser?.username?.isBlank() ?: false,

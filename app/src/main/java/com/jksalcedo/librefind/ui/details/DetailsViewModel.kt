@@ -7,8 +7,8 @@ import com.jksalcedo.librefind.domain.repository.AppRepository
 import com.jksalcedo.librefind.domain.repository.AuthRepository
 import com.jksalcedo.librefind.domain.repository.CacheRepository
 import com.jksalcedo.librefind.domain.repository.DeviceInventoryRepo
-import com.jksalcedo.librefind.util.InstallerHeuristics
 import com.jksalcedo.librefind.domain.usecase.GetAlternativeUseCase
+import com.jksalcedo.librefind.utils.InstallerHeuristics
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
