@@ -88,6 +88,25 @@ class PreferencesManager(private val context: Context) {
         awaitClose { prefs.unregisterOnSharedPreferenceChangeListener(listener) }
     }
 
+    fun getAutoUpdateEnabled(): Boolean {
+        return prefs.getBoolean(KEY_AUTO_UPDATE_ENABLED, true) // Default to true, but UI will depend on network consent
+    }
+
+    fun setAutoUpdateEnabled(enabled: Boolean) {
+        prefs.edit().putBoolean(KEY_AUTO_UPDATE_ENABLED, enabled).apply()
+    }
+
+    fun observeAutoUpdateEnabled(): Flow<Boolean> = callbackFlow {
+        val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+            if (key == KEY_AUTO_UPDATE_ENABLED) {
+                trySend(getAutoUpdateEnabled())
+            }
+        }
+        prefs.registerOnSharedPreferenceChangeListener(listener)
+        trySend(getAutoUpdateEnabled())
+        awaitClose { prefs.unregisterOnSharedPreferenceChangeListener(listener) }
+    }
+
     // --- System package filtering preferences ---
     /**
      * Returns whether system/vendor packages should be hidden from the UI.
@@ -162,5 +181,6 @@ class PreferencesManager(private val context: Context) {
         // Keys for explicit network consent
         private const val KEY_HAS_ASKED_NETWORK_CONSENT = "has_asked_network_consent"
         private const val KEY_NETWORK_CONSENT_GRANTED = "network_consent_granted"
+        private const val KEY_AUTO_UPDATE_ENABLED = "auto_update_enabled"
     }
 }

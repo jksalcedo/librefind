@@ -586,4 +586,10 @@
     
     <string name="settings_network_access_title">Background Network Access</string>
     <string name="settings_network_access_subtitle">Allow LibreFind to check for community notifications and trusted ROM signers in the background</string>
+    
+    <string name="settings_auto_update_title">Automatic Updates</string>
+    <string name="settings_auto_update_subtitle">Automatically check for LibreFind updates in the background</string>
+
+    <string name="update_available_title">Update Available</string>
+    <string name="update_available_content">LibreFind version %1$s is available!</string>
 </resources>
