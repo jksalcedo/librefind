@@ -2,6 +2,7 @@ package com.jksalcedo.librefind.ui.settings
 
 import android.content.pm.PackageManager
 import android.os.Build
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,6 +38,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -57,6 +59,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.os.LocaleListCompat
 import com.jksalcedo.librefind.R
 import com.jksalcedo.librefind.data.local.PreferencesManager
 import com.jksalcedo.librefind.ui.common.LibreFindLoadingIndicator
@@ -241,7 +244,8 @@ fun SettingsScreen(
         onResetUpdateStatus = { viewModel.resetUpdateStatus() },
         onSetIncludePrereleases = { viewModel.setIncludePrereleases(it) },
         onSetNotificationsEnabled = { viewModel.setNotificationsEnabled(it) },
-        onSetNotificationInterval = { viewModel.setNotificationInterval(it) }
+        onSetNotificationInterval = { viewModel.setNotificationInterval(it) },
+        onSetNetworkConsentGranted = { viewModel.setNetworkConsentGranted(it) }
     )
 }
 
@@ -276,7 +280,8 @@ fun SettingsContent(
     onResetUpdateStatus: () -> Unit,
     onSetIncludePrereleases: (Boolean) -> Unit,
     onSetNotificationsEnabled: (Boolean) -> Unit,
-    onSetNotificationInterval: (Long) -> Unit
+    onSetNotificationInterval: (Long) -> Unit,
+    onSetNetworkConsentGranted: (Boolean) -> Unit
 ) {
 
     Scaffold(
@@ -299,6 +304,16 @@ fun SettingsContent(
         ) {
             // Language Selection
             LanguageSection()
+            HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+
+            // Background Network Access
+            PreferenceCategory(stringResource(R.string.settings_network_access_title))
+            PreferenceSwitch(
+                title = stringResource(R.string.settings_network_access_title),
+                subtitle = stringResource(R.string.settings_network_access_subtitle),
+                checked = state.networkConsentGranted,
+                onCheckedChange = onSetNetworkConsentGranted
+            )
             HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
             // Appearance & Behavior
@@ -512,7 +527,7 @@ private fun LanguageSection() {
     var showDialog by remember { mutableStateOf(false) }
 
     val currentLocale = remember {
-        androidx.appcompat.app.AppCompatDelegate.getApplicationLocales().getFirstMatch(
+        AppCompatDelegate.getApplicationLocales().getFirstMatch(
             arrayOf("en", "ar", "de", "el", "es", "et", "fr", "it", "pl", "tr", "zh-rCN")
         )?.language ?: ""
     }
@@ -554,11 +569,11 @@ private fun LanguageSection() {
             onLanguageSelected = { tag ->
                 showDialog = false
                 val localeList = if (tag.isEmpty()) {
-                    androidx.core.os.LocaleListCompat.getEmptyLocaleList()
+                    LocaleListCompat.getEmptyLocaleList()
                 } else {
-                    androidx.core.os.LocaleListCompat.forLanguageTags(tag)
+                    LocaleListCompat.forLanguageTags(tag)
                 }
-                androidx.appcompat.app.AppCompatDelegate.setApplicationLocales(localeList)
+                AppCompatDelegate.setApplicationLocales(localeList)
             }
         )
     }
@@ -605,7 +620,7 @@ private fun LanguageSelectionDialog(
                             .padding(vertical = 12.dp, horizontal = 8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        androidx.compose.material3.RadioButton(
+                        RadioButton(
                             selected = isSelected,
                             onClick = { onLanguageSelected(tag) }
                         )
@@ -656,7 +671,7 @@ private fun NotificationIntervalDialog(
                             .padding(vertical = 12.dp, horizontal = 8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        androidx.compose.material3.RadioButton(
+                        RadioButton(
                             selected = isSelected,
                             onClick = { onIntervalSelected(mins) }
                         )
@@ -953,6 +968,7 @@ fun SettingsScreenPreview() {
         onResetUpdateStatus = {},
         onSetIncludePrereleases = {},
         onSetNotificationsEnabled = {},
-        onSetNotificationInterval = {}
+        onSetNotificationInterval = {},
+        onSetNetworkConsentGranted = {}
     )
 }

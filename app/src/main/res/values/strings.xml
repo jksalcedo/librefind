@@ -577,4 +577,13 @@
     </plurals>
     <string name="items_selected">%1$d selected</string>
     <string name="package_label">Package</string>
+    
+    <!-- Network Consent -->
+    <string name="network_consent_title">Allow Background Checks</string>
+    <string name="network_consent_message">LibreFind can automatically check for community notifications and refresh trusted ROM signers in the background. This requires internet access.\n\nDo you wish to opt-in to automatic background network usage?\n\nYou can change this later in Settings.</string>
+    <string name="network_consent_opt_in">Opt-In</string>
+    <string name="network_consent_disable">Disable</string>
+    
+    <string name="settings_network_access_title">Background Network Access</string>
+    <string name="settings_network_access_subtitle">Allow LibreFind to check for community notifications and trusted ROM signers in the background</string>
 </resources>

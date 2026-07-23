@@ -38,7 +38,8 @@ data class SettingsState(
     val includePrereleases: Boolean = false,
     val isLoggedIn: Boolean = false,
     val notificationsEnabled: Boolean = true,
-    val notificationIntervalMins: Long = 60L
+    val notificationIntervalMins: Long = 60L,
+    val networkConsentGranted: Boolean = false
 )
 
 class SettingsViewModel(
@@ -76,6 +77,11 @@ class SettingsViewModel(
             }
         }
         viewModelScope.launch {
+            preferencesManager.observeNetworkConsentGranted().collect { granted ->
+                _state.update { it.copy(networkConsentGranted = granted) }
+            }
+        }
+        viewModelScope.launch {
             notificationPrefs.notificationsEnabledFlow.collect { enabled ->
                 _state.update { it.copy(notificationsEnabled = enabled) }
             }
@@ -89,6 +95,28 @@ class SettingsViewModel(
 
     fun setIncludePrereleases(enabled: Boolean) {
         preferencesManager.setIncludePrereleases(enabled)
+    }
+
+    fun setNetworkConsentGranted(granted: Boolean) {
+        preferencesManager.setNetworkConsentGranted(granted)
+        
+        // Handle worker scheduling based on consent
+        val workManager = androidx.work.WorkManager.getInstance(appContext)
+        if (granted) {
+            val constraints = androidx.work.Constraints.Builder()
+                .setRequiredNetworkType(androidx.work.NetworkType.CONNECTED)
+                .build()
+
+            val signerRequest = androidx.work.PeriodicWorkRequestBuilder<com.jksalcedo.librefind.worker.SignerFeedWorker>(1, java.util.concurrent.TimeUnit.DAYS)
+                .setConstraints(constraints)
+                .build()
+            workManager.enqueueUniquePeriodicWork("signer_feed_update", androidx.work.ExistingPeriodicWorkPolicy.UPDATE, signerRequest)
+            
+            rescheduleNotificationWorker()
+        } else {
+            workManager.cancelUniqueWork("signer_feed_update")
+            workManager.cancelUniqueWork("notification_check")
+        }
     }
 
     fun setNotificationsEnabled(enabled: Boolean) {
