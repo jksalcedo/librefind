@@ -36,8 +36,15 @@ class LibreFindApp : Application() {
             )
         }
 
-        scheduleSignerFeedUpdate()
-        scheduleNotificationWorker()
+        val prefs = com.jksalcedo.librefind.data.local.PreferencesManager(this)
+        
+        if (prefs.getNetworkConsentGranted()) {
+            scheduleSignerFeedUpdate()
+            scheduleNotificationWorker()
+        } else {
+            WorkManager.getInstance(this).cancelUniqueWork("signer_feed_update")
+            WorkManager.getInstance(this).cancelUniqueWork("notification_check")
+        }
     }
 
     private fun scheduleSignerFeedUpdate() {

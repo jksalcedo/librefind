@@ -1,0 +1,1 @@
+- Added explicit user consent dialog for background network access
