@@ -245,7 +245,8 @@ fun SettingsScreen(
         onSetIncludePrereleases = { viewModel.setIncludePrereleases(it) },
         onSetNotificationsEnabled = { viewModel.setNotificationsEnabled(it) },
         onSetNotificationInterval = { viewModel.setNotificationInterval(it) },
-        onSetNetworkConsentGranted = { viewModel.setNetworkConsentGranted(it) }
+        onSetNetworkConsentGranted = { viewModel.setNetworkConsentGranted(it) },
+        onSetAutoUpdateEnabled = { viewModel.setAutoUpdateEnabled(it) }
     )
 }
 
@@ -281,7 +282,8 @@ fun SettingsContent(
     onSetIncludePrereleases: (Boolean) -> Unit,
     onSetNotificationsEnabled: (Boolean) -> Unit,
     onSetNotificationInterval: (Long) -> Unit,
-    onSetNetworkConsentGranted: (Boolean) -> Unit
+    onSetNetworkConsentGranted: (Boolean) -> Unit,
+    onSetAutoUpdateEnabled: (Boolean) -> Unit
 ) {
 
     Scaffold(
@@ -314,6 +316,15 @@ fun SettingsContent(
                 checked = state.networkConsentGranted,
                 onCheckedChange = onSetNetworkConsentGranted
             )
+            
+            if (state.networkConsentGranted) {
+                PreferenceSwitch(
+                    title = stringResource(R.string.settings_auto_update_title),
+                    subtitle = stringResource(R.string.settings_auto_update_subtitle),
+                    checked = state.autoUpdateEnabled,
+                    onCheckedChange = onSetAutoUpdateEnabled,
+                )
+            }
             HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
             // Appearance & Behavior
@@ -969,6 +980,7 @@ fun SettingsScreenPreview() {
         onSetIncludePrereleases = {},
         onSetNotificationsEnabled = {},
         onSetNotificationInterval = {},
-        onSetNetworkConsentGranted = {}
+        onSetNetworkConsentGranted = {},
+        onSetAutoUpdateEnabled = {}
     )
 }

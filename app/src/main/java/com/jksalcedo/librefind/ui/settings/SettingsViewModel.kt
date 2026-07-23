@@ -36,6 +36,7 @@ data class SettingsState(
     val latestUpdate: AppUpdate? = null,
     val updateError: String? = null,
     val includePrereleases: Boolean = false,
+    val autoUpdateEnabled: Boolean = true,
     val isLoggedIn: Boolean = false,
     val notificationsEnabled: Boolean = true,
     val notificationIntervalMins: Long = 60L,
@@ -82,6 +83,11 @@ class SettingsViewModel(
             }
         }
         viewModelScope.launch {
+            preferencesManager.observeAutoUpdateEnabled().collect { enabled ->
+                _state.update { it.copy(autoUpdateEnabled = enabled) }
+            }
+        }
+        viewModelScope.launch {
             notificationPrefs.notificationsEnabledFlow.collect { enabled ->
                 _state.update { it.copy(notificationsEnabled = enabled) }
             }
@@ -112,10 +118,34 @@ class SettingsViewModel(
                 .build()
             workManager.enqueueUniquePeriodicWork("signer_feed_update", androidx.work.ExistingPeriodicWorkPolicy.UPDATE, signerRequest)
             
+            if (preferencesManager.getAutoUpdateEnabled()) {
+                val updateRequest = androidx.work.PeriodicWorkRequestBuilder<com.jksalcedo.librefind.worker.UpdateCheckWorker>(1, java.util.concurrent.TimeUnit.DAYS)
+                    .setConstraints(constraints)
+                    .build()
+                workManager.enqueueUniquePeriodicWork("app_update_check", androidx.work.ExistingPeriodicWorkPolicy.UPDATE, updateRequest)
+            }
+            
             rescheduleNotificationWorker()
         } else {
             workManager.cancelUniqueWork("signer_feed_update")
+            workManager.cancelUniqueWork("app_update_check")
             workManager.cancelUniqueWork("notification_check")
+        }
+    }
+
+    fun setAutoUpdateEnabled(enabled: Boolean) {
+        preferencesManager.setAutoUpdateEnabled(enabled)
+        val workManager = androidx.work.WorkManager.getInstance(appContext)
+        if (enabled && preferencesManager.getNetworkConsentGranted()) {
+            val constraints = androidx.work.Constraints.Builder()
+                .setRequiredNetworkType(androidx.work.NetworkType.CONNECTED)
+                .build()
+            val updateRequest = androidx.work.PeriodicWorkRequestBuilder<com.jksalcedo.librefind.worker.UpdateCheckWorker>(1, java.util.concurrent.TimeUnit.DAYS)
+                .setConstraints(constraints)
+                .build()
+            workManager.enqueueUniquePeriodicWork("app_update_check", androidx.work.ExistingPeriodicWorkPolicy.UPDATE, updateRequest)
+        } else {
+            workManager.cancelUniqueWork("app_update_check")
         }
     }
 

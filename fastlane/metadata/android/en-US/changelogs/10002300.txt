@@ -1,1 +1,2 @@
 - Added explicit user consent dialog for background network access
+- Added automatic updates in the background
