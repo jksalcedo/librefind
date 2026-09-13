@@ -73,6 +73,9 @@ fun NavGraph(
                 },
                 onProfileClick = { userId ->
                     navController.navigate(Route.Profile.createRoute(userId))
+                },
+                onCommunityClick = { query ->
+                    navController.navigate(Route.Community.createRoute(query))
                 }
             )
         }
@@ -137,20 +140,12 @@ fun NavGraph(
                     navController.navigate(Route.Submit.createRoute(name, pkg, "proprietary"))
                 },
                 onAddAlternativeClick = { _, pkg ->
-                    if (authState.isSignedIn) {
-                        navController.navigate(
-                            Route.Submit.createRoute(type = "link", proprietaryTarget = pkg)
-                        )
-                    } else {
-                        navController.navigate(Route.Auth.route)
-                    }
+                    navController.navigate(
+                        Route.Submit.createRoute(type = "link", proprietaryTarget = pkg)
+                    )
                 },
                 onSuggestCorrection = { pkg ->
-                    if (authState.isSignedIn) {
-                        navController.navigate(Route.SuggestCorrection.createRoute(pkg))
-                    } else {
-                        navController.navigate(Route.Auth.route)
-                    }
+                    navController.navigate(Route.SuggestCorrection.createRoute(pkg))
                 },
                 onSubmitSigningKey = { name, pkg ->
                     if (authState.isSignedIn) {
@@ -158,6 +153,9 @@ fun NavGraph(
                     } else {
                         navController.navigate(Route.Auth.route)
                     }
+                },
+                onViewPendingSubmission = { submissionId ->
+                    navController.navigate(Route.SubmissionDetail.createRoute(submissionId))
                 }
             )
         }
@@ -277,11 +275,7 @@ fun NavGraph(
             com.jksalcedo.librefind.ui.settings.SettingsScreen(
                 onBackClick = { navController.navigateUp() },
                 onReportClick = {
-                    if (authState.isSignedIn) {
-                        navController.navigate(Route.Report.route)
-                    } else {
-                        navController.navigate(Route.Auth.route)
-                    }
+                    navController.navigate(Route.Report.route)
                 },
                 onMyReportsClick = {
                     if (authState.isSignedIn) {
@@ -291,7 +285,7 @@ fun NavGraph(
                     }
                 },
                 onCommunityClick = {
-                    navController.navigate(Route.Community.route)
+                    navController.navigate(Route.Community.createRoute())
                 },
                 onPrivacyPolicyClick = {
                     navController.navigate(Route.PrivacyPolicy.route)
@@ -322,8 +316,17 @@ fun NavGraph(
             )
         }
 
-        composable(Route.Community.route) {
+        composable(
+            route = Route.Community.route,
+            arguments = listOf(navArgument("query") {
+                type = NavType.StringType
+                nullable = true
+                defaultValue = null
+            })
+        ) { backStackEntry ->
+            val query = backStackEntry.arguments?.getString("query")?.let { Uri.decode(it) }
             CommunitySubmissionsScreen(
+                initialQuery = query,
                 onBackClick = { navController.navigateUp() },
                 onSubmissionClick = { submissionId ->
                     navController.navigate(Route.SubmissionDetail.createRoute(submissionId))

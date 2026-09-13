@@ -447,6 +447,16 @@ class SupabaseAppRepository(
         }
     }
 
+    private suspend fun ensureAuthenticatedUser(): String {
+        val existingUser = supabase.auth.currentUserOrNull()
+        if (existingUser != null) {
+            return existingUser.id
+        }
+        supabase.auth.signInAnonymously()
+        return supabase.auth.currentUserOrNull()?.id
+            ?: throw IllegalStateException("Failed to authenticate session")
+    }
+
     override suspend fun submitAlternative(
         proprietaryPackage: String,
         alternativePackage: String,
@@ -467,6 +477,8 @@ class SupabaseAppRepository(
                 return@runCatching
             }
 
+            val submitterId = if (userId.isNotBlank()) userId else ensureAuthenticatedUser()
+
             val submission = UserSubmissionDto(
                 appName = appName,
                 appPackage = alternativePackage,
@@ -477,7 +489,7 @@ class SupabaseAppRepository(
                 license = license.ifBlank { null },
                 alternatives = alternatives.ifEmpty { null },
                 submissionType = submissionType.name,
-                submitterId = userId,
+                submitterId = submitterId,
                 category = category.ifBlank { null }
             )
             supabase.postgrest.from("user_submissions").insert(submission)
@@ -510,10 +522,12 @@ class SupabaseAppRepository(
                 return@runCatching
             }
 
+            val actualSubmitterId = if (submitterId.isNotBlank()) submitterId else ensureAuthenticatedUser()
+
             val submission = UserLinkingSubmissionsDto(
                 proprietaryPackage = proprietaryPackage,
                 alternatives = alternatives,
-                submitterId = submitterId,
+                submitterId = actualSubmitterId,
                 status = "PENDING",
                 rejectionReason = null
             )
@@ -715,8 +729,7 @@ class SupabaseAppRepository(
         type: String,
         text: String
     ): Result<Unit> = runCatching {
-        val userId =
-            supabase.auth.currentUserOrNull()?.id ?: throw IllegalStateException("Not logged in")
+        val userId = ensureAuthenticatedUser()
 
         val feedback = AppFeedbackDto(
             packageName = packageName,
@@ -803,6 +816,12 @@ class SupabaseAppRepository(
     private var lastPendingSubmissionsFetchTime: Long = 0
     private val CACHE_DURATION_MS = 10 * 60 * 1000L // 10 minutes
 
+    @Serializable
+    private data class PendingSubmissionsRpcResult(
+        val standard: List<UserSubmissionWithProfileDto>? = null,
+        val linking: List<UserLinkingSubmissionWithProfileDto>? = null
+    )
+
     override suspend fun getAllPendingSubmissions(forceRefresh: Boolean): List<Submission> {
         val currentTime = System.currentTimeMillis()
         if (!forceRefresh && cachedPendingSubmissions != null && (currentTime - lastPendingSubmissionsFetchTime < CACHE_DURATION_MS)) {
@@ -810,65 +829,16 @@ class SupabaseAppRepository(
         }
 
         return try {
-            // Fetch standard pending submissions
-            val standardDtos =
-                supabase.postgrest.from("user_submissions")
-                    .select(
-                        columns = Columns.list(
-                            "id",
-                            "app_name",
-                            "app_package",
-                            "description",
-                            "proprietary_package",
-                            "repo_url",
-                            "fdroid_id",
-                            "license",
-                            "submission_type",
-                            "type",
-                            "status",
-                            "submitter_id",
-                            "rejection_reason",
-                            "created_at",
-                            "category",
-                            "last_edited_by",
-                            "last_edited_at",
-                            "contributors",
-                            "alternatives",
-                            "profile:profiles!fk_submissions_profiles(id, username, reputation_score, badge)",
-                            // Join editor profile so UI can show username instead of uuid
-                            "editor_profile:profiles!last_edited_by(id, username, reputation_score, badge)"
-                        )
-                    ) {
-                        filter { eq("status", "PENDING") }
-                        order("last_edited_at", Order.DESCENDING)
-                        order("created_at", Order.DESCENDING)
-                    }.decodeList<UserSubmissionWithProfileDto>()
+            // Use a SECURITY DEFINER RPC to join profiles server-side without
+            // requiring a public SELECT policy on the profiles table.
+            val rpcResult = supabase.postgrest
+                .rpc("get_pending_submissions_with_profiles")
+                .decodeAs<PendingSubmissionsRpcResult>()
 
-            // Fetch linking pending submissions
-            val linkingDtos =
-                supabase.postgrest.from("user_linking_submissions")
-                    .select(
-                        columns = Columns.list(
-                            "id",
-                            "proprietary_package",
-                            "alternatives",
-                            "status",
-                            "submitter_id",
-                            "rejection_reason",
-                            "created_at",
-                            "last_edited_by",
-                            "last_edited_at",
-                            "contributors",
-                            "profile:profiles!user_linking_submissions_submitter_id_fkey(id, username, reputation_score, badge)",
-                            "editor_profile:profiles!last_edited_by(id, username, reputation_score, badge)"
-                        )
-                    ) {
-                        filter { eq("status", "PENDING") }
-                        order("last_edited_at", Order.DESCENDING)
-                        order("created_at", Order.DESCENDING)
-                    }.decodeList<UserLinkingSubmissionWithProfileDto>()
-
-            val mapped = mapDtosToSubmissions(standardDtos, linkingDtos)
+            val mapped = mapDtosToSubmissions(
+                rpcResult.standard ?: emptyList(),
+                rpcResult.linking ?: emptyList()
+            )
             cachedPendingSubmissions = mapped
             lastPendingSubmissionsFetchTime = currentTime
             mapped
@@ -1308,12 +1278,13 @@ class SupabaseAppRepository(
         priority: String,
         userId: String
     ): Result<Unit> = runCatching {
+        val submitterId = if (userId.isNotBlank()) userId else ensureAuthenticatedUser()
         val report = UserReportDto(
             title = title,
             description = description,
             reportType = type,
             priority = priority,
-            submitterId = userId
+            submitterId = submitterId
         )
         supabase.postgrest.from("user_reports").insert(report)
     }
@@ -1397,6 +1368,59 @@ class SupabaseAppRepository(
         }
     }
 
+    override suspend fun getSubmissionById(id: String): Submission? {
+        cachedPendingSubmissions?.find { it.id == id }?.let { return it }
+
+        if (cachedPendingSubmissions == null) {
+            try {
+                val allPending = getAllPendingSubmissions()
+                allPending.find { it.id == id }?.let { return it }
+            } catch (e: Exception) {
+                Log.e("SupabaseAppRepo", "Failed to fetch pending submissions for getSubmissionById", e)
+            }
+        }
+
+        return try {
+            val standardDtos = supabase.postgrest.from("user_submissions")
+                .select(
+                    columns = Columns.list(
+                        "id", "app_name", "app_package", "description", "proprietary_package",
+                        "repo_url", "fdroid_id", "license", "submission_type", "type", "status",
+                        "submitter_id", "rejection_reason", "created_at", "category",
+                        "last_edited_by", "last_edited_at", "contributors", "alternatives",
+                        "profile:profiles!fk_submissions_profiles(id, username, reputation_score, badge)",
+                        "editor_profile:profiles!last_edited_by(id, username, reputation_score, badge)"
+                    )
+                ) {
+                    filter { eq("id", id) }
+                    limit(1)
+                }.decodeList<UserSubmissionWithProfileDto>()
+
+            if (standardDtos.isNotEmpty()) {
+                return mapDtosToSubmissions(standardDtos, emptyList()).firstOrNull()
+            }
+
+            val linkingDtos = supabase.postgrest.from("user_linking_submissions")
+                .select(
+                    columns = Columns.list(
+                        "id", "proprietary_package", "alternatives", "status", "submitter_id",
+                        "rejection_reason", "created_at", "last_edited_by", "last_edited_at",
+                        "contributors",
+                        "profile:profiles!user_linking_submissions_submitter_id_fkey(id, username, reputation_score, badge)",
+                        "editor_profile:profiles!last_edited_by(id, username, reputation_score, badge)"
+                    )
+                ) {
+                    filter { eq("id", id) }
+                    limit(1)
+                }.decodeList<UserLinkingSubmissionWithProfileDto>()
+
+            mapDtosToSubmissions(emptyList(), linkingDtos).firstOrNull()
+        } catch (e: Exception) {
+            Log.e("SupabaseAppRepo", "getSubmissionById DB fallback failed for ID: $id", e)
+            null
+        }
+    }
+
     override suspend fun approveSubmission(id: String, type: SubmissionType): Result<Unit> =
         runCatching {
             val table =
@@ -1465,11 +1489,10 @@ class SupabaseAppRepository(
         issueType: String,
         description: String
     ): Result<Unit> = runCatching {
-        val currentUser = supabase.auth.currentUserOrNull()
-            ?: throw IllegalStateException("Not logged in")
+        val userId = ensureAuthenticatedUser()
 
         val report = AppReport(
-            userId = currentUser.id,
+            userId = userId,
             packageName = packageName,
             issueType = issueType,
             description = description
@@ -1484,11 +1507,10 @@ class SupabaseAppRepository(
         correctionValue: String,
         description: String
     ): Result<Unit> = runCatching {
-        val currentUser = supabase.auth.currentUserOrNull()
-            ?: throw IllegalStateException("Not logged in")
+        val userId = ensureAuthenticatedUser()
 
         val correction = AppCorrectionDto(
-            userId = currentUser.id,
+            userId = userId,
             packageName = packageName,
             correctionType = correctionType,
             correctionValue = correctionValue,

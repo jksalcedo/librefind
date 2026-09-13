@@ -74,6 +74,7 @@
     <string name="auth_show_password">Show password</string>
     <string name="auth_or">OR</string>
     <string name="auth_sign_in_github">Sign in with GitHub</string>
+    <string name="auth_continue_as_guest">Continue as Guest</string>
     <string name="auth_already_have_account">Already have an account? Sign In</string>
     <string name="auth_dont_have_account">Don\'t have an account? Sign Up</string>
     <string name="auth_check_email_title">Check Your Email</string>
@@ -332,6 +333,7 @@
     <string name="details_no_siblings">No other FOSS apps in the same category yet.</string>
     <string name="details_siblings_found_format">%1$d similar FOSS app%2$s in this category</string>
     <string name="details_foss_category_unset">This app hasn\'t been assigned a category yet. Similar apps can\'t be shown until it is.</string>
+    <string name="details_pending_chip">Pending</string>
 
     <!-- Match vote buttons -->
     <string name="vote_upvote">Good replacement (upvote)</string>
@@ -481,6 +483,10 @@
     <string name="dashboard_undo_reclassify">Undo reclassification</string>
     <string name="dashboard_collapse">Collapse</string>
     <string name="dashboard_expand">Expand</string>
+    <string name="dashboard_view_in_community">View in Community</string>
+    <string name="dashboard_community_chip">Community</string>
+    <string name="dashboard_pending_banner_desc">These apps have submissions under review in the community.</string>
+    <string name="dashboard_browse_community">Browse Community</string>
 
     <!-- Leaderboard -->
     <string name="leaderboard_no_contributors">No contributors yet</string>

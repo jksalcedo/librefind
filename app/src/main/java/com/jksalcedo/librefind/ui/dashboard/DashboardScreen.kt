@@ -4,12 +4,15 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
@@ -23,6 +26,8 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -83,6 +88,7 @@ fun DashboardScreen(
     onIgnoredAppsClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {},
     onProfileClick: (String?) -> Unit = {},
+    onCommunityClick: (String?) -> Unit = {},
     viewModel: DashboardViewModel = koinViewModel(),
     authViewModel: AuthViewModel = koinViewModel()
 ) {
@@ -456,13 +462,30 @@ fun DashboardScreen(
                                     modifier = Modifier.fillMaxSize(),
                                     contentAlignment = Alignment.Center
                                 ) {
-                                    Text(
-                                        text = if (state.searchQuery.isNotEmpty()) stringResource(R.string.dashboard_no_matching_apps) else stringResource(
-                                            R.string.dashboard_no_apps_found
-                                        ),
-                                        style = MaterialTheme.typography.bodyLarge,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                                    )
+                                    Column(
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        modifier = Modifier.padding(16.dp)
+                                    ) {
+                                        Text(
+                                            text = if (state.searchQuery.isNotEmpty()) stringResource(R.string.dashboard_no_matching_apps) else stringResource(
+                                                R.string.dashboard_no_apps_found
+                                            ),
+                                            style = MaterialTheme.typography.bodyLarge,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                        if (state.appFilter == AppFilter.PENDING_ONLY || state.statusFilter == AppStatus.PENDING) {
+                                            Spacer(modifier = Modifier.height(12.dp))
+                                            Button(onClick = { onCommunityClick(null) }) {
+                                                Icon(
+                                                    painter = painterResource(R.drawable.ic_world),
+                                                    contentDescription = null,
+                                                    modifier = Modifier.size(16.dp)
+                                                )
+                                                Spacer(modifier = Modifier.width(6.dp))
+                                                Text(stringResource(R.string.dashboard_browse_community))
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         } else {
@@ -488,6 +511,7 @@ fun DashboardScreen(
                                 onRefresh = { viewModel.scan() },
                                 isRefreshing = state.isLoading,
                                 modifier = Modifier.fillMaxSize(),
+                                onCommunityClick = { appLabel -> onCommunityClick(appLabel) },
                                 headerContent = {
                                     state.sovereigntyScore?.let { score ->
                                         Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
@@ -518,6 +542,47 @@ fun DashboardScreen(
                                             }
                                         }
                                     }
+                                    if (state.appFilter == AppFilter.PENDING_ONLY || state.statusFilter == AppStatus.PENDING) {
+                                        Card(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(horizontal = 16.dp, vertical = 8.dp),
+                                            colors = CardDefaults.cardColors(
+                                                containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f)
+                                            )
+                                        ) {
+                                            Row(
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .padding(12.dp),
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                horizontalArrangement = Arrangement.SpaceBetween
+                                            ) {
+                                                Text(
+                                                    text = stringResource(R.string.dashboard_pending_banner_desc),
+                                                    style = MaterialTheme.typography.bodySmall,
+                                                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                                    modifier = Modifier.weight(1f)
+                                                )
+                                                Spacer(modifier = Modifier.width(8.dp))
+                                                Button(
+                                                    onClick = { onCommunityClick(null) },
+                                                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
+                                                ) {
+                                                    Icon(
+                                                        painter = painterResource(R.drawable.ic_world),
+                                                        contentDescription = null,
+                                                        modifier = Modifier.size(16.dp)
+                                                    )
+                                                    Spacer(modifier = Modifier.width(6.dp))
+                                                    Text(
+                                                        stringResource(R.string.dashboard_browse_community),
+                                                        style = MaterialTheme.typography.labelMedium
+                                                    )
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             )
                         }
@@ -530,7 +595,8 @@ fun DashboardScreen(
                             score = score,
                             currentFilter = state.statusFilter,
                             onFilterClick = { status -> viewModel.setStatusFilter(status) },
-                            onDismissRequest = { showDialog = false }
+                            onDismissRequest = { showDialog = false },
+                            onCommunityClick = { onCommunityClick(null) }
                         )
                     }
                 }
