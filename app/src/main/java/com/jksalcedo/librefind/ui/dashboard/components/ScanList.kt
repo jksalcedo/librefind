@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -27,6 +28,7 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Undo
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
@@ -56,6 +58,7 @@ import com.jksalcedo.librefind.domain.model.AppStatus
 import com.jksalcedo.librefind.ui.common.StatusBadge
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.jksalcedo.librefind.R
 
@@ -96,7 +99,8 @@ fun ScanList(
     onRefresh: () -> Unit,
     isRefreshing: Boolean,
     modifier: Modifier = Modifier,
-    headerContent: (@Composable () -> Unit)? = null
+    headerContent: (@Composable () -> Unit)? = null,
+    onCommunityClick: (String) -> Unit = {}
 ) {
     val sortedApps = remember(apps) { apps.sortedBy { it.label } }
 
@@ -135,6 +139,7 @@ fun ScanList(
                     onRestoreClick = { onRestoreClick(app.packageName) },
                     onReclassifyClick = { status -> onReclassifyClick(app.packageName, status) },
                     onUndoReclassifyClick = { onUndoReclassifyClick(app.packageName) },
+                    onCommunityClick = onCommunityClick,
                     modifier = Modifier.animateItem()
                 )
             }
@@ -154,7 +159,8 @@ fun AppRow(
     onRestoreClick: () -> Unit,
     onReclassifyClick: (AppStatus) -> Unit,
     onUndoReclassifyClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onCommunityClick: (String) -> Unit = {}
 ) {
     var showMenu by remember { mutableStateOf(false) }
 
@@ -236,6 +242,26 @@ fun AppRow(
                         color = MaterialTheme.colorScheme.primary
                     )
                 }
+                if (app.status == AppStatus.PENDING) {
+                    Spacer(modifier = Modifier.height(6.dp))
+                    AssistChip(
+                        onClick = { onCommunityClick(app.label) },
+                        label = {
+                            Text(
+                                text = stringResource(R.string.dashboard_community_chip),
+                                style = MaterialTheme.typography.labelSmall
+                            )
+                        },
+                        leadingIcon = {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_world),
+                                contentDescription = null,
+                                modifier = Modifier.size(14.dp)
+                            )
+                        },
+                        modifier = Modifier.height(28.dp)
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.width(8.dp))
@@ -265,6 +291,22 @@ fun AppRow(
                         },
                         leadingIcon = {
                             Icon(Icons.Default.Refresh, contentDescription = null)
+                        }
+                    )
+                }
+
+                if (app.status == AppStatus.PENDING) {
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.dashboard_view_in_community)) },
+                        onClick = {
+                            showMenu = false
+                            onCommunityClick(app.label)
+                        },
+                        leadingIcon = {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_world),
+                                contentDescription = null
+                            )
                         }
                     )
                 }
