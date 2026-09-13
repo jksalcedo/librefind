@@ -73,6 +73,9 @@ fun NavGraph(
                 },
                 onProfileClick = { userId ->
                     navController.navigate(Route.Profile.createRoute(userId))
+                },
+                onCommunityClick = { query ->
+                    navController.navigate(Route.Community.createRoute(query))
                 }
             )
         }
@@ -282,7 +285,7 @@ fun NavGraph(
                     }
                 },
                 onCommunityClick = {
-                    navController.navigate(Route.Community.route)
+                    navController.navigate(Route.Community.createRoute())
                 },
                 onPrivacyPolicyClick = {
                     navController.navigate(Route.PrivacyPolicy.route)
@@ -313,8 +316,17 @@ fun NavGraph(
             )
         }
 
-        composable(Route.Community.route) {
+        composable(
+            route = Route.Community.route,
+            arguments = listOf(navArgument("query") {
+                type = NavType.StringType
+                nullable = true
+                defaultValue = null
+            })
+        ) { backStackEntry ->
+            val query = backStackEntry.arguments?.getString("query")?.let { Uri.decode(it) }
             CommunitySubmissionsScreen(
+                initialQuery = query,
                 onBackClick = { navController.navigateUp() },
                 onSubmissionClick = { submissionId ->
                     navController.navigate(Route.SubmissionDetail.createRoute(submissionId))

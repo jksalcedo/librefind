@@ -196,7 +196,7 @@ class MainActivity : AppCompatActivity() {
                                     onClick = {
                                         if (currentRoute != Route.Community.route) {
                                             if (authState.isSignedIn) {
-                                                navController.navigate(Route.Community.route) {
+                                                navController.navigate(Route.Community.createRoute()) {
                                                     popUpTo(Route.Dashboard.route) {
                                                         inclusive = false
                                                     }

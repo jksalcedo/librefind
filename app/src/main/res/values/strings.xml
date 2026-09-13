@@ -483,6 +483,10 @@
     <string name="dashboard_undo_reclassify">Undo reclassification</string>
     <string name="dashboard_collapse">Collapse</string>
     <string name="dashboard_expand">Expand</string>
+    <string name="dashboard_view_in_community">View in Community</string>
+    <string name="dashboard_community_chip">Community</string>
+    <string name="dashboard_pending_banner_desc">These apps have submissions under review in the community.</string>
+    <string name="dashboard_browse_community">Browse Community</string>
 
     <!-- Leaderboard -->
     <string name="leaderboard_no_contributors">No contributors yet</string>

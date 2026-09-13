@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -21,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,7 +42,8 @@ fun GaugeDetailsDialog(
     score: SovereigntyScore,
     currentFilter: AppStatus?,
     onFilterClick: (AppStatus?) -> Unit,
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
+    onCommunityClick: (() -> Unit)? = null
 ) {
     AlertDialog(
         onDismissRequest = onDismissRequest,
@@ -124,6 +128,24 @@ fun GaugeDetailsDialog(
                             else AppStatus.PENDING
                         )
                         onDismissRequest()
+                    },
+                    trailingAction = onCommunityClick?.let { onComm ->
+                        {
+                            IconButton(
+                                onClick = {
+                                    onDismissRequest()
+                                    onComm()
+                                },
+                                modifier = Modifier.size(24.dp)
+                            ) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_world),
+                                    contentDescription = stringResource(R.string.dashboard_view_in_community),
+                                    tint = PendingOrange,
+                                    modifier = Modifier.size(16.dp)
+                                )
+                            }
+                        }
                     }
                 )
 
@@ -155,7 +177,8 @@ private fun ClickableStatRow(
     value: String,
     color: Color,
     isActive: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    trailingAction: (@Composable () -> Unit)? = null
 ) {
     Row(
         modifier = Modifier
@@ -174,12 +197,18 @@ private fun ClickableStatRow(
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = if (isActive) FontWeight.Bold else FontWeight.Normal
         )
-        Text(
-            text = value,
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.Bold,
-            color = color
-        )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = value,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Bold,
+                color = color
+            )
+            if (trailingAction != null) {
+                Spacer(modifier = Modifier.width(6.dp))
+                trailingAction()
+            }
+        }
     }
 }
 

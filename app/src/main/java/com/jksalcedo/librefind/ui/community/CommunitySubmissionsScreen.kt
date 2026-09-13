@@ -90,9 +90,16 @@ fun CommunitySubmissionsScreen(
     onKeyVoteClick: (packageName: String, appName: String, sha256Digest: String) -> Unit = { _, _, _ -> },
     onUserClick: (String) -> Unit = {},
     onLeaderboardClick: () -> Unit = {},
+    initialQuery: String? = null,
     viewModel: CommunitySubmissionsViewModel = koinViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(initialQuery) {
+        if (!initialQuery.isNullOrBlank()) {
+            viewModel.updateSearchQuery(initialQuery)
+        }
+    }
 
     val filteredSubmissions by remember(
         state.submissions,

@@ -1,2 +1,4 @@
 - Allow submitting app feedback, corrections, and alternatives without an account
 - Display pending community alternative submissions on app details page
+- Add button to pending apps on the dashboard linking to community submissions
+- Display pending community alternative submissions on app details page
