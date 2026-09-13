@@ -816,6 +816,12 @@ class SupabaseAppRepository(
     private var lastPendingSubmissionsFetchTime: Long = 0
     private val CACHE_DURATION_MS = 10 * 60 * 1000L // 10 minutes
 
+    @Serializable
+    private data class PendingSubmissionsRpcResult(
+        val standard: List<UserSubmissionWithProfileDto>? = null,
+        val linking: List<UserLinkingSubmissionWithProfileDto>? = null
+    )
+
     override suspend fun getAllPendingSubmissions(forceRefresh: Boolean): List<Submission> {
         val currentTime = System.currentTimeMillis()
         if (!forceRefresh && cachedPendingSubmissions != null && (currentTime - lastPendingSubmissionsFetchTime < CACHE_DURATION_MS)) {
@@ -823,65 +829,16 @@ class SupabaseAppRepository(
         }
 
         return try {
-            // Fetch standard pending submissions
-            val standardDtos =
-                supabase.postgrest.from("user_submissions")
-                    .select(
-                        columns = Columns.list(
-                            "id",
-                            "app_name",
-                            "app_package",
-                            "description",
-                            "proprietary_package",
-                            "repo_url",
-                            "fdroid_id",
-                            "license",
-                            "submission_type",
-                            "type",
-                            "status",
-                            "submitter_id",
-                            "rejection_reason",
-                            "created_at",
-                            "category",
-                            "last_edited_by",
-                            "last_edited_at",
-                            "contributors",
-                            "alternatives",
-                            "profile:profiles!fk_submissions_profiles(id, username, reputation_score, badge)",
-                            // Join editor profile so UI can show username instead of uuid
-                            "editor_profile:profiles!last_edited_by(id, username, reputation_score, badge)"
-                        )
-                    ) {
-                        filter { eq("status", "PENDING") }
-                        order("last_edited_at", Order.DESCENDING)
-                        order("created_at", Order.DESCENDING)
-                    }.decodeList<UserSubmissionWithProfileDto>()
+            // Use a SECURITY DEFINER RPC to join profiles server-side without
+            // requiring a public SELECT policy on the profiles table.
+            val rpcResult = supabase.postgrest
+                .rpc("get_pending_submissions_with_profiles")
+                .decodeAs<PendingSubmissionsRpcResult>()
 
-            // Fetch linking pending submissions
-            val linkingDtos =
-                supabase.postgrest.from("user_linking_submissions")
-                    .select(
-                        columns = Columns.list(
-                            "id",
-                            "proprietary_package",
-                            "alternatives",
-                            "status",
-                            "submitter_id",
-                            "rejection_reason",
-                            "created_at",
-                            "last_edited_by",
-                            "last_edited_at",
-                            "contributors",
-                            "profile:profiles!user_linking_submissions_submitter_id_fkey(id, username, reputation_score, badge)",
-                            "editor_profile:profiles!last_edited_by(id, username, reputation_score, badge)"
-                        )
-                    ) {
-                        filter { eq("status", "PENDING") }
-                        order("last_edited_at", Order.DESCENDING)
-                        order("created_at", Order.DESCENDING)
-                    }.decodeList<UserLinkingSubmissionWithProfileDto>()
-
-            val mapped = mapDtosToSubmissions(standardDtos, linkingDtos)
+            val mapped = mapDtosToSubmissions(
+                rpcResult.standard ?: emptyList(),
+                rpcResult.linking ?: emptyList()
+            )
             cachedPendingSubmissions = mapped
             lastPendingSubmissionsFetchTime = currentTime
             mapped

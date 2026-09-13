@@ -59,7 +59,7 @@ data class UserSubmissionDto(
 
 @Serializable
 data class ProfileDto(
-    val id: String, // UUID
+    val id: String? = null, // nullable: submissions can exist without a matching profile row
     val username: String?,
     @SerialName("avatar_url") val avatarUrl: String? = null,
     @SerialName("created_at") val createdAt: String? = null,
