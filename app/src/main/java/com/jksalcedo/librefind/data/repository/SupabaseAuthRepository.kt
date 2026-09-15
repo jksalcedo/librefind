@@ -11,7 +11,9 @@ import io.github.jan.supabase.auth.providers.builtin.Email
 import io.github.jan.supabase.auth.status.SessionStatus
 import io.github.jan.supabase.auth.user.UserInfo
 import io.github.jan.supabase.postgrest.postgrest
+import io.github.jan.supabase.postgrest.query.Order
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.transformLatest
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -50,20 +52,20 @@ class SupabaseAuthRepository(
         }
     }
 
-    override val topContributors: Flow<List<UserProfile>> = kotlinx.coroutines.flow.flow {
+    override val topContributors: Flow<List<UserProfile>> = flow {
         try {
             val dtos = supabase.postgrest.from("profiles")
-                .select() {
+                .select {
                     order(
                         "reputation_score",
-                        io.github.jan.supabase.postgrest.query.Order.DESCENDING
+                        Order.DESCENDING
                     )
                     limit(20)
                 }.decodeList<ProfileDto>()
 
             emit(dtos.map { dto ->
                 UserProfile(
-                    uid = dto.id,
+                    uid = dto.id ?: "",
                     username = dto.username ?: "Unknown",
                     email = "",
                     joinedAt = dto.createdAt?.let { dateStr ->
@@ -181,7 +183,7 @@ class SupabaseAuthRepository(
 
             profileDto?.let {
                 UserProfile(
-                    uid = it.id,
+                    uid = it.id ?: userId,
                     username = it.username ?: "",
                     email = auth.currentUserOrNull()?.email ?: "",
                     joinedAt = it.createdAt?.let { dateStr ->
