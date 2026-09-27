@@ -1,0 +1,9 @@
+- In-app logs and diagnostic reports export with custom storage location
+- Fix FOSS apps wrongly classified as proprietary or unknown
+- Improve installer and store detection on Android 11+
+- Fix remote solutions cache truncation
+- Allow submitting app feedback, corrections, and alternatives without an account
+- Display pending community alternative submissions on app details page
+- Add button to pending apps on the dashboard linking to community submissions
+- Fix reputation score issue for Guest users
+- Various fixes and performance improvements
