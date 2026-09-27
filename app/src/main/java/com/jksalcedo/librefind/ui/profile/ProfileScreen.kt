@@ -281,7 +281,7 @@ private fun ProfileHeader(profile: UserProfile) {
                 }
             }
             Text(
-                text = stringResource(R.string.profile_reputation, profile.reputationScore),
+                text = stringResource(R.string.profile_reputation, profile.reputationScore ?: 0),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
