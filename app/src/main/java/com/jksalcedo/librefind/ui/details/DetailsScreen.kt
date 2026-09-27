@@ -46,6 +46,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -252,16 +253,16 @@ fun DetailsScreen(
                                 Spacer(modifier = Modifier.height(12.dp))
                                 Text(
                                     text = if (state.isFoss) {
-                                        stringResource(
-                                            R.string.details_siblings_found_format,
+                                        pluralStringResource(
+                                            R.plurals.details_siblings_found_format,
                                             displayList.size,
-                                            if (displayList.size > 1) "s" else ""
+                                            displayList.size
                                         )
                                     } else {
-                                        stringResource(
-                                            R.string.details_found_format,
+                                        pluralStringResource(
+                                            R.plurals.details_found_format,
                                             displayList.size,
-                                            if (displayList.size > 1) "s" else ""
+                                            displayList.size
                                         )
                                     },
                                     style = MaterialTheme.typography.titleMedium,

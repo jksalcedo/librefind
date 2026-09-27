@@ -51,6 +51,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -425,9 +426,10 @@ fun SettingsContent(
                         60L -> stringResource(R.string.settings_interval_1hour)
                         360L -> stringResource(R.string.settings_interval_6hours)
                         1440L -> stringResource(R.string.settings_interval_24hours)
-                        else -> stringResource(
-                            R.string.settings_interval_custom,
-                            state.notificationIntervalMins
+                        else -> pluralStringResource(
+                            R.plurals.settings_interval_custom,
+                            state.notificationIntervalMins.toInt(),
+                            state.notificationIntervalMins.toInt()
                         )
                     }
 
@@ -465,8 +467,9 @@ fun SettingsContent(
                 HorizontalDivider(modifier = Modifier.padding(horizontal = 20.dp))
                 PreferenceAction(
                     title = stringResource(R.string.settings_classification_cache_title),
-                    subtitle = stringResource(
-                        R.string.settings_classification_cache_subtitle,
+                    subtitle = pluralStringResource(
+                        R.plurals.settings_classification_cache_subtitle,
+                        state.classificationCacheCount,
                         state.classificationCacheCount
                     ),
                     actionLabel = stringResource(R.string.settings_clear),

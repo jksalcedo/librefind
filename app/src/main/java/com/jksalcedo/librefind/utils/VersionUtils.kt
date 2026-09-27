@@ -66,7 +66,7 @@ object VersionUtils {
         return va.pre.number.compareTo(vb.pre.number)
     }
 
-    public fun isNewerVersion(latest: String, current: String): Boolean {
+    fun isNewerVersion(latest: String, current: String): Boolean {
         return compareVersions(latest, current) > 0
     }
 }

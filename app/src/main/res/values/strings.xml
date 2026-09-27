@@ -27,14 +27,10 @@
     <string name="correction_submit_button">Submit Correction</string>
 
     <!-- App Info -->
-    <string name="app_info_title">App info</string>
-    <string name="app_info_label_name">Name</string>
-    <string name="app_info_label_package">Package</string>
     <string name="app_info_label_category">Category</string>
     <string name="app_info_label_license">License</string>
     <string name="app_info_label_description">Description</string>
     <string name="app_info_unknown">Unknown</string>
-    <string name="app_info_unavailable">No app metadata available yet.</string>
 
     <!-- Profile -->
     <string name="profile_my_profile">My Profile</string>
@@ -50,19 +46,8 @@
     <string name="dashboard_no_matching_apps">No matching apps</string>
     <string name="dashboard_no_apps_found">No apps found</string>
     <!-- Profile Dialog -->
-    <string name="profile_dialog_title">Profile</string>
-    <string name="profile_unknown_username">Unknown Username</string>
-    <string name="profile_no_email">No Email</string>
-    <string name="profile_ignored_apps">Ignored Apps</string>
     <string name="profile_my_submissions">My Submissions</string>
     <string name="profile_sign_out">Sign Out</string>
-    <string name="profile_close">Close</string>
-    <string name="profile_missing_title">Profile Missing</string>
-    <string name="profile_not_signed_in_title">Not Signed In</string>
-    <string name="profile_missing_message">Your profile could not be found. Please try signing out and back in, or contact support.</string>
-    <string name="profile_not_signed_in_message">Please sign in to view your profile.</string>
-    <string name="profile_fix_profile">Fix Profile</string>
-    <string name="profile_sign_in">Sign In</string>
     <!-- Auth -->
     <string name="auth_create_account">Create Account</string>
     <string name="auth_sign_in">Sign In</string>
@@ -90,13 +75,11 @@
     <string name="submit_title_new">Submit App</string>
     <string name="submit_title_edit">Edit Submission</string>
     <string name="submit_success_title">Submission Received!</string>
-    <string name="submit_update_title">Submission Updated!</string>
     <string name="submit_success_message">Thanks! Your submission for \'%1$s\' has been received.</string>
     <string name="submit_update_message">Your submission for \'%1$s\' has been updated.</string>
     <string name="submit_done">Done</string>
     <string name="submit_what_submitting">What are you submitting?</string>
     <string name="submit_contribution_guide">Contribution Guide</string>
-    <string name="submit_web_submission_page">Open web submission page</string>
     <string name="submit_type_foss">FOSS App</string>
     <string name="submit_type_proprietary">Proprietary App</string>
     <string name="submit_type_link">Link App</string>
@@ -212,8 +195,6 @@
     <!-- New strings for system/vendor package filtering toggle -->
     <string name="settings_hide_system_packages_title">System package filtering</string>
     <string name="settings_hide_system_packages_label">Hide vendor/system packages</string>
-    <string name="settings_on">On</string>
-    <string name="settings_off">Off</string>
 
     <string name="settings_error">Error</string>
 
@@ -226,7 +207,6 @@
     <string name="settings_download_install">Download &amp; Install</string>
     <string name="settings_update_error">Failed to check for updates: %1$s</string>
     <string name="settings_changelog_title">What\'s New</string>
-    <string name="settings_include_prereleases_title">Experimental Updates</string>
     <string name="settings_include_prereleases_label">Include pre-releases</string>
     <string name="settings_include_prereleases_desc">Receive updates for alpha, beta, and RC versions.</string>
 
@@ -328,10 +308,8 @@
     <string name="details_help_categorize">Help us categorize this app:</string>
     <string name="details_suggest_foss">Suggest as FOSS</string>
     <string name="details_suggest_proprietary">Suggest as Proprietary</string>
-    <string name="details_found_format">Found %1$d FOSS alternative%2$s</string>
     <string name="details_suggest_alternative">Suggest an alternative</string>
     <string name="details_no_siblings">No other FOSS apps in the same category yet.</string>
-    <string name="details_siblings_found_format">%1$d similar FOSS app%2$s in this category</string>
     <string name="details_foss_category_unset">This app hasn\'t been assigned a category yet. Similar apps can\'t be shown until it is.</string>
     <string name="details_pending_chip">Pending</string>
 
@@ -360,12 +338,6 @@
     <string name="my_reports_title">My Reports</string>
     <string name="my_reports_empty">No reports found</string>
     <string name="my_reports_response">Response:</string>
-    <string name="report_status_open">Open</string>
-    <string name="report_status_in_progress">In Progress</string>
-    <string name="report_status_resolved">Resolved</string>
-    <string name="report_status_wontfix">Won\'t Fix</string>
-    <string name="report_status_duplicate">Duplicate</string>
-    <string name="report_status_closed">Closed</string>
     <!-- Report Screen -->
     <string name="report_issue_title">Report Issue</string>
     <string name="report_type_label">Report Type</string>
@@ -377,7 +349,6 @@
     <string name="report_submit_button">Submit Report</string>
     <string name="web_submission">Web Submission</string>
     <string name="status_pwa">PWA</string>
-    <string name="settings_clearing">Clearing...</string>
 
     <!-- Community Moderation -->
     <string name="settings_community_title">Community</string>
@@ -386,7 +357,6 @@
     <string name="community_submissions_title">Community Activity</string>
     <string name="community_leaderboard_title">Top Contributors</string>
     <string name="community_submissions_empty">No pending submissions found.</string>
-    <string name="action_approve">Approve</string>
     <string name="action_reject">Reject</string>
     <string name="reject_reason_title">Reject Submission</string>
     <string name="reject_reason_label">Reason for rejection</string>
@@ -401,7 +371,6 @@
     <!-- Submission voting -->
     <string name="submission_upvote">Upvote submission</string>
     <string name="submission_downvote">Downvote submission</string>
-    <string name="submission_votes_title">Community Votes</string>
     <string name="downvote_sheet_title">Report an Issue</string>
     <string name="downvote_sheet_subtitle">What\'s wrong with this submission?</string>
     <string name="downvote_reason_duplicate">Duplicate</string>
@@ -438,7 +407,7 @@
     <string name="dashboard">Dashboard</string>
     <string name="discover">Discover</string>
     <string name="community">Community</string>
-    <string name="search_database">Search database...</string>
+    <string name="search_database">Search database…</string>
     <string name="clear">Clear</string>
     <string name="foss_alternatives">FOSS Alternatives</string>
     <string name="proprietary_apps">Proprietary Apps</string>
@@ -514,7 +483,6 @@
     <string name="community_filter_all">All</string>
     <string name="community_unknown_error">Unknown error</string>
     <string name="community_clear">Clear</string>
-    <string name="community_back">Back</string>
 
     <!-- Profile screen -->
     <string name="profile_reputation">Reputation: %1$d</string>
@@ -531,7 +499,7 @@
     <!-- Comment Section -->
     <string name="comments_title">Comments</string>
     <string name="comments_empty">No comments yet. Be the first to discuss!</string>
-    <string name="comments_add_placeholder">Add a comment...</string>
+    <string name="comments_add_placeholder">Add a comment…</string>
     <string name="comments_send">Send Comment</string>
     <string name="comments_anonymous">Anonymous</string>
 
@@ -544,12 +512,9 @@
     <string name="settings_interval_1hour">Every 1 hour</string>
     <string name="settings_interval_6hours">Every 6 hours</string>
     <string name="settings_interval_24hours">Every 24 hours</string>
-    <string name="settings_interval_custom">Every %1$d minutes</string>
     <string name="settings_classification_cache_title">Classification Cache</string>
-    <string name="settings_classification_cache_subtitle">%1$d apps cached</string>
     <string name="settings_clear_classification_title">Clear Classification Cache?</string>
     <string name="settings_clear_classification_message">This will clear cached classification results. They will be re-fetched on the next scan.</string>
-    <string name="settings_version_unknown">Unknown</string>
 
     <!-- ScanList / AppRow -->
     <string name="badge_system">SYSTEM</string>
@@ -565,11 +530,6 @@
     <!-- Notification channel / worker -->
     <string name="notification_channel_name">General Notifications</string>
     <string name="notification_channel_description">Notifications for new apps and submission updates.</string>
-    <string name="notification_new_apps_title">New FOSS Apps Added!</string>
-    <string name="notification_new_apps_content">Check out the newly added apps: %1$s</string>
-    <string name="notification_submission_updated_title">Submission Updated</string>
-    <string name="notification_submission_updated_content">%1$s was %2$s.</string>
-    <string name="notification_submission_fallback_name">Your submission</string>
 
     <string name="tutorial_gauge_title">Sovereignty Score</string>
     <string name="tutorial_gauge_desc">This gauge shows your FOSS usage. Higher means more free software!</string>
@@ -594,7 +554,10 @@
         <item quantity="one">%1$d alternative available</item>
         <item quantity="other">%1$d alternatives available</item>
     </plurals>
-    <string name="items_selected">%1$d selected</string>
+    <plurals name="items_selected">
+        <item quantity="one">%1$d selected</item>
+        <item quantity="other">%1$d selected</item>
+    </plurals>
     <string name="package_label">Package</string>
 
     <!-- Network Consent -->

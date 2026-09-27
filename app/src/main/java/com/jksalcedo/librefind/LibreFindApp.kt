@@ -55,7 +55,7 @@ class LibreFindApp : Application() {
         // Schedule background workers off the main thread — WorkManager.getInstance()
         // initialises its internal Room database on first call which blocks the main thread.
         GlobalScope.launch(Dispatchers.IO) {
-            val prefs = com.jksalcedo.librefind.data.local.PreferencesManager(this@LibreFindApp)
+            val prefs = PreferencesManager(this@LibreFindApp)
             if (prefs.getNetworkConsentGranted()) {
                 scheduleSignerFeedUpdate()
                 scheduleNotificationWorker()
