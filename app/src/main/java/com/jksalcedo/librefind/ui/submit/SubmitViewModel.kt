@@ -413,9 +413,8 @@ class SubmitViewModel(
         val allowedSuffixes = listOf(
             "github.com", "gitlab.com", "bitbucket.org", "codeberg.org",
             "sr.ht", "gitea.com", "framagit.org", "notabug.org",
-            "kde.org", "gnome.org", "debian.org", "gnu.org",
-            "wikimedia.org", "freedesktop.org", "torproject.org",
-            "kernel.org", "videolan.org", "gitworkshop.dev",
+            "wikimedia.org", "torproject.org", "kde.org", "gnome.org",
+            "videolan.org", "gitworkshop.dev", "tuxfamily.org"
         )
 
         // Check if the host matches exactly or is a subdomain (e.g., gist.github.com)
