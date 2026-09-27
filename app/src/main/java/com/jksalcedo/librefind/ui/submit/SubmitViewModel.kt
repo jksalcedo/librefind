@@ -164,7 +164,8 @@ class SubmitViewModel(
                 user = authRepository.getCurrentUser()
             }
             if (user == null) {
-                _uiState.value = _uiState.value.copy(isLoading = false, error = "Failed to authenticate session")
+                _uiState.value =
+                    _uiState.value.copy(isLoading = false, error = "Failed to authenticate session")
                 return@launch
             }
 
@@ -414,7 +415,7 @@ class SubmitViewModel(
             "sr.ht", "gitea.com", "framagit.org", "notabug.org",
             "kde.org", "gnome.org", "debian.org", "gnu.org",
             "wikimedia.org", "freedesktop.org", "torproject.org",
-            "kernel.org", "videolan.org"
+            "kernel.org", "videolan.org", "gitworkshop.dev",
         )
 
         // Check if the host matches exactly or is a subdomain (e.g., gist.github.com)
