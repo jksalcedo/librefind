@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_approve">Approve</string>
     <string name="action_reject">Reject</string>
@@ -43,14 +43,14 @@
     <string name="alt_detail_usability_desc">Lihtne kasutada</string>
     <string name="alt_detail_view_source">Vaata lähtekoodi</string>
     <string name="alt_detail_your_ratings">Teie hinnangud</string>
-    <string name="app_info_label_category">Category</string>
+    <string name="app_info_label_category">Kategooria</string>
     <string name="app_info_label_description">Description</string>
-    <string name="app_info_label_license">License</string>
+    <string name="app_info_label_license">Litsents</string>
     <string name="app_info_label_name">Name</string>
     <string name="app_info_label_package">Package</string>
-    <string name="app_info_title">App info</string>
-    <string name="app_info_unavailable">No app metadata available yet.</string>
-    <string name="app_info_unknown">Unknown</string>
+    <string name="app_info_title">Rakenduse teave</string>
+    <string name="app_info_unavailable">Rakenduse metateave pole veel saadaval.</string>
+    <string name="app_info_unknown">Pole teada</string>
     <string name="app_name">LibreFind</string>
     <string name="auth_already_have_account">Kasutajakonto olemas? Siis logige sisse</string>
     <string name="auth_check_email_message">Me saatsime kinnituslingi teie e-postile. Palun kinnitage oma e-posti enne sisselogimist.</string>
@@ -148,7 +148,7 @@
     <string name="help_repo_url_tip">Otsi rakenduse tunnust veebileheküljelt, F-Droidi nimekirjast või otsi GitHubis/GitLabis/Codebergis „&lt;rakenduse nimi&gt; lähtekood”.</string>
     <string name="help_repo_url_title">Repositooriumi link</string>
     <string name="help_search_alternatives_desc">Otisige olevate vabarakenduslike alternatiive meie andmebaasist, et siduda seda omandilisega rakendusega.</string>
-    <string name="help_search_alternatives_title">Otsige alternatiive</string>
+    <string name="help_search_alternatives_title">Otsi alternatiive</string>
     <string name="help_target_apps_desc">Omandiline rakendus mida see vabarakendus asendab. Nt. Signal asendab Whatsapp/Telegram.</string>
     <string name="help_target_apps_tip">Valige tuntud omandiliste rakenduste nimekirjast. Kui sihtrakendust ei leidu, te võite ennem esitada seda nagu uus omandiline sihtrakendus.</string>
     <string name="help_target_apps_title">Omandilised sihtrakendused</string>
@@ -208,7 +208,7 @@
     <string name="profile_ignored_apps">Eiratud Rakendused</string>
     <string name="profile_missing_message">Ei õnnestunud teie profiili leida. Palun proovige logida välja ja logida sisse või vestelge meiega.</string>
     <string name="profile_missing_title">Profiil Puudub</string>
-    <string name="profile_my_profile">My Profile</string>
+    <string name="profile_my_profile">Minu profiil</string>
     <string name="profile_my_submissions">Minu Esitused</string>
     <string name="profile_no_email">Pole E-posti</string>
     <string name="profile_not_signed_in_message">Logige sisse, et näha oma profiili.</string>
@@ -216,8 +216,8 @@
     <string name="profile_sign_in">Sisenen</string>
     <string name="profile_sign_out">Välju</string>
     <string name="profile_unknown_username">Tundmatu kasutajanimi</string>
-    <string name="profile_user_profile">User Profile</string>
-    <string name="profile_user_submissions">User Submissions</string>
+    <string name="profile_user_profile">Kasutajaprofiil</string>
+    <string name="profile_user_submissions">Kasutaja edastatud andmed</string>
     <string name="reject_reason_label">Reason for rejection</string>
     <string name="reject_reason_title">Reject Submission</string>
     <string name="report_desc_label">Kirjeldus</string>
@@ -244,8 +244,8 @@
     <string name="settings_cache_size">Ikooni vahemälusuurus</string>
     <string name="settings_cancel">Katkesta</string>
     <string name="settings_changelog_title">What\'s New</string>
-    <string name="settings_check_updates">Check for Updates</string>
-    <string name="settings_checking_updates">Checking for updates…</string>
+    <string name="settings_check_updates">Kontrolli uuendusi</string>
+    <string name="settings_checking_updates">Kontrollin uuendusi…</string>
     <string name="settings_clear">Tühjenda</string>
     <string name="settings_clear_cache_message">See kustutab vahemälust kõikide rakenduste ikoonid. Nad taaslaevad kui te kerite läbi koondpaneeli.</string>
     <string name="settings_clear_cache_title">Tühjenda ikooni vahemälu?</string>
@@ -323,7 +323,7 @@
     <string name="submit_fdroid_id">F-Droid ID</string>
     <string name="submit_foss_requirements">Litsents ja Repositooriumi link on kohustuslikud vabaalternatiivide jaoks</string>
     <string name="submit_license">Litsents *</string>
-    <string name="submit_license_placeholder">Valige litsents</string>
+    <string name="submit_license_placeholder">Vali litsents</string>
     <string name="submit_link_solutions_desc">Siduge avatud rakenduse omandilise rakenduse külge meie andmebaasis.</string>
     <string name="submit_link_solutions_target">Valige omandilise rakenduse mis asendatakse sellega avatud lahendusega.</string>
     <string name="submit_link_solutions_title">Siduge olevaid lahendusi</string>
@@ -336,13 +336,13 @@
     <string name="submit_repo_placeholder">https://github.com/…</string>
     <string name="submit_repo_url">Repositooriumi link *</string>
     <string name="submit_search">Otsi</string>
-    <string name="submit_search_alternatives">Otsige alternatiive</string>
+    <string name="submit_search_alternatives">Otsi alternatiive</string>
     <string name="submit_search_foss_optional">Otsige üksik vabarakendus (valikuline)</string>
     <string name="submit_search_foss_placeholder">Otsi olevaid andmebaase…</string>
     <string name="submit_search_placeholder">Otsige nimi või pakendi järgi…</string>
     <string name="submit_search_solutions">Otsige lahendusi</string>
     <string name="submit_search_to_add">Otsige, et lisada…</string>
-    <string name="submit_select_license">Valige litsents</string>
+    <string name="submit_select_license">Vali litsents</string>
     <string name="submit_select_solutions">Valige lahendused mis tuleb seostada</string>
     <string name="submit_select_target">Valige sihtrakenduse…</string>
     <string name="submit_select_targets_dialog">Valige sihtrakendused</string>
@@ -371,4 +371,11 @@
     <string name="vote_downvote">Kehv alternatiiv (Vastuhääletus)</string>
     <string name="vote_upvote">Hea alternatiiv (poolt hääletus)</string>
     <string name="web_submission">Veebiesitus</string>
+    <plurals name="scan_list_alternatives_count">
+        <item quantity="one">Saadaval on %1$d alternatiiv</item>
+        <item quantity="other">Saadaval on %1$d alternatiivi</item>
+    </plurals>
+    <string name="cd_app_icon">Rakenduse ikoon</string>
+    <string name="cd_default_icon">Vaikimisi ikoon</string>
+    <string name="notification_channel_name">Üldised teavitused</string>
 </resources>

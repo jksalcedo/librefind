@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_approve">Approve</string>
     <string name="action_reject">Reject</string>
@@ -43,14 +43,14 @@
     <string name="alt_detail_usability_desc">Easy to use</string>
     <string name="alt_detail_view_source">View Source</string>
     <string name="alt_detail_your_ratings">Your Ratings</string>
-    <string name="app_info_label_category">Category</string>
+    <string name="app_info_label_category">الفئة</string>
     <string name="app_info_label_description">Description</string>
-    <string name="app_info_label_license">License</string>
+    <string name="app_info_label_license">الترخيص</string>
     <string name="app_info_label_name">Name</string>
     <string name="app_info_label_package">Package</string>
-    <string name="app_info_title">App info</string>
-    <string name="app_info_unavailable">No app metadata available yet.</string>
-    <string name="app_info_unknown">Unknown</string>
+    <string name="app_info_title">معلومات التطبيق</string>
+    <string name="app_info_unavailable">لا بيانات تعريف للتطبيق متاحة بعد.</string>
+    <string name="app_info_unknown">مجهول</string>
     <string name="app_name">ليبرفيند</string>
     <string name="auth_already_have_account">هل لديك حساب بالفعل؟ سجّل الدخول</string>
     <string name="auth_check_email_message">لقد أرسلنا رابط التحقق إلى بريدك الإلكتروني. يرجى التحقق من بريدك الإلكتروني قبل تسجيل الدخول.</string>
@@ -67,7 +67,7 @@
     <string name="auth_sign_in_github">سجّل الدخول باستخدام GitHub</string>
     <string name="auth_subtitle">تسجيل بديل مفتوح المصدر</string>
     <string name="auth_username">إسم المستخدم</string>
-    <string name="back">Back</string>
+    <string name="back">رجوع</string>
     <string name="community_leaderboard_title">Top Contributors</string>
     <string name="community_submissions_empty">No pending submissions found.</string>
     <string name="community_submissions_title">Pending Submissions</string>
@@ -130,9 +130,9 @@
     <string name="downvote_sheet_subtitle">What\'s wrong with this submission?</string>
     <string name="downvote_sheet_title">Report an Issue</string>
     <string name="field_help_content_desc">Help for %1$s</string>
-    <string name="help_app_name_desc">The display name of the app as users know it (e.g. \"Signal\", \"Firefox\", \"VLC\").</string>
-    <string name="help_app_name_tip">Use the official name from the app\'s website or store listing.</string>
-    <string name="help_app_name_title">App Name</string>
+    <string name="help_app_name_desc">الاسم المعروض للتطبيق كما يعرفه المستخدمون (على سبيل المثال \"Signal\"، \"Firefox\"، \"VLC\").</string>
+    <string name="help_app_name_tip">استخدم الاسم الرسمي من موقع التطبيق أو قائمة المتجر.</string>
+    <string name="help_app_name_title">اسم التطبيق</string>
     <string name="help_description_desc">A brief summary of what the app does. Keep it to 1-3 sentences.</string>
     <string name="help_description_title">Description</string>
     <string name="help_fdroid_id_desc">The package name as listed on F-Droid. Usually the same as the package name, but some apps use a different ID for F-Droid builds.</string>
@@ -141,8 +141,8 @@
     <string name="help_license_desc">The open source license the app is released under (e.g. GPL-3.0-only, GPL-3.0-or-later, MIT, Apache-2.0). This is required for FOSS submissions.</string>
     <string name="help_license_tip">Check the LICENSE or COPYING file in the app\'s source code repository, or look at the F-Droid listing.</string>
     <string name="help_license_title">License</string>
-    <string name="help_package_name_desc">The unique technical identifier for the app (e.g. \"org.mozilla.firefox\"). This is NOT the display name.</string>
-    <string name="help_package_name_tip">Find it on F-Droid (listed on the app page), or on the Play Store URL: play.google.com/store/apps/details?id=&lt;package.name&gt;. On your device: Settings → Apps → [App] → App info.</string>
+    <string name="help_package_name_desc">المعرّف الفني الفريد للتطبيق (على سبيل المثال، \"org.mozilla.firefox\"). هذا ليس الاسم المعروض.</string>
+    <string name="help_package_name_tip">اعثر عليه على F-Droid (مدرج في صفحة التطبيق)، أو على عنوان URL لمتجر Play: play.google.com/store/apps/details?id=&lt;package.name&gt;. على جهازك: الإعدادات ← التطبيقات ← [التطبيق] ← معلومات التطبيق.</string>
     <string name="help_package_name_title">Package Name</string>
     <string name="help_repo_url_desc">The link to the app\'s public source code repository. This is required to verify the app is truly open source.</string>
     <string name="help_repo_url_tip">Look for it on the app\'s website, F-Droid listing, or search \"&lt;app name&gt; source code\" on GitHub/GitLab/Codeberg.</string>
@@ -208,7 +208,7 @@
     <string name="profile_ignored_apps">التطبيقات المهملة</string>
     <string name="profile_missing_message">لم يتم العثور على ملفك الشخصي. يرجى محاولة تسجيل الخروج ثم تسجيل الدخول مرة أخرى، أو الإتصال بالدعم الفني.</string>
     <string name="profile_missing_title">الملف الشخصي مفقود</string>
-    <string name="profile_my_profile">My Profile</string>
+    <string name="profile_my_profile">ملفي الشخصي</string>
     <string name="profile_my_submissions">مشاركاتي</string>
     <string name="profile_no_email">لا يوجد بريد إلكتروني</string>
     <string name="profile_not_signed_in_message">يرجى تسجيل الدخول لعرض ملفك الشخصي.</string>
@@ -216,8 +216,8 @@
     <string name="profile_sign_in">تسجيل الدخول</string>
     <string name="profile_sign_out">تسجيل الخروج</string>
     <string name="profile_unknown_username">إسم مستخدم غير معروف</string>
-    <string name="profile_user_profile">User Profile</string>
-    <string name="profile_user_submissions">User Submissions</string>
+    <string name="profile_user_profile">الملف الشخصي للمستخدم</string>
+    <string name="profile_user_submissions">طلبات المستخدم</string>
     <string name="reject_reason_label">Reason for rejection</string>
     <string name="reject_reason_title">Reject Submission</string>
     <string name="report_desc_label">Description</string>
@@ -313,7 +313,7 @@
     <string name="submit_alternative_details">تفاصيل البديل</string>
     <string name="submit_app_name">اسم التطبيق *</string>
     <string name="submit_cancel">إلغاء</string>
-    <string name="submit_confirm">Confirm</string>
+    <string name="submit_confirm">تأكيد</string>
     <string name="submit_contribution_guide">دليل المساهمة</string>
     <string name="submit_custom_license">اسم رخصة مخصص *</string>
     <string name="submit_custom_license_placeholder">مثال .. اسم رخصتي المخصص</string>
@@ -324,18 +324,18 @@
     <string name="submit_foss_requirements">رابط الرخصة و المستودع مطلوبين للبدائل مفتوحة المصدر</string>
     <string name="submit_license">رخصة *</string>
     <string name="submit_license_placeholder">اختر رخصة</string>
-    <string name="submit_link_solutions_desc">Link an existing FOSS app to an existing proprietary app in our database.</string>
-    <string name="submit_link_solutions_target">Select the proprietary app that this FOSS solution replaces.</string>
+    <string name="submit_link_solutions_desc">اربط تطبيق FOSS موجود بتطبيق خاص موجود في قاعدة بياناتنا.</string>
+    <string name="submit_link_solutions_target">حدد التطبيق المسجّل الملكية الذي يحل محل هذا الحل من FOSS.</string>
     <string name="submit_link_solutions_title">ربط حلول موجودة</string>
     <string name="submit_linked_app">مربوط بتطبيق موجود</string>
-    <string name="submit_no_results">No results found.</string>
+    <string name="submit_no_results">لم يتم العثور على نتائج.</string>
     <string name="submit_no_targets">No targets found in database.</string>
     <string name="submit_other">آخر</string>
     <string name="submit_package_name">اسم الحزمة *</string>
     <string name="submit_package_placeholder">com.example.app</string>
     <string name="submit_repo_placeholder">https://github.com/…</string>
     <string name="submit_repo_url">رابط المستودع *</string>
-    <string name="submit_search">Search</string>
+    <string name="submit_search">بحث</string>
     <string name="submit_search_alternatives">إبحث عن بدائل</string>
     <string name="submit_search_foss_optional">ابحث تطبيق مفتوح المصدر معين (اختياري)</string>
     <string name="submit_search_foss_placeholder">البحث في قاعدة البيانات الموجودة…</string>
@@ -343,12 +343,12 @@
     <string name="submit_search_solutions">إبحث عن الحلول</string>
     <string name="submit_search_to_add">ابحث للاضافة…</string>
     <string name="submit_select_license">اختر ترخيص</string>
-    <string name="submit_select_solutions">Select Solutions to Link</string>
-    <string name="submit_select_target">Select a target app…</string>
-    <string name="submit_select_targets_dialog">Select Target Apps</string>
+    <string name="submit_select_solutions">تحديد الحلول للربط</string>
+    <string name="submit_select_target">حدد تطبيقًا مستهدفًا…</string>
+    <string name="submit_select_targets_dialog">حدد التطبيقات المستهدفة</string>
     <string name="submit_selected_alternatives">البدائل المختارة:</string>
     <string name="submit_selected_solutions">الحلول المختارة:</string>
-    <string name="submit_submit_button">Submit for Review</string>
+    <string name="submit_submit_button">إرسال للمراجعة</string>
     <string name="submit_success_message">شكراً ! تسجيلك لـ \'%1$s\' تم استقباله.</string>
     <string name="submit_success_title">تم استقبال التسجيل!</string>
     <string name="submit_suggest_target">Suggest as target</string>
@@ -359,11 +359,11 @@
     <string name="submit_type_foss">تطبيق مفتوح المصدر</string>
     <string name="submit_type_link">ربط تطبيق</string>
     <string name="submit_type_proprietary">تطبيق خاص</string>
-    <string name="submit_unknown_apps">Unknown apps from your device:</string>
-    <string name="submit_update_button">Update Submission</string>
+    <string name="submit_unknown_apps">تطبيقات غير معروفة من جهازك:</string>
+    <string name="submit_update_button">تحديث الطلب</string>
     <string name="submit_update_message">شكراً ! تسجيلك لـ \'%1$s\' تم تحديثه.</string>
     <string name="submit_update_title">تم تحديث التسجيل!</string>
-    <string name="submit_web_submission_page">Open web submission page</string>
+    <string name="submit_web_submission_page">فتح صفحة التقديم على الويب</string>
     <string name="submit_what_submitting">ما الذي تسجله؟</string>
     <string name="tutorial_done">Done</string>
     <string name="tutorial_next">Next</string>

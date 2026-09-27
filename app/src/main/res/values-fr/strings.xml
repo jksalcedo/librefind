@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_approve">Accepter</string>
     <string name="action_reject">Rejeter</string>
@@ -67,7 +67,7 @@
     <string name="auth_sign_in_github">Se connecter avec GitHub</string>
     <string name="auth_subtitle">Envoyer une alternative FOSS</string>
     <string name="auth_username">Pseudonyme</string>
-    <string name="back" />
+    <string name="back"/>
     <string name="community_leaderboard_title">Top Contributors</string>
     <string name="community_submissions_empty">No pending submissions found.</string>
     <string name="community_submissions_title">Pending Submissions</string>
