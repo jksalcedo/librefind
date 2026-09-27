@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="action_approve">Approve</string>
     <string name="action_reject">Reject</string>
     <string name="alt_detail_add_con">Dezavantaj Ekle</string>
     <string name="alt_detail_add_pro">Avantaj Ekle</string>
@@ -46,10 +45,6 @@
     <string name="app_info_label_category">Category</string>
     <string name="app_info_label_description">Description</string>
     <string name="app_info_label_license">License</string>
-    <string name="app_info_label_name">Name</string>
-    <string name="app_info_label_package">Package</string>
-    <string name="app_info_title">App info</string>
-    <string name="app_info_unavailable">No app metadata available yet.</string>
     <string name="app_info_unknown">Unknown</string>
     <string name="app_name">LibreFind</string>
     <string name="auth_already_have_account">Zaten Hesabın var mı? Giriş Yap</string>
@@ -102,14 +97,12 @@
     <string name="dashboard_unknown_error">Bilinmeyen Hata</string>
     <string name="details_error_unknown">Bilinmeyen hata</string>
     <string name="details_foss_category_unset">Bu uygulamaya henüz bir kategori atanmadı. Atanana kadar benzer uygulamalar gösterilemez.</string>
-    <string name="details_found_format">%1$d Açık Kaynak Alternatif Bulundu%2$s</string>
     <string name="details_help_categorize">Bu uygulamayı kategorize etmemize yardımcı olun:</string>
     <string name="details_no_alternatives">Hiçbir alternatif bulunamadı</string>
     <string name="details_no_siblings">Aynı kategoride henüz başka açık kaynaklı yazılım uygulaması yok.</string>
     <string name="details_no_suggested_alternatives">Bu uygulama için henüz hiçbir FOSS alternatifi önerilmemiştir.</string>
     <string name="details_not_in_db">Bu uygulama henüz veritabanımızda değil.</string>
     <string name="details_retry">Tekrar dene</string>
-    <string name="details_siblings_found_format">%1$d uygulamasının bu kategoride benzer bir FOSS uygulaması %2$s</string>
     <string name="details_suggest_alternative">Alternatif öner</string>
     <string name="details_suggest_foss">Açık Kaynaklı Olarak Gönder</string>
     <string name="details_suggest_proprietary">Kapalı Kaynak Olarak Gönder</string>
@@ -202,20 +195,9 @@
     <string name="privacy_subsection_supabase">Supabase</string>
     <string name="privacy_subsection_supabase_desc">Veritabanı ve kimlik doğrulama sağlayıcısı olarak Supabase kullanıyoruz.</string>
     <string name="privacy_title">LibreFind için Gizlilik Politikası</string>
-    <string name="profile_close">Kapat</string>
-    <string name="profile_dialog_title">Profil &amp; Ayarlar</string>
-    <string name="profile_fix_profile">Profili Düzelt</string>
-    <string name="profile_ignored_apps">Göz Ardı Edilen Uygulamalar</string>
-    <string name="profile_missing_message">Profil bulunamadı. Lütfen çıkış yapıp tekrar giriş yapmayı deneyin, veya destek ile iletişime geçin.</string>
-    <string name="profile_missing_title">Profil Eksik</string>
     <string name="profile_my_profile">My Profile</string>
     <string name="profile_my_submissions">Gönderdiklerim</string>
-    <string name="profile_no_email">E-Posta Yok</string>
-    <string name="profile_not_signed_in_message">Profilinizi görmek için giriş yapın.</string>
-    <string name="profile_not_signed_in_title">Giriş Yapılmamış</string>
-    <string name="profile_sign_in">Giriş Yap</string>
     <string name="profile_sign_out">Çıkış Yap</string>
-    <string name="profile_unknown_username">Bilinmeyen Kullanıcı Adı</string>
     <string name="profile_user_profile">User Profile</string>
     <string name="profile_user_submissions">User Submissions</string>
     <string name="reject_reason_label">Reason for rejection</string>
@@ -224,12 +206,6 @@
     <string name="report_desc_placeholder">Sorunu veya öneriyi ayrıntılı olarak açıklayın…</string>
     <string name="report_issue_title">Sorun Bildir</string>
     <string name="report_priority_label">Öncelik</string>
-    <string name="report_status_closed">Kapalı</string>
-    <string name="report_status_duplicate">Zaten Var</string>
-    <string name="report_status_in_progress">Devam Etmekte</string>
-    <string name="report_status_open">Açık</string>
-    <string name="report_status_resolved">Çözüldü</string>
-    <string name="report_status_wontfix">Düzeltilmeyecek</string>
     <string name="report_submit_button">Rapor Gönder</string>
     <string name="report_title_label">Başlık</string>
     <string name="report_title_placeholder">Sorunun kısa özeti</string>
@@ -249,7 +225,6 @@
     <string name="settings_clear">Temizle</string>
     <string name="settings_clear_cache_message">Bu işlem, önbelleğe alınmış tüm uygulama simgelerini kaldıracaktır. Kontrol panelinde gezinirken simgeler yeniden yüklenecektir.</string>
     <string name="settings_clear_cache_title">Simge önbelleğini temizle?</string>
-    <string name="settings_clearing">Clearing...</string>
     <string name="settings_community_title">Community</string>
     <string name="settings_delete">Sil</string>
     <string name="settings_delete_account">Hesabı Sil</string>
@@ -265,7 +240,6 @@
     <string name="settings_hide_system_packages_title">Sistem paketi filtreleme</string>
     <string name="settings_include_prereleases_desc">Receive updates for alpha, beta, and RC versions.</string>
     <string name="settings_include_prereleases_label">Include pre-releases</string>
-    <string name="settings_include_prereleases_title">Experimental Updates</string>
     <string name="settings_language">Dil</string>
     <string name="settings_language_arabic">Arapça</string>
     <string name="settings_language_chinese_simplified">Basitleştirilmiş Çince</string>
@@ -280,9 +254,7 @@
     <string name="settings_language_system">Sistem Varsayılanı</string>
     <string name="settings_language_turkish">Türkçe</string>
     <string name="settings_my_reports">Raporlarım</string>
-    <string name="settings_off">Kapalı</string>
     <string name="settings_ok">Tamam</string>
-    <string name="settings_on">Açık</string>
     <string name="settings_privacy_policy">Gizlilik Politikası</string>
     <string name="settings_report_issue">Sorun / Öneri Bildir</string>
     <string name="settings_reset_tutorial">Eğitimi Sıfırla</string>
@@ -308,7 +280,6 @@
     <string name="status_unknown">BİLİNMEYEN</string>
     <string name="submission_downvote">Downvote submission</string>
     <string name="submission_upvote">Upvote submission</string>
-    <string name="submission_votes_title">Community Votes</string>
     <string name="submit_add_alternatives">Alternatif Ekle (opsiyonel)</string>
     <string name="submit_alternative_details">Alternatif Detayları</string>
     <string name="submit_app_name">Uygulama İsmi *</string>
@@ -362,8 +333,6 @@
     <string name="submit_unknown_apps">Cihazındaki bilinmeyen uygulamalar:</string>
     <string name="submit_update_button">Gönderiyi Güncelle</string>
     <string name="submit_update_message">\'%1$s\' gönderin güncellendi.</string>
-    <string name="submit_update_title">Gönderiniz Güncellendi!</string>
-    <string name="submit_web_submission_page">Web üzerinden gönderme sayfasını aç</string>
     <string name="submit_what_submitting">Ne gönderiyorsun?</string>
     <string name="tutorial_done">Tamamlandı</string>
     <string name="tutorial_next">Devam</string>

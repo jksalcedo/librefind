@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="action_approve">Genehmigen</string>
-    <string name="action_reject">Ablehnen</string>
+m    <string name="action_reject">Ablehnen</string>
     <string name="alt_detail_add_con">Nachteil hinzufügen</string>
     <string name="alt_detail_add_pro">Vorteil hinzufügen</string>
     <string name="alt_detail_cancel">Abbrechen</string>
@@ -46,10 +45,6 @@
     <string name="app_info_label_category">Kategorie</string>
     <string name="app_info_label_description">Beschreibung</string>
     <string name="app_info_label_license">Lizenz</string>
-    <string name="app_info_label_name">Name</string>
-    <string name="app_info_label_package">Paket</string>
-    <string name="app_info_title">App-Infos</string>
-    <string name="app_info_unavailable">Noch keine App-Metadaten verfügbar.</string>
     <string name="app_info_unknown">Unbekannt</string>
     <string name="app_name">LibreFind</string>
     <string name="auth_already_have_account">Du hast bereits einen Account? Anmelden</string>
@@ -102,14 +97,12 @@
     <string name="dashboard_unknown_error">Unbekannter Fehler</string>
     <string name="details_error_unknown">Unbekannter Fehler</string>
     <string name="details_foss_category_unset">Dieser App wurde noch keine Kategorie zugewiesen. Ähnliche Apps können erst angezeigt werden, wenn sie es sind.</string>
-    <string name="details_found_format">%1$d FOSS Alternative%2$s gefunden</string>
     <string name="details_help_categorize">Hilf uns diese App zu kategorisieren:</string>
     <string name="details_no_alternatives">Keine Alternativen gefunden</string>
     <string name="details_no_siblings">Noch keine anderen FOSS-Apps in der gleichen Kategorie.</string>
     <string name="details_no_suggested_alternatives">Für diese App wurden bisher keine FOSS-Alternativen vorgeschlagen.</string>
     <string name="details_not_in_db">Diese App ist noch nicht in unserer Datenbank.</string>
     <string name="details_retry">Erneut versuchen</string>
-    <string name="details_siblings_found_format">%1$d ähnliche FOSS app%2$s in dieser Kategorie</string>
     <string name="details_suggest_alternative">Schlage eine Alternative vor</string>
     <string name="details_suggest_foss">Als FOSS vorschlagen</string>
     <string name="details_suggest_proprietary">Als Proprietär vorschagen</string>
@@ -202,20 +195,9 @@
     <string name="privacy_subsection_supabase">Supabase</string>
     <string name="privacy_subsection_supabase_desc">Wir nutzen Supabase al unsere Backend-Datenbank und als Authentifizierungsanbieter.</string>
     <string name="privacy_title">Datenschutzerklärung für LibreFind</string>
-    <string name="profile_close">Schließen</string>
-    <string name="profile_dialog_title">Profil</string>
-    <string name="profile_fix_profile">Profil reparieren</string>
-    <string name="profile_ignored_apps">Ignorierte Apps</string>
-    <string name="profile_missing_message">Dein Profil konnte nicht gefunden werden. Bitte versuche dich ab- und wieder anzumelden oder kontaktiere den Support.</string>
-    <string name="profile_missing_title">Profil fehlt</string>
     <string name="profile_my_profile">Mein Profil</string>
     <string name="profile_my_submissions">Meine Einreichungen</string>
-    <string name="profile_no_email">Keine E-Mail</string>
-    <string name="profile_not_signed_in_message">Bitte melde dich an, um dein Profil zu sehen.</string>
-    <string name="profile_not_signed_in_title">Nicht angemeldet</string>
-    <string name="profile_sign_in">Anmelden</string>
     <string name="profile_sign_out">Abmelden</string>
-    <string name="profile_unknown_username">Unbekannter Benutzername</string>
     <string name="profile_user_profile">Benutzerprofil</string>
     <string name="profile_user_submissions">Benutzereinreichungen</string>
     <string name="reject_reason_label">Grund für Ablehnung</string>
@@ -224,12 +206,6 @@
     <string name="report_desc_placeholder">Beschreibe das Problem oder den Vorschlag ausführlich …</string>
     <string name="report_issue_title">Problem melden</string>
     <string name="report_priority_label">Priorität</string>
-    <string name="report_status_closed">Geschlossen</string>
-    <string name="report_status_duplicate">Duplikat</string>
-    <string name="report_status_in_progress">In Bearbeitung</string>
-    <string name="report_status_open">Öffnen</string>
-    <string name="report_status_resolved">Behoben</string>
-    <string name="report_status_wontfix">Wird nicht behoben</string>
     <string name="report_submit_button">Meldung einreichen</string>
     <string name="report_title_label">Titel</string>
     <string name="report_title_placeholder">Kurze Zusammenfassung des Problems</string>
@@ -249,7 +225,6 @@
     <string name="settings_clear">Leeren</string>
     <string name="settings_clear_cache_message">Hierdurch werden alle zwischengespeicherten App-Icons gelöscht. Sie werden erneut geladen, wenn du durchs Dashboard scrollst.</string>
     <string name="settings_clear_cache_title">Icon-Cache löschen?</string>
-    <string name="settings_clearing">Leere...</string>
     <string name="settings_community_title">Community</string>
     <string name="settings_delete">Löschen</string>
     <string name="settings_delete_account">Account löschen</string>
@@ -265,7 +240,6 @@
     <string name="settings_hide_system_packages_title">Filtern von Systempaketen</string>
     <string name="settings_include_prereleases_desc">Erhalte Updates für Alpha-, Beta- und RC-Versionen.</string>
     <string name="settings_include_prereleases_label">Vorveröffentlichungen einschließen</string>
-    <string name="settings_include_prereleases_title">Experimentelle Updates</string>
     <string name="settings_language">Sprache</string>
     <string name="settings_language_arabic">Arabisch</string>
     <string name="settings_language_chinese_simplified">Vereinfachtes Chinesisch</string>
@@ -280,9 +254,7 @@
     <string name="settings_language_system">Systemvorgabe</string>
     <string name="settings_language_turkish">Türkisch</string>
     <string name="settings_my_reports">Meine Meldungen</string>
-    <string name="settings_off">Aus</string>
     <string name="settings_ok">OK</string>
-    <string name="settings_on">Ein</string>
     <string name="settings_privacy_policy">Datenschutzerklärung</string>
     <string name="settings_report_issue">Problem melden / Vorschlag</string>
     <string name="settings_reset_tutorial">Hilfeanzeige zurücksetzen</string>
@@ -308,7 +280,6 @@
     <string name="status_unknown">UNBEKANNT</string>
     <string name="submission_downvote">Einreichung downvoten</string>
     <string name="submission_upvote">Einreichung upvoten</string>
-    <string name="submission_votes_title">Community Votes</string>
     <string name="submit_add_alternatives">Füge Alternativen hinzu (optional)</string>
     <string name="submit_alternative_details">Alternativen Details</string>
     <string name="submit_app_name">App-Name *</string>
@@ -362,8 +333,6 @@
     <string name="submit_unknown_apps">Unbekannte Apps von deinem Gerät:</string>
     <string name="submit_update_button">Aktualisiere Einreichung</string>
     <string name="submit_update_message">Deine Einreichung für \'%1$s\' wurde aktualisiert.</string>
-    <string name="submit_update_title">Einreichung aktualisiert!</string>
-    <string name="submit_web_submission_page">Web-Vorlagen-Seiten öffnen</string>
     <string name="submit_what_submitting">Was reichst du ein?</string>
     <string name="tutorial_done">Fertig</string>
     <string name="tutorial_next">Weiter</string>

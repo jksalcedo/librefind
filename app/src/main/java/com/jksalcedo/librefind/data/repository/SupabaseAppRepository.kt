@@ -6,6 +6,7 @@ import com.jksalcedo.librefind.data.remote.model.AlternativeWithVoteDto
 import com.jksalcedo.librefind.data.remote.model.AppFeedbackDto
 import com.jksalcedo.librefind.data.remote.model.AppReport
 import com.jksalcedo.librefind.data.remote.model.AppScanStatsDto
+import com.jksalcedo.librefind.data.remote.model.CommentDto
 import com.jksalcedo.librefind.data.remote.model.MatchVoteDto
 import com.jksalcedo.librefind.data.remote.model.ProfileDto
 import com.jksalcedo.librefind.data.remote.model.SigningKeyVoteDto
@@ -18,6 +19,7 @@ import com.jksalcedo.librefind.data.remote.model.UserReportDto
 import com.jksalcedo.librefind.data.remote.model.UserSubmissionDto
 import com.jksalcedo.librefind.data.remote.model.UserVoteDto
 import com.jksalcedo.librefind.domain.model.Alternative
+import com.jksalcedo.librefind.domain.model.Comment
 import com.jksalcedo.librefind.domain.model.DuplicateStatus
 import com.jksalcedo.librefind.domain.model.Report
 import com.jksalcedo.librefind.domain.model.ReportPriority
@@ -1727,18 +1729,18 @@ class SupabaseAppRepository(
         submitSigningKeyVote(packageName, "", sha256Digest).getOrThrow()
     }
 
-    override suspend fun getComments(targetId: String): List<com.jksalcedo.librefind.domain.model.Comment> {
+    override suspend fun getComments(targetId: String): List<Comment> {
         return try {
             val dtos = supabase.postgrest.from("comments")
-                .select(columns = io.github.jan.supabase.postgrest.query.Columns.raw("*, profile:profiles(*)")) {
+                .select(columns = Columns.raw("*, profile:profiles(*)")) {
                     filter {
                         eq("target_id", targetId)
                     }
-                    order("created_at", order = io.github.jan.supabase.postgrest.query.Order.DESCENDING)
+                    order("created_at", order = Order.DESCENDING)
                 }.decodeList<com.jksalcedo.librefind.data.remote.model.CommentWithProfileDto>()
                 
             dtos.map { dto ->
-                com.jksalcedo.librefind.domain.model.Comment(
+                Comment(
                     id = dto.id,
                     targetId = dto.targetId,
                     userId = dto.userId,
@@ -1747,14 +1749,14 @@ class SupabaseAppRepository(
                     badge = dto.profile?.badge,
                     content = dto.content,
                     createdAt = try {
-                        java.time.Instant.parse(dto.createdAt).toEpochMilli()
-                    } catch (e: Exception) {
+                        Instant.parse(dto.createdAt).toEpochMilli()
+                    } catch (_: Exception) {
                         0L
                     }
                 )
             }
         } catch (e: Exception) {
-            android.util.Log.e("SupabaseAppRepo", "Failed to fetch comments", e)
+            Log.e("SupabaseAppRepo", "Failed to fetch comments", e)
             emptyList()
         }
     }
@@ -1763,7 +1765,7 @@ class SupabaseAppRepository(
         val userId = supabase.auth.currentUserOrNull()?.id
             ?: throw IllegalStateException("Not logged in")
             
-        val commentDto = com.jksalcedo.librefind.data.remote.model.CommentDto(
+        val commentDto = CommentDto(
             targetId = targetId,
             userId = userId,
             content = content

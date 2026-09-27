@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="action_approve">Approve</string>
     <string name="action_reject">Reject</string>
     <string name="alt_detail_add_con">Lisa miinus</string>
     <string name="alt_detail_add_pro">Lisa pluss</string>
@@ -46,10 +45,6 @@
     <string name="app_info_label_category">Kategooria</string>
     <string name="app_info_label_description">Description</string>
     <string name="app_info_label_license">Litsents</string>
-    <string name="app_info_label_name">Name</string>
-    <string name="app_info_label_package">Package</string>
-    <string name="app_info_title">Rakenduse teave</string>
-    <string name="app_info_unavailable">Rakenduse metateave pole veel saadaval.</string>
     <string name="app_info_unknown">Pole teada</string>
     <string name="app_name">LibreFind</string>
     <string name="auth_already_have_account">Kasutajakonto olemas? Siis logige sisse</string>
@@ -102,14 +97,12 @@
     <string name="dashboard_unknown_error">Tundmatu viga</string>
     <string name="details_error_unknown">Tundmatu viga</string>
     <string name="details_foss_category_unset">Sellele rakendusele pole veel kategooriat määratud. Sarnaseid rakendusi ei saa näidata enne, kui see on tehtud.</string>
-    <string name="details_found_format">Leitud %1$d vabaalternatiive %2$s\'le</string>
     <string name="details_help_categorize">Aita meil rakendust lisada õigesse kategooriasse:</string>
     <string name="details_no_alternatives">Alternatiive ei leidu</string>
     <string name="details_no_siblings">Selles kategoorias pole veel vabarakendusi leitud.</string>
     <string name="details_no_suggested_alternatives">Selle rakenduse jaoks pole veel vabarakenduslike alternatiive pakutud.</string>
     <string name="details_not_in_db">Seda rakendust pole veel meie andmebaasis.</string>
     <string name="details_retry">Proovi uuesti</string>
-    <string name="details_siblings_found_format">Sarnane %1$d \'le oli leitud rakendus %2$s \'de kategoorias</string>
     <string name="details_suggest_alternative">Paku alternatiivi</string>
     <string name="details_suggest_foss">Paku nagu vabarakendus</string>
     <string name="details_suggest_proprietary">Paku nagu omandiline rakendus</string>
@@ -202,20 +195,9 @@
     <string name="privacy_subsection_supabase">Supabase</string>
     <string name="privacy_subsection_supabase_desc">Me kasutame Supabase\'i oma tagapõhja andmebaasi ja autentimise pakkujana.</string>
     <string name="privacy_title">LibreFindi privaatsuspoliitika</string>
-    <string name="profile_close">Sulge</string>
-    <string name="profile_dialog_title">Profiil &amp; seadistused</string>
-    <string name="profile_fix_profile">Parandage Profiil</string>
-    <string name="profile_ignored_apps">Eiratud Rakendused</string>
-    <string name="profile_missing_message">Ei õnnestunud teie profiili leida. Palun proovige logida välja ja logida sisse või vestelge meiega.</string>
-    <string name="profile_missing_title">Profiil Puudub</string>
     <string name="profile_my_profile">Minu profiil</string>
     <string name="profile_my_submissions">Minu Esitused</string>
-    <string name="profile_no_email">Pole E-posti</string>
-    <string name="profile_not_signed_in_message">Logige sisse, et näha oma profiili.</string>
-    <string name="profile_not_signed_in_title">Pole Sisselogitud</string>
-    <string name="profile_sign_in">Sisenen</string>
     <string name="profile_sign_out">Välju</string>
-    <string name="profile_unknown_username">Tundmatu kasutajanimi</string>
     <string name="profile_user_profile">Kasutajaprofiil</string>
     <string name="profile_user_submissions">Kasutaja edastatud andmed</string>
     <string name="reject_reason_label">Reason for rejection</string>
@@ -224,12 +206,6 @@
     <string name="report_desc_placeholder">Kirjelda probleem või pakkumine täpsemalt…</string>
     <string name="report_issue_title">Teata probleemist</string>
     <string name="report_priority_label">Prioriteet</string>
-    <string name="report_status_closed">Suletud</string>
-    <string name="report_status_duplicate">Kordus</string>
-    <string name="report_status_in_progress">Menetluses</string>
-    <string name="report_status_open">Avatud</string>
-    <string name="report_status_resolved">Lahendatud</string>
-    <string name="report_status_wontfix">Ei paranda</string>
     <string name="report_submit_button">Esita teatust</string>
     <string name="report_title_label">Pealkiri</string>
     <string name="report_title_placeholder">Lühike kokkuvõte probleemist</string>
@@ -249,7 +225,6 @@
     <string name="settings_clear">Tühjenda</string>
     <string name="settings_clear_cache_message">See kustutab vahemälust kõikide rakenduste ikoonid. Nad taaslaevad kui te kerite läbi koondpaneeli.</string>
     <string name="settings_clear_cache_title">Tühjenda ikooni vahemälu?</string>
-    <string name="settings_clearing">Clearing...</string>
     <string name="settings_community_title">Community</string>
     <string name="settings_delete">Kustuta</string>
     <string name="settings_delete_account">Kustuta kasutajakonto</string>
@@ -265,7 +240,6 @@
     <string name="settings_hide_system_packages_title">Süsteemi pakendite sõelumine</string>
     <string name="settings_include_prereleases_desc">Receive updates for alpha, beta, and RC versions.</string>
     <string name="settings_include_prereleases_label">Include pre-releases</string>
-    <string name="settings_include_prereleases_title">Experimental Updates</string>
     <string name="settings_language">Keel</string>
     <string name="settings_language_arabic">Araabia</string>
     <string name="settings_language_chinese_simplified">Lihtsustatud Hiina</string>
@@ -280,9 +254,7 @@
     <string name="settings_language_system">Süsteemi</string>
     <string name="settings_language_turkish">Türgi</string>
     <string name="settings_my_reports">Minu teatused</string>
-    <string name="settings_off">Väljas</string>
     <string name="settings_ok">Sobib</string>
-    <string name="settings_on">Sees</string>
     <string name="settings_privacy_policy">Privaatsuspoliitika</string>
     <string name="settings_report_issue">Viga esitamine / Pakkumine</string>
     <string name="settings_reset_tutorial">Lähtesta sissejuhatus</string>
@@ -308,7 +280,6 @@
     <string name="status_unknown">TUNDMATU</string>
     <string name="submission_downvote">Downvote submission</string>
     <string name="submission_upvote">Upvote submission</string>
-    <string name="submission_votes_title">Community Votes</string>
     <string name="submit_add_alternatives">Lisa alternatiivid (valikuline)</string>
     <string name="submit_alternative_details">Alternatiivsed üksikasjad</string>
     <string name="submit_app_name">Rakenduse nimi *</string>
@@ -362,8 +333,6 @@
     <string name="submit_unknown_apps">Tundmatud rakendused teie seadmest:</string>
     <string name="submit_update_button">Uuendage esitust</string>
     <string name="submit_update_message">Teie esitus %1$s oli uuendatud.</string>
-    <string name="submit_update_title">Esitus edukalt uuendatud!</string>
-    <string name="submit_web_submission_page">Esita veebilehekülje kaudu</string>
     <string name="submit_what_submitting">Mida te esitate?</string>
     <string name="tutorial_done">Valmis</string>
     <string name="tutorial_next">Järgmine</string>

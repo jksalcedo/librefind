@@ -4,4 +4,20 @@
         <item quantity="one">%d user submitted this key</item>
         <item quantity="other">%d users submitted this key</item>
     </plurals>
+    <plurals name="details_found_format">
+        <item quantity="one">Found %1$d FOSS alternative</item>
+        <item quantity="other">Found %1$d FOSS alternatives</item>
+    </plurals>
+    <plurals name="details_siblings_found_format">
+        <item quantity="one">%1$d similar FOSS app in this category</item>
+        <item quantity="other">%1$d similar FOSS apps in this category</item>
+    </plurals>
+    <plurals name="settings_classification_cache_subtitle">
+        <item quantity="one">%1$d app cached</item>
+        <item quantity="other">%1$d apps cached</item>
+    </plurals>
+    <plurals name="settings_interval_custom">
+        <item quantity="one">Every %1$d minute</item>
+        <item quantity="other">Every %1$d minutes</item>
+    </plurals>
 </resources>

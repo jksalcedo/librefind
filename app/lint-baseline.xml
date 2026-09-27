@@ -1,0 +1,2754 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 9.4.1" type="baseline" client="gradle" dependencies="false" name="AGP (9.4.1)" variant="all" version="9.4.1">
+
+    <issue
+        id="AndroidGradlePluginVersion"
+        message="A newer version of Gradle than 9.6.0 is available: 9.8.0"
+        errorLine1="distributionUrl=https\://services.gradle.org/distributions/gradle-9.6.0-bin.zip"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="$HOME/Projects/codeberg.org/jksalcedo/librefind/gradle/wrapper/gradle-wrapper.properties"
+            line="3"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;signing_key_vote_count&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;plurals name=&quot;signing_key_vote_count&quot;>"
+        errorLine2="             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/plurals.xml"
+            line="3"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;details_found_format&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;plurals name=&quot;details_found_format&quot;>"
+        errorLine2="             ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/plurals.xml"
+            line="7"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;details_siblings_found_format&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;plurals name=&quot;details_siblings_found_format&quot;>"
+        errorLine2="             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/plurals.xml"
+            line="11"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_classification_cache_subtitle&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;plurals name=&quot;settings_classification_cache_subtitle&quot;>"
+        errorLine2="             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/plurals.xml"
+            line="15"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_interval_custom&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;plurals name=&quot;settings_interval_custom&quot;>"
+        errorLine2="             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/plurals.xml"
+            line="19"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;auth_continue_as_guest&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;auth_continue_as_guest&quot;>Continue as Guest&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="62"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_join_matrix&quot; is not translated in &quot;de&quot; (German), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;settings_join_matrix&quot;>Join Matrix&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="160"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_join_telegram&quot; is not translated in &quot;de&quot; (German), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;settings_join_telegram&quot;>Join Telegram&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="161"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_hide_system_packages_label&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;settings_hide_system_packages_label&quot;>Hide vendor/system packages&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="197"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_check_updates&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;settings_check_updates&quot;>Check for Updates&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="202"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_checking_updates&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;settings_checking_updates&quot;>Checking for updates…&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="203"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_up_to_date&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;settings_up_to_date&quot;>App is up to date&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="204"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_update_available_title&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;settings_update_available_title&quot;>Update Available&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="205"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_update_available_message&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;settings_update_available_message&quot;>A new version (%1$s) of LibreFind is available. Would you like to download and install it?&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="206"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_download_install&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;settings_download_install&quot;>Download &amp;amp; Install&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="207"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_update_error&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;settings_update_error&quot;>Failed to check for updates: %1$s&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="208"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_changelog_title&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;settings_changelog_title&quot;>What\&apos;s New&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="209"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_include_prereleases_label&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;settings_include_prereleases_label&quot;>Include pre-releases&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="210"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_include_prereleases_desc&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;settings_include_prereleases_desc&quot;>Receive updates for alpha, beta, and RC versions.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="211"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;details_no_suggested_alternatives&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;details_no_suggested_alternatives&quot;>No FOSS alternatives have been suggested for this app yet.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="307"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;details_suggest_alternative&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;details_suggest_alternative&quot;>Suggest an alternative&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="311"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;details_no_siblings&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;details_no_siblings&quot;>No other FOSS apps in the same category yet.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="312"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;details_foss_category_unset&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;details_foss_category_unset&quot;>This app hasn\&apos;t been assigned a category yet. Similar apps can\&apos;t be shown until it is.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="313"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;details_pending_chip&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;details_pending_chip&quot;>Pending&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="314"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;vote_upvote&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;vote_upvote&quot;>Good replacement (upvote)&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="317"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;vote_downvote&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;vote_downvote&quot;>Poor replacement (downvote)&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="318"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;web_submission&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;web_submission&quot;>Web Submission&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="350"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;status_pwa&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;status_pwa&quot;>PWA&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="351"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_community_title&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;settings_community_title&quot;>Community&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="354"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_browse_pending_title&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;settings_browse_pending_title&quot;>Browse Pending Submissions&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="355"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_browse_pending_desc&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;settings_browse_pending_desc&quot;>Help moderate community contributions.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="356"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;community_submissions_title&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;community_submissions_title&quot;>Community Activity&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="357"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;community_leaderboard_title&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;community_leaderboard_title&quot;>Top Contributors&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="358"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;community_submissions_empty&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;community_submissions_empty&quot;>No pending submissions found.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="359"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;action_reject&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;action_reject&quot;>Reject&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="360"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;reject_reason_title&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;reject_reason_title&quot;>Reject Submission&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="361"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;reject_reason_label&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;reject_reason_label&quot;>Reason for rejection&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="362"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;community_suggest_correction&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;community_suggest_correction&quot;>Suggest Correction&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="363"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;community_info_button&quot; is not translated in &quot;de&quot; (German), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;community_info_button&quot;>About Community Submissions&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="364"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;community_info_title&quot; is not translated in &quot;de&quot; (German), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;community_info_title&quot;>Community Submissions&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="365"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;community_info_description&quot; is not translated in &quot;de&quot; (German), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;community_info_description&quot;>This screen shows pending submissions from the LibreFind community. Anyone can submit a new FOSS alternative or flag a proprietary app. Submissions are reviewed by the admins and community through upvotes and downvotes before being added to the database.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="366"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;community_info_rules_title&quot; is not translated in &quot;de&quot; (German), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;community_info_rules_title&quot;>Submission Rules&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="367"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;community_info_voting_title&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;community_info_voting_title&quot;>Voting &amp;amp; Auto-Approval&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="368"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;community_info_voting_description&quot; is not translated in &quot;de&quot; (German), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;community_info_voting_description&quot;>A submission is automatically approved when it reaches a net score of +5 upvotes. Downvoting a submission lets you flag the specific reason (e.g. duplicate, wrong category, fake).&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="369"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;submission_upvote&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;submission_upvote&quot;>Upvote submission&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="372"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;submission_downvote&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;submission_downvote&quot;>Downvote submission&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="373"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;downvote_sheet_title&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;downvote_sheet_title&quot;>Report an Issue&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="374"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;downvote_sheet_subtitle&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;downvote_sheet_subtitle&quot;>What\&apos;s wrong with this submission?&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="375"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;downvote_reason_duplicate&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;downvote_reason_duplicate&quot;>Duplicate&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="376"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;downvote_reason_wrong_category&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;downvote_reason_wrong_category&quot;>Wrong Category&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="377"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;downvote_reason_fake&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;downvote_reason_fake&quot;>Fake Submission&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="378"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;downvote_reason_not_enough_info&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;downvote_reason_not_enough_info&quot;>Not Enough Information&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="379"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;downvote_reason_other&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;downvote_reason_other&quot;>Other&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="380"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;downvote_duplicate_hint&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;downvote_duplicate_hint&quot;>What is it a duplicate of?&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="381"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;downvote_category_hint&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;downvote_category_hint&quot;>Correct category&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="382"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;downvote_other_hint&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;downvote_other_hint&quot;>Please describe the issue…&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="383"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;downvote_category_foss&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;downvote_category_foss&quot;>FOSS&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="384"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;downvote_category_proprietary&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;downvote_category_proprietary&quot;>Proprietary&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="385"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;downvote_category_source_available&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;downvote_category_source_available&quot;>Source Available&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="386"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;downvote_category_pwa&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;downvote_category_pwa&quot;>PWA&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="387"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;downvote_confirm&quot; is not translated in &quot;sk&quot; (Slovak)"
+        errorLine1="    &lt;string name=&quot;downvote_confirm&quot;>Downvote&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="388"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;signing_key_title&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;signing_key_title&quot;>Submit Signing Key&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="391"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;signing_key_digest_label&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;signing_key_digest_label&quot;>SHA-256 Certificate Digest&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="392"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;signing_key_no_digest&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;signing_key_no_digest&quot;>No signing certificate found for this app.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="393"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;signing_key_explanation&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;signing_key_explanation&quot;>Submitting this key helps LibreFind verify that this app is signed by a trusted FOSS publisher. Once at least 3 users submit the same key for this app, it may be automatically classified as FOSS.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="394"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;signing_key_submit_button&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;signing_key_submit_button&quot;>Submit key as FOSS evidence&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="395"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;signing_key_endorse_button&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;signing_key_endorse_button&quot;>Endorse this key&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="396"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;signing_key_already_submitted&quot; is not translated in &quot;de&quot; (German), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;signing_key_already_submitted&quot;>Already submitted ✓&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="397"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;signing_key_filter_label&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;signing_key_filter_label&quot;>Key Vote&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="398"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;signing_key_empty&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;signing_key_empty&quot;>No signing key votes yet.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="399"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;community_sort&quot; is not translated in &quot;de&quot; (German), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;community_sort&quot;>Sort Submissions&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="400"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;community_sort_newest&quot; is not translated in &quot;de&quot; (German), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;community_sort_newest&quot;>Newest&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="401"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;community_sort_oldest&quot; is not translated in &quot;de&quot; (German), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;community_sort_oldest&quot;>Oldest&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="402"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;community_sort_most_upvoted&quot; is not translated in &quot;de&quot; (German), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;community_sort_most_upvoted&quot;>Most Upvoted&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="403"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;community_sort_most_downvoted&quot; is not translated in &quot;de&quot; (German), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;community_sort_most_downvoted&quot;>Most Downvoted&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="404"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;submission_details_title&quot; is not translated in &quot;de&quot; (German), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;submission_details_title&quot;>Submission Details&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="406"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;dashboard&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;dashboard&quot;>Dashboard&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="407"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;discover&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;discover&quot;>Discover&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="408"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;community&quot; is not translated in &quot;de&quot; (German), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;community&quot;>Community&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="409"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;search_database&quot; is not translated in &quot;de&quot; (German), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;search_database&quot;>Search database…&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="410"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;clear&quot; is not translated in &quot;de&quot; (German), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;clear&quot;>Clear&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="411"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;foss_alternatives&quot; is not translated in &quot;de&quot; (German), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;foss_alternatives&quot;>FOSS Alternatives&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="412"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;proprietary_apps&quot; is not translated in &quot;de&quot; (German), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;proprietary_apps&quot;>Proprietary Apps&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="413"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;type_to_search_the_database&quot; is not translated in &quot;de&quot; (German), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;type_to_search_the_database&quot;>Type to search the database.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="414"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;more&quot; is not translated in &quot;de&quot; (German), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;more&quot;>More&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="415"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;submitted&quot; is not translated in &quot;de&quot; (German), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;submitted&quot;>Submitted&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="416"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;approved&quot; is not translated in &quot;de&quot; (German), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;approved&quot;>Approved&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="417"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;rejected&quot; is not translated in &quot;de&quot; (German), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;rejected&quot;>Rejected&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="418"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;gauge_label_foss&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;gauge_label_foss&quot;>FOSS&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="421"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;gauge_label_proprietary&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;gauge_label_proprietary&quot;>PROPRIETARY&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="422"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;gauge_label_unknown&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;gauge_label_unknown&quot;>UNKNOWN&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="423"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;gauge_label_ignored&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;gauge_label_ignored&quot;>Ignored&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="424"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;gauge_label_pending&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;gauge_label_pending&quot;>Pending&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="425"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;gauge_level_sovereign&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;gauge_level_sovereign&quot;>Sovereign&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="426"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;gauge_level_transitioning&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;gauge_level_transitioning&quot;>Transitioning&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="427"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;gauge_level_captured&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;gauge_level_captured&quot;>Captured&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="428"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;gauge_dialog_title&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;gauge_dialog_title&quot;>Sovereignty Score&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="431"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;gauge_dialog_desc&quot; is not translated in &quot;de&quot; (German), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;gauge_dialog_desc&quot;>Your score represents how much of your digital life is powered by Free and Open Source Software.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="432"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;gauge_dialog_breakdown&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;gauge_dialog_breakdown&quot;>Breakdown (tap to filter):&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="433"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;gauge_dialog_foss_apps&quot; is not translated in &quot;de&quot; (German), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;gauge_dialog_foss_apps&quot;>FOSS Apps&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="434"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;gauge_dialog_proprietary_apps&quot; is not translated in &quot;de&quot; (German), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;gauge_dialog_proprietary_apps&quot;>Proprietary Apps&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="435"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;gauge_dialog_unknown_apps&quot; is not translated in &quot;de&quot; (German), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;gauge_dialog_unknown_apps&quot;>Unknown Apps&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="436"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;gauge_dialog_ignored_apps&quot; is not translated in &quot;de&quot; (German), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;gauge_dialog_ignored_apps&quot;>Ignored Apps&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="437"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;gauge_dialog_pending_apps&quot; is not translated in &quot;de&quot; (German), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;gauge_dialog_pending_apps&quot;>Pending Apps&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="438"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;gauge_dialog_levels&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;gauge_dialog_levels&quot;>Levels:&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="439"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;gauge_level_sovereign_label&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;gauge_level_sovereign_label&quot;>Sovereign (80%+)&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="440"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;gauge_level_transitioning_label&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;gauge_level_transitioning_label&quot;>Transitioning (40-79%)&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="441"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;gauge_level_captured_label&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;gauge_level_captured_label&quot;>Captured (&amp;lt;40%)&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="442"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;gauge_dialog_close&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;gauge_dialog_close&quot;>Close&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="443"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;dashboard_clear_selection&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;dashboard_clear_selection&quot;>Clear selection&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="446"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;dashboard_selection_actions&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;dashboard_selection_actions&quot;>Selection Actions&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="447"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;dashboard_ignore_selected&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;dashboard_ignore_selected&quot;>Ignore selected&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="448"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;dashboard_restore_selected&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;dashboard_restore_selected&quot;>Restore selected&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="449"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;dashboard_mark_foss&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;dashboard_mark_foss&quot;>Mark selected as FOSS&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="450"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;dashboard_mark_pwa&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;dashboard_mark_pwa&quot;>Mark selected as PWA&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="451"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;dashboard_undo_reclassify&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;dashboard_undo_reclassify&quot;>Undo reclassification&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="452"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;dashboard_collapse&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;dashboard_collapse&quot;>Collapse&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="453"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;dashboard_expand&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;dashboard_expand&quot;>Expand&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="454"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;dashboard_view_in_community&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;dashboard_view_in_community&quot;>View in Community&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="455"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;dashboard_community_chip&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;dashboard_community_chip&quot;>Community&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="456"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;dashboard_pending_banner_desc&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;dashboard_pending_banner_desc&quot;>These apps have submissions under review in the community.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="457"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;dashboard_browse_community&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;dashboard_browse_community&quot;>Browse Community&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="458"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;leaderboard_no_contributors&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;leaderboard_no_contributors&quot;>No contributors yet&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="461"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;leaderboard_points&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;leaderboard_points&quot;>points&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="462"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;submission_detail_not_found&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;submission_detail_not_found&quot;>Submission not found or already processed.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="465"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;submission_detail_edit&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;submission_detail_edit&quot;>Edit&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="466"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;submission_detail_replaces&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;submission_detail_replaces&quot;>Replaces Proprietary Targets&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="467"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;submission_detail_linked_solutions&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;submission_detail_linked_solutions&quot;>Linked FOSS Solutions&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="468"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;submission_detail_app_details&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;submission_detail_app_details&quot;>App Details&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="469"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;submission_detail_package_name&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;submission_detail_package_name&quot;>Package Name&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="470"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;submission_detail_category&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;submission_detail_category&quot;>Category&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="471"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;submission_detail_license&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;submission_detail_license&quot;>License&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="472"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;submission_detail_repo_url&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;submission_detail_repo_url&quot;>Repository URL&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="473"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;submission_detail_fdroid_id&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;submission_detail_fdroid_id&quot;>F-Droid ID&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="474"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;submission_detail_description&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;submission_detail_description&quot;>Description&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="475"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;submission_detail_no_description&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;submission_detail_no_description&quot;>No description provided.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="476"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;submission_detail_discussion&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;submission_detail_discussion&quot;>Discussion&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="477"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;submission_detail_edited_by&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;submission_detail_edited_by&quot;> • Edited by %1$s&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="478"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;submission_detail_unknown&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;submission_detail_unknown&quot;>Unknown&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="479"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;submission_detail_na&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;submission_detail_na&quot;>N/A&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="480"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;community_filter_all&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;community_filter_all&quot;>All&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="483"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;community_unknown_error&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;community_unknown_error&quot;>Unknown error&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="484"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;community_clear&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;community_clear&quot;>Clear&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="485"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;profile_reputation&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;profile_reputation&quot;>Reputation: %1$d&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="488"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;alt_detail_collapse&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;alt_detail_collapse&quot;>Collapse&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="491"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;alt_detail_expand&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;alt_detail_expand&quot;>Expand&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="492"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;alt_detail_close&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;alt_detail_close&quot;>Close&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="493"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;alt_detail_more_options&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;alt_detail_more_options&quot;>More options&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="494"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;alt_detail_add_pro_desc&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;alt_detail_add_pro_desc&quot;>Add pro&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="495"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;alt_detail_add_con_desc&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;alt_detail_add_con_desc&quot;>Add con&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="496"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;alt_detail_rate_star&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;alt_detail_rate_star&quot;>Rate %1$d&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="497"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;comments_title&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;comments_title&quot;>Comments&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="500"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;comments_empty&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;comments_empty&quot;>No comments yet. Be the first to discuss!&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="501"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;comments_add_placeholder&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;comments_add_placeholder&quot;>Add a comment…&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="502"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;comments_send&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;comments_send&quot;>Send Comment&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="503"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;comments_anonymous&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;comments_anonymous&quot;>Anonymous&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="504"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_notifications&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;settings_notifications&quot;>Notifications&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="507"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_bg_notifications_title&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;settings_bg_notifications_title&quot;>Background Notifications&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="508"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_bg_notifications_subtitle&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;settings_bg_notifications_subtitle&quot;>Notify me of new apps and submission updates.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="509"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_check_interval&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;settings_check_interval&quot;>Check Interval&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="510"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_interval_15min&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;settings_interval_15min&quot;>Every 15 minutes&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="511"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_interval_1hour&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;settings_interval_1hour&quot;>Every 1 hour&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="512"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_interval_6hours&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;settings_interval_6hours&quot;>Every 6 hours&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="513"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_interval_24hours&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;settings_interval_24hours&quot;>Every 24 hours&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="514"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_classification_cache_title&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;settings_classification_cache_title&quot;>Classification Cache&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="515"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_clear_classification_title&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;settings_clear_classification_title&quot;>Clear Classification Cache?&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="516"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_clear_classification_message&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;settings_clear_classification_message&quot;>This will clear cached classification results. They will be re-fetched on the next scan.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="517"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;badge_system&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;badge_system&quot;>SYSTEM&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="520"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;action_ignore&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;action_ignore&quot;>Ignore&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="521"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;action_restore&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;action_restore&quot;>Restore&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="522"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;action_mark_foss&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;action_mark_foss&quot;>Mark as FOSS&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="523"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;action_mark_pwa&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;action_mark_pwa&quot;>Mark as PWA&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="524"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;action_undo_reclassification&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;action_undo_reclassification&quot;>Undo reclassification&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="525"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;cd_loading&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;cd_loading&quot;>Loading&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="526"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;cd_app_icon&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;cd_app_icon&quot;>App Icon&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="527"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;cd_default_icon&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;cd_default_icon&quot;>Default Icon&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="528"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;notification_channel_name&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;notification_channel_name&quot;>General Notifications&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="531"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;notification_channel_description&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;notification_channel_description&quot;>Notifications for new apps and submission updates.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="532"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;tutorial_gauge_title&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;tutorial_gauge_title&quot;>Sovereignty Score&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="534"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;tutorial_gauge_desc&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;tutorial_gauge_desc&quot;>This gauge shows your FOSS usage. Higher means more free software!&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="535"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;tutorial_filter_title&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;tutorial_filter_title&quot;>Filter Apps&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="536"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;tutorial_filter_desc&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;tutorial_filter_desc&quot;>Tap these chips to filter by app type: FOSS, Proprietary, or Unknown.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="537"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;tutorial_search_title&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;tutorial_search_title&quot;>Search&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="538"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;tutorial_search_desc&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;tutorial_search_desc&quot;>Search for installed apps by name.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="539"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;tutorial_profile_title&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;tutorial_profile_title&quot;>Profile &amp;amp; Settings&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="540"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;tutorial_profile_desc&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;tutorial_profile_desc&quot;>Access your profile, submissions, ignored apps, and settings here.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="541"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;tutorial_fab_title&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;tutorial_fab_title&quot;>Submit an App&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="542"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;tutorial_fab_desc&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;tutorial_fab_desc&quot;>Know if an app is FOSS? Tap here to submit it and help the community!&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="543"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;error_unknown&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;error_unknown&quot;>Unknown error&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="545"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;submit_category&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;submit_category&quot;>Category&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="546"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;submit_category_placeholder&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;submit_category_placeholder&quot;>Select a category&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="547"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;submit_select_category&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;submit_select_category&quot;>Select category&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="548"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;remove&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;remove&quot;>Remove&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="549"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;cd_link&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;cd_link&quot;>Link&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="550"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;cd_unlink&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;cd_unlink&quot;>Unlink&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="551"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;scan_list_alternatives_count&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;plurals name=&quot;scan_list_alternatives_count&quot;>"
+        errorLine2="             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="553"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;items_selected&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;plurals name=&quot;items_selected&quot;>"
+        errorLine2="             ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="557"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;package_label&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;package_label&quot;>Package&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="561"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;network_consent_title&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;network_consent_title&quot;>Allow Background Checks&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="564"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;network_consent_message&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;network_consent_message&quot;>LibreFind can automatically check for community notifications and refresh trusted ROM signers in the background. This requires internet access.\n\nDo you wish to opt-in to automatic background network usage?\n\nYou can change this later in Settings.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="565"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;network_consent_opt_in&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;network_consent_opt_in&quot;>Opt-In&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="566"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;network_consent_disable&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;network_consent_disable&quot;>Disable&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="567"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_network_access_title&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;settings_network_access_title&quot;>Background Network Access&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="569"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_network_access_subtitle&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;settings_network_access_subtitle&quot;>Allow LibreFind to check for community notifications and trusted ROM signers in the background&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="570"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_auto_update_title&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;settings_auto_update_title&quot;>Automatic Updates&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="572"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_auto_update_subtitle&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;settings_auto_update_subtitle&quot;>Automatically check for LibreFind updates in the background&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="573"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;update_available_title&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;update_available_title&quot;>Update Available&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="575"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;update_available_content&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;update_available_content&quot;>LibreFind version %1$s is available!&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="576"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;settings_logs_title&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;settings_logs_title&quot;>Logs &amp;amp; Diagnostics&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="579"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;pref_logs_location_title&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;pref_logs_location_title&quot;>Logs Location&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="580"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;pref_logs_location_default&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;pref_logs_location_default&quot;>Default: Internal App Storage&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="581"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;pref_export_app_logs_title&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;pref_export_app_logs_title&quot;>Export App Logs&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="582"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;pref_export_app_logs_summary&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;pref_export_app_logs_summary&quot;>Capture current device diagnostics and runtime logs&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="583"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;pref_share_all_logs_title&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;pref_share_all_logs_title&quot;>Share All Logs&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="584"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;pref_share_all_logs_summary&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;pref_share_all_logs_summary&quot;>Share crash reports and diagnostic logs as a zip file&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="585"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;logs_none_found&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;logs_none_found&quot;>No logs found&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="586"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;logs_zip_failed&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;logs_zip_failed&quot;>Failed to create zip file&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="587"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;logs_reset_default&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;logs_reset_default&quot;>Reset location&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="588"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;pref_clear_logs_title&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;pref_clear_logs_title&quot;>Clear Logs&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="589"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;logs_cleared&quot; is not translated in &quot;de&quot; (German), &quot;ru&quot; (Russian), &quot;el&quot; (Greek), &quot;hr&quot; (Croatian), &quot;lv&quot; (Latvian), &quot;it&quot; (Italian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;et&quot; (Estonian), &quot;ar&quot; (Arabic), &quot;sk&quot; (Slovak), &quot;pl&quot; (Polish), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;logs_cleared&quot;>Local logs cleared&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="590"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="Typos"
+        message="&quot;pagina&quot; is a common misspelling; did you mean &quot;página&quot;?"
+        errorLine1="    &lt;string name=&quot;help_app_name_tip&quot;>Usa el nombre oficial de la app que figura en su pagina web o en la tienda de apps.&lt;/string>"
+        errorLine2="                                                                                      ~~~~~~">
+        <location
+            file="src/main/res/values-es/strings.xml"
+            line="127"
+            column="87"/>
+    </issue>
+
+    <issue
+        id="Typos"
+        message="&quot;unico&quot; is a common misspelling; did you mean &quot;único&quot;?"
+        errorLine1="    &lt;string name=&quot;privacy_bullet_device_id&quot;>ID del dispositivo: Un identificador unico generado aleatoriamente (UUID en inglés) almacenado localmente en tu dispositivo. Esto nos permite sincronizar tus preferencias sin saber tu identidad real.&lt;/string>"
+        errorLine2="                                                                                 ~~~~~">
+        <location
+            file="src/main/res/values-es/strings.xml"
+            line="162"
+            column="82"/>
+    </issue>
+
+    <issue
+        id="Typos"
+        message="&quot;alla&quot; is a common misspelling; did you mean &quot;allá&quot;?"
+        errorLine1="    &lt;string name=&quot;privacy_note_app_names&quot;>Nota: Enviamos el nombre de paquete de tus apps instaladas a nuestros servidores solamente para clasificarla (determinado si es FOSS o Propietaria). No almacenamos ni registramos estos nombres de paquete más alla de lo necesario para la consulta.&lt;/string>"
+        errorLine2="                                                                                                                                                                                                                                                          ~~~~">
+        <location
+            file="src/main/res/values-es/strings.xml"
+            line="175"
+            column="251"/>
+    </issue>
+
+    <issue
+        id="Typos"
+        message="&quot;darüberhinaus&quot; is a common misspelling; did you mean &quot;darüber hinaus&quot;?"
+        errorLine1="    &lt;string name=&quot;privacy_note_app_names&quot;>Anmerkung: Wir senden die Paketnamen deiner installierten Apps an unsere Server ausschließlich für Klassifizierungszwecke (Bestimmung FOSS vs. proprietärer Status). Wir speichern oder protokollieren diese Paketnamen nicht darüberhinaus was nötig ist für die Abfrage.&lt;/string>"
+        errorLine2="                                                                                                                                                                                                                                                                        ~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-de/strings.xml"
+            line="175"
+            column="265"/>
+    </issue>
+
+    <issue
+        id="Typos"
+        message="Repeated word &quot;zaman&quot; in message: possible typo"
+        errorLine1="    &lt;string name=&quot;privacy_section_7_desc&quot;>Bu Gizlilik Politikasını zaman zaman güncelleyebiliriz. Herhangi bir değişiklik olduğunda, bu politikanın en üstündeki \&quot;Son güncelleme\&quot; tarihini güncelleyerek sizi bilgilendireceğiz. Herhangi bir değişiklik için bu Gizlilik Politikasını periyodik olarak gözden geçirmeniz önerilir.&lt;/string>"
+        errorLine2="                                                                   ~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-tr/strings.xml"
+            line="188"
+            column="68"/>
+    </issue>
+
+    <issue
+        id="Typos"
+        message="&quot;algun&quot; is a common misspelling; did you mean &quot;algún&quot;?"
+        errorLine1="    &lt;string name=&quot;privacy_section_8_desc&quot;>Si tienes algun pregunta sobre esta política de privacidad, porfavor contactanos:&lt;/string>"
+        errorLine2="                                                    ~~~~~">
+        <location
+            file="src/main/res/values-es/strings.xml"
+            line="190"
+            column="53"/>
+    </issue>
+
+    <issue
+        id="Untranslatable"
+        message="The resource string &quot;app_name&quot; has been marked as translatable=&quot;false&quot; elsewhere (usually in the `values` folder), but is translated to &quot;sk&quot; (Slovak) here"
+        errorLine1="    &lt;string name=&quot;app_name&quot;>LibreFind&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-sk/strings.xml"
+            line="3"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="Untranslatable"
+        message="The resource string &quot;app_name&quot; has been marked as translatable=&quot;false&quot; elsewhere (usually in the `values` folder), but is translated to &quot;ar&quot; (Arabic) here"
+        errorLine1="    &lt;string name=&quot;app_name&quot;>ليبرفيند&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-ar/strings.xml"
+            line="49"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="Untranslatable"
+        message="The resource string &quot;app_name&quot; has been marked as translatable=&quot;false&quot; elsewhere (usually in the `values` folder), but is translated to &quot;de&quot; (German) here"
+        errorLine1="    &lt;string name=&quot;app_name&quot;>LibreFind&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-de/strings.xml"
+            line="49"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="Untranslatable"
+        message="The resource string &quot;app_name&quot; has been marked as translatable=&quot;false&quot; elsewhere (usually in the `values` folder), but is translated to &quot;el&quot; (Greek) here"
+        errorLine1="    &lt;string name=&quot;app_name&quot;>LibreFind&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-el/strings.xml"
+            line="49"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="Untranslatable"
+        message="The resource string &quot;app_name&quot; has been marked as translatable=&quot;false&quot; elsewhere (usually in the `values` folder), but is translated to &quot;es&quot; (Spanish) here"
+        errorLine1="    &lt;string name=&quot;app_name&quot;>LibreFind&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-es/strings.xml"
+            line="49"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="Untranslatable"
+        message="The resource string &quot;app_name&quot; has been marked as translatable=&quot;false&quot; elsewhere (usually in the `values` folder), but is translated to &quot;et&quot; (Estonian) here"
+        errorLine1="    &lt;string name=&quot;app_name&quot;>LibreFind&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-et/strings.xml"
+            line="49"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="Untranslatable"
+        message="The resource string &quot;app_name&quot; has been marked as translatable=&quot;false&quot; elsewhere (usually in the `values` folder), but is translated to &quot;fr&quot; (French) here"
+        errorLine1="    &lt;string name=&quot;app_name&quot;>LibreFind&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-fr/strings.xml"
+            line="49"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="Untranslatable"
+        message="The resource string &quot;app_name&quot; has been marked as translatable=&quot;false&quot; elsewhere (usually in the `values` folder), but is translated to &quot;it&quot; (Italian) here"
+        errorLine1="    &lt;string name=&quot;app_name&quot;>LibreFind&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-it/strings.xml"
+            line="49"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="Untranslatable"
+        message="The resource string &quot;app_name&quot; has been marked as translatable=&quot;false&quot; elsewhere (usually in the `values` folder), but is translated to &quot;pl&quot; (Polish) here"
+        errorLine1="    &lt;string name=&quot;app_name&quot;>LibreFind&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-pl/strings.xml"
+            line="49"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="Untranslatable"
+        message="The resource string &quot;app_name&quot; has been marked as translatable=&quot;false&quot; elsewhere (usually in the `values` folder), but is translated to &quot;ru&quot; (Russian) here"
+        errorLine1="    &lt;string name=&quot;app_name&quot;>LibreFind&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-ru/strings.xml"
+            line="49"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="Untranslatable"
+        message="The resource string &quot;app_name&quot; has been marked as translatable=&quot;false&quot; elsewhere (usually in the `values` folder), but is translated to &quot;tr&quot; (Turkish) here"
+        errorLine1="    &lt;string name=&quot;app_name&quot;>LibreFind&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-tr/strings.xml"
+            line="49"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="TypographyDashes"
+        message="Replace &quot;-&quot; with an &quot;en dash&quot; character (–, &amp;#8211;) ?"
+        errorLine1="    &lt;string name=&quot;help_description_desc&quot;>A brief summary of what the app does. Keep it to 1-3 sentences.&lt;/string>"
+        errorLine2="                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-hr/strings.xml"
+            line="128"
+            column="42"/>
+    </issue>
+
+    <issue
+        id="TypographyDashes"
+        message="Replace &quot;-&quot; with an &quot;en dash&quot; character (–, &amp;#8211;) ?"
+        errorLine1="    &lt;string name=&quot;help_description_desc&quot;>A brief summary of what the app does. Keep it to 1-3 sentences.&lt;/string>"
+        errorLine2="                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-lv/strings.xml"
+            line="128"
+            column="42"/>
+    </issue>
+
+    <issue
+        id="TypographyDashes"
+        message="Replace &quot;-&quot; with an &quot;en dash&quot; character (–, &amp;#8211;) ?"
+        errorLine1="    &lt;string name=&quot;help_description_desc&quot;>简要说明该应用的功能。请控制在 1-3 句话内。&lt;/string>"
+        errorLine2="                                         ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-zh/strings.xml"
+            line="128"
+            column="42"/>
+    </issue>
+
+    <issue
+        id="TypographyDashes"
+        message="Replace &quot;-&quot; with an &quot;en dash&quot; character (–, &amp;#8211;) ?"
+        errorLine1="    &lt;string name=&quot;help_description_desc&quot;>A brief summary of what the app does. Keep it to 1-3 sentences.&lt;/string>"
+        errorLine2="                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-ar/strings.xml"
+            line="129"
+            column="42"/>
+    </issue>
+
+    <issue
+        id="TypographyDashes"
+        message="Replace &quot;-&quot; with an &quot;en dash&quot; character (–, &amp;#8211;) ?"
+        errorLine1="    &lt;string name=&quot;help_description_desc&quot;>Eine kurze Zusammenfassung der Funktion der App. Beschränke dich auf 1-3 Sätze.&lt;/string>"
+        errorLine2="                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-de/strings.xml"
+            line="129"
+            column="42"/>
+    </issue>
+
+    <issue
+        id="TypographyDashes"
+        message="Replace &quot;-&quot; with an &quot;en dash&quot; character (–, &amp;#8211;) ?"
+        errorLine1="    &lt;string name=&quot;help_description_desc&quot;>A brief summary of what the app does. Keep it to 1-3 sentences.&lt;/string>"
+        errorLine2="                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-el/strings.xml"
+            line="129"
+            column="42"/>
+    </issue>
+
+    <issue
+        id="TypographyDashes"
+        message="Replace &quot;-&quot; with an &quot;en dash&quot; character (–, &amp;#8211;) ?"
+        errorLine1="    &lt;string name=&quot;help_description_desc&quot;>Lühike kokkuvõte sellest, mida rakendus teeb. u. 1-3 lauset.&lt;/string>"
+        errorLine2="                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-et/strings.xml"
+            line="129"
+            column="42"/>
+    </issue>
+
+    <issue
+        id="TypographyDashes"
+        message="Replace &quot;-&quot; with an &quot;en dash&quot; character (–, &amp;#8211;) ?"
+        errorLine1="    &lt;string name=&quot;help_description_desc&quot;>Un breve riassunto di cosa fa l\&apos;app. Limitati a 1-3 frasi.&lt;/string>"
+        errorLine2="                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-it/strings.xml"
+            line="129"
+            column="42"/>
+    </issue>
+
+    <issue
+        id="TypographyDashes"
+        message="Replace &quot;-&quot; with an &quot;en dash&quot; character (–, &amp;#8211;) ?"
+        errorLine1="    &lt;string name=&quot;help_description_desc&quot;>Krótkie podsumowanie co robi aplikacja. Zmieść się w 1-3 zdaniach.&lt;/string>"
+        errorLine2="                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-pl/strings.xml"
+            line="129"
+            column="42"/>
+    </issue>
+
+    <issue
+        id="TypographyDashes"
+        message="Replace &quot;-&quot; with an &quot;en dash&quot; character (–, &amp;#8211;) ?"
+        errorLine1="    &lt;string name=&quot;help_description_desc&quot;>Uygulamanın ne işe yaradığını kısaca (1-3 cümle ile) özetleyin.&lt;/string>"
+        errorLine2="                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-tr/strings.xml"
+            line="129"
+            column="42"/>
+    </issue>
+
+    <issue
+        id="TypographyDashes"
+        message="Replace &quot;-&quot; with an &quot;en dash&quot; character (–, &amp;#8211;) ?"
+        errorLine1="    &lt;string name=&quot;help_description_desc&quot;>A brief summary of what the app does. Keep it to 1-3 sentences.&lt;/string>"
+        errorLine2="                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="137"
+            column="42"/>
+    </issue>
+
+    <issue
+        id="TypographyDashes"
+        message="Replace &quot;-&quot; with an &quot;en dash&quot; character (–, &amp;#8211;) ?"
+        errorLine1="    &lt;string name=&quot;gauge_level_transitioning_label&quot;>Transitioning (40-79%)&lt;/string>"
+        errorLine2="                                                   ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="441"
+            column="52"/>
+    </issue>
+
+</issues>

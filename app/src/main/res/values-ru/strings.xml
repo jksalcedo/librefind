@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="action_approve">Approve</string>
     <string name="action_reject">Reject</string>
     <string name="alt_detail_add_con">Добавить минус</string>
     <string name="alt_detail_add_pro">Добавить плюс</string>
@@ -46,10 +45,6 @@
     <string name="app_info_label_category">Category</string>
     <string name="app_info_label_description">Description</string>
     <string name="app_info_label_license">License</string>
-    <string name="app_info_label_name">Name</string>
-    <string name="app_info_label_package">Package</string>
-    <string name="app_info_title">App info</string>
-    <string name="app_info_unavailable">No app metadata available yet.</string>
     <string name="app_info_unknown">Unknown</string>
     <string name="app_name">LibreFind</string>
     <string name="auth_already_have_account">Уже есть учётная запись? Войти</string>
@@ -102,14 +97,12 @@
     <string name="dashboard_unknown_error">Неизвестная ошибка</string>
     <string name="details_error_unknown">Неизвестная ошибка</string>
     <string name="details_foss_category_unset">Это приложение ещё не было присвоено ни к одной категории. Похожие приложения будут показаны, когда его присвоят.</string>
-    <string name="details_found_format">Найдено приложение %1$d FOSS-альтернатива %2$s</string>
     <string name="details_help_categorize">Помогите нам классифицировать это приложение:</string>
     <string name="details_no_alternatives">Альтернатив не найдено</string>
     <string name="details_no_siblings">Пока нет других FOSS-приложений в этой же категории.</string>
     <string name="details_no_suggested_alternatives">Для этого приложения ещё не были предложены FOSS-альтернативы.</string>
     <string name="details_not_in_db">Этого приложения ещё нет в нашей базе данных.</string>
     <string name="details_retry">Попробовать снова</string>
-    <string name="details_siblings_found_format">%1$d похожее FOSS-приложение%2$s в этой категории</string>
     <string name="details_suggest_alternative">Предложить как альтернативу</string>
     <string name="details_suggest_foss">Предложить как FOSS</string>
     <string name="details_suggest_proprietary">Предложить как проприетарное</string>
@@ -202,20 +195,9 @@
     <string name="privacy_subsection_supabase">Supabase</string>
     <string name="privacy_subsection_supabase_desc">Мы используем Supabase в качестве backend-базы данных и поставщика аутентификации.</string>
     <string name="privacy_title">Политика конфиденциальности LibreFind</string>
-    <string name="profile_close">Закрыть</string>
-    <string name="profile_dialog_title">Профиль и настройки</string>
-    <string name="profile_fix_profile">Исправить профиль</string>
-    <string name="profile_ignored_apps">Пропущенные приложения</string>
-    <string name="profile_missing_message">Не удалось найти Ваш профиль. Попробуйте выйти и войти в профиль или написать в поддержку.</string>
-    <string name="profile_missing_title">Профиль не найден</string>
     <string name="profile_my_profile">My Profile</string>
     <string name="profile_my_submissions">Мои заявки</string>
-    <string name="profile_no_email">Нет электронной почты</string>
-    <string name="profile_not_signed_in_message">Для просмотра своего профиля, пожалуйста, авторизируйтесь.</string>
-    <string name="profile_not_signed_in_title">Не авторизирован</string>
-    <string name="profile_sign_in">Войти</string>
     <string name="profile_sign_out">Выйти</string>
-    <string name="profile_unknown_username">Неизвестное имя пользователя</string>
     <string name="profile_user_profile">User Profile</string>
     <string name="profile_user_submissions">User Submissions</string>
     <string name="reject_reason_label">Reason for rejection</string>
@@ -224,12 +206,6 @@
     <string name="report_desc_placeholder">Подробно опишите проблему или предложение…</string>
     <string name="report_issue_title">Пожаловаться на проблему</string>
     <string name="report_priority_label">Приоритет</string>
-    <string name="report_status_closed">Закрыто</string>
-    <string name="report_status_duplicate">Продублировать</string>
-    <string name="report_status_in_progress">В процессе</string>
-    <string name="report_status_open">Открыть</string>
-    <string name="report_status_resolved">Урегулировано</string>
-    <string name="report_status_wontfix">Не будут исправлено</string>
     <string name="report_submit_button">Отправить жалобу</string>
     <string name="report_title_label">Название</string>
     <string name="report_title_placeholder">Краткий тезис проблемы</string>
@@ -249,7 +225,6 @@
     <string name="settings_clear">Очистить</string>
     <string name="settings_clear_cache_message">Весь кэш иконок будет очищен. Они будут загружены снова, когда Вы будете просматривать панель.</string>
     <string name="settings_clear_cache_title">Очистить кэш иконок?</string>
-    <string name="settings_clearing">Clearing...</string>
     <string name="settings_community_title">Community</string>
     <string name="settings_delete">Удалить</string>
     <string name="settings_delete_account">Удалить учётную запись</string>
@@ -265,7 +240,6 @@
     <string name="settings_hide_system_packages_title">Сортировка системных пакетов</string>
     <string name="settings_include_prereleases_desc">Receive updates for alpha, beta, and RC versions.</string>
     <string name="settings_include_prereleases_label">Include pre-releases</string>
-    <string name="settings_include_prereleases_title">Experimental Updates</string>
     <string name="settings_language">Язык</string>
     <string name="settings_language_arabic">Арабский</string>
     <string name="settings_language_chinese_simplified">Китайский (упрощённый)</string>
@@ -280,9 +254,7 @@
     <string name="settings_language_system">По умолчанию в системе</string>
     <string name="settings_language_turkish">Турецкий</string>
     <string name="settings_my_reports">Мои жалобы</string>
-    <string name="settings_off">Выкл.</string>
     <string name="settings_ok">ОК</string>
-    <string name="settings_on">Вкл.</string>
     <string name="settings_privacy_policy">Политика конфиденциальности</string>
     <string name="settings_report_issue">Жалоба на проблему / Предложение</string>
     <string name="settings_reset_tutorial">Перезапустить обучение</string>
@@ -308,7 +280,6 @@
     <string name="status_unknown">НЕИЗВЕСТНОЕ</string>
     <string name="submission_downvote">Downvote submission</string>
     <string name="submission_upvote">Upvote submission</string>
-    <string name="submission_votes_title">Community Votes</string>
     <string name="submit_add_alternatives">Добавить альтернативы (необязательно)</string>
     <string name="submit_alternative_details">Подробности об альтернативах</string>
     <string name="submit_app_name">Название приложения *</string>
@@ -362,8 +333,6 @@
     <string name="submit_unknown_apps">Неизвестные приложения на Вашем устройстве:</string>
     <string name="submit_update_button">Обновить заявку</string>
     <string name="submit_update_message">Ваша заявка для \'%1$s\' была обновлена.</string>
-    <string name="submit_update_title">Заявка обновлена!</string>
-    <string name="submit_web_submission_page">Предложить через сайт</string>
     <string name="submit_what_submitting">Что Вы хотите предложить?</string>
     <string name="tutorial_done">Готово</string>
     <string name="tutorial_next">Дальше</string>
@@ -386,7 +355,7 @@
     <string name="community_sort_most_downvoted">Больше голосов \"против\"</string>
     <string name="submission_details_title">Детали предложения</string>
     <string name="community">Коммьюнити</string>
-    <string name="search_database">Искать по базе...</string>
+    <string name="search_database">Искать по базе…</string>
     <string name="clear">Очистить</string>
     <string name="foss_alternatives">Свободные альтернативы</string>
     <string name="proprietary_apps">Проприетарные приложения</string>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="action_approve">Pieņemt</string>
     <string name="action_reject">Noraidīt</string>
     <string name="alt_detail_add_con">Pievienot mīnusu</string>
     <string name="alt_detail_add_pro">Pievienot plusu</string>
@@ -46,10 +45,6 @@
     <string name="app_info_label_category">Kategorija</string>
     <string name="app_info_label_description">Description</string>
     <string name="app_info_label_license">Licence</string>
-    <string name="app_info_label_name">Nosaukums</string>
-    <string name="app_info_label_package">Lietotnes unikālais tehniskais identifikators</string>
-    <string name="app_info_title">Lietotnes informācija</string>
-    <string name="app_info_unavailable">No app metadata available yet.</string>
     <string name="app_info_unknown">Nav informācijas</string>
     <string name="auth_already_have_account">Jums jau ir konts? Ieiet</string>
     <string name="auth_check_email_message">We\'ve sent a verification link to your email address. Please verify your email before signing in.</string>
@@ -101,14 +96,12 @@
     <string name="dashboard_unknown_error">@string/details_error_unknown</string>
     <string name="details_error_unknown">Nezināma kļūda</string>
     <string name="details_foss_category_unset">This app hasn\'t been assigned a category yet. Similar apps can\'t be shown until it is.</string>
-    <string name="details_found_format">Atrasta(s) %1$d alternatīva(s) FOSS lietotne(s)%2$s</string>
     <string name="details_help_categorize">Palīdziet mums klasificēt šo lietotni:</string>
     <string name="details_no_alternatives">Nav atrasta neviena alternatīva</string>
     <string name="details_no_siblings">No other FOSS apps in the same category yet.</string>
     <string name="details_no_suggested_alternatives">No FOSS alternatives have been suggested for this app yet.</string>
     <string name="details_not_in_db">Šī lietotne vēl nav mūsu datubāzē.</string>
     <string name="details_retry">Mēģināt vēlreiz</string>
-    <string name="details_siblings_found_format">%1$d līdzīga(s) FOSS lietotne(s)%2$s šajā kategorijā</string>
     <string name="details_suggest_alternative">Suggest an alternative</string>
     <string name="details_suggest_foss">Suggest as FOSS</string>
     <string name="details_suggest_proprietary">Suggest as Proprietary</string>
@@ -201,20 +194,9 @@
     <string name="privacy_subsection_supabase">Supabase</string>
     <string name="privacy_subsection_supabase_desc">We use Supabase as our backend database and authentication provider.</string>
     <string name="privacy_title">Privacy Policy for LibreFind</string>
-    <string name="profile_close">Aizvērt</string>
-    <string name="profile_dialog_title">Profils un iestatījumi</string>
-    <string name="profile_fix_profile">Salabot profilu</string>
-    <string name="profile_ignored_apps">Ignored Apps</string>
-    <string name="profile_missing_message">Your profile could not be found. Please try signing out and back in, or contact support.</string>
-    <string name="profile_missing_title">Trūkst profila</string>
     <string name="profile_my_profile">Mans profils</string>
     <string name="profile_my_submissions">My Submissions</string>
-    <string name="profile_no_email">Nav e-pasta</string>
-    <string name="profile_not_signed_in_message">Please sign in to view your profile.</string>
-    <string name="profile_not_signed_in_title">Not Signed In</string>
-    <string name="profile_sign_in">Sign In</string>
     <string name="profile_sign_out">Sign Out</string>
-    <string name="profile_unknown_username">Nezināms lietotājvārds</string>
     <string name="profile_user_profile">Lietotāja profils</string>
     <string name="profile_user_submissions">User Submissions</string>
     <string name="reject_reason_label">Noraidīšanas iemesls</string>
@@ -223,12 +205,6 @@
     <string name="report_desc_placeholder">Detalizēti aprakstiet problēmu vai ieteikumu, priekšlikumu…</string>
     <string name="report_issue_title">Ziņot problēmu</string>
     <string name="report_priority_label">Prioritāte</string>
-    <string name="report_status_closed">Aizvērts</string>
-    <string name="report_status_duplicate">Dublēts, jau esošs</string>
-    <string name="report_status_in_progress">Tiek risināts</string>
-    <string name="report_status_open">Atvērts</string>
-    <string name="report_status_resolved">Atrisināts</string>
-    <string name="report_status_wontfix">Nelabos</string>
     <string name="report_submit_button">Iesniegt ziņojumu</string>
     <string name="report_title_label">Virsraksts</string>
     <string name="report_title_placeholder">Īss problēmas izklāsts</string>
@@ -248,7 +224,6 @@
     <string name="settings_clear">Notīrīt</string>
     <string name="settings_clear_cache_message">This will remove all cached app icons. They will be reloaded when you scroll through the dashboard.</string>
     <string name="settings_clear_cache_title">Vai tiešām vēlaties notīrīt ikonu kešatmiņu?</string>
-    <string name="settings_clearing">Clearing...</string>
     <string name="settings_community_title">Kopiena</string>
     <string name="settings_delete">Dzēst</string>
     <string name="settings_delete_account">Dzēst kontu</string>
@@ -264,7 +239,6 @@
     <string name="settings_hide_system_packages_title">System package filtering</string>
     <string name="settings_include_prereleases_desc">Receive updates for alpha, beta, and RC versions.</string>
     <string name="settings_include_prereleases_label">Include pre-releases</string>
-    <string name="settings_include_prereleases_title">Experimental Updates</string>
     <string name="settings_language">Valoda</string>
     <string name="settings_language_arabic">Arābu</string>
     <string name="settings_language_chinese_simplified">Ķīniešu (vienkāršotā)</string>
@@ -279,9 +253,7 @@
     <string name="settings_language_system">Sistēmas noklusējuma</string>
     <string name="settings_language_turkish">Turku</string>
     <string name="settings_my_reports">@string/my_reports_title</string>
-    <string name="settings_off">Izslēgts</string>
     <string name="settings_ok">Labi</string>
-    <string name="settings_on">Ieslēgts</string>
     <string name="settings_privacy_policy">Konfidencialitātes politika</string>
     <string name="settings_report_issue">Ziņot problēmu / Ieteikums</string>
     <string name="settings_reset_tutorial">Reset Tutorial</string>
@@ -307,7 +279,6 @@
     <string name="status_unknown">NEZINĀMS</string>
     <string name="submission_downvote">Downvote submission</string>
     <string name="submission_upvote">Upvote submission</string>
-    <string name="submission_votes_title">Community Votes</string>
     <string name="submit_add_alternatives">Add Alternatives (optional)</string>
     <string name="submit_alternative_details">Alternative Details</string>
     <string name="submit_app_name">Lietotnes nosaukums *</string>
@@ -361,8 +332,6 @@
     <string name="submit_unknown_apps">Unknown apps from your device:</string>
     <string name="submit_update_button">Update Submission</string>
     <string name="submit_update_message">Your submission for \'%1$s\' has been updated.</string>
-    <string name="submit_update_title">Submission Updated!</string>
-    <string name="submit_web_submission_page">Open web submission page</string>
     <string name="submit_what_submitting">What are you submitting?</string>
     <string name="tutorial_done">Done</string>
     <string name="tutorial_next">Tālāk</string>
@@ -380,7 +349,6 @@
     <string name="leaderboard_points">punkti</string>
     <string name="badge_system">SISTĒMAS</string>
     <string name="submission_detail_edit">Rediģēt</string>
-    <string name="settings_version_unknown">Nezināma</string>
     <string name="settings_notifications">Paziņojumi</string>
     <string name="submission_detail_category">Kategorija</string>
     <string name="submission_detail_license">Licence</string>
@@ -393,7 +361,6 @@
     <string name="submission_detail_discussion">Diskusija</string>
     <string name="community_filter_all">Visas</string>
     <string name="community_clear">Notīrīt</string>
-    <string name="community_back">Atpakaļ</string>
     <string name="alt_detail_collapse">Sakļaut</string>
     <string name="alt_detail_expand">Izvērst</string>
     <string name="alt_detail_close">Aizvērt</string>

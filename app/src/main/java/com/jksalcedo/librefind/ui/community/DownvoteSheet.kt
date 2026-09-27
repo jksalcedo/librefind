@@ -13,6 +13,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FilterChip
@@ -107,15 +108,19 @@ fun DownvoteSheet(
                         onExpandedChange = { categoryExpanded = it },
                         modifier = Modifier.fillMaxWidth()
                     ) {
+                        val fillMaxWidth = Modifier
+                            .fillMaxWidth()
                         OutlinedTextField(
                             value = selectedCategory,
                             onValueChange = {},
                             readOnly = true,
                             label = { Text(stringResource(R.string.downvote_category_hint)) },
-                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(categoryExpanded) },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .menuAnchor()
+                            trailingIcon = {
+                                ExposedDropdownMenuDefaults.TrailingIcon(
+                                    categoryExpanded
+                                )
+                            },
+                            modifier = fillMaxWidth.menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable, true)
                         )
                         ExposedDropdownMenu(
                             expanded = categoryExpanded,
