@@ -1,6 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="action_approve">Accepter</string>
     <string name="action_reject">Rejeter</string>
     <string name="alt_detail_add_con">Ajouter un inconvénient</string>
     <string name="alt_detail_add_pro">Ajouter un avantage</string>
@@ -46,10 +45,6 @@
     <string name="app_info_label_category">Category</string>
     <string name="app_info_label_description">Description</string>
     <string name="app_info_label_license">License</string>
-    <string name="app_info_label_name">Name</string>
-    <string name="app_info_label_package">Package</string>
-    <string name="app_info_title">App info</string>
-    <string name="app_info_unavailable">No app metadata available yet.</string>
     <string name="app_info_unknown">Unknown</string>
     <string name="app_name">LibreFind</string>
     <string name="auth_already_have_account">Déjà un compte ? Se connecter</string>
@@ -67,7 +62,7 @@
     <string name="auth_sign_in_github">Se connecter avec GitHub</string>
     <string name="auth_subtitle">Envoyer une alternative FOSS</string>
     <string name="auth_username">Pseudonyme</string>
-    <string name="back" />
+    <string name="back"/>
     <string name="community_leaderboard_title">Top Contributors</string>
     <string name="community_submissions_empty">No pending submissions found.</string>
     <string name="community_submissions_title">Pending Submissions</string>
@@ -102,14 +97,12 @@
     <string name="dashboard_unknown_error">Erreur inconnue</string>
     <string name="details_error_unknown">Erreur inconnue</string>
     <string name="details_foss_category_unset">This app hasn\'t been assigned a category yet. Similar apps can\'t be shown until it is.</string>
-    <string name="details_found_format">%1$d alternative%2$s FOSS trouvée%2$s</string>
     <string name="details_help_categorize">Help us categorize this app:</string>
     <string name="details_no_alternatives">Aucune alternative trouvée</string>
     <string name="details_no_siblings">Aucune autre app FOSS dans la même catégorie pour le moment.</string>
     <string name="details_no_suggested_alternatives">Aucune alternative FOSS n\'a été encore suggérée.</string>
     <string name="details_not_in_db">Cette application n\'est pas encore dans notre base de données.</string>
     <string name="details_retry">Réessayer</string>
-    <string name="details_siblings_found_format">%1$d app%2$s FOSS similaire%2$s dans cette catégorie</string>
     <string name="details_suggest_alternative">Suggérer une alternative</string>
     <string name="details_suggest_foss">Suggérer comme FOSS</string>
     <string name="details_suggest_proprietary">Suggérer comme Propriétaire</string>
@@ -202,20 +195,9 @@
     <string name="privacy_subsection_supabase">Supabase</string>
     <string name="privacy_subsection_supabase_desc">We use Supabase as our backend database and authentication provider.</string>
     <string name="privacy_title">Privacy Policy for LibreFind</string>
-    <string name="profile_close">Fermer</string>
-    <string name="profile_dialog_title">Compte et paramètres</string>
-    <string name="profile_fix_profile">Modifier le profil</string>
-    <string name="profile_ignored_apps">Applis ignorées</string>
-    <string name="profile_missing_message">Votre compte n\'a pu être trouvé. Merci de vous connecter à nouveau ou bien contactez le support.</string>
-    <string name="profile_missing_title">Compte non retrouvé</string>
     <string name="profile_my_profile">My Profile</string>
     <string name="profile_my_submissions">Mes suggestions</string>
-    <string name="profile_no_email">Email manquant</string>
-    <string name="profile_not_signed_in_message">Merci de vous connecter pour accéder à votre profil.</string>
-    <string name="profile_not_signed_in_title">Non connecté</string>
-    <string name="profile_sign_in">Se connecter</string>
     <string name="profile_sign_out">Se déconnecter</string>
-    <string name="profile_unknown_username">Pseudo inconnu</string>
     <string name="profile_user_profile">User Profile</string>
     <string name="profile_user_submissions">User Submissions</string>
     <string name="reject_reason_label">Reason for rejection</string>
@@ -224,12 +206,6 @@
     <string name="report_desc_placeholder">Décrivez le problème ou la suggestion en détail…</string>
     <string name="report_issue_title">Report Issue</string>
     <string name="report_priority_label">Priorité</string>
-    <string name="report_status_closed">Fermé</string>
-    <string name="report_status_duplicate">Duplicata</string>
-    <string name="report_status_in_progress">In Progress</string>
-    <string name="report_status_open">Ouvrir</string>
-    <string name="report_status_resolved">Résolue</string>
-    <string name="report_status_wontfix">Won\'t Fix</string>
     <string name="report_submit_button">Submit Report</string>
     <string name="report_title_label">Titre</string>
     <string name="report_title_placeholder">Brief summary of the issue</string>
@@ -249,7 +225,6 @@
     <string name="settings_clear">Effacer</string>
     <string name="settings_clear_cache_message">Cela supprimera toutes les icônes d’application mises en cache. Elles seront rechargées lorsque vous ferez défiler le tableau de bord.</string>
     <string name="settings_clear_cache_title">Vider le cache des icônes ?</string>
-    <string name="settings_clearing">Clearing...</string>
     <string name="settings_community_title">Communauté</string>
     <string name="settings_delete">Supprimer</string>
     <string name="settings_delete_account">Supprimer mon compte</string>
@@ -265,7 +240,6 @@
     <string name="settings_hide_system_packages_title">System package filtering</string>
     <string name="settings_include_prereleases_desc">Receive updates for alpha, beta, and RC versions.</string>
     <string name="settings_include_prereleases_label">Include pre-releases</string>
-    <string name="settings_include_prereleases_title">Mises à jour expérimentales</string>
     <string name="settings_language">Langue</string>
     <string name="settings_language_arabic">Arabe</string>
     <string name="settings_language_chinese_simplified">Chinois simplifié</string>
@@ -280,9 +254,7 @@
     <string name="settings_language_system">Par défaut</string>
     <string name="settings_language_turkish">Turc</string>
     <string name="settings_my_reports">My Reports</string>
-    <string name="settings_off">Off</string>
     <string name="settings_ok">OK</string>
-    <string name="settings_on">On</string>
     <string name="settings_privacy_policy">Politique de confidentialité</string>
     <string name="settings_report_issue">Report Issue / Suggestion</string>
     <string name="settings_reset_tutorial">Reset Tutorial</string>
@@ -308,7 +280,6 @@
     <string name="status_unknown">INCONNUE</string>
     <string name="submission_downvote">Downvote submission</string>
     <string name="submission_upvote">Upvote submission</string>
-    <string name="submission_votes_title">Votes de la communauté</string>
     <string name="submit_add_alternatives">Ajouter une alternative (facultatif)</string>
     <string name="submit_alternative_details">Alternative Détails</string>
     <string name="submit_app_name">Nom de l\'App</string>
@@ -362,8 +333,6 @@
     <string name="submit_unknown_apps">Applications inconnues sur votre appareil :</string>
     <string name="submit_update_button">Modifier la proposition</string>
     <string name="submit_update_message">Votre proposition pour %1$s a été mise à jour.</string>
-    <string name="submit_update_title">Proposition mise à jour !</string>
-    <string name="submit_web_submission_page">Ouvrir la page de soumission en ligne</string>
     <string name="submit_what_submitting">Que proposez-vous ?</string>
     <string name="tutorial_done">Fait</string>
     <string name="tutorial_next">Suivant</string>

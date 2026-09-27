@@ -48,6 +48,8 @@ class DeviceInventoryRepoImplTest {
         coEvery { cacheRepository.isSolutionCached(any()) } returns false
         coEvery { cacheRepository.isTargetCached(any()) } returns false
         coEvery { cacheRepository.getAlternativesCount(any()) } returns 0
+        coEvery { cacheRepository.hasAnyCache() } returns false
+        coEvery { cacheRepository.getBulkCachedData() } returns Pair(emptyMap(), emptySet())
         coEvery { appRepository.areProprietary(any()) } returns emptyMap()
         coEvery { appRepository.areSolutions(any()) } returns emptySet()
         coEvery { appRepository.getPendingSubmissionPackages() } returns emptySet()
@@ -65,7 +67,7 @@ class DeviceInventoryRepoImplTest {
             }
         }
         coEvery { localSource.getRawApps() } returns listOf(pkg)
-        every { localSource.getAppLabel(any()) } returns "FOSS App"
+        every { localSource.getLabelFromInfo(any()) } returns "FOSS App"
         every { localSource.getInstaller(any()) } returns "org.fdroid.fdroid"
 
         // Act
@@ -87,7 +89,7 @@ class DeviceInventoryRepoImplTest {
             }
         }
         coEvery { localSource.getRawApps() } returns listOf(pkg)
-        every { localSource.getAppLabel(any()) } returns "Prop App"
+        every { localSource.getLabelFromInfo(any()) } returns "Prop App"
         every { localSource.getInstaller(any()) } returns "com.android.vending"
 
         // Act
@@ -109,7 +111,7 @@ class DeviceInventoryRepoImplTest {
             }
         }
         coEvery { localSource.getRawApps() } returns listOf(pkg)
-        every { localSource.getAppLabel(any()) } returns "Reclassified App"
+        every { localSource.getLabelFromInfo(any()) } returns "Reclassified App"
         every { localSource.getInstaller(any()) } returns "com.android.vending"
         coEvery { reclassifiedAppsRepository.getReclassifiedApps() } returns flowOf(mapOf("com.test.reclassified" to AppStatus.FOSS))
 
@@ -134,8 +136,8 @@ class DeviceInventoryRepoImplTest {
             applicationInfo = mockk { flags = 0; icon = 0 }
         }
         coEvery { localSource.getRawApps() } returns listOf(pkgFoss, pkgProp)
-        every { localSource.getAppLabel("com.test.foss") } returns "FOSS"
-        every { localSource.getAppLabel("com.test.prop") } returns "PROP"
+        every { localSource.getLabelFromInfo(pkgFoss.applicationInfo!!) } returns "FOSS"
+        every { localSource.getLabelFromInfo(pkgProp.applicationInfo!!) } returns "PROP"
         every { localSource.getInstaller("com.test.foss") } returns "org.fdroid.fdroid"
         every { localSource.getInstaller("com.test.prop") } returns "com.android.vending"
 

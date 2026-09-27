@@ -16,6 +16,7 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class SubmitViewModelTest {
@@ -41,7 +42,8 @@ class SubmitViewModelTest {
             submitProposalUseCase,
             updateSubmissionUseCase,
             cacheRepository,
-            inventorySource
+            inventorySource,
+            testDispatcher
         )
     }
 
@@ -58,7 +60,7 @@ class SubmitViewModelTest {
         viewModel.checkDuplicate(packageName)
         
         // Wait for debounce delay
-        advanceTimeBy(600)
+        advanceTimeBy(600.milliseconds)
         
         assertEquals(
             "This app is already an approved FOSS app. Use 'Link App' to associate it with a proprietary app.",

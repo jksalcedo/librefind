@@ -8,6 +8,6 @@ data class UserProfile(
     val submissionCount: Int = 0,
     val approvedCount: Int = 0,
     val rejectedCount: Int = 0,
-    val reputationScore: Int = 0,
+    val reputationScore: Int? = 0,
     val badge: String? = null
 )

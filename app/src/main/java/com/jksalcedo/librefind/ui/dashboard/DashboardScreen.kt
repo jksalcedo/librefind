@@ -60,6 +60,7 @@ import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -128,7 +129,7 @@ fun DashboardScreen(
                     title = {
                         if (state.isSelectionMode) {
                             Text(
-                                text = stringResource(R.string.items_selected, state.selectedPackageNames.size),
+                                text = pluralStringResource(R.plurals.items_selected, state.selectedPackageNames.size, state.selectedPackageNames.size),
                                 fontWeight = FontWeight.Bold
                             )
                         } else if (isSearchActive) {

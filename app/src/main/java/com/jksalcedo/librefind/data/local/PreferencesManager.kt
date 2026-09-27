@@ -2,6 +2,7 @@ package com.jksalcedo.librefind.data.local
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -11,36 +12,16 @@ class PreferencesManager(private val context: Context) {
     private val prefs: SharedPreferences =
         context.getSharedPreferences("librefind_prefs", Context.MODE_PRIVATE)
 
-    fun hasSeenOnboarding(): Boolean {
-        return prefs.getBoolean(KEY_ONBOARDING_COMPLETE, false)
-    }
-
-    fun setOnboardingComplete() {
-        prefs.edit().putBoolean(KEY_ONBOARDING_COMPLETE, true).apply()
-    }
-
-    fun getLastSeenVersion(): Int {
-        return prefs.getInt(KEY_LAST_VERSION, 0)
-    }
-
-    fun setLastSeenVersion(versionCode: Int) {
-        prefs.edit().putInt(KEY_LAST_VERSION, versionCode).apply()
-    }
-
-    fun shouldShowChangelog(currentVersion: Int): Boolean {
-        return getLastSeenVersion() < currentVersion
-    }
-
     fun hasSeenTutorial(): Boolean {
         return prefs.getBoolean(KEY_TUTORIAL_COMPLETE, false)
     }
 
     fun setTutorialComplete() {
-        prefs.edit().putBoolean(KEY_TUTORIAL_COMPLETE, true).apply()
+        prefs.edit { putBoolean(KEY_TUTORIAL_COMPLETE, true) }
     }
 
     fun resetTutorial() {
-        prefs.edit().putBoolean(KEY_TUTORIAL_COMPLETE, false).apply()
+        prefs.edit { putBoolean(KEY_TUTORIAL_COMPLETE, false) }
     }
 
     fun getOrCreateDeviceId(): String {
@@ -48,7 +29,7 @@ class PreferencesManager(private val context: Context) {
         if (existing != null) return existing
 
         val newId = UUID.randomUUID().toString()
-        prefs.edit().putString(KEY_DEVICE_ID, newId).apply()
+        prefs.edit { putString(KEY_DEVICE_ID, newId) }
         return newId
     }
 
@@ -66,7 +47,7 @@ class PreferencesManager(private val context: Context) {
     }
 
     fun setHasAskedNetworkConsent() {
-        prefs.edit().putBoolean(KEY_HAS_ASKED_NETWORK_CONSENT, true).apply()
+        prefs.edit { putBoolean(KEY_HAS_ASKED_NETWORK_CONSENT, true) }
     }
 
     fun getNetworkConsentGranted(): Boolean {
@@ -74,7 +55,7 @@ class PreferencesManager(private val context: Context) {
     }
 
     fun setNetworkConsentGranted(granted: Boolean) {
-        prefs.edit().putBoolean(KEY_NETWORK_CONSENT_GRANTED, granted).apply()
+        prefs.edit { putBoolean(KEY_NETWORK_CONSENT_GRANTED, granted) }
     }
 
     fun observeNetworkConsentGranted(): Flow<Boolean> = callbackFlow {
@@ -93,7 +74,7 @@ class PreferencesManager(private val context: Context) {
     }
 
     fun setAutoUpdateEnabled(enabled: Boolean) {
-        prefs.edit().putBoolean(KEY_AUTO_UPDATE_ENABLED, enabled).apply()
+        prefs.edit { putBoolean(KEY_AUTO_UPDATE_ENABLED, enabled) }
     }
 
     fun observeAutoUpdateEnabled(): Flow<Boolean> = callbackFlow {
@@ -121,7 +102,7 @@ class PreferencesManager(private val context: Context) {
      * Persist user preference for hiding system/vendor packages.
      */
     fun setHideSystemPackages(enabled: Boolean) {
-        prefs.edit().putBoolean(KEY_HIDE_SYSTEM_PACKAGES, enabled).apply()
+        prefs.edit { putBoolean(KEY_HIDE_SYSTEM_PACKAGES, enabled) }
     }
 
     fun observeHideSystemPackages(): Flow<Boolean> = callbackFlow {
@@ -150,7 +131,7 @@ class PreferencesManager(private val context: Context) {
      * Persist user preference for including pre-release updates.
      */
     fun setIncludePrereleases(enabled: Boolean) {
-        prefs.edit().putBoolean(KEY_INCLUDE_PRERELEASES, enabled).apply()
+        prefs.edit { putBoolean(KEY_INCLUDE_PRERELEASES, enabled) }
     }
 
     fun observeIncludePrereleases(): Flow<Boolean> = callbackFlow {
@@ -167,19 +148,18 @@ class PreferencesManager(private val context: Context) {
 
 
     fun getLogsLocation(): String? {
-        return prefs.getString(KEY_LOGS_LOCATION, null) ?: prefs.getString(KEY_CRASH_LOGS_LOCATION, null)
+        return prefs.getString(KEY_LOGS_LOCATION, null)
     }
 
     fun setLogsLocation(uri: String?) {
-        prefs.edit()
-            .putString(KEY_LOGS_LOCATION, uri)
-            .putString(KEY_CRASH_LOGS_LOCATION, uri)
-            .apply()
+        prefs.edit {
+            putString(KEY_LOGS_LOCATION, uri)
+        }
     }
 
     fun observeLogsLocation(): Flow<String?> = callbackFlow {
         val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-            if (key == KEY_LOGS_LOCATION || key == KEY_CRASH_LOGS_LOCATION) {
+            if (key == KEY_LOGS_LOCATION) {
                 trySend(getLogsLocation())
             }
         }
@@ -188,15 +168,7 @@ class PreferencesManager(private val context: Context) {
         awaitClose { prefs.unregisterOnSharedPreferenceChangeListener(listener) }
     }
 
-    fun getCrashLogsLocation(): String? = getLogsLocation()
-
-    fun setCrashLogsLocation(uri: String?) = setLogsLocation(uri)
-
-    fun observeCrashLogsLocation(): Flow<String?> = observeLogsLocation()
-
     companion object {
-        private const val KEY_ONBOARDING_COMPLETE = "onboarding_complete"
-        private const val KEY_LAST_VERSION = "last_seen_version"
         private const val KEY_TUTORIAL_COMPLETE = "tutorial_complete"
         private const val KEY_DEVICE_ID = "device_id"
 
@@ -213,6 +185,5 @@ class PreferencesManager(private val context: Context) {
 
         // Logs location
         private const val KEY_LOGS_LOCATION = "logs_location"
-        private const val KEY_CRASH_LOGS_LOCATION = "crash_logs_location"
     }
 }

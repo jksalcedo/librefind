@@ -1,6 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="action_approve">Approve</string>
     <string name="action_reject">Reject</string>
     <string name="alt_detail_add_con">Add a Con</string>
     <string name="alt_detail_add_pro">Add a Pro</string>
@@ -46,10 +45,6 @@
     <string name="app_info_label_category">Category</string>
     <string name="app_info_label_description">Description</string>
     <string name="app_info_label_license">License</string>
-    <string name="app_info_label_name">Name</string>
-    <string name="app_info_label_package">Package</string>
-    <string name="app_info_title">App info</string>
-    <string name="app_info_unavailable">No app metadata available yet.</string>
     <string name="app_info_unknown">Unknown</string>
     <string name="app_name">LibreFind</string>
     <string name="auth_already_have_account">Already have an account? Sign In</string>
@@ -102,14 +97,12 @@
     <string name="dashboard_unknown_error">Άγνωστο σφάλμα</string>
     <string name="details_error_unknown">Unknown error</string>
     <string name="details_foss_category_unset">This app hasn\'t been assigned a category yet. Similar apps can\'t be shown until it is.</string>
-    <string name="details_found_format">Found %1$d FOSS alternative%2$s</string>
     <string name="details_help_categorize">Help us categorize this app:</string>
     <string name="details_no_alternatives">No alternatives found</string>
     <string name="details_no_siblings">No other FOSS apps in the same category yet.</string>
     <string name="details_no_suggested_alternatives">No FOSS alternatives have been suggested for this app yet.</string>
     <string name="details_not_in_db">This app is not in our database yet.</string>
     <string name="details_retry">Retry</string>
-    <string name="details_siblings_found_format">%1$d similar FOSS app%2$s in this category</string>
     <string name="details_suggest_alternative">Suggest an alternative</string>
     <string name="details_suggest_foss">Suggest as FOSS</string>
     <string name="details_suggest_proprietary">Suggest as Proprietary</string>
@@ -202,20 +195,9 @@
     <string name="privacy_subsection_supabase">Supabase</string>
     <string name="privacy_subsection_supabase_desc">We use Supabase as our backend database and authentication provider.</string>
     <string name="privacy_title">Privacy Policy for LibreFind</string>
-    <string name="profile_close">Κλείσιμο</string>
-    <string name="profile_dialog_title">Προφίλ &amp; Ρυθμίσεις</string>
-    <string name="profile_fix_profile">Fix Profile</string>
-    <string name="profile_ignored_apps">Ignored Apps</string>
-    <string name="profile_missing_message">Your profile could not be found. Please try signing out and back in, or contact support.</string>
-    <string name="profile_missing_title">Profile Missing</string>
     <string name="profile_my_profile">My Profile</string>
     <string name="profile_my_submissions">My Submissions</string>
-    <string name="profile_no_email">No Email</string>
-    <string name="profile_not_signed_in_message">Please sign in to view your profile.</string>
-    <string name="profile_not_signed_in_title">Not Signed In</string>
-    <string name="profile_sign_in">Sign In</string>
     <string name="profile_sign_out">Αποσύνδεση</string>
-    <string name="profile_unknown_username">Άγνωστο Όνομα Χρήστη</string>
     <string name="profile_user_profile">User Profile</string>
     <string name="profile_user_submissions">User Submissions</string>
     <string name="reject_reason_label">Reason for rejection</string>
@@ -224,12 +206,6 @@
     <string name="report_desc_placeholder">Describe the issue or suggestion in detail…</string>
     <string name="report_issue_title">Report Issue</string>
     <string name="report_priority_label">Priority</string>
-    <string name="report_status_closed">Closed</string>
-    <string name="report_status_duplicate">Duplicate</string>
-    <string name="report_status_in_progress">In Progress</string>
-    <string name="report_status_open">Open</string>
-    <string name="report_status_resolved">Resolved</string>
-    <string name="report_status_wontfix">Won\'t Fix</string>
     <string name="report_submit_button">Submit Report</string>
     <string name="report_title_label">Title</string>
     <string name="report_title_placeholder">Brief summary of the issue</string>
@@ -249,7 +225,6 @@
     <string name="settings_clear">Clear</string>
     <string name="settings_clear_cache_message">This will remove all cached app icons. They will be reloaded when you scroll through the dashboard.</string>
     <string name="settings_clear_cache_title">Clear Icon Cache?</string>
-    <string name="settings_clearing">Clearing...</string>
     <string name="settings_community_title">Community</string>
     <string name="settings_delete">Delete</string>
     <string name="settings_delete_account">Delete Account</string>
@@ -265,7 +240,6 @@
     <string name="settings_hide_system_packages_title">System package filtering</string>
     <string name="settings_include_prereleases_desc">Receive updates for alpha, beta, and RC versions.</string>
     <string name="settings_include_prereleases_label">Include pre-releases</string>
-    <string name="settings_include_prereleases_title">Experimental Updates</string>
     <string name="settings_language">Language</string>
     <string name="settings_language_arabic">Arabic</string>
     <string name="settings_language_chinese_simplified">Simplified Chinese</string>
@@ -280,9 +254,7 @@
     <string name="settings_language_system">System Default</string>
     <string name="settings_language_turkish">Turkish</string>
     <string name="settings_my_reports">My Reports</string>
-    <string name="settings_off">Off</string>
     <string name="settings_ok">OK</string>
-    <string name="settings_on">On</string>
     <string name="settings_privacy_policy">Privacy Policy</string>
     <string name="settings_report_issue">Report Issue / Suggestion</string>
     <string name="settings_reset_tutorial">Reset Tutorial</string>
@@ -308,7 +280,6 @@
     <string name="status_unknown">UNKNOWN</string>
     <string name="submission_downvote">Downvote submission</string>
     <string name="submission_upvote">Upvote submission</string>
-    <string name="submission_votes_title">Community Votes</string>
     <string name="submit_add_alternatives">Add Alternatives (optional)</string>
     <string name="submit_alternative_details">Alternative Details</string>
     <string name="submit_app_name">App Name *</string>
@@ -362,8 +333,6 @@
     <string name="submit_unknown_apps">Unknown apps from your device:</string>
     <string name="submit_update_button">Update Submission</string>
     <string name="submit_update_message">Your submission for \'%1$s\' has been updated.</string>
-    <string name="submit_update_title">Submission Updated!</string>
-    <string name="submit_web_submission_page">Open web submission page</string>
     <string name="submit_what_submitting">What are you submitting?</string>
     <string name="tutorial_done">Done</string>
     <string name="tutorial_next">Next</string>

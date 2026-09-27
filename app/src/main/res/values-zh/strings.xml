@@ -1,6 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="action_approve">Approve</string>
     <string name="action_reject">Reject</string>
     <string name="alt_detail_add_con">添加缺点</string>
     <string name="alt_detail_add_pro">添加优点</string>
@@ -46,10 +45,6 @@
     <string name="app_info_label_category">Category</string>
     <string name="app_info_label_description">Description</string>
     <string name="app_info_label_license">License</string>
-    <string name="app_info_label_name">Name</string>
-    <string name="app_info_label_package">Package</string>
-    <string name="app_info_title">App info</string>
-    <string name="app_info_unavailable">No app metadata available yet.</string>
     <string name="app_info_unknown">Unknown</string>
     <string name="auth_already_have_account">已有账号？登录</string>
     <string name="auth_check_email_message">我们已向您的邮箱地址发送了验证链接。请在登录前验证您的邮箱。</string>
@@ -101,14 +96,12 @@
     <string name="dashboard_unknown_error">未知错误</string>
     <string name="details_error_unknown">未知错误</string>
     <string name="details_foss_category_unset">This app hasn\'t been assigned a category yet. Similar apps can\'t be shown until it is.</string>
-    <string name="details_found_format">找到 %1$d 个开源替代方案%2$s</string>
     <string name="details_help_categorize">帮助我们对此应用进行分类：</string>
     <string name="details_no_alternatives">未找到替代方案</string>
     <string name="details_no_siblings">No other FOSS apps in the same category yet.</string>
     <string name="details_no_suggested_alternatives">No FOSS alternatives have been suggested for this app yet.</string>
     <string name="details_not_in_db">此应用尚未收录在我们的数据库中。</string>
     <string name="details_retry">重试</string>
-    <string name="details_siblings_found_format">%1$d similar FOSS app%2$s in this category</string>
     <string name="details_suggest_alternative">Suggest an alternative</string>
     <string name="details_suggest_foss">建议为开源软件</string>
     <string name="details_suggest_proprietary">建议为专有软件</string>
@@ -201,20 +194,9 @@
     <string name="privacy_subsection_supabase">Supabase</string>
     <string name="privacy_subsection_supabase_desc">我们使用 Supabase 作为我们的后端数据库和身份验证提供商。</string>
     <string name="privacy_title">LibreFind 隐私政策</string>
-    <string name="profile_close">关闭</string>
-    <string name="profile_dialog_title">个人资料与设置</string>
-    <string name="profile_fix_profile">修复个人资料</string>
-    <string name="profile_ignored_apps">已忽略的应用</string>
-    <string name="profile_missing_message">无法找到您的个人资料。请尝试退出后重新登录，或联系支持人员。</string>
-    <string name="profile_missing_title">个人资料缺失</string>
     <string name="profile_my_profile">My Profile</string>
     <string name="profile_my_submissions">我的提交</string>
-    <string name="profile_no_email">无邮箱</string>
-    <string name="profile_not_signed_in_message">请登录以查看您的个人资料。</string>
-    <string name="profile_not_signed_in_title">未登录</string>
-    <string name="profile_sign_in">登录</string>
     <string name="profile_sign_out">退出登录</string>
-    <string name="profile_unknown_username">未知用户名</string>
     <string name="profile_user_profile">User Profile</string>
     <string name="profile_user_submissions">User Submissions</string>
     <string name="reject_reason_label">Reason for rejection</string>
@@ -223,12 +205,6 @@
     <string name="report_desc_placeholder">详细描述问题或建议…</string>
     <string name="report_issue_title">报告问题</string>
     <string name="report_priority_label">优先级</string>
-    <string name="report_status_closed">已关闭</string>
-    <string name="report_status_duplicate">重复</string>
-    <string name="report_status_in_progress">处理中</string>
-    <string name="report_status_open">待处理</string>
-    <string name="report_status_resolved">已解决</string>
-    <string name="report_status_wontfix">不予修复</string>
     <string name="report_submit_button">提交报告</string>
     <string name="report_title_label">标题</string>
     <string name="report_title_placeholder">问题的简要摘要</string>
@@ -248,7 +224,6 @@
     <string name="settings_clear">清除</string>
     <string name="settings_clear_cache_message">这将删除所有缓存的应用程序图标。当您浏览仪表板时，它们将被重新加载。</string>
     <string name="settings_clear_cache_title">清除图标缓存？</string>
-    <string name="settings_clearing">Clearing...</string>
     <string name="settings_community_title">社区</string>
     <string name="settings_delete">删除</string>
     <string name="settings_delete_account">删除账号</string>
@@ -264,7 +239,6 @@
     <string name="settings_hide_system_packages_title">System package filtering</string>
     <string name="settings_include_prereleases_desc">Receive updates for alpha, beta, and RC versions.</string>
     <string name="settings_include_prereleases_label">Include pre-releases</string>
-    <string name="settings_include_prereleases_title">Experimental Updates</string>
     <string name="settings_language">Language</string>
     <string name="settings_language_arabic">Arabic</string>
     <string name="settings_language_chinese_simplified">Simplified Chinese</string>
@@ -279,9 +253,7 @@
     <string name="settings_language_system">System Default</string>
     <string name="settings_language_turkish">Turkish</string>
     <string name="settings_my_reports">我的报告</string>
-    <string name="settings_off">Off</string>
     <string name="settings_ok">确定</string>
-    <string name="settings_on">不</string>
     <string name="settings_privacy_policy">隐私政策</string>
     <string name="settings_report_issue">报告问题 / 建议</string>
     <string name="settings_reset_tutorial">重置教程</string>
@@ -307,7 +279,6 @@
     <string name="status_unknown">未知</string>
     <string name="submission_downvote">Downvote submission</string>
     <string name="submission_upvote">Upvote submission</string>
-    <string name="submission_votes_title">Community Votes</string>
     <string name="submit_add_alternatives">添加替代品（可选）</string>
     <string name="submit_alternative_details">替代品详情</string>
     <string name="submit_app_name">应用名称 *</string>
@@ -361,8 +332,6 @@
     <string name="submit_unknown_apps">您设备上的未知应用：</string>
     <string name="submit_update_button">更新提交</string>
     <string name="submit_update_message">您对“%1$s”的提交已更新。</string>
-    <string name="submit_update_title">提交已更新！</string>
-    <string name="submit_web_submission_page">Open web submission page</string>
     <string name="submit_what_submitting">您要提交什么？</string>
     <string name="tutorial_done">完成</string>
     <string name="tutorial_next">下一步</string>

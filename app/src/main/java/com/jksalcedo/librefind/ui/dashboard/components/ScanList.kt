@@ -23,10 +23,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Undo
 import androidx.compose.material.icons.filled.Android
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Undo
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Card
@@ -49,18 +49,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
+import com.jksalcedo.librefind.R
 import com.jksalcedo.librefind.domain.model.AppItem
 import com.jksalcedo.librefind.domain.model.AppStatus
 import com.jksalcedo.librefind.ui.common.StatusBadge
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import com.jksalcedo.librefind.R
 
 object AppIconCache {
     private const val MAX_CACHE_SIZE = 50 * 1024 * 1024
@@ -231,9 +232,8 @@ fun AppRow(
                     }
                 }
                 if (app.knownAlternatives > 0) {
-                    val context = LocalContext.current
                     Text(
-                        text = context.resources.getQuantityString(
+                        text = LocalResources.current.getQuantityString(
                             R.plurals.scan_list_alternatives_count,
                             app.knownAlternatives,
                             app.knownAlternatives
@@ -340,7 +340,7 @@ fun AppRow(
                             onUndoReclassifyClick()
                         },
                         leadingIcon = {
-                            Icon(Icons.Default.Undo, contentDescription = null)
+                            Icon(Icons.AutoMirrored.Filled.Undo, contentDescription = null)
                         }
                     )
                 }
