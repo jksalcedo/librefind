@@ -12,6 +12,9 @@ on:
         type: choice
         options: [all, fdroid, izzy]
 
+permissions:
+  contents: read
+
 jobs:
   sync:
     name: Sync app catalogue
