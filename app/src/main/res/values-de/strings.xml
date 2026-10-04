@@ -340,4 +340,8 @@ m    <string name="action_reject">Ablehnen</string>
     <string name="vote_downvote">Schlechter Ersatz (Downvote)</string>
     <string name="vote_upvote">Guter Ersatz (Upvote)</string>
     <string name="web_submission">Web-Vorlage</string>
+    <string name="auth_continue_as_guest">Als Gast fortfahren</string>
+    <string name="settings_join_matrix">Matrix beitreten</string>
+    <string name="settings_join_telegram">Telegram beitreten</string>
+    <string name="details_pending_chip">Ausstehend</string>
 </resources>
