@@ -340,4 +340,6 @@
     <string name="vote_downvote">Poor replacement (downvote)</string>
     <string name="vote_upvote">Good replacement (upvote)</string>
     <string name="web_submission">Web Submission</string>
+    <string name="community_info_button">Informazioni sui contributi della comunità</string>
+    <string name="community_info_title">Contributi della comunità</string>
 </resources>
