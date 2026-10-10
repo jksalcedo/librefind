@@ -344,4 +344,10 @@ m    <string name="action_reject">Ablehnen</string>
     <string name="settings_join_matrix">Matrix beitreten</string>
     <string name="settings_join_telegram">Telegram beitreten</string>
     <string name="details_pending_chip">Ausstehend</string>
+    <string name="community_info_button">Über Community Einreichungen</string>
+    <string name="community_info_title">Community-Einreichungen</string>
+    <string name="community_info_description">Dieser Bildschirm zeigt ausstehende Einreichungen aus der LibreFind-Community. Jeder kann eine neue FOSS-Alternative einreichen oder eine proprietäre App kennzeichnen. Einreichungen werden von den Administratoren und der Community durch Upvotes und Downvotes überprüft, bevor sie der Datenbank hinzugefügt werden.</string>
+    <string name="community_info_rules_title">Einreichungsregeln</string>
+    <string name="community_info_voting_title">Abstimmung &amp; Auto-Genehmigung</string>
+    <string name="community_info_voting_description">Eine Einreichung wird automatisch genehmigt, wenn sie einen Nettowert von +5 Upvotes erreicht. Wenn du eine Einreichung downvotest, kannst du den bestimmten Grund markieren (z. B. Duplikat, falsche Kategorie, Fälschung).</string>
 </resources>
