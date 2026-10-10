@@ -73,6 +73,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jksalcedo.librefind.R
 import com.jksalcedo.librefind.ui.common.FullScreenLoading
+import com.jksalcedo.librefind.ui.common.HtmlDescription
 import com.jksalcedo.librefind.ui.components.CommentSection
 import org.koin.androidx.compose.koinViewModel
 
@@ -449,7 +450,7 @@ fun AlternativeDetailScreen(
                                 fontWeight = FontWeight.Bold
                             )
                             Spacer(modifier = Modifier.height(8.dp))
-                            Text(alt.description, style = MaterialTheme.typography.bodyMedium)
+                            HtmlDescription(alt.description)
                         }
 
                         // Features
