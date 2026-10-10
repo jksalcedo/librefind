@@ -479,7 +479,7 @@ class SupabaseAppRepository(
                 return@runCatching
             }
 
-            val submitterId = if (userId.isNotBlank()) userId else ensureAuthenticatedUser()
+            val submitterId = userId.ifBlank { ensureAuthenticatedUser() }
 
             val submission = UserSubmissionDto(
                 appName = appName,
@@ -524,7 +524,8 @@ class SupabaseAppRepository(
                 return@runCatching
             }
 
-            val actualSubmitterId = if (submitterId.isNotBlank()) submitterId else ensureAuthenticatedUser()
+            val actualSubmitterId =
+                submitterId.ifBlank { ensureAuthenticatedUser() }
 
             val submission = UserLinkingSubmissionsDto(
                 proprietaryPackage = proprietaryPackage,
@@ -863,7 +864,6 @@ class SupabaseAppRepository(
     }
 
 
-
     private fun mapDtosToSubmissions(
         standardDtos: List<UserSubmissionWithProfileDto>,
         linkingDtos: List<UserLinkingSubmissionWithProfileDto>
@@ -891,7 +891,7 @@ class SupabaseAppRepository(
                     license = dto.license ?: ""
                 ),
                 submitterUid = dto.submitterId ?: "",
-                submitterUsername = dto.profile?.username ?: "Deleted User",
+                submitterUsername = dto.profile?.username ?: "Guest",
                 submitterReputation = dto.profile?.reputationScore ?: 0,
                 submitterBadge = dto.profile?.badge,
                 // Parse created_at timestamp or use current time if missing
@@ -924,7 +924,7 @@ class SupabaseAppRepository(
                     description = "Linking request for ${dto.proprietaryPackage ?: "unknown"}"
                 ),
                 submitterUid = dto.submitterId ?: "",
-                submitterUsername = dto.profile?.username ?: "Deleted User",
+                submitterUsername = dto.profile?.username ?: "Guest",
                 submitterReputation = dto.profile?.reputationScore ?: 0,
                 submitterBadge = dto.profile?.badge,
                 submittedAt = dto.createdAt?.let { parseTimestamp(it) }
@@ -1281,7 +1281,7 @@ class SupabaseAppRepository(
         priority: String,
         userId: String
     ): Result<Unit> = runCatching {
-        val submitterId = if (userId.isNotBlank()) userId else ensureAuthenticatedUser()
+        val submitterId = userId.ifBlank { ensureAuthenticatedUser() }
         val report = UserReportDto(
             title = title,
             description = description,
@@ -1328,7 +1328,7 @@ class SupabaseAppRepository(
                         ReportPriority.LOW
                     },
                     submitterUid = dto.submitterId,
-                    submitterUsername = dto.profile?.username ?: "Deleted User",
+                    submitterUsername = dto.profile?.username ?: "Guest",
                     adminResponse = dto.adminResponse
                 )
             }
@@ -1379,7 +1379,11 @@ class SupabaseAppRepository(
                 val allPending = getAllPendingSubmissions()
                 allPending.find { it.id == id }?.let { return it }
             } catch (e: Exception) {
-                Log.e("SupabaseAppRepo", "Failed to fetch pending submissions for getSubmissionById", e)
+                Log.e(
+                    "SupabaseAppRepo",
+                    "Failed to fetch pending submissions for getSubmissionById",
+                    e
+                )
             }
         }
 
@@ -1677,7 +1681,7 @@ class SupabaseAppRepository(
                     appLabel = first.appLabel ?: "",
                     sha256Digest = first.sha256Digest,
                     submitterUid = first.submitterId,
-                    submitterUsername = first.profile?.username ?: first.submitterId.take(8),
+                    submitterUsername = first.profile?.username ?: "Guest",
                     submitterReputation = first.profile?.reputationScore ?: 0,
                     submitterBadge = first.profile?.badge,
                     endorseCount = group.size,
@@ -1739,7 +1743,7 @@ class SupabaseAppRepository(
                     }
                     order("created_at", order = Order.DESCENDING)
                 }.decodeList<com.jksalcedo.librefind.data.remote.model.CommentWithProfileDto>()
-                
+
             dtos.map { dto ->
                 Comment(
                     id = dto.id,
@@ -1762,16 +1766,17 @@ class SupabaseAppRepository(
         }
     }
 
-    override suspend fun submitComment(targetId: String, content: String): Result<Unit> = runCatching {
-        val userId = supabase.auth.currentUserOrNull()?.id
-            ?: throw IllegalStateException("Not logged in")
-            
-        val commentDto = CommentDto(
-            targetId = targetId,
-            userId = userId,
-            content = content
-        )
-        
-        supabase.postgrest.from("comments").insert(commentDto)
-    }
+    override suspend fun submitComment(targetId: String, content: String): Result<Unit> =
+        runCatching {
+            val userId = supabase.auth.currentUserOrNull()?.id
+                ?: throw IllegalStateException("Not logged in")
+
+            val commentDto = CommentDto(
+                targetId = targetId,
+                userId = userId,
+                content = content
+            )
+
+            supabase.postgrest.from("comments").insert(commentDto)
+        }
 }
