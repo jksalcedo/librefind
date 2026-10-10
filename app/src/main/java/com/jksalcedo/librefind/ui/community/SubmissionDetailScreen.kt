@@ -60,8 +60,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.jksalcedo.librefind.domain.model.SubmissionStatus
 import com.jksalcedo.librefind.R
+import com.jksalcedo.librefind.domain.model.SubmissionStatus
+import com.jksalcedo.librefind.ui.common.HtmlDescription
 import com.jksalcedo.librefind.ui.common.LibreFindLoadingIndicator
 import com.jksalcedo.librefind.ui.components.CommentSection
 import org.koin.androidx.compose.koinViewModel
@@ -347,15 +348,11 @@ fun SubmissionDetailScreen(
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Spacer(modifier = Modifier.height(4.dp))
-                            Text(
-                                text = submission.submittedApp.description.ifBlank {
-                                    stringResource(
-                                        R.string.submission_detail_no_description
-                                    )
-                                },
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
+                            HtmlDescription(submission.submittedApp.description.ifBlank {
+                                stringResource(
+                                    R.string.submission_detail_no_description
+                                )
+                            })
                         }
                     }
                 }

@@ -1,5 +1,6 @@
 package com.jksalcedo.librefind.ui.community
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -360,6 +361,7 @@ fun CommunitySubmissionsScreen(
                         color = MaterialTheme.colorScheme.error,
                         modifier = Modifier.align(Alignment.Center)
                     )
+                    Log.e("CommunityScreen", "Error loading submissions", Exception(state.error))
                 }
 
                 else -> {

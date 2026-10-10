@@ -5,7 +5,7 @@ data class SigningKeyVote(
     val packageName: String,
     val appLabel: String,
     val sha256Digest: String,
-    val submitterUid: String,
+    val submitterUid: String? = null,
     val submitterUsername: String,
     val submitterReputation: Int = 0,
     val submitterBadge: String? = null,

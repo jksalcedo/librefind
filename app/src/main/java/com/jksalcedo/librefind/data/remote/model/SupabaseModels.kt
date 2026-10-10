@@ -48,7 +48,7 @@ data class UserSubmissionDto(
     @SerialName("submission_type") val submissionType: String? = null,
     val type: String? = null,
     val status: String = "PENDING",
-    @SerialName("submitter_id") val submitterId: String,
+    @SerialName("submitter_id") val submitterId: String? = null,
     @SerialName("created_at") val createdAt: String? = null,
     @SerialName("rejection_reason") val rejectionReason: String? = null,
     val category: String? = null,
@@ -86,7 +86,7 @@ data class UserReportDto(
     @SerialName("report_type") val reportType: String,
     val status: String = "OPEN",
     val priority: String = "LOW",
-    @SerialName("submitter_id") val submitterId: String,
+    @SerialName("submitter_id") val submitterId: String? = null,
     @SerialName("admin_response") val adminResponse: String? = null,
     @SerialName("resolved_at") val resolvedAt: String? = null,
     @SerialName("created_at") val createdAt: String? = null
@@ -109,7 +109,7 @@ data class UserLinkingSubmissionsDto(
     val id: String? = null,
     @SerialName("proprietary_package") val proprietaryPackage: String,
     val alternatives: List<String>,
-    @SerialName("submitter_id") val submitterId: String,
+    @SerialName("submitter_id") val submitterId: String? = null,
     val status: String = "PENDING",
     @SerialName("rejection_reason") val rejectionReason: String? = null,
     @SerialName("created_at") val createdAt: String? = null,
@@ -166,7 +166,7 @@ data class AppFeedbackDto(
     @SerialName("package_name") val packageName: String,
     @SerialName("feedback_type") val feedbackType: String,
     val content: String,
-    @SerialName("submitter_id") val submitterId: String,
+    @SerialName("submitter_id") val submitterId: String? = null,
     val status: String,
     @SerialName("rejection_reason") val rejectionReason: String? = null
 )
