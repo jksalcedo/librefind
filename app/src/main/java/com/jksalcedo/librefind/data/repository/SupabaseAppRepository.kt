@@ -479,7 +479,7 @@ class SupabaseAppRepository(
                 return@runCatching
             }
 
-            val submitterId = if (userId.isNotBlank()) userId else ensureAuthenticatedUser()
+            val submitterId = userId.ifBlank { ensureAuthenticatedUser() }
 
             val submission = UserSubmissionDto(
                 appName = appName,
@@ -525,7 +525,7 @@ class SupabaseAppRepository(
             }
 
             val actualSubmitterId =
-                if (submitterId.isNotBlank()) submitterId else ensureAuthenticatedUser()
+                submitterId.ifBlank { ensureAuthenticatedUser() }
 
             val submission = UserLinkingSubmissionsDto(
                 proprietaryPackage = proprietaryPackage,
@@ -1281,7 +1281,7 @@ class SupabaseAppRepository(
         priority: String,
         userId: String
     ): Result<Unit> = runCatching {
-        val submitterId = if (userId.isNotBlank()) userId else ensureAuthenticatedUser()
+        val submitterId = userId.ifBlank { ensureAuthenticatedUser() }
         val report = UserReportDto(
             title = title,
             description = description,
