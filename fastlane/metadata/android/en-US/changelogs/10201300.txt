@@ -1,0 +1,3 @@
+- Fixed error when loading community submissions for anonymous/guest users
+- Fixed timestamp parsing errors for Supabase dates
+- Silenced annoying Android PackageManager spam logs during background app scanning
