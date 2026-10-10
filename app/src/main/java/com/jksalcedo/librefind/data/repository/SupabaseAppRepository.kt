@@ -947,8 +947,9 @@ class SupabaseAppRepository(
 
     private fun parseTimestamp(isoString: String): Long {
         return try {
+            val normalizedString = isoString.replace("+00:00", "Z")
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                Instant.parse(isoString).toEpochMilli()
+                Instant.parse(normalizedString).toEpochMilli()
             } else {
                 // Regex to truncate fractional seconds to 3 digits
                 val truncated = isoString.replace(Regex("(\\.\\d{3})\\d+"), "$1")

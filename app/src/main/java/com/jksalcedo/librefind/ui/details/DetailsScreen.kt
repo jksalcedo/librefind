@@ -56,6 +56,7 @@ import com.jksalcedo.librefind.R
 import com.jksalcedo.librefind.domain.model.Alternative
 import com.jksalcedo.librefind.ui.common.AppInfoCard
 import com.jksalcedo.librefind.ui.common.FullScreenLoading
+import com.jksalcedo.librefind.ui.common.HtmlDescription
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -316,7 +317,12 @@ fun DetailsScreen(
                                             Text(stringResource(R.string.details_suggest_foss))
                                         }
                                         Button(
-                                            onClick = { onSuggestAsProprietary(appName, packageName) },
+                                            onClick = {
+                                                onSuggestAsProprietary(
+                                                    appName,
+                                                    packageName
+                                                )
+                                            },
                                             modifier = Modifier.width(160.dp)
                                         ) {
                                             Text(stringResource(R.string.details_suggest_proprietary))
@@ -438,12 +444,8 @@ fun AlternativeListItem(
 
             if (alternative.description.isNotBlank()) {
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = alternative.description,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+                HtmlDescription(
+                    alternative.description
                 )
             }
         }

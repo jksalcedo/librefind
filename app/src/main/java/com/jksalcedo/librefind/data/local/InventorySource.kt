@@ -97,13 +97,25 @@ class InventorySource(
     fun getAppLabel(packageName: String): String {
         return try {
             val appInfo = context.packageManager.getApplicationInfo(packageName, 0)
-            context.packageManager.getApplicationLabel(appInfo).toString()
+            getLabelFromInfo(appInfo)
         } catch (_: Exception) {
             packageName
         }
     }
 
     fun getLabelFromInfo(appInfo: ApplicationInfo): String {
+        if (appInfo.nonLocalizedLabel != null) {
+            return appInfo.nonLocalizedLabel.toString()
+        }
+        if (appInfo.labelRes != 0) {
+            try {
+                val res = context.packageManager.getResourcesForApplication(appInfo)
+                return res.getString(appInfo.labelRes)
+            } catch (_: Exception) {
+                // Silently catch to avoid Android PackageManager logcat spam
+            }
+        }
+
         return try {
             context.packageManager.getApplicationLabel(appInfo).toString()
         } catch (_: Exception) {

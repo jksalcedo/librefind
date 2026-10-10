@@ -169,13 +169,7 @@ private fun DescriptionBox(description: String?, unknownLabel: String) {
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             } else {
-                Text(
-                    text = description,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 8,
-                    overflow = TextOverflow.Ellipsis
-                )
+                HtmlDescription(description)
             }
         }
     }
