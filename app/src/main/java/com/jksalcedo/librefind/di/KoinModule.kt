@@ -67,6 +67,9 @@ val appModule = module {
     single { get<AppDatabase>().ignoredAppDao() }
     single { get<AppDatabase>().appCacheDao() }
     single { get<AppDatabase>().reclassifiedAppDao() }
+    single { get<AppDatabase>().catalogDao() }
+    single { get<AppDatabase>().cachedUserVoteDao() }
+    single { get<AppDatabase>().userCustomMappingDao() }
     single<IgnoredAppsRepository> { IgnoredAppsRepositoryImpl(get()) }
     single<ReclassifiedAppsRepository> { ReclassifiedAppsRepositoryImpl(get()) }
 }
