@@ -8,14 +8,17 @@ import com.jksalcedo.librefind.data.local.PackageNameHeuristicsDb
 import com.jksalcedo.librefind.data.local.PreferencesManager
 import com.jksalcedo.librefind.data.local.SignerFeedDataStore
 import com.jksalcedo.librefind.data.local.TrustedRomSignerDb
+import com.jksalcedo.librefind.data.remote.CatalogApiService
 import com.jksalcedo.librefind.data.remote.SignerApiService
 import com.jksalcedo.librefind.data.remote.UpdateApiService
 import com.jksalcedo.librefind.data.repository.CacheRepositoryImpl
+import com.jksalcedo.librefind.data.repository.CatalogRepositoryImpl
 import com.jksalcedo.librefind.data.repository.DeviceInventoryRepoImpl
 import com.jksalcedo.librefind.data.repository.IgnoredAppsRepositoryImpl
 import com.jksalcedo.librefind.data.repository.ReclassifiedAppsRepositoryImpl
 import com.jksalcedo.librefind.data.repository.UpdateRepositoryImpl
 import com.jksalcedo.librefind.domain.repository.CacheRepository
+import com.jksalcedo.librefind.domain.repository.CatalogRepository
 import com.jksalcedo.librefind.domain.repository.DeviceInventoryRepo
 import com.jksalcedo.librefind.domain.repository.IgnoredAppsRepository
 import com.jksalcedo.librefind.domain.repository.ReclassifiedAppsRepository
@@ -111,12 +114,23 @@ val networkModule = module {
             .build()
         retrofit.create(UpdateApiService::class.java)
     }
+
+    single { get<Retrofit>().create(CatalogApiService::class.java) }
 }
 
 val repositoryModule = module {
     single<CacheRepository> { CacheRepositoryImpl(get(), get(), get(named("IO"))) }
     single { TrustedRomSignerDb(get(), get()) }
     single<UpdateRepository> { UpdateRepositoryImpl(androidContext(), get(), get(), get(named("IO"))) }
+    single<CatalogRepository> {
+        CatalogRepositoryImpl(
+            androidContext(),
+            get(),
+            get(),
+            get(),
+            get(named("IO"))
+        )
+    }
     single<DeviceInventoryRepo> {
         DeviceInventoryRepoImpl(
             get(),
