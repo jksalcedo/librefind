@@ -22,7 +22,6 @@
 
 #Local
 -keep class com.jksalcedo.librefind.domain.model.** { *; }
-# Firebase
--keep class com.jksalcedo.librefind.data.remote.firebase.dto.** { *; }
+
 -keepattributes Signature
 -keepattributes *Annotation*
