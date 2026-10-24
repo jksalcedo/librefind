@@ -9,8 +9,10 @@ import com.jksalcedo.librefind.data.local.catalog.CatalogSolutionEntity
 import com.jksalcedo.librefind.data.local.catalog.CatalogTargetEntity
 import com.jksalcedo.librefind.data.remote.CatalogApiService
 import com.jksalcedo.librefind.data.remote.model.CatalogBundleDto
+import com.jksalcedo.librefind.data.remote.model.CatalogIndexDto
 import com.jksalcedo.librefind.domain.repository.CatalogRepository
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.InputStream
 import java.io.InputStreamReader
@@ -35,11 +37,20 @@ class CatalogRepositoryImpl(
         if (catalogDao.getTargetsCount() > 0) return@withContext
 
         try {
-            Log.d(TAG, "Seeding catalog from local asset catalog.json.gz...")
-            context.assets.open("catalog.json.gz").use { inputStream ->
-                parseAndApplyCatalogStream(inputStream, "bundled_asset", System.currentTimeMillis())
+            val index = context.assets.open("catalog-index.json").use { stream ->
+                gson.fromJson(
+                    InputStreamReader(stream, Charsets.UTF_8),
+                    CatalogIndexDto::class.java
+                )
             }
-            Log.d(TAG, "Successfully seeded catalog from local asset")
+
+            context.assets.open("catalog.json.gz").use { stream ->
+                parseAndApplyCatalogStream(
+                    inputStream = stream,
+                    hash = index.hash,
+                    timestamp = index.timestamp
+                )
+            }
         } catch (e: Exception) {
             Log.e(TAG, "Failed to seed catalog from local asset", e)
         }
@@ -82,12 +93,19 @@ class CatalogRepositoryImpl(
             catalogDao.getSolutionsForTarget(targetId)
         }
 
+    override suspend fun getSolutionByPackageName(packageName: String): CatalogSolutionEntity? =
+        withContext(ioDispatcher) {
+            catalogDao.getSolutionByPackage(packageName)
+        }
+
     private suspend fun parseAndApplyCatalogStream(
         inputStream: InputStream,
         hash: String,
         timestamp: Long
     ) {
-        val gzipStream = GZIPInputStream(inputStream)
+        val gzipStream = withContext(Dispatchers.IO) {
+            GZIPInputStream(inputStream)
+        }
         val reader = InputStreamReader(gzipStream, Charsets.UTF_8)
         val bundleDto = gson.fromJson(reader, CatalogBundleDto::class.java) ?: return
 

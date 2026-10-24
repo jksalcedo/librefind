@@ -8,4 +8,5 @@ interface CatalogRepository {
     suspend fun syncCatalogFromCdn(): Result<Boolean>
     suspend fun getTargetByPackageName(packageName: String): CatalogTargetEntity?
     suspend fun getSolutionsForTarget(targetId: String): List<CatalogSolutionEntity>
+    suspend fun getSolutionByPackageName(packageName: String): CatalogSolutionEntity?
 }

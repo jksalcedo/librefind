@@ -49,8 +49,8 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
-import org.koin.dsl.module
 import org.koin.core.qualifier.named
+import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -121,7 +121,14 @@ val networkModule = module {
 val repositoryModule = module {
     single<CacheRepository> { CacheRepositoryImpl(get(), get(), get(named("IO"))) }
     single { TrustedRomSignerDb(get(), get()) }
-    single<UpdateRepository> { UpdateRepositoryImpl(androidContext(), get(), get(), get(named("IO"))) }
+    single<UpdateRepository> {
+        UpdateRepositoryImpl(
+            androidContext(),
+            get(),
+            get(),
+            get(named("IO"))
+        )
+    }
     single<CatalogRepository> {
         CatalogRepositoryImpl(
             androidContext(),
@@ -133,6 +140,7 @@ val repositoryModule = module {
     }
     single<DeviceInventoryRepo> {
         DeviceInventoryRepoImpl(
+            get(),
             get(),
             get(),
             get(),

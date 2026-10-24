@@ -1,9 +1,13 @@
 package com.jksalcedo.librefind.data.local.catalog
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "catalog_solutions")
+@Entity(
+    tableName = "catalog_solutions",
+    indices = [Index(value = ["packageName"], unique = true)]
+)
 data class CatalogSolutionEntity(
     @PrimaryKey
     val id: String,

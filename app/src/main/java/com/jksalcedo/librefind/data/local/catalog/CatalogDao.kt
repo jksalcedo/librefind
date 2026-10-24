@@ -33,12 +33,23 @@ interface CatalogDao {
     @Query("SELECT * FROM catalog_targets WHERE packageName = :packageName LIMIT 1")
     suspend fun getTargetByPackage(packageName: String): CatalogTargetEntity?
 
-    @Query("""
+    @Query(
+        """
         SELECT s.* FROM catalog_solutions s
         INNER JOIN catalog_mappings m ON s.id = m.solutionId
         WHERE m.targetId = :targetId
-    """)
+    """
+    )
     suspend fun getSolutionsForTarget(targetId: String): List<CatalogSolutionEntity>
+
+    @Query("SELECT * FROM catalog_solutions WHERE packageName = :packageName LIMIT 1")
+    suspend fun getSolutionByPackage(packageName: String): CatalogSolutionEntity?
+
+    @Query("SELECT packageName FROM catalog_targets")
+    suspend fun getAllTargetPackageNames(): List<String>
+
+    @Query("SELECT packageName FROM catalog_solutions")
+    suspend fun getAllSolutionPackageNames(): List<String>
 
     // Metadata
     @Query("SELECT * FROM catalog_sync_metadata LIMIT 1")
@@ -58,11 +69,11 @@ interface CatalogDao {
         clearTargets()
         clearSolutions()
         clearMappings()
-        
+
         insertTargets(targets)
         insertSolutions(solutions)
         insertMappings(mappings)
-        
+
         setCatalogMetadata(CatalogSyncMetadataEntity(contentHash = newHash, timestamp = timestamp))
     }
 }
