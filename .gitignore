@@ -16,5 +16,5 @@ local.properties
 .env
 /.firebase/
 .idea
-/scripts
+/scripts/node_modules
 /dist

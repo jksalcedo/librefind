@@ -1,0 +1,207 @@
+name: Export catalog
+# Set the repository variable CATALOG_EXPORT_ENABLED=false to pause scheduled
+# runs without removing the workflow.
+on:
+  schedule:
+    # Daily at 10:00 UTC. The F-Droid/Izzy sync runs at 08:00 UTC and also
+    # calls this workflow after a successful sync; this cron is the fallback.
+    - cron: '0 10 * * *'
+  workflow_dispatch:
+    inputs:
+      upload:
+        description: 'Upload the generated catalog to R2'
+        required: false
+        type: boolean
+        default: true
+      force:
+        description: 'Upload even when the remote catalog hash is unchanged'
+        required: false
+        type: boolean
+        default: false
+  workflow_call:
+    inputs:
+      upload:
+        description: 'Upload the generated catalog to R2'
+        required: false
+        type: boolean
+        default: true
+      force:
+        description: 'Upload even when the remote catalog hash is unchanged'
+        required: false
+        type: boolean
+        default: false
+    secrets:
+      SUPABASE_URL:
+        required: true
+      SUPABASE_SERVICE_ROLE_KEY:
+        required: true
+      CLOUDFLARE_API_TOKEN:
+        required: true
+      CLOUDFLARE_ACCOUNT_ID:
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: catalog-export
+  cancel-in-progress: false
+
+env:
+  CDN_BASE_URL: ${{ vars.CDN_BASE_URL }}
+  R2_BUCKET: ${{ vars.R2_BUCKET || 'librefind-cdn' }}
+
+jobs:
+  export:
+    name: Export and publish catalog
+    if: ${{ vars.CATALOG_EXPORT_ENABLED != 'false' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: scripts/package.json
+
+      - name: Install dependencies
+        working-directory: scripts
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+
+      - name: Export catalog
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/export-catalog.mjs
+
+      - name: Validate catalog
+        id: validate
+        run: |
+          set -euo pipefail
+
+          INDEX=dist/catalog-index.json
+          MANIFEST=dist/manifest.json
+
+          jq -e '.filename and .hash and .timestamp' "$INDEX" > /dev/null
+
+          FILENAME=$(jq -r '.filename' "$INDEX")
+          HASH=$(jq -r '.hash' "$INDEX")
+          TARGETS=$(jq -r '.target_count' "$MANIFEST")
+          SOLUTIONS=$(jq -r '.solution_count' "$MANIFEST")
+
+          test -f "dist/$FILENAME"
+          gzip -t "dist/$FILENAME"
+
+          ACTUAL_HASH=$(gzip -dc "dist/$FILENAME" | sha256sum | awk '{print $1}')
+          if [ "$ACTUAL_HASH" != "$HASH" ]; then
+            echo "Bundle hash $ACTUAL_HASH does not match index hash $HASH" >&2
+            exit 1
+          fi
+
+          if [ "$TARGETS" -le 0 ] || [ "$SOLUTIONS" -le 0 ]; then
+            echo "Refusing to publish an empty catalog" >&2
+            exit 1
+          fi
+
+          echo "filename=$FILENAME" >> "$GITHUB_OUTPUT"
+          echo "hash=$HASH" >> "$GITHUB_OUTPUT"
+          echo "targets=$TARGETS" >> "$GITHUB_OUTPUT"
+          echo "solutions=$SOLUTIONS" >> "$GITHUB_OUTPUT"
+
+      - name: Check whether the catalog changed
+        id: changed
+        run: |
+          set -euo pipefail
+
+          HASH=$(jq -r '.hash' dist/catalog-index.json)
+          REMOTE_HASH=$(curl -fsS --max-time 30 \
+            "$CDN_BASE_URL/catalog-index.json?t=$(date +%s)" \
+            | jq -r '.hash' 2>/dev/null || true)
+          FORCE="${{ inputs.force }}"
+          if [ -z "$FORCE" ]; then FORCE="false"; fi
+
+          UPLOAD="${{ inputs.upload }}"
+          if [ -z "$UPLOAD" ]; then UPLOAD="true"; fi
+          echo "upload=$UPLOAD" >> "$GITHUB_OUTPUT"
+
+          if [ "$REMOTE_HASH" = "$HASH" ] && [ "$FORCE" != "true" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Catalog is unchanged ($HASH); skipping upload."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "Catalog changed or forced; uploading."
+          fi
+
+      - name: Install Wrangler
+        if: ${{ steps.changed.outputs.changed == 'true' && steps.changed.outputs.upload == 'true' }}
+        run: npm install --global wrangler@4
+
+      - name: Upload bundle to R2
+        if: ${{ steps.changed.outputs.changed == 'true' && steps.changed.outputs.upload == 'true' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+
+          FILENAME="${{ steps.validate.outputs.filename }}"
+
+          # Upload the immutable bundle before the index. Clients must never
+          # see an index that points at a bundle that has not been uploaded yet.
+          wrangler r2 object put "$R2_BUCKET/$FILENAME" \
+            --file "dist/$FILENAME" \
+            --content-type application/gzip \
+            --cache-control "public, max-age=31536000, immutable" \
+            --remote \
+            --force
+
+      - name: Upload catalog index to R2
+        if: ${{ steps.changed.outputs.changed == 'true' && steps.changed.outputs.upload == 'true' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+
+          # Update the index last so it acts as the atomic pointer to the
+          # newly uploaded bundle.
+          wrangler r2 object put "$R2_BUCKET/catalog-index.json" \
+            --file dist/catalog-index.json \
+            --content-type application/json \
+            --cache-control "no-cache, max-age=60" \
+            --remote \
+            --force
+
+      - name: Upload catalog artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: catalog-${{ github.run_id }}
+          path: |
+            dist/catalog-*.json.gz
+            dist/catalog-index.json
+            dist/manifest.json
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Write job summary
+        if: always()
+        run: |
+          {
+            echo "## Catalog export"
+            echo ""
+            echo "- Hash: \`${{ steps.validate.outputs.hash }}\`"
+            echo "- Targets: ${{ steps.validate.outputs.targets }}"
+            echo "- Solutions: ${{ steps.validate.outputs.solutions }}"
+            echo "- Uploaded: ${{ steps.changed.outputs.changed == 'true' && steps.changed.outputs.upload == 'true' }}"
+          } >> "$GITHUB_STEP_SUMMARY"

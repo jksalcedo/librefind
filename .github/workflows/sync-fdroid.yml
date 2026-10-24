@@ -34,7 +34,12 @@ jobs:
 
       - name: Install dependencies
         working-directory: scripts
-        run: npm install
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
 
       - name: Run sync
         working-directory: scripts
@@ -43,3 +48,11 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           SYNC_REPO: ${{ github.event.inputs.repo || 'all' }}
         run: node sync-fdroid.mjs
+
+  export-catalog:
+    name: Export catalog
+    needs: sync
+    uses: ./.github/workflows/export-catalog.yml
+    with:
+      upload: true
+    secrets: inherit
