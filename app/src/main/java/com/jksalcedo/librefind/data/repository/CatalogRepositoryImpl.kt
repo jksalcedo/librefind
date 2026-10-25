@@ -98,6 +98,16 @@ class CatalogRepositoryImpl(
             catalogDao.getSolutionByPackage(packageName)
         }
 
+    override suspend fun getAllTargetPackageNames(): Set<String> =
+        withContext(ioDispatcher) {
+            catalogDao.getAllTargetPackageNames().toSet()
+        }
+
+    override suspend fun getAllSolutionPackageNames(): Set<String> =
+        withContext(ioDispatcher) {
+            catalogDao.getAllSolutionPackageNames().toSet()
+        }
+
     private suspend fun parseAndApplyCatalogStream(
         inputStream: InputStream,
         hash: String,
@@ -108,6 +118,14 @@ class CatalogRepositoryImpl(
         }
         val reader = InputStreamReader(gzipStream, Charsets.UTF_8)
         val bundleDto = gson.fromJson(reader, CatalogBundleDto::class.java) ?: return
+
+        if (bundleDto.targets.isEmpty() &&
+            bundleDto.solutions.isEmpty() &&
+            bundleDto.mappings.isEmpty()
+        ) {
+            Log.w(TAG, "Refusing to apply empty catalog bundle (hash: $hash)")
+            return
+        }
 
         val targets = bundleDto.targets.map { target ->
             CatalogTargetEntity(

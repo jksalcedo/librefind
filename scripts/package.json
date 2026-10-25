@@ -3,6 +3,13 @@
   "version": "1.0.0",
   "type": "module",
   "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "export:catalog": "node export-catalog.mjs",
+    "sync:fdroid": "node sync-fdroid.mjs"
+  },
   "dependencies": {
     "@streamparser/json": "^0.0.21",
     "@supabase/supabase-js": "^2.0.0"

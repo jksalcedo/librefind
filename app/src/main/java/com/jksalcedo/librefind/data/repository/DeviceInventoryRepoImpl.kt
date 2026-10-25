@@ -11,6 +11,7 @@ import com.jksalcedo.librefind.domain.model.AppItem
 import com.jksalcedo.librefind.domain.model.AppStatus
 import com.jksalcedo.librefind.domain.repository.AppRepository
 import com.jksalcedo.librefind.domain.repository.CacheRepository
+import com.jksalcedo.librefind.domain.repository.CatalogRepository
 import com.jksalcedo.librefind.domain.repository.DeviceInventoryRepo
 import com.jksalcedo.librefind.domain.repository.IgnoredAppsRepository
 import com.jksalcedo.librefind.domain.repository.ReclassifiedAppsRepository
@@ -33,7 +34,8 @@ class DeviceInventoryRepoImpl(
     private val ignoredAppsRepository: IgnoredAppsRepository,
     private val cacheRepository: CacheRepository,
     private val reclassifiedAppsRepository: ReclassifiedAppsRepository,
-    private val trustedRomSignerDb: TrustedRomSignerDb
+    private val trustedRomSignerDb: TrustedRomSignerDb,
+    private val catalogRepository: CatalogRepository
 ) : DeviceInventoryRepo {
 
     companion object {
@@ -87,6 +89,28 @@ class DeviceInventoryRepoImpl(
             Pair(labels.await(), installers.await())
         }
 
+        // Ensure catalog is seeded
+        catalogRepository.ensureCatalogSeeded()
+
+        // Load catalog package names once per scan instead of querying per installed app.
+        val (catalogTargets, catalogSolutions) = coroutineScope {
+            val targets = async {
+                try {
+                    catalogRepository.getAllTargetPackageNames()
+                } catch (_: Exception) {
+                    emptySet()
+                }
+            }
+            val solutions = async {
+                try {
+                    catalogRepository.getAllSolutionPackageNames()
+                } catch (_: Exception) {
+                    emptySet()
+                }
+            }
+            Pair(targets.await(), solutions.await())
+        }
+
         // Single bulk DB read: all cached targets + solutions in 2 queries total
         val (cachedTargetsMap, cachedSolutionsSet) = cacheRepository.getBulkCachedData()
 
@@ -108,7 +132,9 @@ class DeviceInventoryRepoImpl(
                         romPrefixes = romPrefixes,
                         isOfflineOrStaleMode = !cacheFresh && !hasCache,
                         cachedTargetsMap = cachedTargetsMap,
-                        cachedSolutionsSet = cachedSolutionsSet
+                        cachedSolutionsSet = cachedSolutionsSet,
+                        catalogTargets = catalogTargets,
+                        catalogSolutions = catalogSolutions
                     )
                 }
             }.awaitAll()
@@ -127,19 +153,26 @@ class DeviceInventoryRepoImpl(
 
             val pendingPackages = try {
                 appRepository.getPendingSubmissionPackages()
-            } catch (_: Exception) { emptySet() }
+            } catch (_: Exception) {
+                emptySet()
+            }
 
-            val unclassifiedPackages = initialResult.filter { it.status == AppStatus.UNKN }.map { it.packageName }
+            val unclassifiedPackages =
+                initialResult.filter { it.status == AppStatus.UNKN }.map { it.packageName }
             val directSolutions = if (unclassifiedPackages.isNotEmpty()) {
                 try {
                     appRepository.areSolutions(unclassifiedPackages)
-                } catch (_: Exception) { emptySet() }
+                } catch (_: Exception) {
+                    emptySet()
+                }
             } else emptySet()
 
             val directProprietary = if (unclassifiedPackages.isNotEmpty()) {
                 try {
                     appRepository.areProprietary(unclassifiedPackages)
-                } catch (_: Exception) { emptyMap() }
+                } catch (_: Exception) {
+                    emptyMap()
+                }
             } else emptyMap()
 
             if (networkUpdated || pendingPackages.isNotEmpty() || directSolutions.isNotEmpty() || directProprietary.isNotEmpty()) {
@@ -161,7 +194,9 @@ class DeviceInventoryRepoImpl(
                                 romPrefixes = romPrefixes,
                                 isOfflineOrStaleMode = false,
                                 cachedTargetsMap = freshTargets,
-                                cachedSolutionsSet = freshSolutions
+                                cachedSolutionsSet = freshSolutions,
+                                catalogTargets = catalogTargets,
+                                catalogSolutions = catalogSolutions
                             )
                         }
                     }.awaitAll()
@@ -171,19 +206,26 @@ class DeviceInventoryRepoImpl(
         } else {
             val pendingPackages = try {
                 appRepository.getPendingSubmissionPackages()
-            } catch (_: Exception) { emptySet() }
+            } catch (_: Exception) {
+                emptySet()
+            }
 
-            val unclassifiedPackages = initialResult.filter { it.status == AppStatus.UNKN }.map { it.packageName }
+            val unclassifiedPackages =
+                initialResult.filter { it.status == AppStatus.UNKN }.map { it.packageName }
             val directSolutions = if (unclassifiedPackages.isNotEmpty()) {
                 try {
                     appRepository.areSolutions(unclassifiedPackages)
-                } catch (_: Exception) { emptySet() }
+                } catch (_: Exception) {
+                    emptySet()
+                }
             } else emptySet()
 
             val directProprietary = if (unclassifiedPackages.isNotEmpty()) {
                 try {
                     appRepository.areProprietary(unclassifiedPackages)
-                } catch (_: Exception) { emptyMap() }
+                } catch (_: Exception) {
+                    emptyMap()
+                }
             } else emptyMap()
 
             if (pendingPackages.isNotEmpty() || directSolutions.isNotEmpty() || directProprietary.isNotEmpty()) {
@@ -204,7 +246,9 @@ class DeviceInventoryRepoImpl(
                                 romPrefixes = romPrefixes,
                                 isOfflineOrStaleMode = false,
                                 cachedTargetsMap = cachedTargetsMap,
-                                cachedSolutionsSet = cachedSolutionsSet
+                                cachedSolutionsSet = cachedSolutionsSet,
+                                catalogTargets = catalogTargets,
+                                catalogSolutions = catalogSolutions
                             )
                         }
                     }.awaitAll()
@@ -228,7 +272,9 @@ class DeviceInventoryRepoImpl(
         romPrefixes: List<String>,
         isOfflineOrStaleMode: Boolean,
         cachedTargetsMap: Map<String, Int> = emptyMap(),
-        cachedSolutionsSet: Set<String> = emptySet()
+        cachedSolutionsSet: Set<String> = emptySet(),
+        catalogTargets: Set<String> = emptySet(),
+        catalogSolutions: Set<String> = emptySet()
     ): AppItem {
         val packageName = pkg.packageName
         val icon = pkg.applicationInfo?.icon
@@ -300,7 +346,7 @@ class DeviceInventoryRepoImpl(
             val hasIndependentPropSignal =
                 (proprietaryMap[packageName] == true) || InstallerHeuristics.isProprietaryInstaller(
                     installer
-                )
+                ) || packageName in catalogTargets
 
             val hasExplicitCacheHit = try {
                 cacheRepository.isTargetCached(packageName)
@@ -335,7 +381,10 @@ class DeviceInventoryRepoImpl(
         }
 
         val isKnownSolution = try {
-            cachedSolutionsSet.contains(packageName) || cacheRepository.isSolutionCached(packageName) || packageName in solutionsSet
+            cachedSolutionsSet.contains(packageName)
+                    || cacheRepository.isSolutionCached(packageName)
+                    || packageName in solutionsSet
+                    || packageName in catalogSolutions
         } catch (_: Exception) {
             false
         }
@@ -365,7 +414,10 @@ class DeviceInventoryRepoImpl(
         }
 
         val isProprietary = try {
-            cachedTargetsMap.containsKey(packageName) || cacheRepository.isTargetCached(packageName) || (proprietaryMap[packageName] == true)
+            cachedTargetsMap.containsKey(packageName) ||
+                    cacheRepository.isTargetCached(packageName) ||
+                    proprietaryMap[packageName] == true ||
+                    packageName in catalogTargets
         } catch (_: Exception) {
             false
         }

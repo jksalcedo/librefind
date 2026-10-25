@@ -9,4 +9,6 @@ interface CatalogRepository {
     suspend fun getTargetByPackageName(packageName: String): CatalogTargetEntity?
     suspend fun getSolutionsForTarget(targetId: String): List<CatalogSolutionEntity>
     suspend fun getSolutionByPackageName(packageName: String): CatalogSolutionEntity?
+    suspend fun getAllTargetPackageNames(): Set<String>
+    suspend fun getAllSolutionPackageNames(): Set<String>
 }
