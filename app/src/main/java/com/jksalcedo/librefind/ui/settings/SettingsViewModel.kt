@@ -8,6 +8,7 @@ import com.jksalcedo.librefind.domain.repository.AuthRepository
 import com.jksalcedo.librefind.domain.repository.CacheRepository
 import com.jksalcedo.librefind.domain.repository.UpdateRepository
 import com.jksalcedo.librefind.ui.dashboard.components.AppIconCache
+import com.jksalcedo.librefind.worker.CatalogSyncScheduler
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -154,10 +155,12 @@ class SettingsViewModel(
             }
             
             rescheduleNotificationWorker()
+            CatalogSyncScheduler.schedule(appContext)
         } else {
             workManager.cancelUniqueWork("signer_feed_update")
             workManager.cancelUniqueWork("app_update_check")
             workManager.cancelUniqueWork("notification_check")
+            CatalogSyncScheduler.cancel(appContext)
         }
     }
 

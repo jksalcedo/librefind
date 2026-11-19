@@ -30,7 +30,7 @@ class CatalogRepositoryImpl(
     companion object {
         private const val TAG = "CatalogRepository"
         const val DEFAULT_CDN_BASE_URL =
-            "https://6191600c54ad78570e7078d14a0182f3.r2.cloudflarestorage.com/librefind-cdn"
+            "https://pub-d52496ee2d0340e390e779cb892650b1.r2.dev"
     }
 
     override suspend fun ensureCatalogSeeded(): Unit = withContext(ioDispatcher) {

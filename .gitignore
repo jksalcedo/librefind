@@ -13,7 +13,7 @@
 .externalNativeBuild
 .cxx
 local.properties
-.env
+scripts/.env
 /.firebase/
 .idea
 /scripts/node_modules

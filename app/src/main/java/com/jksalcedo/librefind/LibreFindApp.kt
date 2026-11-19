@@ -14,7 +14,7 @@ import com.jksalcedo.librefind.di.supabaseModule
 import com.jksalcedo.librefind.di.useCaseModule
 import com.jksalcedo.librefind.di.viewModelModule
 import com.jksalcedo.librefind.domain.repository.CatalogRepository
-import com.jksalcedo.librefind.worker.CatalogSyncWorker
+import com.jksalcedo.librefind.worker.CatalogSyncScheduler
 import com.jksalcedo.librefind.worker.NotificationWorker
 import com.jksalcedo.librefind.worker.SignerFeedWorker
 import com.jksalcedo.librefind.worker.UpdateCheckWorker
@@ -83,8 +83,7 @@ class LibreFindApp : Application() {
                     .cancelUniqueWork("notification_check")
                 WorkManager.getInstance(this@LibreFindApp)
                     .cancelUniqueWork("app_update_check")
-                WorkManager.getInstance(this@LibreFindApp)
-                    .cancelUniqueWork("catalog_sync")
+                CatalogSyncScheduler.cancel(this@LibreFindApp)
             }
         }
     }
@@ -110,21 +109,7 @@ class LibreFindApp : Application() {
     }
 
     private fun scheduleCatalogSync() {
-        val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED)
-            .build()
-
-        val workRequest = PeriodicWorkRequestBuilder<CatalogSyncWorker>(
-            1, TimeUnit.DAYS
-        )
-            .setConstraints(constraints)
-            .build()
-
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-            "catalog_sync",
-            ExistingPeriodicWorkPolicy.UPDATE,
-            workRequest
-        )
+        CatalogSyncScheduler.schedule(this)
     }
 
     private fun scheduleSignerFeedUpdate() {
