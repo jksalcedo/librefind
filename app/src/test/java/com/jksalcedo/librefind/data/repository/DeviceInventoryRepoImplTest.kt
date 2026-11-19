@@ -1,20 +1,25 @@
 package com.jksalcedo.librefind.data.repository
 
 import android.content.pm.PackageInfo
+import android.util.Log
 import com.jksalcedo.librefind.data.local.InventorySource
 import com.jksalcedo.librefind.data.local.PackageNameHeuristicsDb
 import com.jksalcedo.librefind.data.local.TrustedRomSignerDb
 import com.jksalcedo.librefind.domain.model.AppStatus
 import com.jksalcedo.librefind.domain.repository.AppRepository
 import com.jksalcedo.librefind.domain.repository.CacheRepository
+import com.jksalcedo.librefind.domain.repository.CatalogRepository
 import com.jksalcedo.librefind.domain.repository.IgnoredAppsRepository
 import com.jksalcedo.librefind.domain.repository.ReclassifiedAppsRepository
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkStatic
+import io.mockk.unmockkStatic
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -28,14 +33,19 @@ class DeviceInventoryRepoImplTest {
     private val cacheRepository: CacheRepository = mockk()
     private val reclassifiedAppsRepository: ReclassifiedAppsRepository = mockk()
     private val trustedRomSignerDb: TrustedRomSignerDb = mockk()
+    private val catalogRepository: CatalogRepository = mockk(relaxed = true)
 
     private lateinit var repo: DeviceInventoryRepoImpl
 
     @Before
     fun setup() {
+        mockkStatic(Log::class)
+        every { Log.w(any(), any<String>(), any<Throwable>()) } returns 0
+        every { Log.e(any(), any<String>(), any<Throwable>()) } returns 0
+
         repo = DeviceInventoryRepoImpl(
             localSource, signatureDb, appRepository, ignoredAppsRepository,
-            cacheRepository, reclassifiedAppsRepository, trustedRomSignerDb
+            cacheRepository, reclassifiedAppsRepository, trustedRomSignerDb, catalogRepository
         )
 
         // Default mocks
@@ -53,7 +63,15 @@ class DeviceInventoryRepoImplTest {
         coEvery { appRepository.areProprietary(any()) } returns emptyMap()
         coEvery { appRepository.areSolutions(any()) } returns emptySet()
         coEvery { appRepository.getPendingSubmissionPackages() } returns emptySet()
+        coEvery { catalogRepository.ensureCatalogSeeded() } returns Unit
+        coEvery { catalogRepository.getAllTargetPackageNames() } returns emptySet()
+        coEvery { catalogRepository.getAllSolutionPackageNames() } returns emptySet()
         every { signatureDb.isAospSystemPackageName(any()) } returns false
+    }
+
+    @After
+    fun tearDown() {
+        unmockkStatic(Log::class)
     }
 
     @Test
@@ -149,5 +167,112 @@ class DeviceInventoryRepoImplTest {
         assertEquals(2, result.size)
         assertEquals(AppStatus.PROP, result[0].status)
         assertEquals(AppStatus.FOSS, result[1].status)
+    }
+
+    @Test
+    fun `scanAndClassify classifies catalog target as PROP when offline`() = runTest {
+        // Arrange
+        val pkg = mockk<PackageInfo> {
+            packageName = "com.catalog.target"
+            applicationInfo = mockk { flags = 0; icon = 0 }
+        }
+        coEvery { localSource.getRawApps() } returns listOf(pkg)
+        every { localSource.getLabelFromInfo(any()) } returns "Catalog Target"
+        every { localSource.getInstaller(any()) } returns null
+        coEvery { cacheRepository.isCacheValid() } returns false
+        coEvery { cacheRepository.hasAnyCache() } returns false
+        coEvery { catalogRepository.getAllTargetPackageNames() } returns setOf("com.catalog.target")
+
+        // Act
+        val result = repo.scanAndClassify().first()
+
+        // Assert
+        assertEquals(1, result.size)
+        assertEquals(AppStatus.PROP, result[0].status)
+    }
+
+    @Test
+    fun `scanAndClassify classifies catalog solution as FOSS when offline`() = runTest {
+        // Arrange
+        val pkg = mockk<PackageInfo> {
+            packageName = "com.catalog.solution"
+            applicationInfo = mockk { flags = 0; icon = 0 }
+        }
+        coEvery { localSource.getRawApps() } returns listOf(pkg)
+        every { localSource.getLabelFromInfo(any()) } returns "Catalog Solution"
+        every { localSource.getInstaller(any()) } returns null
+        coEvery { cacheRepository.isCacheValid() } returns false
+        coEvery { cacheRepository.hasAnyCache() } returns false
+        coEvery { catalogRepository.getAllSolutionPackageNames() } returns setOf("com.catalog.solution")
+
+        // Act
+        val result = repo.scanAndClassify().first()
+
+        // Assert
+        assertEquals(1, result.size)
+        assertEquals(AppStatus.FOSS, result[0].status)
+    }
+
+    @Test
+    fun `scanAndClassify prefers catalog solution over catalog target`() = runTest {
+        // Arrange
+        val pkg = mockk<PackageInfo> {
+            packageName = "com.catalog.both"
+            applicationInfo = mockk { flags = 0; icon = 0 }
+        }
+        coEvery { localSource.getRawApps() } returns listOf(pkg)
+        every { localSource.getLabelFromInfo(any()) } returns "Both"
+        every { localSource.getInstaller(any()) } returns null
+        coEvery { cacheRepository.isCacheValid() } returns false
+        coEvery { cacheRepository.hasAnyCache() } returns false
+        coEvery { catalogRepository.getAllTargetPackageNames() } returns setOf("com.catalog.both")
+        coEvery { catalogRepository.getAllSolutionPackageNames() } returns setOf("com.catalog.both")
+
+        // Act
+        val result = repo.scanAndClassify().first()
+
+        // Assert
+        assertEquals(1, result.size)
+        assertEquals(AppStatus.FOSS, result[0].status)
+    }
+
+    @Test
+    fun `scanAndClassify keeps installer behavior when package is absent from catalog`() = runTest {
+        // Arrange
+        val pkg = mockk<PackageInfo> {
+            packageName = "com.test.offcatalog"
+            applicationInfo = mockk { flags = 0; icon = 0 }
+        }
+        coEvery { localSource.getRawApps() } returns listOf(pkg)
+        every { localSource.getLabelFromInfo(any()) } returns "Off Catalog"
+        every { localSource.getInstaller(any()) } returns "com.android.vending"
+
+        // Act
+        val result = repo.scanAndClassify().first()
+
+        // Assert
+        assertEquals(1, result.size)
+        assertEquals(AppStatus.PROP, result[0].status)
+    }
+
+    @Test
+    fun `scanAndClassify does not throw when catalog lookups fail`() = runTest {
+        // Arrange
+        val pkg = mockk<PackageInfo> {
+            packageName = "com.test.catalogfailure"
+            applicationInfo = mockk { flags = 0; icon = 0 }
+        }
+        coEvery { localSource.getRawApps() } returns listOf(pkg)
+        every { localSource.getLabelFromInfo(any()) } returns "Catalog Failure"
+        every { localSource.getInstaller(any()) } returns "org.fdroid.fdroid"
+        coEvery { catalogRepository.getAllTargetPackageNames() } throws RuntimeException("boom")
+        coEvery { catalogRepository.getAllSolutionPackageNames() } throws RuntimeException("boom")
+
+        // Act
+        val result = repo.scanAndClassify().first()
+
+        // Assert
+        assertEquals(1, result.size)
+        assertEquals(AppStatus.FOSS, result[0].status)
     }
 }
