@@ -44,7 +44,10 @@ class CatalogRepositoryImpl(
                 )
             }
 
-            context.assets.open("catalog.json.gz").use { stream ->
+            // Keep the gzip bytes but avoid a ".gz" extension: AGP decompresses
+            // .gz assets at build time and strips the extension, which would
+            // make the packaged asset name differ from this lookup.
+            context.assets.open("catalog-bundle.bin").use { stream ->
                 parseAndApplyCatalogStream(
                     inputStream = stream,
                     hash = index.hash,

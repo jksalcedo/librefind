@@ -99,7 +99,7 @@ class CatalogRepositoryImplTest {
 
         every { assetManager.open("catalog-index.json") } returns
                 ByteArrayInputStream(indexJson.toByteArray(Charsets.UTF_8))
-        every { assetManager.open("catalog.json.gz") } returns
+        every { assetManager.open("catalog-bundle.bin") } returns
                 ByteArrayInputStream(createGzipBytes(bundleJson))
 
         val targetsSlot = slot<List<CatalogTargetEntity>>()
@@ -216,7 +216,7 @@ class CatalogRepositoryImplTest {
     private fun stubBundledCatalog(indexJson: String, bundleJson: String) {
         every { assetManager.open("catalog-index.json") } returns
                 ByteArrayInputStream(indexJson.toByteArray(Charsets.UTF_8))
-        every { assetManager.open("catalog.json.gz") } returns
+        every { assetManager.open("catalog-bundle.bin") } returns
                 ByteArrayInputStream(createGzipBytes(bundleJson))
     }
 
