@@ -156,6 +156,7 @@
     <string name="settings_feedback">Feedback &amp; Community</string>
     <string name="settings_report_issue">Report Issue / Suggestion</string>
     <string name="settings_my_reports">My Reports</string>
+    <string name="settings_codeberg_issues">Codeberg Issues</string>
     <string name="settings_github_issues">GitHub Issues</string>
     <string name="settings_join_matrix">Join Matrix</string>
     <string name="settings_join_telegram">Join Telegram</string>

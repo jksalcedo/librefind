@@ -541,6 +541,11 @@ fun SettingsContent(
                 HorizontalDivider(modifier = Modifier.padding(horizontal = 20.dp))
                 PreferenceItem(
                     title = stringResource(R.string.settings_github_issues),
+                    onClick = { onOpenUri("https://codeberg.org/jksalcedo/librefind/issues") }
+                )
+                HorizontalDivider(modifier = Modifier.padding(horizontal = 20.dp))
+                PreferenceItem(
+                    title = stringResource(R.string.settings_github_issues),
                     onClick = { onOpenUri("https://github.com/jksalcedo/librefind/issues") }
                 )
                 HorizontalDivider(modifier = Modifier.padding(horizontal = 20.dp))
