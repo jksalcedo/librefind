@@ -52,6 +52,7 @@ env:
   # variable if a custom domain is configured later.
   CDN_BASE_URL: ${{ vars.CDN_BASE_URL || 'https://pub-9bb9dd4611a346b793a40336c327d683.r2.dev' }}
   R2_BUCKET: ${{ vars.R2_BUCKET || 'cdn' }}
+  R2_KEEP_BUNDLES: ${{ vars.R2_KEEP_BUNDLES || '3' }}
 
 jobs:
   export:
@@ -183,6 +184,67 @@ jobs:
             --cache-control "no-cache, max-age=60" \
             --remote \
             --force
+
+      - name: Prune old catalog bundles
+        if: ${{ steps.changed.outputs.changed == 'true' && steps.changed.outputs.upload == 'true' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+
+          KEEP="${R2_KEEP_BUNDLES:-3}"
+          if ! [[ "$KEEP" =~ ^[1-9][0-9]*$ ]]; then
+            echo "R2_KEEP_BUNDLES must be a positive integer, got: $KEEP" >&2
+            exit 1
+          fi
+
+          API="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/r2/buckets/${R2_BUCKET}/objects"
+
+          # Hash-named bundles are immutable, so each catalog change adds an
+          # object instead of replacing one. List them all (paginated) and
+          # delete everything except the newest $KEEP.
+          #
+          # The key pattern deliberately excludes catalog-index.json and any
+          # other non-bundle object, so only immutable bundles are pruned.
+          list=$(mktemp)
+          cursor=""
+          while :; do
+            url="${API}?prefix=catalog-&per_page=1000"
+            if [ -n "$cursor" ]; then
+              url="${url}&cursor=$(jq -rn --arg c "$cursor" '$c | @uri')"
+            fi
+            if ! page=$(curl -fsS --max-time 30 "$url" \
+              -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}"); then
+              echo "::warning::Could not list R2 objects; skipping bundle prune."
+              exit 0
+            fi
+
+            jq -r '.result[]? | select(.key | test("^catalog-[0-9a-f]{64}\\.json\\.gz$"))
+                   | "\(.last_modified)\t\(.key)"' <<< "$page" >> "$list"
+
+            if [ "$(jq -r '.result_info.is_truncated // false' <<< "$page")" != "true" ]; then
+              break
+            fi
+            cursor=$(jq -r '.result_info.cursor // empty' <<< "$page")
+            [ -n "$cursor" ] || break
+          done
+
+          # Newest first. Retaining more than one bundle gives clients that
+          # already fetched an older index time to finish downloading it.
+          sort -r "$list" | tail -n "+$((KEEP + 1))" | while IFS=$'\t' read -r _ key; do
+            [ -n "$key" ] || continue
+            # Slashes in the key must not be percent-encoded.
+            encoded=$(jq -rn --arg k "$key" '$k | @uri' | sed 's/%2F/\//g')
+            if curl -fsS --max-time 30 -X DELETE "${API}/${encoded}" \
+              -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" > /dev/null; then
+              echo "Deleted old bundle: ${key}"
+            else
+              echo "::warning::Failed to delete old bundle: ${key}"
+            fi
+          done
+
+          echo "Retained the newest ${KEEP} catalog bundle(s)."
 
       - name: Upload catalog artifact
         if: always()
