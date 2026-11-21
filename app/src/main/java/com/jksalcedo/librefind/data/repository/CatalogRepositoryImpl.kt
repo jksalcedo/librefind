@@ -30,7 +30,7 @@ class CatalogRepositoryImpl(
     companion object {
         private const val TAG = "CatalogRepository"
         const val DEFAULT_CDN_BASE_URL =
-            "https://pub-d52496ee2d0340e390e779cb892650b1.r2.dev"
+            "https://pub-9bb9dd4611a346b793a40336c327d683.r2.dev"
     }
 
     override suspend fun ensureCatalogSeeded(): Unit = withContext(ioDispatcher) {

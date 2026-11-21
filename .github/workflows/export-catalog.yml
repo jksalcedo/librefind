@@ -50,7 +50,7 @@ concurrency:
 env:
   # Public bucket URL. Override with the CDN_BASE_URL repository
   # variable if a custom domain is configured later.
-  CDN_BASE_URL: ${{ vars.CDN_BASE_URL || 'https://pub-d52496ee2d0340e390e779cb892650b1.r2.dev' }}
+  CDN_BASE_URL: ${{ vars.CDN_BASE_URL || 'https://pub-9bb9dd4611a346b793a40336c327d683.r2.dev' }}
   R2_BUCKET: ${{ vars.R2_BUCKET || 'librefind-cdn' }}
 
 jobs:
