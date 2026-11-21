@@ -1,0 +1,5 @@
+- Added an offline catalog so app classification and alternative matching work offline
+- Faster alternative lookups
+- Added local database tables for catalog targets, solutions, and mappings
+- Added Ukrainian translation
+- Updated German, Spanish, Estonian, Italian, Turkish, and Chinese translations
