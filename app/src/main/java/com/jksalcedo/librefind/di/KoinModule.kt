@@ -8,14 +8,17 @@ import com.jksalcedo.librefind.data.local.PackageNameHeuristicsDb
 import com.jksalcedo.librefind.data.local.PreferencesManager
 import com.jksalcedo.librefind.data.local.SignerFeedDataStore
 import com.jksalcedo.librefind.data.local.TrustedRomSignerDb
+import com.jksalcedo.librefind.data.remote.CatalogApiService
 import com.jksalcedo.librefind.data.remote.SignerApiService
 import com.jksalcedo.librefind.data.remote.UpdateApiService
 import com.jksalcedo.librefind.data.repository.CacheRepositoryImpl
+import com.jksalcedo.librefind.data.repository.CatalogRepositoryImpl
 import com.jksalcedo.librefind.data.repository.DeviceInventoryRepoImpl
 import com.jksalcedo.librefind.data.repository.IgnoredAppsRepositoryImpl
 import com.jksalcedo.librefind.data.repository.ReclassifiedAppsRepositoryImpl
 import com.jksalcedo.librefind.data.repository.UpdateRepositoryImpl
 import com.jksalcedo.librefind.domain.repository.CacheRepository
+import com.jksalcedo.librefind.domain.repository.CatalogRepository
 import com.jksalcedo.librefind.domain.repository.DeviceInventoryRepo
 import com.jksalcedo.librefind.domain.repository.IgnoredAppsRepository
 import com.jksalcedo.librefind.domain.repository.ReclassifiedAppsRepository
@@ -46,8 +49,8 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
-import org.koin.dsl.module
 import org.koin.core.qualifier.named
+import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -67,6 +70,9 @@ val appModule = module {
     single { get<AppDatabase>().ignoredAppDao() }
     single { get<AppDatabase>().appCacheDao() }
     single { get<AppDatabase>().reclassifiedAppDao() }
+    single { get<AppDatabase>().catalogDao() }
+    single { get<AppDatabase>().cachedUserVoteDao() }
+    single { get<AppDatabase>().userCustomMappingDao() }
     single<IgnoredAppsRepository> { IgnoredAppsRepositoryImpl(get()) }
     single<ReclassifiedAppsRepository> { ReclassifiedAppsRepositoryImpl(get()) }
 }
@@ -108,14 +114,33 @@ val networkModule = module {
             .build()
         retrofit.create(UpdateApiService::class.java)
     }
+
+    single { get<Retrofit>().create(CatalogApiService::class.java) }
 }
 
 val repositoryModule = module {
     single<CacheRepository> { CacheRepositoryImpl(get(), get(), get(named("IO"))) }
     single { TrustedRomSignerDb(get(), get()) }
-    single<UpdateRepository> { UpdateRepositoryImpl(androidContext(), get(), get(), get(named("IO"))) }
+    single<UpdateRepository> {
+        UpdateRepositoryImpl(
+            androidContext(),
+            get(),
+            get(),
+            get(named("IO"))
+        )
+    }
+    single<CatalogRepository> {
+        CatalogRepositoryImpl(
+            androidContext(),
+            get(),
+            get(),
+            get(),
+            get(named("IO"))
+        )
+    }
     single<DeviceInventoryRepo> {
         DeviceInventoryRepoImpl(
+            get(),
             get(),
             get(),
             get(),

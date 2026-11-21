@@ -43,5 +43,5 @@ val supabaseModule = module {
     }
 
     single<AuthRepository> { SupabaseAuthRepository(get()) }
-    single<AppRepository> { SupabaseAppRepository(get()) }
+    single<AppRepository> { SupabaseAppRepository(get(), get()) }
 }

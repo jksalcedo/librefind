@@ -13,8 +13,11 @@
 .externalNativeBuild
 .cxx
 local.properties
-.env
+scripts/.env
 /.firebase/
 .idea
-/scripts
+/scripts/node_modules
 /dist
+.idea/*
+!.idea/codeStyles/
+!.idea/inspectionProfiles/

@@ -2,6 +2,8 @@ package com.jksalcedo.librefind.data.repository
 
 import android.os.Build
 import android.util.Log
+import com.jksalcedo.librefind.data.local.catalog.CatalogSolutionEntity
+import com.jksalcedo.librefind.data.local.catalog.CatalogTargetEntity
 import com.jksalcedo.librefind.data.remote.model.AlternativeWithVoteDto
 import com.jksalcedo.librefind.data.remote.model.AppFeedbackDto
 import com.jksalcedo.librefind.data.remote.model.AppReport
@@ -31,6 +33,7 @@ import com.jksalcedo.librefind.domain.model.SubmissionStatus
 import com.jksalcedo.librefind.domain.model.SubmissionType
 import com.jksalcedo.librefind.domain.model.SubmittedApp
 import com.jksalcedo.librefind.domain.repository.AppRepository
+import com.jksalcedo.librefind.domain.repository.CatalogRepository
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.postgrest.postgrest
@@ -46,7 +49,8 @@ import java.util.Locale
 import java.util.TimeZone
 
 class SupabaseAppRepository(
-    private val supabase: SupabaseClient
+    private val supabase: SupabaseClient,
+    private val catalogRepository: CatalogRepository
 ) : AppRepository {
 
     override suspend fun areProprietary(packageNames: List<String>): Map<String, Boolean> {
@@ -76,7 +80,7 @@ class SupabaseAppRepository(
     }
 
     override suspend fun isProprietary(packageName: String): Boolean {
-        return try {
+        val foundRemotely = try {
             val count = supabase.postgrest.from("targets")
                 .select(columns = Columns.list("package_name")) {
                     count(Count.EXACT)
@@ -88,10 +92,12 @@ class SupabaseAppRepository(
         } catch (_: Exception) {
             false
         }
+
+        return foundRemotely || catalogTarget(packageName) != null
     }
 
     override suspend fun isSolution(packageName: String): Boolean {
-        return try {
+        val foundRemotely = try {
             val count = supabase.postgrest.from("solutions")
                 .select(columns = Columns.list("package_name")) {
                     count(Count.EXACT)
@@ -103,12 +109,14 @@ class SupabaseAppRepository(
         } catch (_: Exception) {
             false
         }
+
+        return foundRemotely || catalogSolution(packageName) != null
     }
 
     override suspend fun getAlternatives(packageName: String): List<Alternative> {
         // Try the RPC first (includes match-vote aggregates).
         // Falls back to direct query if the function isn't available yet.
-        return try {
+        val remoteAlternatives = try {
             val userId = supabase.auth.currentUserOrNull()?.id
 
             @Serializable
@@ -131,6 +139,32 @@ class SupabaseAppRepository(
             )
             getAlternativesDirect(packageName)
         }
+
+        // The offline catalog is the fallback when the network is unavailable.
+        return remoteAlternatives.ifEmpty { catalogAlternativesFor(packageName) }
+    }
+
+    private suspend fun catalogTarget(packageName: String): CatalogTargetEntity? = try {
+        catalogRepository.getTargetByPackageName(packageName)
+    } catch (_: Exception) {
+        null
+    }
+
+    private suspend fun catalogSolution(packageName: String): CatalogSolutionEntity? = try {
+        catalogRepository.getSolutionByPackageName(packageName)
+    } catch (_: Exception) {
+        null
+    }
+
+    private suspend fun catalogAlternativesFor(packageName: String): List<Alternative> = try {
+        val target = catalogRepository.getTargetByPackageName(packageName)
+        if (target == null) {
+            emptyList()
+        } else {
+            catalogRepository.getSolutionsForTarget(target.id).map { it.toAlternative() }
+        }
+    } catch (_: Exception) {
+        emptyList()
     }
 
     private suspend fun getAlternativesDirect(packageName: String): List<Alternative> {
@@ -272,7 +306,7 @@ class SupabaseAppRepository(
     }
 
     override suspend fun getAlternative(packageName: String): Alternative? {
-        return try {
+        val remoteAlternative = try {
             val dto = supabase.postgrest.from("solutions")
                 .select(
                     columns = Columns.list(
@@ -285,48 +319,54 @@ class SupabaseAppRepository(
                     filter {
                         eq("package_name", packageName)
                     }
-                }.decodeSingleOrNull<SolutionDto>() ?: return null
+                }.decodeSingleOrNull<SolutionDto>()
 
-            val usabilityRating = dto.ratingUsability ?: 0f
-            val privacyRating = dto.ratingPrivacy ?: 0f
-            val featuresRating = dto.ratingFeatures ?: 0f
-            val rawRatingCount = dto.voteCount ?: 0
+            if (dto == null) {
+                null
+            } else {
+                val usabilityRating = dto.ratingUsability ?: 0f
+                val privacyRating = dto.ratingPrivacy ?: 0f
+                val featuresRating = dto.ratingFeatures ?: 0f
+                val rawRatingCount = dto.voteCount ?: 0
 
-            val ratingAvg = if (rawRatingCount > 0) {
-                val sum = usabilityRating + privacyRating + featuresRating
-                val nonZeroCount =
-                    listOf(usabilityRating, privacyRating, featuresRating).count { it > 0 }
-                if (nonZeroCount > 0) sum / nonZeroCount else 0f
-            } else 0f
+                val ratingAvg = if (rawRatingCount > 0) {
+                    val sum = usabilityRating + privacyRating + featuresRating
+                    val nonZeroCount =
+                        listOf(usabilityRating, privacyRating, featuresRating).count { it > 0 }
+                    if (nonZeroCount > 0) sum / nonZeroCount else 0f
+                } else 0f
 
-            val ratingCount = if (ratingAvg == 0f) 0 else rawRatingCount
+                val ratingCount = if (ratingAvg == 0f) 0 else rawRatingCount
 
-            Alternative(
-                id = dto.packageName,
-                name = dto.name,
-                packageName = dto.packageName,
-                license = dto.license,
-                repoUrl = dto.repoUrl ?: "",
-                fdroidId = dto.fdroidId ?: "",
-                iconUrl = dto.iconUrl,
-                category = dto.category,
-                ratingAvg = ratingAvg,
-                ratingCount = ratingCount,
-                usabilityRating = usabilityRating,
-                privacyRating = privacyRating,
-                featuresRating = featuresRating,
-                description = dto.description,
-                features = dto.features.orEmpty(),
-                pros = dto.pros.orEmpty(),
-                cons = dto.cons.orEmpty()
-            )
+                Alternative(
+                    id = dto.packageName,
+                    name = dto.name,
+                    packageName = dto.packageName,
+                    license = dto.license,
+                    repoUrl = dto.repoUrl ?: "",
+                    fdroidId = dto.fdroidId ?: "",
+                    iconUrl = dto.iconUrl,
+                    category = dto.category,
+                    ratingAvg = ratingAvg,
+                    ratingCount = ratingCount,
+                    usabilityRating = usabilityRating,
+                    privacyRating = privacyRating,
+                    featuresRating = featuresRating,
+                    description = dto.description,
+                    features = dto.features.orEmpty(),
+                    pros = dto.pros.orEmpty(),
+                    cons = dto.cons.orEmpty()
+                )
+            }
         } catch (_: Exception) {
             null
         }
+
+        return remoteAlternative ?: catalogSolution(packageName)?.toAlternative()
     }
 
     override suspend fun getTarget(packageName: String): Alternative? {
-        return try {
+        val remoteTarget = try {
             val dto = supabase.postgrest.from("targets")
                 .select(
                     columns = Columns.list(
@@ -337,23 +377,28 @@ class SupabaseAppRepository(
                         eq("package_name", packageName)
                     }
                 }.decodeSingleOrNull<com.jksalcedo.librefind.data.remote.model.TargetDto>()
-                ?: return null
 
-            Alternative(
-                id = dto.packageName,
-                name = dto.name,
-                packageName = dto.packageName,
-                license = "Proprietary",
-                repoUrl = "",
-                fdroidId = "",
-                iconUrl = dto.iconUrl,
-                category = dto.category ?: "Other",
-                description = dto.description ?: ""
-            )
+            if (dto == null) {
+                null
+            } else {
+                Alternative(
+                    id = dto.packageName,
+                    name = dto.name,
+                    packageName = dto.packageName,
+                    license = "Proprietary",
+                    repoUrl = "",
+                    fdroidId = "",
+                    iconUrl = dto.iconUrl,
+                    category = dto.category ?: "Other",
+                    description = dto.description ?: ""
+                )
+            }
         } catch (e: Exception) {
             Log.e("SupabaseAppRepo", "getTarget failed for $packageName", e)
             null
         }
+
+        return remoteTarget ?: catalogTarget(packageName)?.toAlternative()
     }
 
     @Serializable

@@ -38,6 +38,7 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import com.jksalcedo.librefind.worker.CatalogSyncScheduler
 import com.jksalcedo.librefind.worker.NotificationWorker
 import com.jksalcedo.librefind.worker.SignerFeedWorker
 import java.util.concurrent.TimeUnit
@@ -127,6 +128,8 @@ class MainActivity : AppCompatActivity() {
                                     .setConstraints(constraints)
                                     .build()
                                 workManager.enqueueUniquePeriodicWork("notification_check", ExistingPeriodicWorkPolicy.UPDATE, notifRequest)
+
+                                CatalogSyncScheduler.schedule(this@MainActivity)
                             }) {
                                 Text(stringResource(R.string.network_consent_opt_in))
                             }

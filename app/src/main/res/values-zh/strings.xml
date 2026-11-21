@@ -339,4 +339,29 @@
     <string name="vote_downvote">Poor replacement (downvote)</string>
     <string name="vote_upvote">Good replacement (upvote)</string>
     <string name="web_submission">网络提交</string>
+    <string name="logs_cleared">已清空本地日志</string>
+    <string name="pref_clear_logs_title">清空日志</string>
+    <string name="logs_reset_default">重置日志位置</string>
+    <string name="logs_zip_failed">创建日志压缩包失败</string>
+    <string name="logs_none_found">未找到日志</string>
+    <string name="pref_share_all_logs_summary">将崩溃报告和诊断日志打包为zip分享</string>
+    <string name="pref_share_all_logs_title">分享所有日志</string>
+    <string name="pref_export_app_logs_summary">抓取当前设备诊断信息和运行时日志</string>
+    <string name="pref_export_app_logs_title">导出应用日志</string>
+    <string name="pref_logs_location_title">日志存储位置</string>
+    <string name="settings_logs_title">日志和诊断</string>
+    <string name="update_available_content">LibreFind 版本 %1$s 可用！</string>
+    <string name="update_available_title">有更新可用</string>
+    <string name="settings_auto_update_subtitle">在后台自动检查LibreFind更新</string>
+    <string name="settings_auto_update_title">自动更新</string>
+    <string name="settings_network_access_title">后台网络访问</string>
+    <plurals name="items_selected">
+        <item quantity="other">已选择 %1$d 个</item>
+    </plurals>
+    <plurals name="scan_list_alternatives_count">
+        <item quantity="other">%1$d 现有替代品</item>
+    </plurals>
+    <string name="submit_category">类别</string>
+    <string name="settings_interval_24hours">每24小时</string>
+    <string name="gauge_dialog_ignored_apps">忽略的应用</string>
 </resources>
