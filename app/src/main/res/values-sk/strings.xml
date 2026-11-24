@@ -294,4 +294,10 @@
     <string name="settings_language_turkish">Turecky</string>
     <string name="settings_language_chinese_simplified">Zjednodušená čínština</string>
     <string name="settings_hide_system_packages_title">Filtrovanie systémových balíčkov</string>
+    <string name="auth_continue_as_guest">Pokračovať ako hosť</string>
+    <string name="settings_codeberg_issues">Chyby \"Codeberg\"</string>
+    <string name="settings_join_telegram">Telegram</string>
+    <string name="settings_hide_system_packages_label">Skryť systémové balíky</string>
+    <string name="settings_check_updates">Skontrolovať aktualizácie</string>
+    <string name="settings_checking_updates">Kontrolujú sa najnovšie aktualizácie…</string>
 </resources>
